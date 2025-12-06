@@ -1,0 +1,52 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "A volunteer-run organization" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    
+    <!-- Open Graph / Social -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen bg-white text-gray-900">
+    <header class="border-b border-gray-200">
+      <nav class="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between">
+          <a href="/" class="text-xl font-semibold">Your Organization</a>
+          <ul class="flex gap-6">
+            <li><a href="/" class="hover:text-blue-600">Home</a></li>
+            <li><a href="/about" class="hover:text-blue-600">About</a></li>
+            <li><a href="/contact" class="hover:text-blue-600">Contact</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="mt-auto border-t border-gray-200 py-8">
+      <div class="mx-auto max-w-7xl px-4 text-center text-gray-600 sm:px-6 lg:px-8">
+        <p>&copy; {new Date().getFullYear()} Your Organization. All rights reserved.</p>
+      </div>
+    </footer>
+  </body>
+</html>
