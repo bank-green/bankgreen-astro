@@ -1,9 +1,9 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
-import { getSingleSafe } from "@lib/prismic";
+import { getByUIDSafe } from "@lib/prismic";
 import { NotFoundPage } from "@components/pages";
 
-const page = await getSingleSafe("notfoundpage");
+const page = await getByUIDSafe("textonlypages", "notfound");
 ---
 
 <BaseLayout title="Page Not Found">
