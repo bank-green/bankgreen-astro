@@ -1,5 +1,17 @@
 {
   "cSpell.words": [
-    "Prismic"
-  ]
+    "Prismic",
+    "Mantine",
+    "mantine",
+    "oklch"
+  ],
+  "css.lint.validProperties": [
+    "layer"
+  ],
+  "css.customData": [
+    ".vscode/css-custom-data.json"
+  ],
+  "css.validate": false,
+  "scss.validate": false,
+  "postcss.validate": false
 }
