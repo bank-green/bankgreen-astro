@@ -11,7 +11,6 @@ interface Props {
 export function SustainableBanksPage({ page }: Props) {
   const slices = page?.data?.slices;
   const slices1 = page?.data?.slices1;
-  const slices2 = page?.data?.slices2;
   const introductory = page?.data?.introductory;
   const footerBanner = page?.data?.footerBanner;
 

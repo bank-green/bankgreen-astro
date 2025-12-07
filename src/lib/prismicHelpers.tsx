@@ -59,7 +59,7 @@ export function renderRichText(
  */
 function renderSpans(
   text: string,
-  spans: prismic.RTTextNodeSpan[]
+  spans: prismic.RTInlineNode[]
 ): ReactNode {
   if (!spans || spans.length === 0) return text;
 
