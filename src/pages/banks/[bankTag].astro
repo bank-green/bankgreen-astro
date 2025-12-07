@@ -2,6 +2,12 @@
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { BankScorePage } from "@components/pages";
 
+interface BankData {
+  tag: string;
+  name: string;
+  rating?: string;
+}
+
 export async function getStaticPaths() {
   // TODO: Fetch all banks from GraphQL
   // const data = await graphqlFetch(`query { banks { tag } }`);
@@ -12,9 +18,10 @@ export async function getStaticPaths() {
 const { bankTag } = Astro.params;
 
 // TODO: Fetch bank data from GraphQL
-const bank = null;
+const bank: BankData | null = null;
 
-const title = bank ? `${bank.name}'s Climate Score` : "Bank Climate Score";
+const bankName = (bank as BankData | null)?.name ?? "Bank";
+const title = `${bankName}'s Climate Score`;
 ---
 
 <BaseLayout title={title}>
