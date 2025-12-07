@@ -1,4 +1,5 @@
 import { PageContent } from "@components/PageContent";
+import { SliceZone } from "@slices";
 import type { PrismicDocument } from "@prismicio/client";
 
 interface Props {
@@ -6,47 +7,34 @@ interface Props {
 }
 
 export function CertificationPage({ page }: Props) {
+  const certificationImg = page?.data?.certification_img;
+  const slices = page?.data?.slices;
+
   return (
     <PageContent>
       <article>
-        <header>
-          <h1>Fossil Free Certification</h1>
-          {/* Certification badge image */}
-        </header>
+        {/* Certification badge */}
+        {certificationImg?.url ? (
+          <img src={certificationImg.url} alt="Fossil-free certified badge" />
+        ) : (
+          <img src="/img/certification/fossil-free-certified.png" alt="Fossil-free certified badge" />
+        )}
 
-        <section>
-          <a href="/sustainable-eco-banks">View Alliance Members</a>
-        </section>
-
-        <section>
-          <h2>Benefits of Certification</h2>
-          <ul>
-            <li>Attract customers and employees who care about climate</li>
-            <li>Access networks of sustainable finance leaders</li>
-            <li>Public relations benefits</li>
-            <li>Join a movement for change</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Steps to Certification</h2>
-          <ol>
-            <li><strong>Connect</strong> - Reach out to us</li>
-            <li><strong>Submit</strong> - Provide documentation</li>
-            <li><strong>Review</strong> - We assess your policies</li>
-            <li><strong>Certify</strong> - Receive certification</li>
-          </ol>
-        </section>
-
-        <section>
-          <h2>Contact</h2>
-          <p>Email: <a href="mailto:hello@bank.green">hello@bank.green</a></p>
-        </section>
-
-        <section>
-          <h2>FAQ</h2>
-          {/* AccordionSlice items from page?.data?.slices */}
-        </section>
+        {/* Main content from Prismic slices */}
+        {slices ? (
+          <SliceZone slices={slices} />
+        ) : (
+          <>
+            <h1>Fossil Free Certification</h1>
+            <p>
+              Financial institutions that are Fossil Free Certified have pledged not to finance new fossil fuel
+              companies or projects, and the majority already do not do so. Fossil Free Certification is the simplest,
+              most straightforward way to signal to customers, professionals in the banking sector, and the general
+              public that a sustainability-conscious financial institution is truly putting its money where its mouth
+              is.
+            </p>
+          </>
+        )}
       </article>
     </PageContent>
   );

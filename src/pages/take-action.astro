@@ -3,7 +3,9 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 import { getSingleSafe } from "@lib/prismic";
 import { TakeActionPage } from "@components/pages";
 
-const page = await getSingleSafe("takeactionpage");
+const page = await getSingleSafe("takeactionpage", {
+  fetchLinks: ["accordionitem.title", "accordionitem.slices"],
+});
 ---
 
 <BaseLayout title="Take Action">

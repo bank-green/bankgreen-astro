@@ -7,29 +7,54 @@ interface Props {
 }
 
 export function BlogPostPage({ post }: Props) {
-  const title = post.data.title || "Blog Post";
+  const title = (post.data.title as string) || "Blog Post";
+  const author = post.data.author as string | undefined;
   const slices = post.data.slices;
+
+  const publishedDate = post.first_publication_date
+    ? new Date(post.first_publication_date).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    : null;
+
+  const modifiedDate = post.last_publication_date
+    ? new Date(post.last_publication_date).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    : null;
+
+  const isUpdated = post.first_publication_date !== post.last_publication_date;
 
   return (
     <PageContent>
       <article>
         <header>
-          {/* Featured image */}
           <h1>{title}</h1>
-          <time dateTime={post.first_publication_date || undefined}>
-            {new Date(post.first_publication_date || "").toLocaleDateString()}
-          </time>
-          {/* Author if available */}
+          {isUpdated && modifiedDate ? (
+            <p>
+              Updated {modifiedDate}
+              {author && ` by ${author}`}
+            </p>
+          ) : (
+            publishedDate && (
+              <p>
+                Posted {publishedDate}
+                {author && ` by ${author}`}
+              </p>
+            )
+          )}
         </header>
 
-        <section>
-          {slices && <SliceZone slices={slices} />}
-        </section>
+        <section>{slices && <SliceZone slices={slices} />}</section>
 
         <footer>
           <section>
             <h2>Start to Bank Green Today</h2>
-            {/* Newsletter signup or action buttons */}
+            {/* Call to action / newsletter signup */}
           </section>
         </footer>
       </article>

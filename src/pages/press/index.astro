@@ -1,13 +1,14 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
-import { getAllByTypeSafe } from "@lib/prismic";
+import { getSingleSafe, getAllByTypeSafe } from "@lib/prismic";
 import { PressIndexPage } from "@components/pages";
 
+const page = await getSingleSafe("presspage");
 const releases = await getAllByTypeSafe("presspost", {
   orderings: [{ field: "document.first_publication_date", direction: "desc" }],
 });
 ---
 
 <BaseLayout title="Press">
-  <PressIndexPage releases={releases} client:load />
+  <PressIndexPage page={page} releases={releases} client:load />
 </BaseLayout>

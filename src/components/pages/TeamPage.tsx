@@ -2,45 +2,86 @@ import { PageContent } from "@components/PageContent";
 import { SliceZone } from "@slices";
 import type { PrismicDocument } from "@prismicio/client";
 
+interface TeamMemberSlice {
+  slice_type: string;
+  primary: {
+    department?: string;
+    name?: unknown;
+    description?: unknown;
+    img?: { url?: string };
+    link?: unknown;
+  };
+}
+
 interface Props {
   page: PrismicDocument | null;
 }
 
 export function TeamPage({ page }: Props) {
+  const slices = page?.data?.slices;
+  const slices1 = (page?.data?.slices1 || []) as TeamMemberSlice[];
+
+  // Filter directors from slices1
+  const directors = slices1.filter((member) => member.primary?.department === "Directors");
+
+  // Get all non-director, non-alumni team members grouped by department
+  const teamMembers = slices1.filter(
+    (member) => member.primary?.department !== "Directors" && member.primary?.department !== "Alumni"
+  );
+
+  // Get unique departments
+  const departments = [...new Set(teamMembers.map((m) => m.primary?.department).filter(Boolean))].sort();
+
   return (
     <PageContent>
       <article>
-        <header>
-          <h1>Bank.Green Team - Who We Are</h1>
-        </header>
-
+        {/* Intro content from slices */}
         <section>
-          <h2>Our Story</h2>
-          {/* Origin story content */}
+          {slices ? (
+            <SliceZone slices={slices} />
+          ) : (
+            <>
+              <h1>Who we are</h1>
+              <p>
+                Bank.Green was founded by a group of volunteers in late 2020. Each of us had been working on ways to
+                raise awareness about the climate crisis, without paying much attention to our money.
+              </p>
+            </>
+          )}
         </section>
 
-        <section>
-          <h2>Our Directors</h2>
-          {/* Director cards - will come from slices */}
-        </section>
+        {/* Directors section */}
+        {directors.length > 0 && (
+          <section>
+            <h2>Our Directors</h2>
+            <SliceZone slices={directors} />
+          </section>
+        )}
 
+        {/* Team members section */}
         <section>
           <h2>Meet the Team</h2>
-          {/* Department filter */}
+
+          {/* Department filter - placeholder for now */}
           <nav>
-            <ul>
-              <li><button type="button">All</button></li>
-              <li><button type="button">Product & Engineering</button></li>
-              <li><button type="button">Content</button></li>
-              <li><button type="button">Research</button></li>
-              <li><button type="button">Development</button></li>
-            </ul>
+            <label htmlFor="department-filter">Department:</label>
+            <select id="department-filter">
+              <option value="">All</option>
+              {departments.map((dept) => (
+                <option key={dept} value={dept}>
+                  {dept}
+                </option>
+              ))}
+            </select>
           </nav>
-          {/* Team member cards from slices */}
-          {page?.data?.slices && <SliceZone slices={page.data.slices} />}
+
+          {/* Team member cards */}
+          <SliceZone slices={teamMembers} />
         </section>
 
-        <a href="/team/alumni">View Alumni</a>
+        <footer>
+          <a href="/team/alumni">View Alumni</a>
+        </footer>
       </article>
     </PageContent>
   );

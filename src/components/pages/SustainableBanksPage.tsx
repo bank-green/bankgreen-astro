@@ -1,60 +1,86 @@
 import { PageContent } from "@components/PageContent";
+import { SliceZone } from "@slices";
+import { renderRichText } from "@lib/prismicHelpers";
 import type { PrismicDocument } from "@prismicio/client";
+import { useState } from "react";
 
 interface Props {
   page: PrismicDocument | null;
 }
 
 export function SustainableBanksPage({ page }: Props) {
+  const slices = page?.data?.slices;
+  const slices1 = page?.data?.slices1;
+  const slices2 = page?.data?.slices2;
+  const introductory = page?.data?.introductory;
+  const footerBanner = page?.data?.footerBanner;
+
+  const [readMoreP1, setReadMoreP1] = useState(false);
+  const [readMoreP2, setReadMoreP2] = useState(false);
+
   return (
     <PageContent>
       <article>
-        <header>
-          <h1>Find the Best Green Banks in Your Area</h1>
-          <p>Introduction to green banking.</p>
-        </header>
-
-        <section>
-          <h2>Why Find a Green Bank?</h2>
-          <p>Your bank deposits fund projects. Find out how.</p>
-          <a href="/methodology">Learn about our methodology</a>
-        </section>
-
-        <section>
-          <details>
-            <summary>What is the Fossil Free Alliance?</summary>
-            <p>Explanation of the alliance and fossil fuel financing statistics.</p>
-            {/* Fossil Free Alliance badge */}
-            <p>Contact: <a href="mailto:hello@bank.green">hello@bank.green</a></p>
-          </details>
-        </section>
+        {/* Main intro content from Prismic slices */}
+        {slices && (
+          <section>
+            <SliceZone slices={slices} />
+          </section>
+        )}
 
         <section>
           <h2>Bank Directory</h2>
           {/* Bank directory with filtering - will be a separate component */}
+          {/* This will include:
+              - LocationSearch for country selection
+              - EcoBankFilters for filtering
+              - EcoBankCards to display results
+              - slices2 shown when no results/error
+          */}
         </section>
 
-        <section>
-          <h2>Frequently Asked Questions</h2>
-          {/* AccordionSlice items */}
-          <details>
-            <summary>How can I tell if my current bank is sustainable?</summary>
-            <p>Answer content.</p>
-          </details>
-          <details>
-            <summary>What is eco banking?</summary>
-            <p>Answer content.</p>
-          </details>
-          <details>
-            <summary>What eco-friendly banking options are available?</summary>
-            <p>Answer content.</p>
-          </details>
-        </section>
+        {/* Introductory section (Why Find a Green Bank? + What is the Fossil Free Alliance?) */}
+        {introductory && introductory.length > 0 && (
+          <section>
+            {/* Why Find a Green Bank? - First item in introductory */}
+            {introductory[0]?.primary?.text && (
+              <div>
+                <div className={readMoreP1 ? "" : "line-clamp-6"}>
+                  {renderRichText(introductory[0].primary.text)}
+                </div>
+                <button onClick={() => setReadMoreP1(!readMoreP1)}>
+                  {readMoreP1 ? "Read less" : "Read more"}
+                </button>
+              </div>
+            )}
 
-        <section>
-          <h2>Happy Banking Stories</h2>
-          {/* Customer stories */}
-        </section>
+            {/* What is the Fossil Free Alliance? - Rest of introductory items */}
+            {introductory.length > 1 && (
+              <div>
+                <div className={readMoreP2 ? "" : "line-clamp-6"}>
+                  <SliceZone slices={introductory.slice(1)} />
+                </div>
+                <button onClick={() => setReadMoreP2(!readMoreP2)}>
+                  {readMoreP2 ? "Read less" : "Read more"}
+                </button>
+              </div>
+            )}
+          </section>
+        )}
+
+        {/* FAQ section */}
+        {slices1 && slices1.length > 0 && (
+          <section>
+            <SliceZone slices={slices1} />
+          </section>
+        )}
+
+        {/* Footer banner - Happy banking stories */}
+        {footerBanner && footerBanner.length > 0 && (
+          <section>
+            <SliceZone slices={footerBanner} />
+          </section>
+        )}
       </article>
     </PageContent>
   );

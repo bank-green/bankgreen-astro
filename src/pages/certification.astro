@@ -3,7 +3,9 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 import { getSingleSafe } from "@lib/prismic";
 import { CertificationPage } from "@components/pages";
 
-const page = await getSingleSafe("certificationpage");
+const page = await getSingleSafe("certificationpage", {
+  fetchLinks: ["accordionitem.title", "accordionitem.slices"],
+});
 ---
 
 <BaseLayout title="Fossil Free Certification">

@@ -6,6 +6,7 @@ export { BankScorePage } from "./BankScorePage";
 export { CertificationPage } from "./CertificationPage";
 export { ContactPage } from "./ContactPage";
 export { DonatePage } from "./DonatePage";
+export { EmbracePage } from "./EmbracePage";
 export { FaqPage } from "./FaqPage";
 export { HomePage } from "./HomePage";
 export { ImpactPage } from "./ImpactPage";

@@ -1,40 +1,58 @@
 import { PageContent } from "@components/PageContent";
+import { SliceZone } from "@slices";
+import * as prismic from "@prismicio/client";
 import type { PrismicDocument } from "@prismicio/client";
 
 interface Props {
+  page: PrismicDocument | null;
   releases: PrismicDocument[];
 }
 
-export function PressIndexPage({ releases }: Props) {
+export function PressIndexPage({ page, releases }: Props) {
+  const slices = page?.data?.slices;
+
+  const getDescription = (release: PrismicDocument): string => {
+    const description = release.data.description;
+    if (!description) return "";
+    return prismic.asText(description);
+  };
+
   return (
     <PageContent>
       <article>
-        <header>
-          <h1>Stories about Bank.Green</h1>
-        </header>
+        {slices ? (
+          <header>
+            <SliceZone slices={slices} />
+          </header>
+        ) : (
+          <header>
+            <h1>Press</h1>
+            <p>
+              For press or media enquiries, please write to{" "}
+              <a href="mailto:hello@bank.green">hello@bank.green</a>
+            </p>
+          </header>
+        )}
 
         <section>
-          <h2>Media Contact</h2>
-          <p>Email: <a href="mailto:hello@bank.green">hello@bank.green</a></p>
-        </section>
-
-        <section>
-          <h2>Press Releases</h2>
           {releases.length > 0 ? (
             <ul>
-              {releases.map((release) => (
-                <li key={release.uid}>
-                  <article>
-                    <time dateTime={release.first_publication_date || undefined}>
-                      {new Date(release.first_publication_date || "").toLocaleDateString()}
-                    </time>
-                    <h3>
-                      <a href={`/press/${release.uid}`}>{release.data.title}</a>
-                    </h3>
-                    {/* Excerpt */}
-                  </article>
-                </li>
-              ))}
+              {releases.map((release) => {
+                const description = getDescription(release);
+                const releaseDate = release.data.releasedate as string | undefined;
+
+                return (
+                  <li key={release.uid}>
+                    <article>
+                      {releaseDate && <time dateTime={releaseDate}>{releaseDate}</time>}
+                      <h2>
+                        <a href={`/press/${release.uid}`}>{release.data.title as string}</a>
+                      </h2>
+                      {description && <p>{description}</p>}
+                    </article>
+                  </li>
+                );
+              })}
             </ul>
           ) : (
             <p>No press releases available.</p>

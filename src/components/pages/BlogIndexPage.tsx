@@ -1,4 +1,5 @@
 import { PageContent } from "@components/PageContent";
+import * as prismic from "@prismicio/client";
 import type { PrismicDocument } from "@prismicio/client";
 
 interface Props {
@@ -6,32 +7,53 @@ interface Props {
 }
 
 export function BlogIndexPage({ posts }: Props) {
+  const getImageSrc = (post: PrismicDocument): string => {
+    // Try cardimage first
+    if (post.data.cardimage?.url) {
+      return post.data.cardimage.url;
+    }
+    // Fall back to first image slice
+    const imageSlice = post.data.slices?.find(
+      (s: { slice_type: string }) => s.slice_type === "image_slice"
+    );
+    return imageSlice?.primary?.image?.url || "";
+  };
+
+  const getDescription = (post: PrismicDocument): string => {
+    const description = post.data.description;
+    if (!description) return "";
+    return prismic.asText(description);
+  };
+
   return (
     <PageContent>
       <article>
         <header>
-          <h1>Bank.Green Blog</h1>
-          <p>Stories and Tips for Divesting From Fossil Fuels</p>
+          <h1>Bank.Green Blog: Stories and Tips for Divesting From Fossil Fuels</h1>
         </header>
 
         <section>
           {posts.length > 0 ? (
             <ul>
-              {posts.map((post) => (
-                <li key={post.uid}>
-                  <article>
-                    {/* Featured image */}
-                    <time dateTime={post.first_publication_date || undefined}>
-                      {new Date(post.first_publication_date || "").toLocaleDateString()}
-                    </time>
-                    <h2>
-                      <a href={`/blog/${post.uid}`}>{post.data.title}</a>
-                    </h2>
-                    {/* Excerpt */}
-                    <a href={`/blog/${post.uid}`}>Read full story</a>
-                  </article>
-                </li>
-              ))}
+              {posts.map((post) => {
+                const imageSrc = getImageSrc(post);
+                const description = getDescription(post);
+                const publicationDate = post.data.publicationdate as string | undefined;
+
+                return (
+                  <li key={post.uid}>
+                    <article>
+                      {imageSrc && <img src={imageSrc} alt="" loading="lazy" />}
+                      {publicationDate && <time dateTime={publicationDate}>{publicationDate}</time>}
+                      <h2>
+                        <a href={`/blog/${post.uid}`}>{post.data.title as string}</a>
+                      </h2>
+                      {description && <p>{description}</p>}
+                      <a href={`/blog/${post.uid}`}>Read full story</a>
+                    </article>
+                  </li>
+                );
+              })}
             </ul>
           ) : (
             <p>No blog posts available.</p>

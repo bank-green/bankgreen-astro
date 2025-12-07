@@ -4,7 +4,7 @@ import { getAllByTypeSafe } from "@lib/prismic";
 import { BlogIndexPage } from "@components/pages";
 
 const posts = await getAllByTypeSafe("blogpost", {
-  orderings: [{ field: "document.first_publication_date", direction: "desc" }],
+  orderings: [{ field: "my.blogpost.publicationdate", direction: "desc" }],
 });
 ---
 

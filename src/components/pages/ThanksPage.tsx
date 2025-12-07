@@ -14,28 +14,36 @@ interface Props {
 }
 
 export function ThanksPage({ page, fallback, pageType }: Props) {
-  const title = page?.data?.head_helper_title || fallback.title;
+  const slices = page?.data?.slices;
   const showExplore = pageType !== "donate-cancelled" && pageType !== "updates-no";
 
   return (
     <PageContent>
       <article>
-        <header>
-          <h1>{title}</h1>
-          {fallback.description && <p>{fallback.description}</p>}
-        </header>
-
-        <section>
-          {page?.data?.slices && <SliceZone slices={page.data.slices} />}
-        </section>
+        {slices ? (
+          <section>
+            <SliceZone slices={slices} />
+          </section>
+        ) : (
+          <section>
+            <h1>{fallback.title}</h1>
+            {fallback.description && <p>{fallback.description}</p>}
+          </section>
+        )}
 
         {showExplore && (
           <section>
             <h2>Explore More</h2>
             <ul>
-              <li><a href="/sustainable-eco-banks">Find a sustainable bank</a></li>
-              <li><a href="/blog">Read our blog</a></li>
-              <li><a href="/take-action">Take action</a></li>
+              <li>
+                <a href="/sustainable-eco-banks">Find a sustainable bank</a>
+              </li>
+              <li>
+                <a href="/blog">Read our blog</a>
+              </li>
+              <li>
+                <a href="/take-action">Take action</a>
+              </li>
             </ul>
           </section>
         )}

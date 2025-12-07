@@ -1,8 +1,12 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
+import { getByUIDSafe } from "@lib/prismic";
 import { JoinPage } from "@components/pages";
+
+// Join page uses textonlypages with UID "joinpage"
+const page = await getByUIDSafe("textonlypages", "joinpage");
 ---
 
 <BaseLayout title="Join the Money Movement">
-  <JoinPage client:load />
+  <JoinPage page={page} client:load />
 </BaseLayout>

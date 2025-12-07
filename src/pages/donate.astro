@@ -1,8 +1,13 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
+import { getSingleSafe } from "@lib/prismic";
 import { DonatePage } from "@components/pages";
+
+const page = await getSingleSafe("donationpage");
 ---
 
 <BaseLayout title="Donate">
-  <DonatePage client:load />
+  <DonatePage page={page} client:load />
 </BaseLayout>
+
+<script src="https://cdn.raisely.com/v3/public/embed.js" defer async></script>

@@ -1,11 +1,11 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { getSingleSafe } from "@lib/prismic";
-import { SlicePage } from "@components/pages";
+import { EmbracePage } from "@components/pages";
 
 const page = await getSingleSafe("embracepage");
 ---
 
 <BaseLayout title="Embrace">
-  <SlicePage title="Embrace" page={page} client:load />
+  <EmbracePage page={page} client:load />
 </BaseLayout>

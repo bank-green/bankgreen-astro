@@ -1,56 +1,82 @@
+import { useState } from "react";
 import { PageContent } from "@components/PageContent";
 import { SliceZone } from "@slices";
-import type { PrismicDocument } from "@prismicio/client";
+import { renderRichText } from "@lib/prismicHelpers";
+import type { PrismicDocument, RichTextField } from "@prismicio/client";
 
 interface Props {
   page: PrismicDocument | null;
 }
 
+const TABS = ["Pressure", "Switch", "Share", "Learn"] as const;
+
 export function TakeActionPage({ page }: Props) {
+  const [selectedTab, setSelectedTab] = useState<(typeof TABS)[number]>("Pressure");
+
+  const introduction = page?.data?.introduction as RichTextField | undefined;
+  const slices1 = page?.data?.slices1; // Pressure tab
+  const slices2 = page?.data?.slices2; // Switch tab
+  const slices3 = page?.data?.slices3; // Share tab
+  const slices4 = page?.data?.slices4; // Learn tab
+
+  const getSlicesForTab = () => {
+    switch (selectedTab) {
+      case "Pressure":
+        return slices1;
+      case "Switch":
+        return slices2;
+      case "Share":
+        return slices3;
+      case "Learn":
+        return slices4;
+      default:
+        return null;
+    }
+  };
+
   return (
     <PageContent>
       <article>
         <header>
-          <h1>Take Action!</h1>
+          {introduction && introduction.length > 0 ? (
+            renderRichText(introduction)
+          ) : (
+            <>
+              <h2>Take action</h2>
+              <p>
+                Do you watch or read climate crisis news and think: "Ok, this is bad, but what now? What can I do about
+                this?" We do too. Even this website, as it alerts you to the destructive cycle that our money is stuck
+                in, might be making you feel overwhelmed and powerless. Well, no more! It's time to take action:
+              </p>
+            </>
+          )}
         </header>
 
-        <section>
-          <p>You have the power to make a difference.</p>
-        </section>
-
+        {/* Tab navigation */}
         <nav>
-          <ul>
-            <li><a href="#pressure">Apply Pressure</a></li>
-            <li><a href="#switch">Switch Banks</a></li>
-            <li><a href="#share">Share</a></li>
-            <li><a href="#learn">Learn</a></li>
-          </ul>
+          {TABS.map((tab) => (
+            <button
+              key={tab}
+              type="button"
+              onClick={() => setSelectedTab(tab)}
+              aria-selected={selectedTab === tab}
+              data-selected={selectedTab === tab}
+            >
+              {tab}
+            </button>
+          ))}
         </nav>
 
-        <section id="pressure">
-          <h2>Apply Pressure</h2>
-          <p>Sign our pledge and start a conversation with fossil fuel banks.</p>
-          {/* Pledge form */}
-
-          <h3>Contact Methods</h3>
-          <details>
-            <summary>Make a phone call</summary>
-            <p>Call your bank's customer service line.</p>
-          </details>
-          <details>
-            <summary>Send an email or letter</summary>
-            <p>Write to your bank expressing your concerns.</p>
-          </details>
-          <details>
-            <summary>Visit a local branch</summary>
-            <p>Speak with a representative in person.</p>
-          </details>
-        </section>
-
+        {/* Tab content */}
         <section>
-          {page?.data?.slices && <SliceZone slices={page.data.slices} />}
+          {getSlicesForTab() ? (
+            <SliceZone slices={getSlicesForTab()} />
+          ) : (
+            <p>Content loading...</p>
+          )}
         </section>
 
+        {/* Call to action */}
         <section>
           <h2>Start to Bank Green Today</h2>
           <a href="/sustainable-eco-banks">Move Your Money Today</a>
