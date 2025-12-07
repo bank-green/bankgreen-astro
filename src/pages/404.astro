@@ -1,22 +1,8 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
+import { NotFoundPage } from "@components/pages";
 ---
 
 <BaseLayout title="Page Not Found">
-  <article>
-    <header>
-      <h1>Page Not Found</h1>
-    </header>
-
-    <section>
-      <p>Sorry, we couldn't find the page you're looking for.</p>
-      <nav>
-        <ul>
-          <li><a href="/">Go to homepage</a></li>
-          <li><a href="/sustainable-eco-banks">Find a sustainable bank</a></li>
-          <li><a href="/contact">Contact us</a></li>
-        </ul>
-      </nav>
-    </section>
-  </article>
+  <NotFoundPage client:load />
 </BaseLayout>

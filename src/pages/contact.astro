@@ -1,54 +1,8 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
+import { ContactPage } from "@components/pages";
 ---
 
 <BaseLayout title="Contact Us">
-  <article>
-    <header>
-      <h1>Contact Us</h1>
-    </header>
-
-    <section>
-      <p>Please include your country when reaching out.</p>
-      <p>Want to reach out to your own bank? <a href="/take-action">Learn how</a></p>
-      <p>Interested in volunteering? <a href="/volunteers">Visit our volunteer page</a></p>
-    </section>
-
-    <section>
-      <!-- Contact form will be a React island -->
-      <form>
-        <label>
-          First name (optional)
-          <input type="text" name="firstName" />
-        </label>
-
-        <label>
-          Email address
-          <input type="email" name="email" required />
-        </label>
-
-        <label>
-          Subject
-          <input type="text" name="subject" required />
-        </label>
-
-        <label>
-          Message
-          <textarea name="message" required></textarea>
-        </label>
-
-        <label>
-          <input type="checkbox" name="emailOptIn" />
-          I'd like to receive email updates
-        </label>
-
-        <label>
-          <input type="checkbox" name="privacyAccepted" required />
-          I accept the <a href="/privacy">privacy policy</a>
-        </label>
-
-        <button type="submit">Send</button>
-      </form>
-    </section>
-  </article>
+  <ContactPage client:load />
 </BaseLayout>

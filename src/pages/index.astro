@@ -1,32 +1,12 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { getSingleSafe } from "@lib/prismic";
+import { HomePage } from "@components/pages/HomePage";
 
-const home = await getSingleSafe("homepage");
-const title = home?.data?.title || "Find Ethical & Sustainable Banks In Your Area";
+const page = await getSingleSafe("homepage");
+const title = page?.data?.title || "Find Ethical & Sustainable Banks In Your Area";
 ---
 
 <BaseLayout title={title}>
-  <article>
-    <section>
-      <h1>{title}</h1>
-      <!-- Bank lookup form will be a React island -->
-      <p>Check if your bank is funding fossil fuels</p>
-    </section>
-
-    <section>
-      <h2>As Featured In</h2>
-      <!-- FeaturedInSlice content from Prismic -->
-    </section>
-
-    <section>
-      <h2>Why Bank.Green?</h2>
-      <!-- Rich text from home?.data?.description1, description2, etc. -->
-    </section>
-
-    <section>
-      <h2>Start to Bank Green Today</h2>
-      <!-- LeadGen form will be a React island -->
-    </section>
-  </article>
+  <HomePage page={page} client:load />
 </BaseLayout>

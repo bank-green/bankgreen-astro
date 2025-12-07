@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { getAllByTypeSafe } from "@lib/prismic";
+import { BlogIndexPage } from "@components/pages";
 
 const posts = await getAllByTypeSafe("blogpost", {
   orderings: [{ field: "document.first_publication_date", direction: "desc" }],
@@ -8,34 +9,5 @@ const posts = await getAllByTypeSafe("blogpost", {
 ---
 
 <BaseLayout title="Blog: Stories and Tips for Divesting From Fossil Fuels">
-  <article>
-    <header>
-      <h1>Bank.Green Blog</h1>
-      <p>Stories and Tips for Divesting From Fossil Fuels</p>
-    </header>
-
-    <section>
-      {posts.length > 0 ? (
-        <ul>
-          {posts.map((post) => (
-            <li>
-              <article>
-                {/* Featured image */}
-                <time datetime={post.first_publication_date}>
-                  {new Date(post.first_publication_date || "").toLocaleDateString()}
-                </time>
-                <h2>
-                  <a href={`/blog/${post.uid}`}>{post.data.title}</a>
-                </h2>
-                {/* Excerpt */}
-                <a href={`/blog/${post.uid}`}>Read full story</a>
-              </article>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No blog posts available.</p>
-      )}
-    </section>
-  </article>
+  <BlogIndexPage posts={posts} client:load />
 </BaseLayout>

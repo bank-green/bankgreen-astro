@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { getAllByTypeSafe } from "@lib/prismic";
+import { PressIndexPage } from "@components/pages";
 
 const releases = await getAllByTypeSafe("pressrelease", {
   orderings: [{ field: "document.first_publication_date", direction: "desc" }],
@@ -8,37 +9,5 @@ const releases = await getAllByTypeSafe("pressrelease", {
 ---
 
 <BaseLayout title="Press">
-  <article>
-    <header>
-      <h1>Stories about Bank.Green</h1>
-    </header>
-
-    <section>
-      <h2>Media Contact</h2>
-      <p>Email: <a href="mailto:hello@bank.green">hello@bank.green</a></p>
-    </section>
-
-    <section>
-      <h2>Press Releases</h2>
-      {releases.length > 0 ? (
-        <ul>
-          {releases.map((release) => (
-            <li>
-              <article>
-                <time datetime={release.first_publication_date}>
-                  {new Date(release.first_publication_date || "").toLocaleDateString()}
-                </time>
-                <h3>
-                  <a href={`/press/${release.uid}`}>{release.data.title}</a>
-                </h3>
-                {/* Excerpt */}
-              </article>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No press releases available.</p>
-      )}
-    </section>
-  </article>
+  <PressIndexPage releases={releases} client:load />
 </BaseLayout>

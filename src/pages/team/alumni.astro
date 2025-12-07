@@ -1,20 +1,11 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { getSingleSafe } from "@lib/prismic";
+import { TeamAlumniPage } from "@components/pages";
 
 const page = await getSingleSafe("teamalumnipage");
 ---
 
 <BaseLayout title="Team Alumni">
-  <article>
-    <header>
-      <h1>Team Alumni</h1>
-    </header>
-
-    <section>
-      <!-- Alumni member cards from TeamMemberSlice -->
-    </section>
-
-    <a href="/team">Back to Current Team</a>
-  </article>
+  <TeamAlumniPage page={page} client:load />
 </BaseLayout>

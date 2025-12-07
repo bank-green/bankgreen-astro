@@ -1,18 +1,11 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { getSingleSafe } from "@lib/prismic";
+import { SlicePage } from "@components/pages";
 
 const page = await getSingleSafe("greenbankingguide");
 ---
 
 <BaseLayout title="Green Banking Guide">
-  <article>
-    <header>
-      <h1>Green Banking Guide</h1>
-    </header>
-
-    <section>
-      <!-- SliceZone content from page?.data?.slices -->
-    </section>
-  </article>
+  <SlicePage title="Green Banking Guide" page={page} client:load />
 </BaseLayout>

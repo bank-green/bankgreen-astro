@@ -1,18 +1,11 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { getSingleSafe } from "@lib/prismic";
+import { SlicePage } from "@components/pages";
 
 const page = await getSingleSafe("disclaimerpage");
 ---
 
 <BaseLayout title="Disclaimer">
-  <article>
-    <header>
-      <h1>Disclaimer</h1>
-    </header>
-
-    <section>
-      <!-- SliceZone content from page?.data?.slices -->
-    </section>
-  </article>
+  <SlicePage title="Disclaimer" page={page} client:load />
 </BaseLayout>

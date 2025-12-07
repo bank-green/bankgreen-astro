@@ -1,9 +1,9 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { getByUIDSafe, thanksPagesMap, thanksPagesFallback } from "@lib/prismic";
+import { ThanksPage } from "@components/pages";
 
 export function getStaticPaths() {
-  // Generate paths for all known thank you page types
   return Object.keys(thanksPagesMap).map((type) => ({
     params: { type },
   }));
@@ -25,30 +25,8 @@ if (mapping.type === "thankspages") {
 } else if (mapping.type === "textonlypages") {
   page = await getByUIDSafe("textonlypages", mapping.uid);
 }
-
-const title = page?.data?.head_helper_title || fallback.title;
 ---
 
 <BaseLayout title="Thank You">
-  <article>
-    <header>
-      <h1>{title}</h1>
-      {fallback.description && <p>{fallback.description}</p>}
-    </header>
-
-    <section>
-      {/* SliceZone content from page?.data?.slices if available */}
-    </section>
-
-    {pageType !== "donate-cancelled" && pageType !== "updates-no" && (
-      <section>
-        <h2>Explore More</h2>
-        <ul>
-          <li><a href="/sustainable-eco-banks">Find a sustainable bank</a></li>
-          <li><a href="/blog">Read our blog</a></li>
-          <li><a href="/take-action">Take action</a></li>
-        </ul>
-      </section>
-    )}
-  </article>
+  <ThanksPage page={page} fallback={fallback} pageType={pageType} client:load />
 </BaseLayout>

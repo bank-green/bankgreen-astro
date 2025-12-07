@@ -1,0 +1,24 @@
+// Page components index
+export { BlogIndexPage } from "./BlogIndexPage";
+export { BlogPostPage } from "./BlogPostPage";
+export { BankProfilePage } from "./BankProfilePage";
+export { BankScorePage } from "./BankScorePage";
+export { CertificationPage } from "./CertificationPage";
+export { ContactPage } from "./ContactPage";
+export { DonatePage } from "./DonatePage";
+export { FaqPage } from "./FaqPage";
+export { HomePage } from "./HomePage";
+export { ImpactPage } from "./ImpactPage";
+export { JoinPage } from "./JoinPage";
+export { NotFoundPage } from "./NotFoundPage";
+export { NotListedPage } from "./NotListedPage";
+export { PartnersPage } from "./PartnersPage";
+export { PressIndexPage } from "./PressIndexPage";
+export { PressReleasePage } from "./PressReleasePage";
+export { SlicePage } from "./SlicePage";
+export { SustainableBanksPage } from "./SustainableBanksPage";
+export { TakeActionPage } from "./TakeActionPage";
+export { TeamAlumniPage } from "./TeamAlumniPage";
+export { TeamPage } from "./TeamPage";
+export { ThanksPage } from "./ThanksPage";
+export { VolunteersPage } from "./VolunteersPage";

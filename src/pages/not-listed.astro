@@ -1,16 +1,8 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
+import { NotListedPage } from "@components/pages";
 ---
 
 <BaseLayout title="Bank Not Listed">
-  <article>
-    <header>
-      <h1>Bank Not Listed</h1>
-    </header>
-
-    <section>
-      <p>Can't find your bank? Let us know and we'll try to add it.</p>
-      <!-- Form to submit unlisted bank -->
-    </section>
-  </article>
+  <NotListedPage client:load />
 </BaseLayout>
