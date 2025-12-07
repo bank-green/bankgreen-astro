@@ -1,0 +1,56 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { getByUIDSafe, getAllByTypeSafe } from "@lib/prismic";
+
+export async function getStaticPaths() {
+  const pages = await getAllByTypeSafe("accreditationpage");
+  return pages.map((page) => ({ params: { slug: page.uid } }));
+}
+
+const { slug } = Astro.params;
+
+const page = await getByUIDSafe("accreditationpage", slug as string);
+
+if (!page) {
+  return Astro.redirect("/404");
+}
+
+const data = page.data;
+const title = data.hero_title || "Accreditation";
+---
+
+<BaseLayout title={title}>
+  <article>
+    <header>
+      <h1>{title}</h1>
+      {/* Hero logo: data.hero_logo */}
+      {/* Hero description: data.hero_description */}
+      {/* Projects: data.projects */}
+    </header>
+
+    <section>
+      <h2>{data.sharing_title || "Share"}</h2>
+      
+      <section>
+        <h3>{data.step1_title || "Step 1"}</h3>
+        {/* data.step1_description */}
+        <ul>
+          {data.fb_link && <li><a href={data.fb_link} rel="noopener" target="_blank">Facebook</a></li>}
+          {data.ig_link && <li><a href={data.ig_link} rel="noopener" target="_blank">Instagram</a></li>}
+          {data.x_link && <li><a href={data.x_link} rel="noopener" target="_blank">X (Twitter)</a></li>}
+        </ul>
+      </section>
+
+      <section>
+        <h3>{data.step2_title || "Step 2"}</h3>
+        {/* data.step2_description */}
+      </section>
+    </section>
+
+    <section>
+      <h2>{data.about_title || "About"}</h2>
+      {/* data.about_description */}
+      {/* data.aboutlogo */}
+    </section>
+  </article>
+</BaseLayout>

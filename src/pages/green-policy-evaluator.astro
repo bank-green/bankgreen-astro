@@ -1,0 +1,18 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { getSingleSafe } from "@lib/prismic";
+
+const page = await getSingleSafe("greenpolicyevaluator");
+---
+
+<BaseLayout title="Green Policy Evaluator">
+  <article>
+    <header>
+      <h1>Green Policy Evaluator</h1>
+    </header>
+
+    <section>
+      <!-- SliceZone content from page?.data?.slices -->
+    </section>
+  </article>
+</BaseLayout>

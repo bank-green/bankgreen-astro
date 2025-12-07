@@ -1,0 +1,38 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { getSingleSafe } from "@lib/prismic";
+import { SliceZone } from "@slices";
+import { richTextToHtml } from "@lib/prismicAstro";
+
+const page = await getSingleSafe("faqpage", {
+  fetchLinks: ["accordionitem.title", "accordionitem.slices"],
+});
+
+const introduction = page?.data?.introduction;
+const slices = page?.data?.slices;
+---
+
+<BaseLayout title="Frequently Asked Questions">
+  <article>
+    <header>
+      {introduction ? (
+        <Fragment set:html={richTextToHtml(introduction)} />
+      ) : (
+        <h1>Frequently Asked Questions</h1>
+      )}
+    </header>
+
+    <section>
+      {slices ? (
+        <SliceZone slices={slices} client:load />
+      ) : (
+        <p>Content loading...</p>
+      )}
+    </section>
+
+    <section>
+      <h2>Take Action with Bank.Green</h2>
+      <!-- Newsletter signup form placeholder -->
+    </section>
+  </article>
+</BaseLayout>

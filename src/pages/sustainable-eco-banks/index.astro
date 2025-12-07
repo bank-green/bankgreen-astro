@@ -1,0 +1,60 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { getSingleSafe } from "@lib/prismic";
+
+const page = await getSingleSafe("sustainablebankspage");
+---
+
+<BaseLayout title="Find Green & Sustainable Banks In Your Area">
+  <article>
+    <header>
+      <h1>Find the Best Green Banks in Your Area</h1>
+      <p>Introduction to green banking.</p>
+    </header>
+
+    <section>
+      <h2>Why Find a Green Bank?</h2>
+      <p>Your bank deposits fund projects. Find out how.</p>
+      <a href="/methodology">Learn about our methodology</a>
+    </section>
+
+    <section>
+      <details>
+        <summary>What is the Fossil Free Alliance?</summary>
+        <p>Explanation of the alliance and fossil fuel financing statistics.</p>
+        {/* Fossil Free Alliance badge */}
+        <p>Contact: <a href="mailto:hello@bank.green">hello@bank.green</a></p>
+      </details>
+    </section>
+
+    <section>
+      <h2>Bank Directory</h2>
+      {/* Bank directory with filtering - React island */}
+      {/* Filter by country/region */}
+      {/* List of sustainable banks with ratings */}
+    </section>
+
+    <section>
+      <h2>Frequently Asked Questions</h2>
+      {/* AccordionSlice items */}
+      <details>
+        <summary>How can I tell if my current bank is sustainable?</summary>
+        <p>Answer content.</p>
+      </details>
+      <details>
+        <summary>What is eco banking?</summary>
+        <p>Answer content.</p>
+      </details>
+      <details>
+        <summary>What eco-friendly banking options are available?</summary>
+        <p>Answer content.</p>
+      </details>
+      {/* Additional FAQ items */}
+    </section>
+
+    <section>
+      <h2>Happy Banking Stories</h2>
+      {/* Customer stories */}
+    </section>
+  </article>
+</BaseLayout>

@@ -1,0 +1,67 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { graphqlFetch } from "@lib/graphql";
+
+export async function getStaticPaths() {
+  // TODO: Fetch all banks from GraphQL
+  // const data = await graphqlFetch(`query { banks { tag } }`);
+  // return data.banks.map((bank) => ({ params: { bankTag: bank.tag } }));
+  
+  // Placeholder: return empty array until GraphQL data is ready
+  return [];
+}
+
+const { bankTag } = Astro.params;
+
+// TODO: Fetch bank data from GraphQL
+// const bank = await graphqlFetch(`query GetBank($tag: String!) { bank(tag: $tag) { ... } }`, { tag: bankTag });
+
+const bank = null; // Placeholder
+
+if (!bank) {
+  // For now, show placeholder content
+}
+
+const title = `Bank Climate Score`; // Would be `${bank.name}'s Climate Score`
+---
+
+<BaseLayout title={title}>
+  <article>
+    <header>
+      <h1>{title}</h1>
+      {/* Rating badge */}
+      <a href="/methodology">How we rate banks</a>
+      {/* Last rated date */}
+    </header>
+
+    {/* Conditional content based on rating - BAD bank example structure */}
+    <section>
+      <p>Your bank is failing on climate responsibility.</p>
+      {/* Fossil fuel financing stats */}
+    </section>
+
+    <section>
+      <h2>Move Your Money</h2>
+      <a href="/sustainable-eco-banks">Find a sustainable bank</a>
+    </section>
+
+    <section>
+      <h2>Detailed Financing Information</h2>
+      {/* Specific financing activities */}
+    </section>
+
+    <section>
+      <h2>The Paris Agreement</h2>
+      <p>Explanation of climate goals and IPCC warnings.</p>
+    </section>
+
+    <section>
+      <h2>Start to Bank Green Today</h2>
+      <a href="/sustainable-eco-banks">Move Your Money Today</a>
+    </section>
+
+    <footer>
+      <a href="/methodology">How do we derive our results?</a>
+    </footer>
+  </article>
+</BaseLayout>

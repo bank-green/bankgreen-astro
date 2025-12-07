@@ -1,0 +1,18 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { getSingleSafe } from "@lib/prismic";
+
+const page = await getSingleSafe("privacypage");
+---
+
+<BaseLayout title="Privacy Policy">
+  <article>
+    <header>
+      <h1>Privacy Policy</h1>
+    </header>
+
+    <section>
+      <!-- SliceZone content from page?.data?.slices -->
+    </section>
+  </article>
+</BaseLayout>

@@ -1,0 +1,19 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { getSingleSafe } from "@lib/prismic";
+
+const page = await getSingleSafe("methodologypage");
+---
+
+<BaseLayout title="Ratings Methodology">
+  <article>
+    <header>
+      <h1>How Bank.Green Rates Institutions</h1>
+    </header>
+
+    <section>
+      <!-- SliceZone content from page?.data?.slices -->
+      <p>Our methodology for rating banks on their climate impact.</p>
+    </section>
+  </article>
+</BaseLayout>

@@ -19,6 +19,7 @@
     "@astrojs/react": "^4.4.2",
     "@mantine/core": "^8.3.0",
     "@mantine/hooks": "^8.3.0",
+    "@prismicio/client": "^7.21.0",
     "astro": "^5.16.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"

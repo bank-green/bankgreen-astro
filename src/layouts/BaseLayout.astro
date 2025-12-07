@@ -6,7 +6,7 @@ interface Props {
   description?: string;
 }
 
-const { title, description = "A volunteer-run organization" } = Astro.props;
+const { title, description = "Bank.Green helps you find ethical and sustainable banks" } = Astro.props;
 ---
 
 <!doctype html>
@@ -17,25 +17,26 @@ const { title, description = "A volunteer-run organization" } = Astro.props;
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
     
-    <!-- Open Graph / Social -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>{title}</title>
+    <title>{title} | Bank.Green</title>
   </head>
-  <body class="min-h-screen bg-white text-gray-900">
-    <header class="border-b border-gray-200">
-      <nav class="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between">
-          <a href="/" class="text-xl font-semibold">Your Organization</a>
-          <ul class="flex gap-6">
-            <li><a href="/" class="hover:text-blue-600">Home</a></li>
-            <li><a href="/about" class="hover:text-blue-600">About</a></li>
-            <li><a href="/contact" class="hover:text-blue-600">Contact</a></li>
-          </ul>
-        </div>
+  <body>
+    <header>
+      <nav>
+        <a href="/">Bank.Green</a>
+        <ul>
+          <li><a href="/sustainable-eco-banks">Sustainable Banks</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/faq">FAQ</a></li>
+          <li><a href="/contact">Contact</a></li>
+          <li><a href="/take-action">Take Action</a></li>
+          <li><a href="/impact">Switch Survey</a></li>
+          <li><a href="/donate">Donate</a></li>
+        </ul>
       </nav>
     </header>
 
@@ -43,10 +44,37 @@ const { title, description = "A volunteer-run organization" } = Astro.props;
       <slot />
     </main>
 
-    <footer class="mt-auto border-t border-gray-200 py-8">
-      <div class="mx-auto max-w-7xl px-4 text-center text-gray-600 sm:px-6 lg:px-8">
-        <p>&copy; {new Date().getFullYear()} Your Organization. All rights reserved.</p>
-      </div>
+    <footer>
+      <nav>
+        <section>
+          <ul>
+            <li><a href="/sustainable-eco-banks">Sustainable Banks</a></li>
+            <li><a href="/take-action">Take Action</a></li>
+            <li><a href="/donate">Donate</a></li>
+            <li><a href="/certification">Fossil Free Certification</a></li>
+          </ul>
+        </section>
+        <section>
+          <ul>
+            <li><a href="/blog">Blog</a></li>
+            <li><a href="/partners">Our Partners</a></li>
+            <li><a href="/press">Press</a></li>
+            <li><a href="/volunteers">Volunteering</a></li>
+          </ul>
+        </section>
+        <section>
+          <ul>
+            <li><a href="/team">Who We Are</a></li>
+            <li><a href="/contact">Contact Us</a></li>
+            <li><a href="/faq">FAQ</a></li>
+          </ul>
+        </section>
+      </nav>
+      <p>Bank.Green is a project of Empowerment Works Inc. 501(c)(3)</p>
+      <ul>
+        <li><a href="/disclaimer">Disclaimer</a></li>
+        <li><a href="/privacy">Privacy Policy</a></li>
+      </ul>
     </footer>
   </body>
 </html>

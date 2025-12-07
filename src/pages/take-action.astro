@@ -1,0 +1,53 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { getSingleSafe } from "@lib/prismic";
+
+const page = await getSingleSafe("takeactionpage");
+---
+
+<BaseLayout title="Take Action">
+  <article>
+    <header>
+      <h1>Take Action!</h1>
+    </header>
+
+    <section>
+      <p>You have the power to make a difference.</p>
+    </section>
+
+    <nav>
+      <!-- Action tabs: Pressure, Switch, Share, Learn -->
+      <ul>
+        <li><a href="#pressure">Apply Pressure</a></li>
+        <li><a href="#switch">Switch Banks</a></li>
+        <li><a href="#share">Share</a></li>
+        <li><a href="#learn">Learn</a></li>
+      </ul>
+    </nav>
+
+    <section id="pressure">
+      <h2>Apply Pressure</h2>
+      <p>Sign our pledge and start a conversation with fossil fuel banks.</p>
+      <!-- Pledge form -->
+
+      <h3>Contact Methods</h3>
+      <details>
+        <summary>Make a phone call</summary>
+        <p>Call your bank's customer service line.</p>
+      </details>
+      <details>
+        <summary>Send an email or letter</summary>
+        <p>Write to your bank expressing your concerns.</p>
+      </details>
+      <details>
+        <summary>Visit a local branch</summary>
+        <p>Speak with a representative in person.</p>
+      </details>
+    </section>
+
+    <section>
+      <h2>Start to Bank Green Today</h2>
+      <a href="/sustainable-eco-banks">Move Your Money Today</a>
+    </section>
+  </article>
+</BaseLayout>

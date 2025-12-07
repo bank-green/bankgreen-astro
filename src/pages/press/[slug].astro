@@ -1,0 +1,40 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { getByUIDSafe, getAllByTypeSafe } from "@lib/prismic";
+
+export async function getStaticPaths() {
+  const releases = await getAllByTypeSafe("pressrelease");
+  return releases.map((release) => ({ params: { slug: release.uid } }));
+}
+
+const { slug } = Astro.params;
+
+const release = await getByUIDSafe("pressrelease", slug as string);
+
+if (!release) {
+  return Astro.redirect("/404");
+}
+
+const title = release.data.title || "Press Release";
+---
+
+<BaseLayout title={title}>
+  <article>
+    <header>
+      <time datetime={release.first_publication_date}>
+        {new Date(release.first_publication_date || "").toLocaleDateString()}
+      </time>
+      <h1>{title}</h1>
+    </header>
+
+    <section>
+      {/* SliceZone content from release.data.slices */}
+    </section>
+
+    <footer>
+      <h2>About Bank.Green</h2>
+      {/* About section */}
+      <p>Contact: <a href="mailto:hello@bank.green">hello@bank.green</a></p>
+    </footer>
+  </article>
+</BaseLayout>

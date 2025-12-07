@@ -1,0 +1,18 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { getSingleSafe } from "@lib/prismic";
+
+const page = await getSingleSafe("materialspage");
+---
+
+<BaseLayout title="Materials">
+  <article>
+    <header>
+      <h1>Materials</h1>
+    </header>
+
+    <section>
+      <!-- SliceZone content from page?.data?.slices -->
+    </section>
+  </article>
+</BaseLayout>

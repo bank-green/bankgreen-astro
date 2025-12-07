@@ -1,0 +1,43 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { getByUIDSafe, getAllByTypeSafe } from "@lib/prismic";
+
+export async function getStaticPaths() {
+  const posts = await getAllByTypeSafe("blogpost");
+  return posts.map((post) => ({ params: { slug: post.uid } }));
+}
+
+const { slug } = Astro.params;
+
+const post = await getByUIDSafe("blogpost", slug as string);
+
+if (!post) {
+  return Astro.redirect("/404");
+}
+
+const title = post.data.title || "Blog Post";
+---
+
+<BaseLayout title={title}>
+  <article>
+    <header>
+      {/* Featured image */}
+      <h1>{title}</h1>
+      <time datetime={post.first_publication_date}>
+        {new Date(post.first_publication_date || "").toLocaleDateString()}
+      </time>
+      {/* Author if available */}
+    </header>
+
+    <section>
+      {/* SliceZone content from post.data.slices */}
+    </section>
+
+    <footer>
+      <section>
+        <h2>Start to Bank Green Today</h2>
+        {/* Newsletter signup or action buttons */}
+      </section>
+    </footer>
+  </article>
+</BaseLayout>

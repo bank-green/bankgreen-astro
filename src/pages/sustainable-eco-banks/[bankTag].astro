@@ -1,0 +1,104 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { graphqlFetch } from "@lib/graphql";
+
+export async function getStaticPaths() {
+  // TODO: Fetch all sustainable banks from GraphQL
+  // const data = await graphqlFetch(`query { sustainableBanks { tag } }`);
+  // return data.sustainableBanks.map((bank) => ({ params: { bankTag: bank.tag } }));
+  
+  // Placeholder: return empty array until GraphQL data is ready
+  return [];
+}
+
+const { bankTag } = Astro.params;
+
+// TODO: Fetch bank data from GraphQL
+// const bank = await graphqlFetch(`query GetBank($tag: String!) { bank(tag: $tag) { ... } }`, { tag: bankTag });
+
+const bank = null; // Placeholder
+
+if (!bank) {
+  // For now, show placeholder content
+}
+
+const title = `Bank Review and Service Offering`; // Would be `${bank.name} Review and Service Offering`
+---
+
+<BaseLayout title={title}>
+  <article>
+    <header>
+      {/* Bank logo */}
+      <h1>{title}</h1>
+      <a href="/methodology">How we rate banks</a>
+      {/* Last rated date */}
+    </header>
+
+    <section>
+      <h2>Our Take</h2>
+      {/* Editorial description */}
+    </section>
+
+    <nav>
+      {/* Service tabs */}
+      <ul>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#personal">Personal</a></li>
+        <li><a href="#nonprofit">Nonprofit</a></li>
+        <li><a href="#government">Government</a></li>
+        <li><a href="#smes">SMEs</a></li>
+        <li><a href="#corporate">Corporate</a></li>
+      </ul>
+    </nav>
+
+    <section id="overview">
+      <h2>Overview</h2>
+      <dl>
+        <dt>Founded</dt>
+        <dd>{/* Founded date */}</dd>
+
+        <dt>Policies</dt>
+        <dd>{/* Environmental Policy, Deposit Protection badges */}</dd>
+
+        <dt>Customers Served</dt>
+        <dd>{/* Retail/Individual, etc. */}</dd>
+
+        <dt>Services</dt>
+        <dd>{/* Mobile Banking, ATM Network, etc. */}</dd>
+
+        <dt>Fees</dt>
+        <dd>{/* Fee summary */}</dd>
+      </dl>
+    </section>
+
+    <section id="personal">
+      <h2>Personal Banking</h2>
+      {/* Accounts, rates, fees, loans */}
+    </section>
+
+    <section id="nonprofit">
+      <h2>Nonprofit Banking</h2>
+      {/* Accounts, rates, fees, loans */}
+    </section>
+
+    <section id="government">
+      <h2>Government Banking</h2>
+      {/* Accounts, rates, fees, loans */}
+    </section>
+
+    <section id="smes">
+      <h2>SME Banking</h2>
+      {/* Accounts, rates, fees, loans */}
+    </section>
+
+    <section id="corporate">
+      <h2>Corporate Banking</h2>
+      {/* Accounts, rates, fees, loans */}
+    </section>
+
+    <section>
+      <h2>Curious about switching to a green bank?</h2>
+      {/* Lead generation form - React island */}
+    </section>
+  </article>
+</BaseLayout>

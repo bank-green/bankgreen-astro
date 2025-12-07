@@ -1,0 +1,12 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { getSingleSafe } from "@lib/prismic";
+
+const page = await getSingleSafe("onepager");
+---
+
+<BaseLayout title="One Pager">
+  <article>
+    <!-- SliceZone content from page?.data?.slices -->
+  </article>
+</BaseLayout>

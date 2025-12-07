@@ -1,26 +1,54 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import { ContactForm } from "../components/ContactForm";
+import BaseLayout from "@layouts/BaseLayout.astro";
 ---
 
-<BaseLayout title="Contact | Your Organization" description="Get in touch with us">
-  <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-    <h1 class="text-4xl font-bold tracking-tight text-gray-900">Contact Us</h1>
-    <p class="mt-4 max-w-2xl text-lg text-gray-600">
-      Have questions? We'd love to hear from you.
-    </p>
+<BaseLayout title="Contact Us">
+  <article>
+    <header>
+      <h1>Contact Us</h1>
+    </header>
 
-    <div class="mt-12 max-w-md">
-      <!--
-        This is a React island. The `client:load` directive tells Astro
-        to hydrate this component on the client immediately.
-        
-        Other options:
-        - client:visible - hydrate when the component enters the viewport
-        - client:idle - hydrate when the browser is idle
-        - client:media="(max-width: 768px)" - hydrate on media query match
-      -->
-      <ContactForm client:load />
-    </div>
-  </section>
+    <section>
+      <p>Please include your country when reaching out.</p>
+      <p>Want to reach out to your own bank? <a href="/take-action">Learn how</a></p>
+      <p>Interested in volunteering? <a href="/volunteers">Visit our volunteer page</a></p>
+    </section>
+
+    <section>
+      <!-- Contact form will be a React island -->
+      <form>
+        <label>
+          First name (optional)
+          <input type="text" name="firstName" />
+        </label>
+
+        <label>
+          Email address
+          <input type="email" name="email" required />
+        </label>
+
+        <label>
+          Subject
+          <input type="text" name="subject" required />
+        </label>
+
+        <label>
+          Message
+          <textarea name="message" required></textarea>
+        </label>
+
+        <label>
+          <input type="checkbox" name="emailOptIn" />
+          I'd like to receive email updates
+        </label>
+
+        <label>
+          <input type="checkbox" name="privacyAccepted" required />
+          I accept the <a href="/privacy">privacy policy</a>
+        </label>
+
+        <button type="submit">Send</button>
+      </form>
+    </section>
+  </article>
 </BaseLayout>
