@@ -3,7 +3,8 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 import { getSingleSafe } from "@lib/prismic";
 import { SlicePage } from "@components/pages";
 
-const page = await getSingleSafe("greenbankingguide");
+// green-banking-guide uses the onepagersimplepage document
+const page = await getSingleSafe("onepagersimplepage");
 ---
 
 <BaseLayout title="Green Banking Guide">

@@ -3,7 +3,7 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 import { getAllByTypeSafe } from "@lib/prismic";
 import { PressIndexPage } from "@components/pages";
 
-const releases = await getAllByTypeSafe("pressrelease", {
+const releases = await getAllByTypeSafe("presspost", {
   orderings: [{ field: "document.first_publication_date", direction: "desc" }],
 });
 ---

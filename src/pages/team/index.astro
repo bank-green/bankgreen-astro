@@ -3,7 +3,9 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 import { getSingleSafe } from "@lib/prismic";
 import { TeamPage } from "@components/pages";
 
-const page = await getSingleSafe("teampage");
+const page = await getSingleSafe("teampage", {
+  fetchLinks: ["accordionitem.title", "accordionitem.slices"],
+});
 ---
 
 <BaseLayout title="Who We Are">

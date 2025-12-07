@@ -7,18 +7,29 @@ interface Props {
 }
 
 export function TeamAlumniPage({ page }: Props) {
+  // Filter slices1 for Alumni department members
+  const alumniSlices = page?.data?.slices1?.filter(
+    (slice: { primary?: { department?: string } }) => slice.primary?.department === "Alumni"
+  ) || [];
+
   return (
     <PageContent>
       <article>
         <header>
-          <h1>Team Alumni</h1>
+          <h1>Our Alumni Members</h1>
         </header>
 
         <section>
-          {page?.data?.slices && <SliceZone slices={page.data.slices} />}
+          {alumniSlices.length > 0 ? (
+            <SliceZone slices={alumniSlices} />
+          ) : (
+            <p>No alumni members to display.</p>
+          )}
         </section>
 
-        <a href="/team">Back to Current Team</a>
+        <footer>
+          <a href="/team">Back to Current Contributors</a>
+        </footer>
       </article>
     </PageContent>
   );

@@ -4,12 +4,12 @@ import { getByUIDSafe, getAllByTypeSafe } from "@lib/prismic";
 import { PressReleasePage } from "@components/pages";
 
 export async function getStaticPaths() {
-  const releases = await getAllByTypeSafe("pressrelease");
+  const releases = await getAllByTypeSafe("presspost");
   return releases.map((release) => ({ params: { slug: release.uid } }));
 }
 
 const { slug } = Astro.params;
-const release = await getByUIDSafe("pressrelease", slug as string);
+const release = await getByUIDSafe("presspost", slug as string);
 
 if (!release) {
   return Astro.redirect("/404");

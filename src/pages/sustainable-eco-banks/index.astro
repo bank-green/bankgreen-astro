@@ -3,7 +3,9 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 import { getSingleSafe } from "@lib/prismic";
 import { SustainableBanksPage } from "@components/pages";
 
-const page = await getSingleSafe("sustainablebankspage");
+const page = await getSingleSafe("ecobankspage", {
+  fetchLinks: ["accordionitem.title", "accordionitem.slices"],
+});
 ---
 
 <BaseLayout title="Find Green & Sustainable Banks In Your Area">
