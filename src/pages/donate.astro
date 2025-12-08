@@ -7,7 +7,7 @@ const page = await getSingleSafe("donationpage");
 ---
 
 <BaseLayout title="Donate">
-  <DonatePage page={page} client:load />
+  <DonatePage page={page} />
 </BaseLayout>
 
 <script src="https://cdn.raisely.com/v3/public/embed.js" defer async></script>

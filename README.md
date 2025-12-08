@@ -48,40 +48,68 @@ The site will be available at `http://localhost:4321`.
 
 ```
 src/
-├── components/       # React components (islands)
-│   ├── ContactForm.tsx
-│   └── MantineWrapper.tsx
-├── layouts/          # Astro layout components
+├── components/         # React components
+│   ├── pages/          # Page components (HomePage, FaqPage, etc.)
+│   ├── Layout.tsx      # Root layout with MantineProvider
+│   ├── PageContent.tsx # Page content wrapper with MantineProvider
+│   ├── Header.tsx      # Site header
+│   ├── Footer.tsx      # Site footer
+│   └── ContactForm.tsx # Example interactive form
+├── layouts/            # Astro layout components
 │   └── BaseLayout.astro
-├── lib/              # Utilities and client setup
-│   ├── graphql.ts    # Django GraphQL client
-│   └── prismic.ts    # Prismic CMS client
-├── pages/            # File-based routing
+├── lib/                # Utilities and client setup
+│   ├── graphql.ts      # Django GraphQL client
+│   └── prismic.ts      # Prismic CMS client
+├── pages/              # File-based routing
 │   ├── index.astro
-│   ├── about.astro
+│   ├── faq.astro
 │   └── contact.astro
 └── styles/
-    └── global.css    # Global styles and Tailwind
+    ├── global.css      # Global styles and Tailwind config
+    └── theme.ts        # Mantine theme configuration
 ```
 
 ## Architecture Notes
 
 ### Astro + React Islands
 
-Most pages are static Astro components that render to HTML at build time. For interactive elements (forms, filtering, etc.), we use React components with Astro's `client:*` directives:
+The app uses a single-island architecture:
+
+1. **Root Layout Island**: `BaseLayout.astro` renders `<Layout client:load>`, creating the main React tree with MantineProvider
+2. **Page Components**: Passed as children through Astro slots (no `client:*` directives needed)
+3. **Interactive Sub-Components**: Only truly interactive pieces (forms, modals) get `client:*` directives
+
+**Example page structure**:
 
 ```astro
 ---
-import { MyInteractiveComponent } from "../components/MyInteractiveComponent";
+// src/pages/my-page.astro
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { MyPage } from "@components/pages/MyPage";
+
+const page = await getSingleSafe("mypage");
 ---
 
-<!-- Static content here -->
-
-<!-- Interactive React island -->
-<MyInteractiveComponent client:load />
+<BaseLayout title="My Page">
+  <MyPage page={page} />  <!-- No client:* needed! -->
+</BaseLayout>
 ```
 
-Client directives:
+```tsx
+// src/components/pages/MyPage.tsx
+import { PageContent } from "@components/PageContent";
+
+export function MyPage({ page }) {
+  return (
+    <PageContent>
+      <h1>{page?.data?.title}</h1>
+      <p>Content here...</p>
+    </PageContent>
+  );
+}
+```
+
+**Available client directives** (use sparingly):
 - `client:load` - Hydrate immediately on page load
 - `client:idle` - Hydrate when browser is idle
 - `client:visible` - Hydrate when component enters viewport
@@ -99,11 +127,16 @@ Client directives:
 }
 ```
 
-**Mantine 8** splits its styles into separate imports for better tree-shaking. The `MantineWrapper` component handles this.
+**Mantine 8** provides the UI component library with a two-tier MantineProvider architecture:
 
-We use both styling systems for different purposes:
-- **Mantine**: UI components in React islands (buttons, inputs, modals, etc.)
-- **Tailwind**: Layout, spacing, and styling for static Astro content
+1. **Layout** component: Provides MantineProvider for AppShell, navigation, header, footer
+2. **PageContent** component: Provides MantineProvider for page content
+
+This dual-provider setup ensures Mantine context is available during SSR despite Astro slot limitations.
+
+We use both styling systems:
+- **Mantine**: UI components (Button, TextInput, AppShell, Paper, etc.)
+- **Tailwind**: Layout, spacing, and utility classes
 
 ### Data Sources
 
@@ -127,4 +160,8 @@ All platforms support branch preview deployments out of the box.
 3. Run `pnpm check` to ensure no issues
 4. Submit a pull request
 
-New volunteers: Start by reading through the `src/pages/` directory to understand the page structure, then look at `src/components/` for examples of React islands.
+**For new volunteers**:
+- Start by reading through `src/pages/` to understand the page structure
+- Look at `src/components/pages/` for examples of page components
+- See `CLAUDE.md` for detailed architecture patterns and code examples
+- Remember: page components don't need `client:*` directives - they're rendered within the Layout island

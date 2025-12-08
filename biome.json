@@ -1,37 +1,64 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.3.0/schema.json",
-  "organizeImports": {
-    "enabled": true
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
   },
+  "files": {
+    "ignoreUnknown": false,
+    "ignore": [".astro", "dist", ".vscode", "node_modules", "**/*.css", "**/*.generated.css", "**/*.module.css"]
+  },
+  "formatter": {
+    "enabled": true,
+    "useEditorconfig": true,
+    "formatWithErrors": false,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf",
+    "lineWidth": 100,
+    "attributePosition": "auto",
+    "bracketSpacing": true,
+    "ignore": []
+  },
+  "organizeImports": { "enabled": true },
   "linter": {
     "enabled": true,
     "rules": {
       "recommended": true,
       "correctness": {
-        "noUnusedImports": "warn",
-        "noUnusedVariables": "warn"
+        "noUnusedImports": "error"
       },
       "style": {
-        "noNonNullAssertion": "off"
+        "noDoneCallback": "error"
       },
-      "suspicious": {
-        "noExplicitAny": "warn"
+      "nursery": {
+        "useSortedClasses": {
+          "level": "error",
+          "fix": "safe",
+          "options": {
+            "attributes": ["className", "classNames"],
+            "functions": ["clsx", "cx"]
+          }
+        }
       }
     }
   },
-  "formatter": {
-    "enabled": true,
-    "indentStyle": "space",
-    "indentWidth": 2,
-    "lineWidth": 100
-  },
   "javascript": {
     "formatter": {
-      "quoteStyle": "double",
-      "semicolons": "always"
+      "jsxQuoteStyle": "double",
+      "quoteProperties": "asNeeded",
+      "trailingCommas": "es5",
+      "semicolons": "asNeeded",
+      "arrowParentheses": "always",
+      "bracketSameLine": false,
+      "quoteStyle": "single",
+      "attributePosition": "auto",
+      "bracketSpacing": true
     }
   },
-  "files": {
-    "ignore": ["node_modules", "dist", ".astro"]
-  }
+  "overrides": [
+    { "include": ["**/?(*.)+(spec|test).[jt]sx?"] },
+    { "include": ["*.mdx"], "formatter": { "lineWidth": 70 } }
+  ]
 }

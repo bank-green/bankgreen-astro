@@ -38,7 +38,12 @@ Pages are static Astro components (`.astro`) that render to HTML at build time. 
 - `client:idle` - Hydrate when browser idle
 - `client:visible` - Hydrate when component enters viewport
 
-**Rule**: Prefer static Astro components. Only use React islands for truly interactive UI (forms, filtering, modals).
+**Architecture**:
+- The root `<Layout>` component in `BaseLayout.astro` uses `client:load` and provides the main React tree
+- Page components (HomePage, FaqPage, etc.) are regular React components passed through Astro slots - they do NOT use `client:*` directives
+- Only add `client:*` directives to truly interactive sub-components (forms, modals, etc.)
+
+**Rule**: Prefer static Astro components. Only use React islands for the root Layout and truly interactive UI components.
 
 ### Dual Styling System
 
@@ -47,9 +52,12 @@ Pages are static Astro components (`.astro`) that render to HTML at build time. 
 - No `tailwind.config.js` file
 - Use for layout, spacing, and static styling
 
-**Mantine 8** (for React islands):
-- UI component library (buttons, inputs, modals, etc.)
-- Must wrap components with `<MantineWrapper>` from `src/components/MantineWrapper.tsx`
+**Mantine 8** (for React components):
+- UI component library (buttons, inputs, modals, AppShell layout, etc.)
+- Two-tier MantineProvider architecture:
+  - `Layout` component has MantineProvider for AppShell, Burger, Header, Footer
+  - `PageContent` component has MantineProvider for page content (Paper wrapper)
+  - This ensures Mantine context is available during SSR despite Astro slot limitations
 - Styles split into separate imports for tree-shaking
 
 ### Data Fetching
@@ -93,32 +101,88 @@ src/
 
 ## Key Patterns
 
-### Using React Islands
+### Creating a New Page
 
 ```astro
 ---
-import { MyComponent } from "@components/MyComponent";
+// src/pages/my-page.astro
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { MyPage } from "@components/pages/MyPage";
+import { getSingleSafe } from "@lib/prismic";
+
+const page = await getSingleSafe("mypage");
 ---
 
-<!-- Static content here -->
-
-<!-- Interactive React island -->
-<MyComponent client:idle />
+<BaseLayout title="My Page Title">
+  <MyPage page={page} />
+</BaseLayout>
 ```
 
-### Using Mantine Components
-
 ```tsx
-import { Button } from "@mantine/core";
-import { MantineWrapper } from "@components/MantineWrapper";
+// src/components/pages/MyPage.tsx
+import { PageContent } from "@components/PageContent";
 
-export function MyInteractiveForm() {
+export function MyPage({ page }) {
   return (
-    <MantineWrapper client:load>
-      <Button>Click me</Button>
-    </MantineWrapper>
+    <PageContent>
+      <h1>{page?.data?.title}</h1>
+      <p>Your content here...</p>
+    </PageContent>
   );
 }
+```
+
+**Important**: Page components like `<MyPage>` should NOT have `client:*` directives. They're regular React components rendered within the Layout island.
+
+### Using Mantine Components in Pages
+
+```tsx
+import { Button, Stack } from "@mantine/core";
+import { PageContent } from "@components/PageContent";
+
+export function MyPage() {
+  return (
+    <PageContent>
+      <Stack gap="md">
+        <h1>My Page</h1>
+        <Button>Click me</Button>
+      </Stack>
+    </PageContent>
+  );
+}
+```
+
+No need to import MantineProvider - `PageContent` provides it automatically.
+
+### Adding Interactive Islands
+
+Only use `client:*` directives for truly interactive components:
+
+```tsx
+// src/components/InteractiveForm.tsx
+import { useState } from "react";
+import { Button, TextInput } from "@mantine/core";
+import { MantineProvider } from "@mantine/core";
+import { theme } from "@/styles/theme";
+
+export function InteractiveForm() {
+  const [value, setValue] = useState("");
+
+  return (
+    <MantineProvider theme={theme}>
+      <TextInput value={value} onChange={(e) => setValue(e.target.value)} />
+      <Button type="submit">Submit</Button>
+    </MantineProvider>
+  );
+}
+```
+
+```astro
+---
+import { InteractiveForm } from "@components/InteractiveForm";
+---
+
+<InteractiveForm client:load />
 ```
 
 ### GraphQL Queries

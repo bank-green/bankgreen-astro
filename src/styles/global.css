@@ -1,15 +1,17 @@
-/* Tailwind CSS v4 - single import replaces @tailwind directives */
-@layer theme, base, components, utilities;
-
-@import "tailwindcss/theme.css" layer(theme);
+/* Design tokens - generated from tokens.mjs */
+@import "./tokens.generated.css";
+/* Mantine core styles - imported once globally */
+@import "@mantine/core/styles.css" layer(mantine);
+/* Skip importing preflight to avoid conflicts with Mantine's own CSS resets */
+@import "tailwindcss/theme.css" layer(base);
 @import "tailwindcss/utilities.css" layer(utilities);
+@import "./overrides.css";
 
-/* 
- * Tailwind v4 uses CSS-first configuration with @theme
- * Define your custom design tokens here
- */
+@layer base, mantine, components, utilities;
+
 @theme {
   /* Example custom colors - uncomment and modify as needed */
+
   /* --color-brand-500: oklch(0.72 0.12 260); */
 
   /* Example custom breakpoint */
@@ -23,6 +25,9 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    font-family: var(--font-family);
+    font-size: var(--mantine-font-size-md);
+    line-height: var(--mantine-line-height);
   }
 }
 
@@ -31,8 +36,13 @@
  * but we define fallbacks here for static Astro pages
  */
 :root {
-  --mantine-font-family: system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-family: "Reddit Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mantine-font-family: var(--font-family)
   --mantine-font-size-md: 1rem;
   --mantine-line-height: 1.55;
+}
+
+
+body.styled {
+  font-family: var(--font-family);
 }

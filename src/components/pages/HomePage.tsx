@@ -17,7 +17,7 @@ export function HomePage({ page }: Props) {
 
   return (
     <PageContent>
-      <article>
+      <article className="bg-sushi-100">
         {/* Hero section */}
         <section>
           <h1>{title}</h1>
