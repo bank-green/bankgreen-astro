@@ -1,7 +1,7 @@
 /* Design tokens - generated from tokens.mjs */
 @import "./tokens.generated.css";
 /* Mantine core styles - imported once globally */
-@import "@mantine/core/styles.css" layer(mantine);
+@import "@mantine/core/styles.css" layer(theme);
 /* Skip importing preflight to avoid conflicts with Mantine's own CSS resets */
 @import "tailwindcss/theme.css" layer(base);
 @import "tailwindcss/utilities.css" layer(utilities);
@@ -10,7 +10,7 @@
 /* Tailwind Typography plugin */
 @plugin "@tailwindcss/typography";
 
-@layer base, mantine, components, utilities;
+@layer base, theme, components, utilities;
 
 /* 
  * Mantine requires these CSS variables - they're set by MantineProvider
@@ -22,7 +22,7 @@
     "Helvetica Neue", Arial, sans-serif;
 }
 
-@layer mantine {
+@layer theme {
   html {
     scroll-behavior: smooth;
     font-family: var(--font-family);
@@ -38,5 +38,95 @@
     --mantine-color-text: var(--color-sky-900);
     background-color: var(--color-white);
     color: var(--mantine-color-text);
+  }
+
+  /** Legacy global styles from Nuxt app **/
+
+  body {
+    -webkit-tap-highlight-color: transparent;
+    /* to avoid android selection flash */
+    touch-action: manipulation;
+    /* disable double-tap to zoom */
+    -webkit-touch-callout: none;
+    /* disable ios callout */
+    @apply bg-gray-50 text-gray-900 antialiased;
+    overflow-y: scroll;
+  }
+  a,
+  a:-webkit-any-link {
+    color: inherit;
+    text-decoration: none;
+    @apply no-underline } a.link { @apply font-medium text-sushi-500 hover:underline hover:text-sushi-600 focus:underline !important;
+  }
+
+  .underlineLink a {
+    @apply hover:underline } b { font-weight: 600;
+  }
+
+  strong {
+    font-weight: 700;
+  }
+
+  ::selection {
+    @apply bg-sushi-500 text-white;
+  }
+
+  .bg-gradient-gray-light {
+    background: linear-gradient(180deg, #f4f8fd 44.37%, #e2f0fc 100%);
+  }
+
+  .contain {
+    @apply w-full max-w-7xl mx-auto px-6;
+  }
+
+  .overflow-y-scroll {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .button-green {
+    @apply block font-medium bg-sushi-500 hover:bg-sushi-600 focus:outline-none border border-transparent focus:ring-2 focus:ring-offset-2 focus:ring-sushi-500 text-white p-4 text-center w-full rounded-2xl capitalize;
+  }
+
+  .button-green-outline {
+    @apply block font-medium bg-white hover:bg-pistachioGreen focus:outline-none border border-sushi-500 focus:ring-2 focus:ring-offset-2 focus:ring-sushi-500 text-sushi-500 p-4 text-center w-full rounded-2xl capitalize;
+  }
+
+  a.button-green {
+    @apply no-underline;
+  }
+
+  .button-green.disabled {
+    @apply opacity-50;
+    pointer-events: none;
+  }
+
+  .button-white {
+    @apply block font-medium bg-gray-100 hover:bg-gray-200 focus:outline-none border border-transparent focus:ring-2 focus:ring-offset-2 focus:ring-gray-100 text-primaryDark p-4 text-center w-full rounded-2xl capitalize;
+  }
+
+  .font-secondary {
+    font-family: "Lora", serif;
+  }
+
+  .font-secondary a {
+    text-decoration: underline;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--colors-sushi-500) var(--colors-sushi-100);
+  }
+
+  *::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: var(--colors-sushi-100);
+  }
+
+  *::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: var(--colors-sushi-500);
   }
 }

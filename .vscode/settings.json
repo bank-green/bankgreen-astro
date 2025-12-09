@@ -1,9 +1,10 @@
 {
   "cSpell.words": [
-    "Prismic",
-    "Mantine",
     "mantine",
-    "oklch"
+    "Mantine",
+    "oklch",
+    "Prismic",
+    "prismicio"
   ],
   "postcss.validate": false,
   "prettier.enable": false,

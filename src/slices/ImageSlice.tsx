@@ -16,8 +16,10 @@ export function ImageSlice({ slice }: Props) {
 
   return (
     <figure data-slice-type={slice.slice_type}>
-      {image?.url && <img src={image.url} alt={image.alt || ''} />}
-      {caption && <figcaption>{renderRichText(caption)}</figcaption>}
+      {image?.url && (
+        <img src={image.url} alt={image.alt || ''} className="mx-auto" style={{ maxWidth: '100%' }} />
+      )}
+      {caption && <figcaption className="text-center">{renderRichText(caption)}</figcaption>}
     </figure>
   )
 }
