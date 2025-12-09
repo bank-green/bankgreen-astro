@@ -1,10 +1,10 @@
 ---
-import BaseLayout from "@layouts/BaseLayout.astro";
-import { getSingleSafe } from "@lib/prismic";
-import { HomePage } from "@components/pages/HomePage";
+import { HomePage } from '@components/pages/HomePage'
+import BaseLayout from '@layouts/BaseLayout.astro'
+import { getSingleSafe } from '@lib/prismic'
 
-const page = await getSingleSafe("homepage");
-const title = page?.data?.title || "Find Ethical & Sustainable Banks In Your Area";
+const page = await getSingleSafe('homepage')
+const title = page?.data?.title || 'Find Ethical & Sustainable Banks In Your Area'
 ---
 
 <BaseLayout title={title}>

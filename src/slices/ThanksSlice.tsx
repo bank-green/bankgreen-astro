@@ -3,18 +3,18 @@
  *
  * Variations: default
  */
-import type { Content } from "@prismicio/client";
-import { asText } from "@prismicio/client";
+import type { Content } from '@prismicio/client'
+import { asText } from '@prismicio/client'
 
 interface Props {
-  slice: Content.ThanksSliceSlice;
+  slice: Content.ThanksSliceSlice
 }
 
 export function ThanksSlice({ slice }: Props) {
-  const { title, description, show_explore_section } = slice.primary;
+  const { title, description, show_explore_section } = slice.primary
 
-  const titleText = asText(title);
-  const descriptionText = asText(description);
+  const titleText = asText(title)
+  const descriptionText = asText(description)
 
   return (
     <section data-slice-type={slice.slice_type}>
@@ -27,5 +27,5 @@ export function ThanksSlice({ slice }: Props) {
         </nav>
       )}
     </section>
-  );
+  )
 }

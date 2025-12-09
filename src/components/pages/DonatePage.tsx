@@ -1,21 +1,21 @@
-import { PageContent } from "@components/PageContent";
-import { renderRichText } from "@lib/prismicHelpers";
-import * as prismic from "@prismicio/client";
-import type { PrismicDocument, RichTextField, ImageField } from "@prismicio/client";
+import { PageContent } from '@components/PageContent'
+import { renderRichText } from '@lib/prismicHelpers'
+import type { ImageField, PrismicDocument, RichTextField } from '@prismicio/client'
+import * as prismic from '@prismicio/client'
 
 interface Props {
-  page: PrismicDocument | null;
+  page: PrismicDocument | null
 }
 
 export function DonatePage({ page }: Props) {
-  const photo = page?.data?.photo as ImageField | undefined;
-  const title = page?.data?.title as RichTextField | undefined;
-  const description = page?.data?.description as RichTextField | undefined;
-  const donationTitle = page?.data?.donation_title as RichTextField | undefined;
-  const donationDescription = page?.data?.donation_description as RichTextField | undefined;
+  const photo = page?.data?.photo as ImageField | undefined
+  const title = page?.data?.title as RichTextField | undefined
+  const description = page?.data?.description as RichTextField | undefined
+  const donationTitle = page?.data?.donation_title as RichTextField | undefined
+  const donationDescription = page?.data?.donation_description as RichTextField | undefined
 
-  const titleText = title ? prismic.asText(title) : "Help us build a greener future!";
-  const donationTitleText = donationTitle ? prismic.asText(donationTitle) : "Donate to Bank.Green";
+  const titleText = title ? prismic.asText(title) : 'Help us build a greener future!'
+  const donationTitleText = donationTitle ? prismic.asText(donationTitle) : 'Donate to Bank.Green'
 
   return (
     <PageContent>
@@ -30,16 +30,20 @@ export function DonatePage({ page }: Props) {
           ) : (
             <>
               <p>
-                By supporting Bank.Green's mission, you'll empower individuals and businesses to make responsible
-                financial decisions, channeling their deposits towards green financial institutions. Bank.Green is a
-                project of a registered charity and all U.S. donations are tax-deductible.
+                By supporting Bank.Green's mission, you'll empower individuals and businesses to
+                make responsible financial decisions, channeling their deposits towards green
+                financial institutions. Bank.Green is a project of a registered charity and all U.S.
+                donations are tax-deductible.
               </p>
               <p>
-                Your donation will help us raise awareness, provide resources, and foster a global community dedicated
-                to protecting our planet.
+                Your donation will help us raise awareness, provide resources, and foster a global
+                community dedicated to protecting our planet.
               </p>
               <p>
-                <em>Bank.Green is a project of a registered charity and all U.S. donations are tax-deductible.</em>
+                <em>
+                  Bank.Green is a project of a registered charity and all U.S. donations are
+                  tax-deductible.
+                </em>
               </p>
             </>
           )}
@@ -52,8 +56,8 @@ export function DonatePage({ page }: Props) {
             renderRichText(donationDescription)
           ) : (
             <p>
-              ...and make a big difference in the world. Your donation will give us greater capacity to green the
-              banking sector and protect our collective future.
+              ...and make a big difference in the world. Your donation will give us greater capacity
+              to green the banking sector and protect our collective future.
             </p>
           )}
 
@@ -68,5 +72,5 @@ export function DonatePage({ page }: Props) {
         </section>
       </article>
     </PageContent>
-  );
+  )
 }

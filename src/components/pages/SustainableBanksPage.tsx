@@ -1,21 +1,21 @@
-import { PageContent } from "@components/PageContent";
-import { SliceZone } from "@slices";
-import { renderRichText } from "@lib/prismicHelpers";
-import type { PrismicDocument } from "@prismicio/client";
-import { useState } from "react";
+import { PageContent } from '@components/PageContent'
+import { renderRichText } from '@lib/prismicHelpers'
+import type { PrismicDocument } from '@prismicio/client'
+import { SliceZone } from '@slices'
+import { useState } from 'react'
 
 interface Props {
-  page: PrismicDocument | null;
+  page: PrismicDocument | null
 }
 
 export function SustainableBanksPage({ page }: Props) {
-  const slices = page?.data?.slices;
-  const slices1 = page?.data?.slices1;
-  const introductory = page?.data?.introductory;
-  const footerBanner = page?.data?.footerBanner;
+  const slices = page?.data?.slices
+  const slices1 = page?.data?.slices1
+  const introductory = page?.data?.introductory
+  const footerBanner = page?.data?.footerBanner
 
-  const [readMoreP1, setReadMoreP1] = useState(false);
-  const [readMoreP2, setReadMoreP2] = useState(false);
+  const [readMoreP1, setReadMoreP1] = useState(false)
+  const [readMoreP2, setReadMoreP2] = useState(false)
 
   return (
     <PageContent>
@@ -44,11 +44,11 @@ export function SustainableBanksPage({ page }: Props) {
             {/* Why Find a Green Bank? - First item in introductory */}
             {introductory[0]?.primary?.text && (
               <div>
-                <div className={readMoreP1 ? "" : "line-clamp-6"}>
+                <div className={readMoreP1 ? '' : 'line-clamp-6'}>
                   {renderRichText(introductory[0].primary.text)}
                 </div>
                 <button onClick={() => setReadMoreP1(!readMoreP1)}>
-                  {readMoreP1 ? "Read less" : "Read more"}
+                  {readMoreP1 ? 'Read less' : 'Read more'}
                 </button>
               </div>
             )}
@@ -56,11 +56,11 @@ export function SustainableBanksPage({ page }: Props) {
             {/* What is the Fossil Free Alliance? - Rest of introductory items */}
             {introductory.length > 1 && (
               <div>
-                <div className={readMoreP2 ? "" : "line-clamp-6"}>
+                <div className={readMoreP2 ? '' : 'line-clamp-6'}>
                   <SliceZone slices={introductory.slice(1)} />
                 </div>
                 <button onClick={() => setReadMoreP2(!readMoreP2)}>
-                  {readMoreP2 ? "Read less" : "Read more"}
+                  {readMoreP2 ? 'Read less' : 'Read more'}
                 </button>
               </div>
             )}
@@ -82,5 +82,5 @@ export function SustainableBanksPage({ page }: Props) {
         )}
       </article>
     </PageContent>
-  );
+  )
 }

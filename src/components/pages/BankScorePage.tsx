@@ -1,19 +1,19 @@
-import { PageContent } from "@components/PageContent";
+import { PageContent } from '@components/PageContent'
 
 interface BankData {
-  tag: string;
-  name: string;
-  rating?: string;
+  tag: string
+  name: string
+  rating?: string
   // Add more fields as needed from GraphQL schema
 }
 
 interface Props {
-  bank: BankData | null;
+  bank: BankData | null
 }
 
 export function BankScorePage({ bank }: Props) {
-  const name = bank?.name || "Bank";
-  const title = `${name}'s Climate Score`;
+  const name = bank?.name || 'Bank'
+  const title = `${name}'s Climate Score`
 
   return (
     <PageContent>
@@ -56,5 +56,5 @@ export function BankScorePage({ bank }: Props) {
         </footer>
       </article>
     </PageContent>
-  );
+  )
 }

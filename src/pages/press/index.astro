@@ -1,12 +1,12 @@
 ---
-import BaseLayout from "@layouts/BaseLayout.astro";
-import { getSingleSafe, getAllByTypeSafe } from "@lib/prismic";
-import { PressIndexPage } from "@components/pages";
+import { PressIndexPage } from '@components/pages'
+import BaseLayout from '@layouts/BaseLayout.astro'
+import { getAllByTypeSafe, getSingleSafe } from '@lib/prismic'
 
-const page = await getSingleSafe("presspage");
-const releases = await getAllByTypeSafe("presspost", {
-  orderings: [{ field: "document.first_publication_date", direction: "desc" }],
-});
+const page = await getSingleSafe('presspage')
+const releases = await getAllByTypeSafe('presspost', {
+  orderings: [{ field: 'document.first_publication_date', direction: 'desc' }],
+})
 ---
 
 <BaseLayout title="Press">

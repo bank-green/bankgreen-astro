@@ -1,17 +1,17 @@
-import { PageContent } from "@components/PageContent";
-import { SliceZone } from "@slices";
-import type { PrismicDocument } from "@prismicio/client";
-import type { ReactNode } from "react";
+import { PageContent } from '@components/PageContent'
+import type { PrismicDocument } from '@prismicio/client'
+import { SliceZone } from '@slices'
+import type { ReactNode } from 'react'
 
 interface Props {
   /** Page title */
-  title: string;
+  title: string
   /** Prismic page document */
-  page: PrismicDocument | null;
+  page: PrismicDocument | null
   /** Optional intro content before slices */
-  intro?: ReactNode;
+  intro?: ReactNode
   /** Optional content after slices */
-  footer?: ReactNode;
+  footer?: ReactNode
 }
 
 /**
@@ -19,7 +19,7 @@ interface Props {
  * Use this for pages like disclaimer, privacy, methodology, etc.
  */
 export function SlicePage({ title, page, intro, footer }: Props) {
-  const slices = page?.data?.slices;
+  const slices = page?.data?.slices
 
   return (
     <PageContent>
@@ -30,16 +30,10 @@ export function SlicePage({ title, page, intro, footer }: Props) {
 
         {intro}
 
-        <section>
-          {slices ? (
-            <SliceZone slices={slices} />
-          ) : (
-            <p>Content loading...</p>
-          )}
-        </section>
+        <section>{slices ? <SliceZone slices={slices} /> : <p>Content loading...</p>}</section>
 
         {footer}
       </article>
     </PageContent>
-  );
+  )
 }

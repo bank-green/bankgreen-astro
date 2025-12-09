@@ -1,21 +1,21 @@
-import { PageContent } from "@components/PageContent";
-import { SliceZone } from "@slices";
-import * as prismic from "@prismicio/client";
-import type { PrismicDocument } from "@prismicio/client";
+import { PageContent } from '@components/PageContent'
+import type { PrismicDocument } from '@prismicio/client'
+import * as prismic from '@prismicio/client'
+import { SliceZone } from '@slices'
 
 interface Props {
-  page: PrismicDocument | null;
-  releases: PrismicDocument[];
+  page: PrismicDocument | null
+  releases: PrismicDocument[]
 }
 
 export function PressIndexPage({ page, releases }: Props) {
-  const slices = page?.data?.slices;
+  const slices = page?.data?.slices
 
   const getDescription = (release: PrismicDocument): string => {
-    const description = release.data.description;
-    if (!description) return "";
-    return prismic.asText(description);
-  };
+    const description = release.data.description
+    if (!description) return ''
+    return prismic.asText(description)
+  }
 
   return (
     <PageContent>
@@ -28,7 +28,7 @@ export function PressIndexPage({ page, releases }: Props) {
           <header>
             <h1>Press</h1>
             <p>
-              For press or media enquiries, please write to{" "}
+              For press or media enquiries, please write to{' '}
               <a href="mailto:hello@bank.green">hello@bank.green</a>
             </p>
           </header>
@@ -38,8 +38,8 @@ export function PressIndexPage({ page, releases }: Props) {
           {releases.length > 0 ? (
             <ul>
               {releases.map((release) => {
-                const description = getDescription(release);
-                const releaseDate = release.data.releasedate as string | undefined;
+                const description = getDescription(release)
+                const releaseDate = release.data.releasedate as string | undefined
 
                 return (
                   <li key={release.uid}>
@@ -51,7 +51,7 @@ export function PressIndexPage({ page, releases }: Props) {
                       {description && <p>{description}</p>}
                     </article>
                   </li>
-                );
+                )
               })}
             </ul>
           ) : (
@@ -60,5 +60,5 @@ export function PressIndexPage({ page, releases }: Props) {
         </section>
       </article>
     </PageContent>
-  );
+  )
 }

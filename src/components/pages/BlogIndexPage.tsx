@@ -1,29 +1,29 @@
-import { PageContent } from "@components/PageContent";
-import * as prismic from "@prismicio/client";
-import type { PrismicDocument } from "@prismicio/client";
+import { PageContent } from '@components/PageContent'
+import type { PrismicDocument } from '@prismicio/client'
+import * as prismic from '@prismicio/client'
 
 interface Props {
-  posts: PrismicDocument[];
+  posts: PrismicDocument[]
 }
 
 export function BlogIndexPage({ posts }: Props) {
   const getImageSrc = (post: PrismicDocument): string => {
     // Try cardimage first
     if (post.data.cardimage?.url) {
-      return post.data.cardimage.url;
+      return post.data.cardimage.url
     }
     // Fall back to first image slice
     const imageSlice = post.data.slices?.find(
-      (s: { slice_type: string }) => s.slice_type === "image_slice"
-    );
-    return imageSlice?.primary?.image?.url || "";
-  };
+      (s: { slice_type: string }) => s.slice_type === 'image_slice'
+    )
+    return imageSlice?.primary?.image?.url || ''
+  }
 
   const getDescription = (post: PrismicDocument): string => {
-    const description = post.data.description;
-    if (!description) return "";
-    return prismic.asText(description);
-  };
+    const description = post.data.description
+    if (!description) return ''
+    return prismic.asText(description)
+  }
 
   return (
     <PageContent>
@@ -36,9 +36,9 @@ export function BlogIndexPage({ posts }: Props) {
           {posts.length > 0 ? (
             <ul>
               {posts.map((post) => {
-                const imageSrc = getImageSrc(post);
-                const description = getDescription(post);
-                const publicationDate = post.data.publicationdate as string | undefined;
+                const imageSrc = getImageSrc(post)
+                const description = getDescription(post)
+                const publicationDate = post.data.publicationdate as string | undefined
 
                 return (
                   <li key={post.uid}>
@@ -52,7 +52,7 @@ export function BlogIndexPage({ posts }: Props) {
                       <a href={`/blog/${post.uid}`}>Read full story</a>
                     </article>
                   </li>
-                );
+                )
               })}
             </ul>
           ) : (
@@ -61,5 +61,5 @@ export function BlogIndexPage({ posts }: Props) {
         </section>
       </article>
     </PageContent>
-  );
+  )
 }

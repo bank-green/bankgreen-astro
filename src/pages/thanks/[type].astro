@@ -1,29 +1,29 @@
 ---
-import BaseLayout from "@layouts/BaseLayout.astro";
-import { getByUIDSafe, thanksPagesMap, thanksPagesFallback } from "@lib/prismic";
-import { ThanksPage } from "@components/pages";
+import { ThanksPage } from '@components/pages'
+import BaseLayout from '@layouts/BaseLayout.astro'
+import { getByUIDSafe, thanksPagesFallback, thanksPagesMap } from '@lib/prismic'
 
 export function getStaticPaths() {
   return Object.keys(thanksPagesMap).map((type) => ({
     params: { type },
-  }));
+  }))
 }
 
-const { type } = Astro.params;
-const pageType = type || "thanks";
+const { type } = Astro.params
+const pageType = type || 'thanks'
 
-const mapping = thanksPagesMap[pageType];
-const fallback = thanksPagesFallback[pageType];
+const mapping = thanksPagesMap[pageType]
+const fallback = thanksPagesFallback[pageType]
 
 if (!mapping || !fallback) {
-  return Astro.redirect("/404");
+  return Astro.redirect('/404')
 }
 
-let page = null;
-if (mapping.type === "thankspages") {
-  page = await getByUIDSafe("thankspages", mapping.uid);
-} else if (mapping.type === "textonlypages") {
-  page = await getByUIDSafe("textonlypages", mapping.uid);
+let page = null
+if (mapping.type === 'thankspages') {
+  page = await getByUIDSafe('thankspages', mapping.uid)
+} else if (mapping.type === 'textonlypages') {
+  page = await getByUIDSafe('textonlypages', mapping.uid)
 }
 ---
 

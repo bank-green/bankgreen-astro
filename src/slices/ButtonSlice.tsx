@@ -3,20 +3,20 @@
  *
  * Variations: default
  */
-import type { Content } from "@prismicio/client";
-import { asLink } from "@prismicio/client";
+import type { Content } from '@prismicio/client'
+import { asLink } from '@prismicio/client'
 
 interface Props {
-  slice: Content.ButtonSliceSlice;
+  slice: Content.ButtonSliceSlice
 }
 
 export function ButtonSlice({ slice }: Props) {
-  const { link, label } = slice.primary;
-  const href = asLink(link) || "#";
+  const { link, label } = slice.primary
+  const href = asLink(link) || '#'
 
   return (
     <p data-slice-type={slice.slice_type}>
       <a href={href}>{label}</a>
     </p>
-  );
+  )
 }

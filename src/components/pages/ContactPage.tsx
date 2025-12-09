@@ -1,13 +1,13 @@
-import { PageContent } from "@components/PageContent";
-import { renderRichText } from "@lib/prismicHelpers";
-import type { PrismicDocument, RichTextField } from "@prismicio/client";
+import { PageContent } from '@components/PageContent'
+import { renderRichText } from '@lib/prismicHelpers'
+import type { PrismicDocument, RichTextField } from '@prismicio/client'
 
 interface Props {
-  page: PrismicDocument | null;
+  page: PrismicDocument | null
 }
 
 export function ContactPage({ page }: Props) {
-  const description = page?.data?.description as RichTextField | undefined;
+  const description = page?.data?.description as RichTextField | undefined
 
   return (
     <PageContent>
@@ -19,9 +19,10 @@ export function ContactPage({ page }: Props) {
             <>
               <h1>Contact us</h1>
               <p>
-                Unfortunately we are not currently accepting requests to research new banks, but we encourage you to{" "}
-                <a href="/take-action">reach out to your own bank</a> to establish whether or not they are financing
-                fossil fuels. <a href="/volunteers">You can also volunteer</a> 😄
+                Unfortunately we are not currently accepting requests to research new banks, but we
+                encourage you to <a href="/take-action">reach out to your own bank</a> to establish
+                whether or not they are financing fossil fuels.{' '}
+                <a href="/volunteers">You can also volunteer</a> 😄
               </p>
             </>
           )}
@@ -32,12 +33,23 @@ export function ContactPage({ page }: Props) {
           <form>
             <div>
               <label htmlFor="firstName">Your first name (optional)</label>
-              <input type="text" id="firstName" name="firstName" placeholder="First name, so we can say hi" />
+              <input
+                type="text"
+                id="firstName"
+                name="firstName"
+                placeholder="First name, so we can say hi"
+              />
             </div>
 
             <div>
               <label htmlFor="email">Your email address</label>
-              <input type="email" id="email" name="email" placeholder="Your email address" required />
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Your email address"
+                required
+              />
             </div>
 
             <div>
@@ -52,15 +64,15 @@ export function ContactPage({ page }: Props) {
 
             <div>
               <label>
-                <input type="checkbox" name="isAgreeMarketing" />I wish to receive more information via email from
-                Bank.Green.
+                <input type="checkbox" name="isAgreeMarketing" />I wish to receive more information
+                via email from Bank.Green.
               </label>
             </div>
 
             <div>
               <label>
-                <input type="checkbox" name="isAgreeTerms" required />I have read and understood Bank.Green's{" "}
-                <a href="/privacy">privacy policy</a>.
+                <input type="checkbox" name="isAgreeTerms" required />I have read and understood
+                Bank.Green's <a href="/privacy">privacy policy</a>.
               </label>
             </div>
 
@@ -69,5 +81,5 @@ export function ContactPage({ page }: Props) {
         </section>
       </article>
     </PageContent>
-  );
+  )
 }

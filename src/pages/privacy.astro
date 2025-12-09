@@ -1,9 +1,9 @@
 ---
-import BaseLayout from "@layouts/BaseLayout.astro";
-import { getSingleSafe } from "@lib/prismic";
-import { SlicePage } from "@components/pages";
+import { SlicePage } from '@components/pages'
+import BaseLayout from '@layouts/BaseLayout.astro'
+import { getSingleSafe } from '@lib/prismic'
 
-const page = await getSingleSafe("privacypage");
+const page = await getSingleSafe('privacypage')
 ---
 
 <BaseLayout title="Privacy Policy">

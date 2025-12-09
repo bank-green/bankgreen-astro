@@ -1,38 +1,38 @@
-import { useState } from "react";
-import { PageContent } from "@components/PageContent";
-import { SliceZone } from "@slices";
-import { renderRichText } from "@lib/prismicHelpers";
-import type { PrismicDocument, RichTextField } from "@prismicio/client";
+import { PageContent } from '@components/PageContent'
+import { renderRichText } from '@lib/prismicHelpers'
+import type { PrismicDocument, RichTextField } from '@prismicio/client'
+import { SliceZone } from '@slices'
+import { useState } from 'react'
 
 interface Props {
-  page: PrismicDocument | null;
+  page: PrismicDocument | null
 }
 
-const TABS = ["Pressure", "Switch", "Share", "Learn"] as const;
+const TABS = ['Pressure', 'Switch', 'Share', 'Learn'] as const
 
 export function TakeActionPage({ page }: Props) {
-  const [selectedTab, setSelectedTab] = useState<(typeof TABS)[number]>("Pressure");
+  const [selectedTab, setSelectedTab] = useState<(typeof TABS)[number]>('Pressure')
 
-  const introduction = page?.data?.introduction as RichTextField | undefined;
-  const slices1 = page?.data?.slices1; // Pressure tab
-  const slices2 = page?.data?.slices2; // Switch tab
-  const slices3 = page?.data?.slices3; // Share tab
-  const slices4 = page?.data?.slices4; // Learn tab
+  const introduction = page?.data?.introduction as RichTextField | undefined
+  const slices1 = page?.data?.slices1 // Pressure tab
+  const slices2 = page?.data?.slices2 // Switch tab
+  const slices3 = page?.data?.slices3 // Share tab
+  const slices4 = page?.data?.slices4 // Learn tab
 
   const getSlicesForTab = () => {
     switch (selectedTab) {
-      case "Pressure":
-        return slices1;
-      case "Switch":
-        return slices2;
-      case "Share":
-        return slices3;
-      case "Learn":
-        return slices4;
+      case 'Pressure':
+        return slices1
+      case 'Switch':
+        return slices2
+      case 'Share':
+        return slices3
+      case 'Learn':
+        return slices4
       default:
-        return null;
+        return null
     }
-  };
+  }
 
   return (
     <PageContent>
@@ -44,9 +44,10 @@ export function TakeActionPage({ page }: Props) {
             <>
               <h2>Take action</h2>
               <p>
-                Do you watch or read climate crisis news and think: "Ok, this is bad, but what now? What can I do about
-                this?" We do too. Even this website, as it alerts you to the destructive cycle that our money is stuck
-                in, might be making you feel overwhelmed and powerless. Well, no more! It's time to take action:
+                Do you watch or read climate crisis news and think: "Ok, this is bad, but what now?
+                What can I do about this?" We do too. Even this website, as it alerts you to the
+                destructive cycle that our money is stuck in, might be making you feel overwhelmed
+                and powerless. Well, no more! It's time to take action:
               </p>
             </>
           )}
@@ -69,11 +70,7 @@ export function TakeActionPage({ page }: Props) {
 
         {/* Tab content */}
         <section>
-          {getSlicesForTab() ? (
-            <SliceZone slices={getSlicesForTab()} />
-          ) : (
-            <p>Content loading...</p>
-          )}
+          {getSlicesForTab() ? <SliceZone slices={getSlicesForTab()} /> : <p>Content loading...</p>}
         </section>
 
         {/* Call to action */}
@@ -83,5 +80,5 @@ export function TakeActionPage({ page }: Props) {
         </section>
       </article>
     </PageContent>
-  );
+  )
 }

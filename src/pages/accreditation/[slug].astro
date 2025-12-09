@@ -1,21 +1,21 @@
 ---
-import BaseLayout from "@layouts/BaseLayout.astro";
-import { getByUIDSafe, getAllByTypeSafe } from "@lib/prismic";
-import { SlicePage } from "@components/pages";
+import { SlicePage } from '@components/pages'
+import BaseLayout from '@layouts/BaseLayout.astro'
+import { getAllByTypeSafe, getByUIDSafe } from '@lib/prismic'
 
 export async function getStaticPaths() {
-  const pages = await getAllByTypeSafe("accreditationpage");
-  return pages.map((page) => ({ params: { slug: page.uid } }));
+  const pages = await getAllByTypeSafe('accreditationpage')
+  return pages.map((page) => ({ params: { slug: page.uid } }))
 }
 
-const { slug } = Astro.params;
-const page = await getByUIDSafe("accreditationpage", slug as string);
+const { slug } = Astro.params
+const page = await getByUIDSafe('accreditationpage', slug as string)
 
 if (!page) {
-  return Astro.redirect("/404");
+  return Astro.redirect('/404')
 }
 
-const title = page.data.hero_title || "Accreditation";
+const title = page.data.hero_title || 'Accreditation'
 ---
 
 <BaseLayout title={title}>

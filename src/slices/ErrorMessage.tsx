@@ -3,11 +3,12 @@
  *
  * Variations: default
  */
-import type { Content } from "@prismicio/client";
-import { renderRichText } from "@lib/prismicHelpers";
+
+import { renderRichText } from '@lib/prismicHelpers'
+import type { Content } from '@prismicio/client'
 
 interface Props {
-  slice: Content.ErrorMessageSlice;
+  slice: Content.ErrorMessageSlice
 }
 
 export function ErrorMessage({ slice }: Props) {
@@ -16,5 +17,5 @@ export function ErrorMessage({ slice }: Props) {
       <h3>{slice.primary.title}</h3>
       {renderRichText(slice.primary.content)}
     </section>
-  );
+  )
 }

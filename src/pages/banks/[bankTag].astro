@@ -1,27 +1,27 @@
 ---
-import BaseLayout from "@layouts/BaseLayout.astro";
-import { BankScorePage } from "@components/pages";
+import { BankScorePage } from '@components/pages'
+import BaseLayout from '@layouts/BaseLayout.astro'
 
 interface BankData {
-  tag: string;
-  name: string;
-  rating?: string;
+  tag: string
+  name: string
+  rating?: string
 }
 
 export async function getStaticPaths() {
   // TODO: Fetch all banks from GraphQL
   // const data = await graphqlFetch(`query { banks { tag } }`);
   // return data.banks.map((bank) => ({ params: { bankTag: bank.tag } }));
-  return [];
+  return []
 }
 
-const { bankTag } = Astro.params;
+const { bankTag } = Astro.params
 
 // TODO: Fetch bank data from GraphQL
-const bank: BankData | null = null;
+const bank: BankData | null = null
 
-const bankName = (bank as BankData | null)?.name ?? "Bank";
-const title = `${bankName}'s Climate Score`;
+const bankName = (bank as BankData | null)?.name ?? 'Bank'
+const title = `${bankName}'s Climate Score`
 ---
 
 <BaseLayout title={title}>

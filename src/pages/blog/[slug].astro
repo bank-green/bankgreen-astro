@@ -1,21 +1,21 @@
 ---
-import BaseLayout from "@layouts/BaseLayout.astro";
-import { getByUIDSafe, getAllByTypeSafe } from "@lib/prismic";
-import { BlogPostPage } from "@components/pages";
+import { BlogPostPage } from '@components/pages'
+import BaseLayout from '@layouts/BaseLayout.astro'
+import { getAllByTypeSafe, getByUIDSafe } from '@lib/prismic'
 
 export async function getStaticPaths() {
-  const posts = await getAllByTypeSafe("blogpost");
-  return posts.map((post) => ({ params: { slug: post.uid } }));
+  const posts = await getAllByTypeSafe('blogpost')
+  return posts.map((post) => ({ params: { slug: post.uid } }))
 }
 
-const { slug } = Astro.params;
-const post = await getByUIDSafe("blogpost", slug as string);
+const { slug } = Astro.params
+const post = await getByUIDSafe('blogpost', slug as string)
 
 if (!post) {
-  return Astro.redirect("/404");
+  return Astro.redirect('/404')
 }
 
-const title = post.data.title || "Blog Post";
+const title = post.data.title || 'Blog Post'
 ---
 
 <BaseLayout title={title}>

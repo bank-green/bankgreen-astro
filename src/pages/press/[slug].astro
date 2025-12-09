@@ -1,21 +1,21 @@
 ---
-import BaseLayout from "@layouts/BaseLayout.astro";
-import { getByUIDSafe, getAllByTypeSafe } from "@lib/prismic";
-import { PressReleasePage } from "@components/pages";
+import { PressReleasePage } from '@components/pages'
+import BaseLayout from '@layouts/BaseLayout.astro'
+import { getAllByTypeSafe, getByUIDSafe } from '@lib/prismic'
 
 export async function getStaticPaths() {
-  const releases = await getAllByTypeSafe("presspost");
-  return releases.map((release) => ({ params: { slug: release.uid } }));
+  const releases = await getAllByTypeSafe('presspost')
+  return releases.map((release) => ({ params: { slug: release.uid } }))
 }
 
-const { slug } = Astro.params;
-const release = await getByUIDSafe("presspost", slug as string);
+const { slug } = Astro.params
+const release = await getByUIDSafe('presspost', slug as string)
 
 if (!release) {
-  return Astro.redirect("/404");
+  return Astro.redirect('/404')
 }
 
-const title = release.data.title || "Press Release";
+const title = release.data.title || 'Press Release'
 ---
 
 <BaseLayout title={title}>

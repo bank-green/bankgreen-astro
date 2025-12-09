@@ -1,9 +1,9 @@
 ---
-import BaseLayout from "@layouts/BaseLayout.astro";
-import { getSingleSafe } from "@lib/prismic";
-import { DonatePage } from "@components/pages";
+import { DonatePage } from '@components/pages'
+import BaseLayout from '@layouts/BaseLayout.astro'
+import { getSingleSafe } from '@lib/prismic'
 
-const page = await getSingleSafe("donationpage");
+const page = await getSingleSafe('donationpage')
 ---
 
 <BaseLayout title="Donate">

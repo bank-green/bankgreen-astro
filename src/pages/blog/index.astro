@@ -1,11 +1,11 @@
 ---
-import BaseLayout from "@layouts/BaseLayout.astro";
-import { getAllByTypeSafe } from "@lib/prismic";
-import { BlogIndexPage } from "@components/pages";
+import { BlogIndexPage } from '@components/pages'
+import BaseLayout from '@layouts/BaseLayout.astro'
+import { getAllByTypeSafe } from '@lib/prismic'
 
-const posts = await getAllByTypeSafe("blogpost", {
-  orderings: [{ field: "my.blogpost.publicationdate", direction: "desc" }],
-});
+const posts = await getAllByTypeSafe('blogpost', {
+  orderings: [{ field: 'my.blogpost.publicationdate', direction: 'desc' }],
+})
 ---
 
 <BaseLayout title="Blog: Stories and Tips for Divesting From Fossil Fuels">

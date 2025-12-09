@@ -1,18 +1,18 @@
-import { PageContent } from "@components/PageContent";
+import { PageContent } from '@components/PageContent'
 
 interface BankData {
-  tag: string;
-  name: string;
+  tag: string
+  name: string
   // Add more fields as needed from GraphQL schema
 }
 
 interface Props {
-  bank: BankData | null;
+  bank: BankData | null
 }
 
 export function BankProfilePage({ bank }: Props) {
-  const name = bank?.name || "Bank";
-  const title = `${name} Review and Service Offering`;
+  const name = bank?.name || 'Bank'
+  const title = `${name} Review and Service Offering`
 
   return (
     <PageContent>
@@ -31,12 +31,24 @@ export function BankProfilePage({ bank }: Props) {
 
         <nav>
           <ul>
-            <li><a href="#overview">Overview</a></li>
-            <li><a href="#personal">Personal</a></li>
-            <li><a href="#nonprofit">Nonprofit</a></li>
-            <li><a href="#government">Government</a></li>
-            <li><a href="#smes">SMEs</a></li>
-            <li><a href="#corporate">Corporate</a></li>
+            <li>
+              <a href="#overview">Overview</a>
+            </li>
+            <li>
+              <a href="#personal">Personal</a>
+            </li>
+            <li>
+              <a href="#nonprofit">Nonprofit</a>
+            </li>
+            <li>
+              <a href="#government">Government</a>
+            </li>
+            <li>
+              <a href="#smes">SMEs</a>
+            </li>
+            <li>
+              <a href="#corporate">Corporate</a>
+            </li>
           </ul>
         </nav>
 
@@ -87,5 +99,5 @@ export function BankProfilePage({ bank }: Props) {
         </section>
       </article>
     </PageContent>
-  );
+  )
 }

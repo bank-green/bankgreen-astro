@@ -6,9 +6,9 @@
   /* Mantine's default input font-size is 14px. Anything below 16px will trigger iOS to automatically zoom into the field on focus. */
   --input-fz: 1rem;
   /* This propagates down into things like pill text */
-  --mantine-color-black: $(color-textDefault);
-  --font-family-headings: "ff-meta-web-pro", serif;
-  --font-family-body: "specter", sans-serif;
+  --mantine-color-black: var(--color-text-primary);
+  --font-family-headings: "Reddit Sans", sans-serif;
+  --font-family-body: "Reddit Sans", sans-serif;
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;

@@ -9,7 +9,7 @@
  *   pnpm add @tanstack/react-query graphql-request graphql
  */
 
-const GRAPHQL_ENDPOINT = import.meta.env.PUBLIC_GRAPHQL_ENDPOINT || "http://localhost:8000/graphql";
+const GRAPHQL_ENDPOINT = import.meta.env.PUBLIC_GRAPHQL_ENDPOINT || 'http://localhost:8000/graphql'
 
 /**
  * Simple GraphQL fetch function.
@@ -20,23 +20,23 @@ export async function graphqlFetch<T>(
   variables?: Record<string, unknown>
 ): Promise<T> {
   const response = await fetch(GRAPHQL_ENDPOINT, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       // Add authentication headers if needed
       // "Authorization": `Bearer ${token}`,
     },
     body: JSON.stringify({ query, variables }),
-  });
+  })
 
-  const json = await response.json();
+  const json = await response.json()
 
   if (json.errors) {
-    console.error("GraphQL errors:", json.errors);
-    throw new Error(json.errors[0]?.message || "GraphQL request failed");
+    console.error('GraphQL errors:', json.errors)
+    throw new Error(json.errors[0]?.message || 'GraphQL request failed')
   }
 
-  return json.data;
+  return json.data
 }
 
 /**

@@ -4,12 +4,12 @@
  * https://mantine.dev/theming/theme-object/
  */
 
-
 import {
+  Container,
+  createTheme,
   DEFAULT_THEME,
   type MantineColorsTuple,
   type MantineThemeColors,
-  createTheme,
 } from '@mantine/core'
 
 // Design tokens are shared between Mantine and Tailwind
@@ -23,6 +23,8 @@ const convertedColors: MantineThemeColors = Object.entries(colorTokens).reduce(
   {} as MantineThemeColors
 )
 
+const CONTAINER_SIZES: Record<string, string> = breakpointTokens
+
 export const theme = createTheme({
   ...DEFAULT_THEME,
   breakpoints: breakpointTokens,
@@ -33,8 +35,40 @@ export const theme = createTheme({
     fontFamily: fontTokens.headings.join(', '),
     textWrap: 'balance',
   },
-  primaryColor: 'blue',
+  primaryColor: 'green',
   primaryShade: 6,
+  components: {
+    AppShell: {
+      defaultProps: {
+        padding: 0,
+        header: { height: 54, offset: false },
+        footer: { height: 'auto', collapsed: true },
+        withBorder: false,
+      },
+      classNames: {
+        header: 'm-auto max-w-7xl w-full',
+        main: 'm-auto w-full bg-sushi-100',
+        footer: 'm-auto max-w-7xl w-full bg-white',
+      },
+    },
+    Container: Container.extend({
+      vars: (_, { size, fluid }) => ({
+        root: {
+          '--container-size': fluid
+            ? '100%'
+            : size !== undefined && size in CONTAINER_SIZES
+              ? CONTAINER_SIZES[size]
+              : undefined,
+        },
+      }),
+      defaultProps: {
+        size: 'lg',
+      },
+      classNames: {
+        root: 'px-6 lg:px-0',
+      },
+    }),
+  },
 })
 
 export default theme

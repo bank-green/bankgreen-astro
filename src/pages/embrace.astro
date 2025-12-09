@@ -1,9 +1,9 @@
 ---
-import BaseLayout from "@layouts/BaseLayout.astro";
-import { getSingleSafe } from "@lib/prismic";
-import { EmbracePage } from "@components/pages";
+import { EmbracePage } from '@components/pages'
+import BaseLayout from '@layouts/BaseLayout.astro'
+import { getSingleSafe } from '@lib/prismic'
 
-const page = await getSingleSafe("embracepage");
+const page = await getSingleSafe('embracepage')
 ---
 
 <BaseLayout title="Embrace">

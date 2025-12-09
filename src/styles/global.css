@@ -9,40 +9,31 @@
 
 @layer base, mantine, components, utilities;
 
-@theme {
-  /* Example custom colors - uncomment and modify as needed */
-
-  /* --color-brand-500: oklch(0.72 0.12 260); */
-
-  /* Example custom breakpoint */
-  /* --breakpoint-3xl: 120rem; */
-}
-
-/* 
- * Layer for Mantine compatibility
- * Mantine 8 handles its own resets, so we work with both systems
- */
-@layer base {
-  html {
-    scroll-behavior: smooth;
-    font-family: var(--font-family);
-    font-size: var(--mantine-font-size-md);
-    line-height: var(--mantine-line-height);
-  }
-}
-
 /* 
  * Mantine requires these CSS variables - they're set by MantineProvider
  * but we define fallbacks here for static Astro pages
  */
 :root {
-  --font-family: "Reddit Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --mantine-font-family: var(--font-family)
-  --mantine-font-size-md: 1rem;
-  --mantine-line-height: 1.55;
+  --font-family:
+    "Reddit Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
 }
 
-
-body.styled {
-  font-family: var(--font-family);
+@layer mantine {
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-family);
+    font-size: var(--mantine-font-size-md);
+    line-height: var(--mantine-line-height);
+    background-color: var(--color-sushi-100);
+  }
+  body {
+    --mantine-color-body: var(--color-white);
+    --mantine-font-family: var(--font-family);
+    --mantine-font-size-md: 1rem;
+    --mantine-line-height: 1.55;
+    --mantine-color-text: var(--color-sky-900);
+    background-color: var(--color-white);
+    color: var(--mantine-color-text);
+  }
 }

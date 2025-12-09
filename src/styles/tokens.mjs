@@ -1,59 +1,4 @@
 export const colorTokens = {
-  blue: {
-    50: '#F2F4FF',
-    100: '#EBECFF',
-    200: '#C9CDFD',
-    300: '#A7AFFB',
-    400: '#8591FA',
-    500: '#6473F8',
-    600: '#5060F7',
-    700: '#3245CC',
-    800: '#2735A0',
-    900: '#1D2773',
-    950: '#121747',
-  },
-  gray: {
-    0: '#FFF',
-    50: '#FAF7F2',
-    100: '#F0ECE4',
-    200: '#E5E1DA',
-    300: '#D4CFC8',
-    400: '#B8B1A9',
-    500: '#958F87',
-    600: '#7E776F',
-    700: '#635C54',
-    800: '#4A433C',
-    900: '#2E2720',
-    950: '#241A0F',
-    1000: '#000',
-  },
-  red: {
-    50: '#FCEDE8',
-    100: '#FADFD7',
-    200: '#F8B9A6',
-    300: '#F49376',
-    400: '#EA7965',
-    500: '#E05D52',
-    600: '#BA4033',
-    700: '#992E26',
-    800: '#661A0B',
-    900: '#420C02',
-    950: '#360A02',
-  },
-  yellow: {
-    50: '#FFF4D9',
-    100: '#F8E4AF',
-    200: '#F2D382',
-    300: '#E5B73F',
-    400: '#D89C00',
-    500: '#C07D00',
-    600: '#A16901',
-    700: '#865700',
-    800: '#694502',
-    900: '#4B3205',
-    950: '#342307',
-  },
-  // Colors transferred from Nuxt Tailwind config
   sushi: {
     DEFAULT: '#7BB123',
     50: '#F2F7EB',
@@ -80,8 +25,16 @@ export const colorTokens = {
     900: '#644601',
   },
   ocean: {
+    50: '#EFF6FF',
     100: '#DCEDFF',
-    400: '#2563EB',
+    200: '#C1E4FF',
+    300: '#95D5FF',
+    400: '#5DBAFF',
+    500: '#3BA0FF',
+    600: '#2563EB',
+    700: '#1E4FBF',
+    800: '#1A3F8F',
+    900: '#122E62',
   },
   leaf: {
     300: '#7BB123',
@@ -90,11 +43,49 @@ export const colorTokens = {
     700: '#123F30',
   },
   sky: {
+    0: '#FFFFFF',
     50: '#F4F8FD',
     100: '#D9E0F2',
+    200: '#BFC9E3',
+    300: '#A5B2D4',
+    400: '#8B9BC5',
+    500: '#6D7FA0',
     600: '#434F6D',
+    700: '#353E59',
     800: '#282d46',
+    900: '#1C2032',
+    1000: '#000000',
   },
+  red: {
+    50: '#FCEDE8',
+    100: '#FADFD7',
+    200: '#F8B9A6',
+    300: '#F49376',
+    400: '#EA7965',
+    500: '#E05D52',
+    600: '#BA4033',
+    700: '#992E26',
+    800: '#661A0B',
+    900: '#420C02',
+    950: '#360A02',
+  },
+}
+
+colorTokens.blue = {}
+for (const [shade, value] of Object.entries(colorTokens.ocean)) {
+  colorTokens.blue[shade] = value
+}
+colorTokens.gray = {}
+for (const [shade, value] of Object.entries(colorTokens.sky)) {
+  colorTokens.gray[shade] = value
+}
+colorTokens.green = {}
+for (const [shade, value] of Object.entries(colorTokens.sushi)) {
+  colorTokens.green[shade] = value
+}
+colorTokens.yellow = {}
+for (const [shade, value] of Object.entries(colorTokens.sunglow)) {
+  colorTokens.yellow[shade] = value
 }
 
 export const brandColorTokens = {
@@ -156,15 +147,15 @@ export const fontTokens = {
 }
 
 export const breakpointTokens = {
-  '2xs': '20em',
+  xxs: '20em',
   xs: '32em',
   sm: '48em',
   md: '62em',
-  lg: '75em',
-  xl: '88em',
-  '2xl': '96em',
+  lg: '80em',
+  xl: '96em',
+  xxl: '120em',
   mobile: '32em',
-  max: '96em',
+  max: '80em',
   min: '20em',
 }
 

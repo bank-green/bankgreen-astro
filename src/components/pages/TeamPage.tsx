@@ -1,36 +1,39 @@
-import { PageContent } from "@components/PageContent";
-import { SliceZone } from "@slices";
-import type { PrismicDocument } from "@prismicio/client";
+import { PageContent } from '@components/PageContent'
+import type { PrismicDocument } from '@prismicio/client'
+import { SliceZone } from '@slices'
 
 interface TeamMemberSlice {
-  slice_type: string;
+  slice_type: string
   primary: {
-    department?: string;
-    name?: unknown;
-    description?: unknown;
-    img?: { url?: string };
-    link?: unknown;
-  };
+    department?: string
+    name?: unknown
+    description?: unknown
+    img?: { url?: string }
+    link?: unknown
+  }
 }
 
 interface Props {
-  page: PrismicDocument | null;
+  page: PrismicDocument | null
 }
 
 export function TeamPage({ page }: Props) {
-  const slices = page?.data?.slices;
-  const slices1 = (page?.data?.slices1 || []) as TeamMemberSlice[];
+  const slices = page?.data?.slices
+  const slices1 = (page?.data?.slices1 || []) as TeamMemberSlice[]
 
   // Filter directors from slices1
-  const directors = slices1.filter((member) => member.primary?.department === "Directors");
+  const directors = slices1.filter((member) => member.primary?.department === 'Directors')
 
   // Get all non-director, non-alumni team members grouped by department
   const teamMembers = slices1.filter(
-    (member) => member.primary?.department !== "Directors" && member.primary?.department !== "Alumni"
-  );
+    (member) =>
+      member.primary?.department !== 'Directors' && member.primary?.department !== 'Alumni'
+  )
 
   // Get unique departments
-  const departments = [...new Set(teamMembers.map((m) => m.primary?.department).filter(Boolean))].sort();
+  const departments = [
+    ...new Set(teamMembers.map((m) => m.primary?.department).filter(Boolean)),
+  ].sort()
 
   return (
     <PageContent>
@@ -43,8 +46,9 @@ export function TeamPage({ page }: Props) {
             <>
               <h1>Who we are</h1>
               <p>
-                Bank.Green was founded by a group of volunteers in late 2020. Each of us had been working on ways to
-                raise awareness about the climate crisis, without paying much attention to our money.
+                Bank.Green was founded by a group of volunteers in late 2020. Each of us had been
+                working on ways to raise awareness about the climate crisis, without paying much
+                attention to our money.
               </p>
             </>
           )}
@@ -84,5 +88,5 @@ export function TeamPage({ page }: Props) {
         </footer>
       </article>
     </PageContent>
-  );
+  )
 }

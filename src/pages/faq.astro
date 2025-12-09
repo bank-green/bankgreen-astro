@@ -1,11 +1,11 @@
 ---
-import BaseLayout from "@layouts/BaseLayout.astro";
-import { getSingleSafe } from "@lib/prismic";
-import { FaqPage } from "@components/pages/FaqPage";
+import { FaqPage } from '@components/pages/FaqPage'
+import BaseLayout from '@layouts/BaseLayout.astro'
+import { getSingleSafe } from '@lib/prismic'
 
-const page = await getSingleSafe("faqpage", {
-  fetchLinks: ["accordionitem.title", "accordionitem.slices"],
-});
+const page = await getSingleSafe('faqpage', {
+  fetchLinks: ['accordionitem.title', 'accordionitem.slices'],
+})
 ---
 
 <BaseLayout title="Frequently Asked Questions">

@@ -1,16 +1,17 @@
-import { PageContent } from "@components/PageContent";
-import { SliceZone } from "@slices";
-import type { PrismicDocument } from "@prismicio/client";
+import { PageContent } from '@components/PageContent'
+import type { PrismicDocument } from '@prismicio/client'
+import { SliceZone } from '@slices'
 
 interface Props {
-  page: PrismicDocument | null;
+  page: PrismicDocument | null
 }
 
 export function TeamAlumniPage({ page }: Props) {
   // Filter slices1 for Alumni department members
-  const alumniSlices = page?.data?.slices1?.filter(
-    (slice: { primary?: { department?: string } }) => slice.primary?.department === "Alumni"
-  ) || [];
+  const alumniSlices =
+    page?.data?.slices1?.filter(
+      (slice: { primary?: { department?: string } }) => slice.primary?.department === 'Alumni'
+    ) || []
 
   return (
     <PageContent>
@@ -32,5 +33,5 @@ export function TeamAlumniPage({ page }: Props) {
         </footer>
       </article>
     </PageContent>
-  );
+  )
 }

@@ -1,9 +1,9 @@
 ---
-import BaseLayout from "@layouts/BaseLayout.astro";
-import { getByUIDSafe } from "@lib/prismic";
-import { NotListedPage } from "@components/pages";
+import { NotListedPage } from '@components/pages'
+import BaseLayout from '@layouts/BaseLayout.astro'
+import { getByUIDSafe } from '@lib/prismic'
 
-const page = await getByUIDSafe("textonlypages", "notlisted");
+const page = await getByUIDSafe('textonlypages', 'notlisted')
 ---
 
 <BaseLayout title="Bank Not Listed">

@@ -1,10 +1,10 @@
 ---
-import BaseLayout from "@layouts/BaseLayout.astro";
-import { getByUIDSafe } from "@lib/prismic";
-import { ImpactPage } from "@components/pages";
+import { ImpactPage } from '@components/pages'
+import BaseLayout from '@layouts/BaseLayout.astro'
+import { getByUIDSafe } from '@lib/prismic'
 
 // Impact page uses textonlypages with UID "impactpage"
-const page = await getByUIDSafe("textonlypages", "impactpage");
+const page = await getByUIDSafe('textonlypages', 'impactpage')
 ---
 
 <BaseLayout title="Switch Survey">

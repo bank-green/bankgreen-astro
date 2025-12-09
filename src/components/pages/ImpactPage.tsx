@@ -1,15 +1,15 @@
-import { PageContent } from "@components/PageContent";
-import { renderRichText } from "@lib/prismicHelpers";
-import type { PrismicDocument, RichTextField } from "@prismicio/client";
+import { PageContent } from '@components/PageContent'
+import { renderRichText } from '@lib/prismicHelpers'
+import type { PrismicDocument, RichTextField } from '@prismicio/client'
 
 interface Props {
-  page: PrismicDocument | null;
+  page: PrismicDocument | null
 }
 
 export function ImpactPage({ page }: Props) {
-  const text1 = page?.data?.text1 as RichTextField | undefined;
-  const text2 = page?.data?.text2 as RichTextField | undefined;
-  const text3 = page?.data?.text3 as RichTextField | undefined;
+  const text1 = page?.data?.text1 as RichTextField | undefined
+  const text2 = page?.data?.text2 as RichTextField | undefined
+  const text3 = page?.data?.text3 as RichTextField | undefined
 
   return (
     <PageContent>
@@ -31,17 +31,15 @@ export function ImpactPage({ page }: Props) {
             renderRichText(text3)
           ) : (
             <p>
-              Taking this survey helps advocate for change. Bank.Green uses your response to push fossil banks to
-              divest, push sustainable eco banks to improve their customer experience, and encourage other people to
-              join you in greening their finances.
+              Taking this survey helps advocate for change. Bank.Green uses your response to push
+              fossil banks to divest, push sustainable eco banks to improve their customer
+              experience, and encourage other people to join you in greening their finances.
             </p>
           )}
         </header>
 
-        <section>
-          {/* Switch survey form will be embedded here */}
-        </section>
+        <section>{/* Switch survey form will be embedded here */}</section>
       </article>
     </PageContent>
-  );
+  )
 }

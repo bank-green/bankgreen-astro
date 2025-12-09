@@ -1,33 +1,33 @@
-import { PageContent } from "@components/PageContent";
-import { SliceZone } from "@slices";
-import type { PrismicDocument } from "@prismicio/client";
+import { PageContent } from '@components/PageContent'
+import type { PrismicDocument } from '@prismicio/client'
+import { SliceZone } from '@slices'
 
 interface Props {
-  post: PrismicDocument;
+  post: PrismicDocument
 }
 
 export function BlogPostPage({ post }: Props) {
-  const title = (post.data.title as string) || "Blog Post";
-  const author = post.data.author as string | undefined;
-  const slices = post.data.slices;
+  const title = (post.data.title as string) || 'Blog Post'
+  const author = post.data.author as string | undefined
+  const slices = post.data.slices
 
   const publishedDate = post.first_publication_date
-    ? new Date(post.first_publication_date).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
+    ? new Date(post.first_publication_date).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
       })
-    : null;
+    : null
 
   const modifiedDate = post.last_publication_date
-    ? new Date(post.last_publication_date).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
+    ? new Date(post.last_publication_date).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
       })
-    : null;
+    : null
 
-  const isUpdated = post.first_publication_date !== post.last_publication_date;
+  const isUpdated = post.first_publication_date !== post.last_publication_date
 
   return (
     <PageContent>
@@ -49,7 +49,11 @@ export function BlogPostPage({ post }: Props) {
           )}
         </header>
 
-        <section>{slices && <SliceZone slices={slices} />}</section>
+        <section>
+          <div className="prose sm:prose-lg xl:prose-xl break-words w-full">
+            {slices && <SliceZone slices={slices} />}
+          </div>
+        </section>
 
         <footer>
           <section>
@@ -59,5 +63,5 @@ export function BlogPostPage({ post }: Props) {
         </footer>
       </article>
     </PageContent>
-  );
+  )
 }

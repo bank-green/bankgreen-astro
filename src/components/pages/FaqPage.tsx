@@ -1,15 +1,15 @@
-import { PageContent } from "@components/PageContent";
-import { SliceZone } from "@slices";
-import { renderRichText } from "@lib/prismicHelpers";
-import type { PrismicDocument, RichTextField } from "@prismicio/client";
+import { PageContent } from '@components/PageContent'
+import { renderRichText } from '@lib/prismicHelpers'
+import type { PrismicDocument, RichTextField } from '@prismicio/client'
+import { SliceZone } from '@slices'
 
 interface Props {
-  page: PrismicDocument | null;
+  page: PrismicDocument | null
 }
 
 export function FaqPage({ page }: Props) {
-  const introduction = page?.data?.introduction as RichTextField | undefined;
-  const slices = page?.data?.slices;
+  const introduction = page?.data?.introduction as RichTextField | undefined
+  const slices = page?.data?.slices
 
   return (
     <PageContent>
@@ -22,9 +22,7 @@ export function FaqPage({ page }: Props) {
           )}
         </header>
 
-        <section>
-          {slices ? <SliceZone slices={slices} /> : <p>Error loading content.</p>}
-        </section>
+        <section>{slices ? <SliceZone slices={slices} /> : <p>Error loading content.</p>}</section>
 
         <section>
           <h2>Take Action with Bank.Green</h2>
@@ -32,5 +30,5 @@ export function FaqPage({ page }: Props) {
         </section>
       </article>
     </PageContent>
-  );
+  )
 }

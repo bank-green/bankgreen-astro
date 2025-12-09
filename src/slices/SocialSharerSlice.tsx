@@ -6,22 +6,22 @@
  * Note: This is a placeholder - the actual sharing functionality
  * will need to be implemented with real share buttons.
  */
-import type { Content } from "@prismicio/client";
-import { asText } from "@prismicio/client";
+import type { Content } from '@prismicio/client'
+import { asText } from '@prismicio/client'
 
 interface Props {
-  slice: Content.SocialSharerSliceSlice;
+  slice: Content.SocialSharerSliceSlice
 }
 
 export function SocialSharerSlice({ slice }: Props) {
-  const shareText = asText(slice.primary.text);
-  const shareUrl = "https://bank.green";
-  const hashtags = ["climatecrisis", "fossilbanks"];
+  const shareText = asText(slice.primary.text)
+  const shareUrl = 'https://bank.green'
+  const hashtags = ['climatecrisis', 'fossilbanks']
 
   // Encode for URL sharing
-  const encodedText = encodeURIComponent(shareText);
-  const encodedUrl = encodeURIComponent(shareUrl);
-  const encodedHashtags = hashtags.join(",");
+  const encodedText = encodeURIComponent(shareText)
+  const encodedUrl = encodeURIComponent(shareUrl)
+  const encodedHashtags = hashtags.join(',')
 
   return (
     <nav data-slice-type={slice.slice_type} aria-label="Share on social media">
@@ -55,5 +55,5 @@ export function SocialSharerSlice({ slice }: Props) {
         </li>
       </ul>
     </nav>
-  );
+  )
 }

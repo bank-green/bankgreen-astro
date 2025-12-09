@@ -1,13 +1,9 @@
 ---
-import "../styles/global.css";
-import { Layout } from "../components/Layout";
+import { Layout } from '../components/Layout'
+import '../styles/global.css'
 
-interface Props {
-  title: string;
-  description?: string;
-}
-
-const { title, description = "Bank.Green helps you find ethical and sustainable banks" } = Astro.props;
+const { title, description = 'Bank.Green helps you find ethical and sustainable banks' } =
+  Astro.props
 ---
 
 <!doctype html>

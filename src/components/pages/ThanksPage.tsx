@@ -1,21 +1,21 @@
-import { PageContent } from "@components/PageContent";
-import { SliceZone } from "@slices";
-import type { PrismicDocument } from "@prismicio/client";
+import { PageContent } from '@components/PageContent'
+import type { PrismicDocument } from '@prismicio/client'
+import { SliceZone } from '@slices'
 
 interface ThanksPageFallback {
-  title: string;
-  description?: string;
+  title: string
+  description?: string
 }
 
 interface Props {
-  page: PrismicDocument | null;
-  fallback: ThanksPageFallback;
-  pageType: string;
+  page: PrismicDocument | null
+  fallback: ThanksPageFallback
+  pageType: string
 }
 
 export function ThanksPage({ page, fallback, pageType }: Props) {
-  const slices = page?.data?.slices;
-  const showExplore = pageType !== "donate-cancelled" && pageType !== "updates-no";
+  const slices = page?.data?.slices
+  const showExplore = pageType !== 'donate-cancelled' && pageType !== 'updates-no'
 
   return (
     <PageContent>
@@ -49,5 +49,5 @@ export function ThanksPage({ page, fallback, pageType }: Props) {
         )}
       </article>
     </PageContent>
-  );
+  )
 }

@@ -1,22 +1,22 @@
-import { Button, TextInput, Stack, Paper, Title } from "@mantine/core";
-import { useState } from "react";
-import { MantineWrapper } from "./MantineWrapper";
+import { Button, Paper, Stack, TextInput, Title } from '@mantine/core'
+import { useState } from 'react'
+import { MantineWrapper } from './MantineWrapper'
 
 /**
  * Example contact form as a React island.
  * This component is interactive and needs client-side JavaScript.
  */
 function ContactFormInner() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [submitted, setSubmitted] = useState(false)
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     // TODO: Handle form submission (send to your Django backend)
-    console.log({ name, email });
-    setSubmitted(true);
-  };
+    console.log({ name, email })
+    setSubmitted(true)
+  }
 
   if (submitted) {
     return (
@@ -24,7 +24,7 @@ function ContactFormInner() {
         <Title order={3}>Thanks for reaching out!</Title>
         <p>We'll get back to you soon.</p>
       </Paper>
-    );
+    )
   }
 
   return (
@@ -51,7 +51,7 @@ function ContactFormInner() {
         </Stack>
       </form>
     </Paper>
-  );
+  )
 }
 
 /**
@@ -63,5 +63,5 @@ export function ContactForm() {
     <MantineWrapper>
       <ContactFormInner />
     </MantineWrapper>
-  );
+  )
 }
