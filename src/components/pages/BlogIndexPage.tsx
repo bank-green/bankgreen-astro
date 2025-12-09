@@ -22,7 +22,7 @@ export function BlogIndexPage({ posts }: Props) {
   const getDescription = (post: PrismicDocument): string => {
     const description = post.data.description
     if (!description) return ''
-    return prismic.asText(description)
+    return prismic.asText(description) ?? ''
   }
 
   return (

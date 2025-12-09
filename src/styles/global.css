@@ -5,6 +5,8 @@
 /* Skip importing preflight to avoid conflicts with Mantine's own CSS resets */
 @import "tailwindcss/theme.css" layer(base);
 @import "tailwindcss/utilities.css" layer(utilities);
+/* Custom prose styles */
+@import "tailwindcss/typography.css" layer(utilities);
 @import "./overrides.css";
 
 @layer base, mantine, components, utilities;

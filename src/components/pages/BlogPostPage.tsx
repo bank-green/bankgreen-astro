@@ -50,7 +50,7 @@ export function BlogPostPage({ post }: Props) {
         </header>
 
         <section>
-          <div className="prose sm:prose-lg xl:prose-xl break-words w-full">
+          <div className="prose sm:prose-lg xl:prose-xl wrap-break-word w-full">
             {slices && <SliceZone slices={slices} />}
           </div>
         </section>

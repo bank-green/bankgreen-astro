@@ -11,7 +11,7 @@ export function VolunteersPage({ page }: Props) {
 
   return (
     <PageContent>
-      <article>
+      <article className="prose mx-auto max-w-4xl prose-h1:text-center prose-h1:font-semibold">
         {slices ? (
           <SliceZone slices={slices} />
         ) : (

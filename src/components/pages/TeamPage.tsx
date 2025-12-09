@@ -39,7 +39,7 @@ export function TeamPage({ page }: Props) {
     <PageContent>
       <article>
         {/* Intro content from slices */}
-        <section>
+        <section className="prose sm:prose-lg xl:prose-xl max-w-none">
           {slices ? (
             <SliceZone slices={slices} />
           ) : (

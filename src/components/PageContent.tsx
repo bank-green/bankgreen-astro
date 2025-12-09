@@ -23,7 +23,9 @@ interface Props {
 export function PageContent({ children }: Props) {
   return (
     <MantineProvider theme={theme}>
-      <Container strategy="grid">{children}</Container>
+      <Container strategy="grid" className="pt-18">
+        {children}
+      </Container>
     </MantineProvider>
   )
 }

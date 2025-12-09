@@ -37,7 +37,7 @@ export function TakeActionPage({ page }: Props) {
   return (
     <PageContent>
       <article>
-        <header>
+        <header className="prose sm:prose-lg xl:prose-xl mx-auto max-w-4xl xl:max-w-5xl">
           {introduction && introduction.length > 0 ? (
             renderRichText(introduction)
           ) : (
@@ -69,7 +69,7 @@ export function TakeActionPage({ page }: Props) {
         </nav>
 
         {/* Tab content */}
-        <section>
+        <section className="prose md:prose-lg px-4">
           {getSlicesForTab() ? <SliceZone slices={getSlicesForTab()} /> : <p>Content loading...</p>}
         </section>
 

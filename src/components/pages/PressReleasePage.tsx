@@ -43,7 +43,11 @@ export function PressReleasePage({ release }: Props) {
           </div>
         </header>
 
-        <section>{slices && <SliceZone slices={slices} />}</section>
+        <section>
+          <div className="prose sm:prose-lg xl:prose-xl break-words w-full">
+            {slices && <SliceZone slices={slices} />}
+          </div>
+        </section>
 
         <footer>
           <h2>About Bank.Green</h2>

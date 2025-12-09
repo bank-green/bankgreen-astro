@@ -23,7 +23,7 @@ export function SlicePage({ title, page, intro, footer }: Props) {
 
   return (
     <PageContent>
-      <article>
+      <article className="prose sm:prose-lg xl:prose-xl mx-auto max-w-4xl xl:max-w-5xl">
         <header>
           <h1>{title}</h1>
         </header>

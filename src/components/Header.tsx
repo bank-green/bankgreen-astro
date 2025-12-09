@@ -34,7 +34,7 @@ export function Header() {
     <AppShell.Header className="flex w-full items-center bg-sky-800 px-4 py-0 lg:mt-2 lg:rounded-4xl lg:pl-6">
       <Group className="w-full items-center justify-between">
         <Anchor href="/" className="h-full" underline="never">
-          <img src="/img/logo.svg" alt="Bank.Green" className="mt-2 ml-1 h-5 w-auto" />
+          <img src="/img/logo.svg" alt="Bank.Green" className="mt-1 ml-1 h-5 w-auto" />
         </Anchor>
         <Burger
           className="h-6 text-white"

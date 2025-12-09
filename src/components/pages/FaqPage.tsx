@@ -14,7 +14,7 @@ export function FaqPage({ page }: Props) {
   return (
     <PageContent>
       <article>
-        <header>
+        <header className="prose">
           {introduction && introduction.length > 0 ? (
             renderRichText(introduction)
           ) : (
@@ -22,7 +22,9 @@ export function FaqPage({ page }: Props) {
           )}
         </header>
 
-        <section>{slices ? <SliceZone slices={slices} /> : <p>Error loading content.</p>}</section>
+        <section className="prose sm:prose-lg xl:prose-xl mx-auto max-w-4xl xl:max-w-5xl mb-10">
+          {slices ? <SliceZone slices={slices} /> : <p>Error loading content.</p>}
+        </section>
 
         <section>
           <h2>Take Action with Bank.Green</h2>
