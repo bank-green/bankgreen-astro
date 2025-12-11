@@ -93,41 +93,7 @@
 }
 
 .mantine-Title-root {
-  margin-bottom: var(--margin-bottom) !important;
-}
-
-h1.mantine-Title-root {
-  font-size: 2.25rem;
-  line-height: 3rem;
-}
-
-h2.mantine-Title-root {
-  font-size: 2rem;
-  line-height: 2.5rem;
-}
-
-h3.mantine-Title-root {
-  font-size: 1.5rem;
-  line-height: 2rem;
-}
-
-h4.mantine-Title-root {
-  font-size: 1.313rem;
-  line-height: 1.5rem;
-}
-
-h5.mantine-Title-root {
-  font-size: 1.125rem;
-  line-height: 1.75rem;
-}
-
-h6.mantine-Title-root {
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  font-weight: var(--font-weight-medium);
-  font-family: var(--font-family-body);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
+  margin-bottom: var(--margin-bottom);
 }
 
 .mantine-Select-dropdown {

@@ -38,6 +38,11 @@ export const theme = createTheme({
   primaryColor: 'green',
   primaryShade: 6,
   components: {
+    Anchor: {
+      classNames: {
+        root: 'transition-all duration-200 font-medium text-linkDefault hover:text-linkHover active:text-linkActive',
+      },
+    },
     AppShell: {
       defaultProps: {
         padding: 0,
@@ -48,7 +53,7 @@ export const theme = createTheme({
       classNames: {
         header: 'm-auto max-w-7xl w-full',
         main: 'm-auto w-full bg-sushi-100',
-        footer: 'm-auto max-w-7xl w-full bg-white',
+        footer: 'm-auto max-w-7xl w-full bg-white pt-6',
       },
     },
     Container: Container.extend({

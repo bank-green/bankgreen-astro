@@ -1,16 +1,16 @@
 /* Design tokens - generated from tokens.mjs */
 @import "./tokens.generated.css";
-/* Mantine core styles - imported once globally */
-@import "@mantine/core/styles.css" layer(theme);
 /* Skip importing preflight to avoid conflicts with Mantine's own CSS resets */
 @import "tailwindcss/theme.css" layer(base);
+/* Mantine core styles - imported once globally */
+@import "@mantine/core/styles.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
 @import "./overrides.css";
 
-/* Tailwind Typography plugin */
+/* Tailwind Typography plugin; places classes in the `components` layer */
 @plugin "@tailwindcss/typography";
 
-@layer base, theme, components, utilities;
+@layer base, components, theme, utilities;
 
 /* 
  * Mantine requires these CSS variables - they're set by MantineProvider
@@ -36,6 +36,13 @@
     --mantine-font-size-md: 1rem;
     --mantine-line-height: 1.55;
     --mantine-color-text: var(--color-sky-900);
+    --mantine-h1-font-size: 3rem;
+    --mantine-h1-font-weight: 500;
+    --mantine-h2-font-size: 2.25rem;
+    --mantine-h2-font-weight: 550;
+    --mantine-h3-font-weight: 600;
+    --mantine-h4-font-weight: 600;
+    --mantine-h5-font-weight: 600;
     background-color: var(--color-white);
     color: var(--mantine-color-text);
   }
@@ -52,23 +59,28 @@
     @apply bg-gray-50 text-gray-900 antialiased;
     overflow-y: scroll;
   }
+
   a,
   a:-webkit-any-link {
-    color: inherit;
     text-decoration: none;
-    @apply no-underline } a.link { @apply font-medium text-sushi-500 hover:underline hover:text-sushi-600 focus:underline !important;
+    @apply no-underline;
   }
-
+  a.link {
+    @apply transition-all duration-100 font-medium text-linkDefault hover:underline hover:text-linkHover active:text-linkActive focus:underline;
+  }
   .underlineLink a {
-    @apply hover:underline } b { font-weight: 600;
+    @apply hover:underline;
   }
 
+  b {
+    font-weight: 600;
+  }
   strong {
-    font-weight: 700;
+    font-weight: 600;
   }
 
   ::selection {
-    @apply bg-sushi-500 text-white;
+    @apply bg-sushi-500 text-white rounded;
   }
 
   .bg-gradient-gray-light {
@@ -102,10 +114,6 @@
 
   .button-white {
     @apply block font-medium bg-gray-100 hover:bg-gray-200 focus:outline-none border border-transparent focus:ring-2 focus:ring-offset-2 focus:ring-gray-100 text-primaryDark p-4 text-center w-full rounded-2xl capitalize;
-  }
-
-  .font-secondary {
-    font-family: "Lora", serif;
   }
 
   .font-secondary a {

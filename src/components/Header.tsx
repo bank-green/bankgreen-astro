@@ -45,7 +45,7 @@ export function Header() {
           size="sm"
         />
         <Group visibleFrom="md">
-          <NavLinks classes="text-white" />
+          <NavLinks classes="text-sky-200 hover:text-white hover:no-underline transition" />
         </Group>
         <Drawer
           opened={opened}
