@@ -70,7 +70,7 @@ export const theme = createTheme({
         size: 'lg',
       },
       classNames: {
-        root: 'px-6 lg:px-0',
+        root: 'px-0',
       },
     }),
   },

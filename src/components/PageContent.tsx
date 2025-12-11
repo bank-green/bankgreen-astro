@@ -23,7 +23,7 @@ interface Props {
 export function PageContent({ children }: Props) {
   return (
     <MantineProvider theme={theme}>
-      <Container strategy="grid" className="pt-18">
+      <Container strategy="grid" className="px-0 pt-18">
         {children}
       </Container>
     </MantineProvider>

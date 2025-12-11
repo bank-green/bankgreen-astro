@@ -4,12 +4,12 @@ import classes from './Footer.module.css'
 export function Footer() {
   return (
     <AppShell.Footer className="relative">
-      <Container>
-        <Group className="items-start py-4">
-          <img className="h-6 lg:my-2" src="/img/trim-hor-light.svg" alt="Bank.Green"></img>
+      <Container className="mx-auto w-full max-w-6xl px-6">
+        <Group className="w-full items-start justify-between py-4">
+          <img className="h-8 lg:my-2" src="/img/trim-hor-light.svg" alt="Bank.Green"></img>
 
-          <nav className={classes.nav}>
-            <Stack gap="sm" className={classes.section}>
+          <Group className="items-start justify-between gap-36">
+            <Stack gap="sm" className="text-right">
               <Anchor href="/sustainable-eco-banks" underline="hover">
                 Sustainable Banks
               </Anchor>
@@ -23,7 +23,7 @@ export function Footer() {
                 Fossil Free Certification
               </Anchor>
             </Stack>
-            <Stack gap="sm" className={classes.section}>
+            <Stack gap="sm" className="text-right">
               <Anchor href="/blog" underline="hover">
                 Blog
               </Anchor>
@@ -37,7 +37,7 @@ export function Footer() {
                 Volunteering
               </Anchor>
             </Stack>
-            <Stack gap="sm" className={classes.section}>
+            <Stack gap="sm" className="text-right">
               <Anchor href="/team" underline="hover">
                 Who We Are
               </Anchor>
@@ -48,7 +48,7 @@ export function Footer() {
                 FAQ
               </Anchor>
             </Stack>
-          </nav>
+          </Group>
         </Group>
       </Container>
       <Text size="sm" className={classes.copyright}>
