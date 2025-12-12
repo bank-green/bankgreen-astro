@@ -4,11 +4,11 @@ import classes from './Footer.module.css'
 export function Footer() {
   return (
     <AppShell.Footer className="relative">
-      <Container className="mx-auto w-full max-w-6xl px-6">
+      <Container className="mx-auto w-full px-6 lg:px-0">
         <Group className="w-full items-start justify-between py-4">
           <img className="h-8 lg:my-2" src="/img/trim-hor-light.svg" alt="Bank.Green"></img>
 
-          <Group className="items-start justify-between gap-36">
+          <Group className="grow items-start justify-between gap-12 md:grow-0 md:gap-36">
             <Stack gap="sm" className="text-right">
               <Anchor href="/sustainable-eco-banks" underline="hover">
                 Sustainable Banks

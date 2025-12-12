@@ -88,7 +88,7 @@
   }
 
   .contain {
-    @apply w-full max-w-7xl mx-auto px-6;
+    @apply w-full max-w-6xl mx-auto px-6;
   }
 
   .overflow-y-scroll {

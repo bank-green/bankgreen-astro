@@ -15,16 +15,6 @@ interface Props {
 /**
  * Wraps page content with MantineProvider.
  * Used by all React page components to ensure consistent theming.
- *
- * Usage:
- * export function FaqPage({ data }: Props) {
- *   return (
- *     <PageContent>
- *       <h1>FAQ</h1>
- *       ...
- *     </PageContent>
- *   );
- * }
  */
 export function Layout({ children }: Props) {
   const pinned = useHeadroom({ fixedAt: 120 })

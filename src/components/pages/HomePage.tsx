@@ -22,10 +22,10 @@ export function HomePage({ page }: Props) {
     <PageContent>
       {/* Hero section with green gradient background - breaks out of container */}
       <Box data-breakout className="bg-linear-to-b from-sushi-100 to-sushi-200">
-        <Group className="mx-auto max-w-6xl items-center gap-12 px-6 pt-4 pb-24 lg:gap-0 lg:pr-12 lg:pb-30">
+        <Group className="mx-auto max-w-5xl items-center justify-between gap-12 px-6 pt-4 pb-24 md:px-0 lg:gap-0 lg:pb-30">
           <Title
             order={1}
-            className="block bg-linear-to-r from-sky-600 via-sushi-500 to-green-600 bg-clip-text text-center font-medium text-4xl text-transparent sm:text-5xl lg:max-w-1/2 lg:text-left"
+            className="mx-auto block max-w-3xl bg-linear-to-r from-sky-600 via-sushi-500 to-green-600 bg-clip-text text-center font-medium text-4xl text-transparent sm:text-5xl lg:max-w-1/2 lg:pr-6 lg:text-left"
           >
             {title}
           </Title>
@@ -41,17 +41,17 @@ export function HomePage({ page }: Props) {
         {/* As featured in */}
         <Stack
           data-breakout
-          className="-mb-24 w-full bg-radial-[ellipse_at_top_center] from-green-200 to-sushi-100 py-6 pb-24"
+          className="-mb-24 w-full from-green-200 to-sushi-100 py-6 pb-24 md:bg-radial-[ellipse_at_top_center]"
         >
           <Stack className="hidden md:flex">
-            <Stack className="lg:no-wrap mx-auto mb-8 hidden max-w-4xl flex-col items-center pt-10 md:flex md:pt-8 lg:flex-row">
-              <Text className="mb-8 inline-block whitespace-nowrap text-center font-semibold text-xl md:mr-2 md:mb-0 lg:mr-6">
+            <Stack className="lg:no-wrap mx-auto mb-8 hidden w-full max-w-5xl flex-col items-center justify-between gap-4 pt-10 md:flex md:pt-8 lg:flex-row">
+              <Text className="mb-8 inline-block grow whitespace-nowrap text-center font-semibold text-xl md:mr-2 md:mb-0 lg:mr-6">
                 As featured in
               </Text>
               <Stack
                 className={cx(
-                  'items-center justify-between md:flex md:flex-row md:space-y-0',
-                  '[&>img]:relative [&>img]:h-16 [&>img]:w-auto [&>img]:rounded-xl [&>img]:bg-white [&>img]:px-6 [&>img]:py-4 [&>img]:opacity-80 [&>img]:grayscale'
+                  'grow items-center justify-between md:flex md:flex-row md:space-y-0',
+                  '[&>img]:relative [&>img]:h-16 [&>img]:w-auto [&>img]:rounded-xl [&>img]:bg-white [&>img]:px-6 [&>img]:py-4 [&>img]:opacity-80 [&>img]:grayscale lg:[&>img]:px-10'
                 )}
               >
                 {slices1 && <SliceZone slices={slices1} />}
@@ -77,7 +77,7 @@ export function HomePage({ page }: Props) {
             {/* In association with */}
 
             {/* Why Bank.Green? teaser */}
-            <Group className="mx-auto mt-16 items-center gap-1 text-4xl text-gray-700 leading-4">
+            <Group className="mx-auto items-center gap-1 text-4xl text-gray-700 leading-4 md:mt-16">
               Why{' '}
               <img
                 className="mt-2 ml-2 inline-block h-10 px-0.5"
@@ -108,7 +108,7 @@ export function HomePage({ page }: Props) {
 
       {/* Why Bank.Green section - white background with ATM illustration */}
       <Box data-breakout className="bg-white">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-center px-6 py-16 md:flex-row">
+        <div className="mx-auto flex max-w-5xl flex-col items-center justify-center px-6 py-16 md:flex-row md:px-16">
           <div className="max-w-sm md:w-1/2">
             <div className="mb-4 text-lg tracking-wide md:text-2xl [&_strong]:font-semibold [&_strong]:text-gray-800">
               {description1 && description1.length > 0 ? (
@@ -152,9 +152,9 @@ export function HomePage({ page }: Props) {
 
           <Box data-container>
             {/* Bank illustration section */}
-            <div className="mx-auto flex max-w-6xl flex-col items-center justify-center px-6 pt-8 pb-4 md:flex-row md:pb-16">
+            <div className="mx-auto flex max-w-5xl flex-col items-center justify-center px-6 pt-8 pb-4 md:flex-row md:px-0 md:pb-16">
               {/* Bank illustration - on left for desktop */}
-              <div className="-ml-48 md:mr-24 md:w-5/8">
+              <div className="md:-ml-48 md:mr-24 md:w-5/8">
                 <img
                   src="/img/illustrations/bank.svg"
                   alt="Bank building illustration"
@@ -164,13 +164,13 @@ export function HomePage({ page }: Props) {
                 />
               </div>
 
-              <div className="-ml-36 max-w-sm md:w-3/8">
+              <div className="md:-ml-36 max-w-sm md:w-3/8">
                 <div className="mb-4 text-lg tracking-wide md:text-2xl [&_strong]:font-semibold [&_strong]:text-gray-800">
                   {description3 && description3.length > 0 ? (
                     renderRichText(description3)
                   ) : (
                     <p>
-                      <strong>We have the power to change our banking system</strong> because it
+                      <strong>We have the power to change our banking system,</strong> because it
                       will not change itself. Mass pressure from customers will force our banks to
                       defund fossil fuels.
                     </p>
@@ -193,7 +193,7 @@ export function HomePage({ page }: Props) {
             </div>
 
             {/* Lead gen form section - dark blue card */}
-            <div id="join" className="mx-auto max-w-6xl px-6 pb-8">
+            <div id="join" className="mx-auto max-w-6xl px-6 pb-8 lg:px-0">
               <div className="rounded-2xl bg-primaryDark p-8 text-white md:p-12">
                 <div className="flex flex-col gap-8 lg:flex-row lg:gap-16">
                   {/* Left side - title and benefits */}

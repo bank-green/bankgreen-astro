@@ -147,16 +147,16 @@ export const fontTokens = {
 }
 
 export const breakpointTokens = {
-  xxs: '20em',
-  xs: '32em',
-  sm: '48em',
-  md: '62em',
-  lg: '80em',
-  xl: '96em',
-  xxl: '120em',
-  mobile: '32em',
-  max: '80em',
-  min: '20em',
+  xxs: '20rem',
+  xs: '32rem',
+  sm: '48rem',
+  md: '62rem',
+  lg: '72rem',
+  xl: '96rem',
+  xxl: '120rem',
+  mobile: '32rem',
+  max: '72rem',
+  min: '20rem',
 }
 
 /**

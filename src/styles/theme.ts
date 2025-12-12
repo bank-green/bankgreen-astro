@@ -51,9 +51,9 @@ export const theme = createTheme({
         withBorder: false,
       },
       classNames: {
-        header: 'm-auto max-w-7xl w-full',
+        header: 'm-auto max-w-6xl w-full',
         main: 'm-auto w-full bg-sushi-100',
-        footer: 'm-auto max-w-7xl w-full bg-white pt-6',
+        footer: 'm-auto max-w-6xl w-full bg-white pt-6',
       },
     },
     Container: Container.extend({
