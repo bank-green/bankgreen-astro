@@ -7,13 +7,13 @@ interface Props {
 }
 
 /**
- * Wraps page content with MantineProvider and Paper component.
+ * Wraps page content with MantineProvider and padding. Not used on HomePage because of the breakout sections.
  * Provides Mantine theme context to all child components.
  */
 export function PageContent({ children }: Props) {
   return (
     <MantineProvider theme={theme}>
-      <Container strategy="grid" className="px-0 pt-18">
+      <Container strategy="grid" className="px-6 pt-12 pb-16">
         {children}
       </Container>
     </MantineProvider>

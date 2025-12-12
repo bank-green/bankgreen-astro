@@ -1,10 +1,10 @@
-import { PageContent } from '@components/PageContent'
 import { Swoosh } from '@components/Swoosh'
 import { renderRichText } from '@lib/prismicHelpers'
-import { Anchor, Box, Group, Stack, Text, Title } from '@mantine/core'
+import { Anchor, Box, Group, MantineProvider, Stack, Text, Title } from '@mantine/core'
 import type { PrismicDocument, RichTextField } from '@prismicio/client'
 import { SliceZone } from '@slices'
 import cx from 'clsx'
+import theme from '../../styles/theme'
 
 interface Props {
   page: PrismicDocument | null
@@ -19,13 +19,13 @@ export function HomePage({ page }: Props) {
   const description4 = page?.data?.description4 as RichTextField | undefined
 
   return (
-    <PageContent>
+    <MantineProvider theme={theme}>
       {/* Hero section with green gradient background - breaks out of container */}
       <Box data-breakout className="bg-linear-to-b from-sushi-100 to-sushi-200">
-        <Group className="mx-auto max-w-5xl items-center justify-between gap-12 px-6 pt-4 pb-24 md:px-0 lg:gap-0 lg:pb-30">
+        <Group className="mx-auto max-w-5xl items-center justify-between gap-12 px-6 pt-20 pb-24 md:px-0 lg:gap-0 lg:pb-30">
           <Title
             order={1}
-            className="mx-auto block max-w-3xl bg-linear-to-r from-sky-600 via-sushi-500 to-green-600 bg-clip-text text-center font-medium text-4xl text-transparent sm:text-5xl lg:max-w-1/2 lg:pr-6 lg:text-left"
+            className="mx-auto block max-w-3xl bg-linear-to-tr from-sky-600 via-sushi-500 to-green-500 bg-clip-text text-center font-medium text-4xl text-transparent sm:text-5xl lg:max-w-1/2 lg:pr-6 lg:text-left"
           >
             {title}
           </Title>
@@ -41,34 +41,35 @@ export function HomePage({ page }: Props) {
         {/* As featured in */}
         <Stack
           data-breakout
-          className="-mb-24 w-full from-green-200 to-sushi-100 py-6 pb-24 md:bg-radial-[ellipse_at_top_center]"
+          className="-mb-24 w-full from-green-300 to-sushi-100 py-6 pb-24 md:bg-radial-[ellipse_at_top_center]"
         >
           <Stack className="hidden md:flex">
             <Stack className="lg:no-wrap mx-auto mb-8 hidden w-full max-w-5xl flex-col items-center justify-between gap-4 pt-10 md:flex md:pt-8 lg:flex-row">
-              <Text className="mb-8 inline-block grow whitespace-nowrap text-center font-semibold text-xl md:mr-2 md:mb-0 lg:mr-6">
+              <Text className="mb-8 inline-block grow whitespace-nowrap text-center font-semibold text-sky-700 text-xl md:mr-2 md:mb-0 lg:mr-6">
                 As featured in
               </Text>
               <Stack
                 className={cx(
                   'grow items-center justify-between md:flex md:flex-row md:space-y-0',
-                  '[&>img]:relative [&>img]:h-16 [&>img]:w-auto [&>img]:rounded-xl [&>img]:bg-white [&>img]:px-6 [&>img]:py-4 [&>img]:opacity-80 [&>img]:grayscale lg:[&>img]:px-10'
+                  '[&>img]:relative [&>img]:h-16 [&>img]:w-auto [&>img]:rounded-xl [&>img]:bg-white [&>img]:px-6 [&>img]:py-4 [&>img]:mix-blend-overlay [&>img]:grayscale lg:[&>img]:px-10'
                 )}
               >
                 {slices1 && <SliceZone slices={slices1} />}
               </Stack>
             </Stack>
             <Stack className="items-center gap-1">
-              <Text className="mb-2 text-center font-semibold text-lg">In association with</Text>
-              <Anchor
-                href="https://www.banktrack.org/"
-                rel="noopener noreferrer"
-                target="_blank"
-                className="rounded-xl bg-white p-5"
-              >
-                <img src="/img/logos/banktrack.svg" alt="BankTrack" className="w-36" />
+              <Text className="mb-2 text-center font-semibold text-lg text-sky-700">
+                In association with
+              </Text>
+              <Anchor href="https://www.banktrack.org/" rel="noopener noreferrer" target="_blank">
+                <img
+                  src="/img/logos/banktrack.svg"
+                  alt="BankTrack"
+                  className="-mb-1 w-48 rounded-xl bg-white p-5 mix-blend-overlay grayscale"
+                />
               </Anchor>
 
-              <Anchor href="/partners" className="mt-2 text-sm underline">
+              <Anchor href="/partners" className="mt-2 text-sm">
                 See our partners
               </Anchor>
             </Stack>
@@ -111,25 +112,10 @@ export function HomePage({ page }: Props) {
         <div className="mx-auto flex max-w-5xl flex-col items-center justify-center px-6 py-16 md:flex-row md:px-16">
           <div className="max-w-sm md:w-1/2">
             <div className="mb-4 text-lg tracking-wide md:text-2xl [&_strong]:font-semibold [&_strong]:text-gray-800">
-              {description1 && description1.length > 0 ? (
-                renderRichText(description1)
-              ) : (
-                <p>
-                  <strong>The fight for a habitable planet is the fight for our lives.</strong> But
-                  while we look at ways to make our lives more sustainable, most of us are also
-                  funding environmental catastrophe.
-                </p>
-              )}
+              {description1 && description1.length > 0 && renderRichText(description1)}
             </div>
             <div className="mb-12 whitespace-pre-line text-gray-600 tracking-wide md:mb-0 md:text-xl">
-              {description2 && description2.length > 0 ? (
-                renderRichText(description2)
-              ) : (
-                <p>
-                  In the 10 years since the landmark Paris Agreement on climate change, the world's
-                  top 60 private-sector banks poured $7.9 trillion into the fossil fuel industry.
-                </p>
-              )}
+              {description2 && description2.length > 0 && renderRichText(description2)}
             </div>
           </div>
 
@@ -166,28 +152,10 @@ export function HomePage({ page }: Props) {
 
               <div className="md:-ml-36 max-w-sm md:w-3/8">
                 <div className="mb-4 text-lg tracking-wide md:text-2xl [&_strong]:font-semibold [&_strong]:text-gray-800">
-                  {description3 && description3.length > 0 ? (
-                    renderRichText(description3)
-                  ) : (
-                    <p>
-                      <strong>We have the power to change our banking system,</strong> because it
-                      will not change itself. Mass pressure from customers will force our banks to
-                      defund fossil fuels.
-                    </p>
-                  )}
+                  {description3 && description3.length > 0 && renderRichText(description3)}
                 </div>
                 <div className="mb-12 whitespace-pre-line text-gray-600 tracking-wide md:mb-0 md:text-xl">
-                  {description4 && description4.length > 0 ? (
-                    renderRichText(description4)
-                  ) : (
-                    <p>
-                      Bank.Green and our partners are leading a global reckoning with the world's
-                      most powerful driver of environmental destruction.
-                      <br />
-                      <br />
-                      But we need your help.
-                    </p>
-                  )}
+                  {description4 && description4.length > 0 && renderRichText(description4)}
                 </div>
               </div>
             </div>
@@ -270,6 +238,6 @@ export function HomePage({ page }: Props) {
           </div>
         </div>
       </Box>
-    </PageContent>
+    </MantineProvider>
   )
 }
