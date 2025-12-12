@@ -30,7 +30,7 @@ export function HomePage({ page }: Props) {
             {title}
           </Title>
 
-          <Box className="mx-auto flex h-48 w-full max-w-2xl grow items-center justify-center rounded-2xl bg-white lg:max-w-1/2">
+          <Box className="mx-auto flex h-48 w-full max-w-2xl grow items-center justify-center rounded-2xl bg-white/30 lg:max-w-1/2">
             <Stack className="items-center">
               <Text>Check if your bank is funding fossil fuels</Text>
               <Text className="text-gray-500">[FORM]</Text>
@@ -52,7 +52,7 @@ export function HomePage({ page }: Props) {
                 <Stack
                   className={cx(
                     'grow items-center justify-between md:flex md:flex-row md:space-y-0',
-                    '[&>img]:relative [&>img]:h-16 [&>img]:w-auto [&>img]:rounded-xl [&>img]:bg-white [&>img]:px-6 [&>img]:py-4 [&>img]:mix-blend-overlay [&>img]:grayscale lg:[&>img]:h-18 lg:[&>img]:px-8 lg:[&>img]:py-5'
+                    '[&>img]:relative [&>img]:h-16 [&>img]:w-auto [&>img]:rounded-xl [&>img]:bg-white [&>img]:px-6 [&>img]:py-4 [&>img]:mix-blend-overlay [&>img]:grayscale lg:[&>img]:h-18 lg:[&>img]:px-10 lg:[&>img]:py-5'
                   )}
                 >
                   {slices1 && <SliceZone slices={slices1} />}
@@ -113,8 +113,8 @@ export function HomePage({ page }: Props) {
 
       {/* Why Bank.Green section - white background with ATM illustration */}
       <Box data-breakout className="bg-white">
-        <div className="mx-auto flex max-w-5xl flex-col items-center justify-center px-6 py-16 md:flex-row md:px-16">
-          <div className="max-w-sm md:w-1/2">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-center px-12 py-16 md:flex-row md:px-0">
+          <div className="md:w-1/2 md:pr-12">
             <div className="mb-4 text-lg tracking-wide md:text-2xl [&_strong]:font-semibold [&_strong]:text-gray-800">
               {description1 && description1.length > 0 && renderRichText(description1)}
             </div>
@@ -124,7 +124,7 @@ export function HomePage({ page }: Props) {
           </div>
 
           {/* ATM illustration */}
-          <div className="max-w-full md:ml-24 md:w-3/8">
+          <div className="max-w-full md:w-1/2 md:pl-12">
             <img
               src="/img/illustrations/atm.svg"
               alt="Person at ATM illustration"
@@ -142,23 +142,23 @@ export function HomePage({ page }: Props) {
 
           <Box data-container>
             {/* Bank illustration section */}
-            <div className="mx-auto flex max-w-5xl flex-col items-center justify-center px-6 pt-8 pb-4 md:flex-row md:px-0 md:pb-16">
+            <div className="z-10 mx-auto flex max-w-6xl flex-col items-center justify-center px-12 pt-8 pb-4 md:flex-row md:px-0 md:pb-16">
               {/* Bank illustration - on left for desktop */}
-              <div className="md:-ml-48 md:mr-24 md:w-5/8">
+              <div className="md:w-9/16 md:pr-24">
                 <img
                   src="/img/illustrations/bank.svg"
                   alt="Bank building illustration"
                   className="w-full"
-                  width={450}
-                  height={450}
+                  width="100%"
+                  height="auto"
                 />
               </div>
 
-              <div className="md:-ml-36 max-w-sm md:w-3/8">
-                <div className="mb-4 text-lg tracking-wide md:text-2xl [&_strong]:font-semibold [&_strong]:text-gray-800">
+              <div className="text-right md:w-7/16">
+                <div className="mb-4 text-balance text-lg tracking-wide md:text-2xl [&_strong]:font-semibold [&_strong]:text-gray-800">
                   {description3 && description3.length > 0 && renderRichText(description3)}
                 </div>
-                <div className="mb-12 whitespace-pre-line text-gray-600 tracking-wide md:mb-0 md:text-xl">
+                <div className="mb-12 text-balance text-gray-600 tracking-wide md:mb-0 md:text-xl">
                   {description4 && description4.length > 0 && renderRichText(description4)}
                 </div>
               </div>
