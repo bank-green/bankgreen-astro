@@ -22,7 +22,7 @@ export function HomePage({ page }: Props) {
     <MantineProvider theme={theme}>
       {/* Hero section with green gradient background - breaks out of container */}
       <Box data-breakout className="bg-linear-to-b from-sushi-100 to-sushi-200">
-        <Group className="mx-auto max-w-5xl items-center justify-between gap-12 px-6 pt-20 pb-24 md:px-0 lg:gap-0 lg:pb-30">
+        <Group className="mx-auto max-w-6xl items-center justify-between gap-12 px-6 pt-20 pb-24 md:px-0 lg:gap-0 lg:pb-30">
           <Title
             order={1}
             className="mx-auto block max-w-3xl bg-linear-to-tr from-sky-600 via-sushi-500 to-green-500 bg-clip-text text-center font-medium text-4xl text-transparent sm:text-5xl lg:max-w-1/2 lg:pr-6 lg:text-left"
@@ -43,40 +43,45 @@ export function HomePage({ page }: Props) {
           data-breakout
           className="-mb-24 w-full from-green-300 to-sushi-100 py-6 pb-24 md:bg-radial-[ellipse_at_top_center]"
         >
-          <Stack className="hidden md:flex">
-            <Stack className="lg:no-wrap mx-auto mb-8 hidden w-full max-w-5xl flex-col items-center justify-between gap-4 pt-10 md:flex md:pt-8 lg:flex-row">
-              <Text className="mb-8 inline-block grow whitespace-nowrap text-center font-semibold text-sky-700 text-xl md:mr-2 md:mb-0 lg:mr-6">
-                As featured in
-              </Text>
-              <Stack
-                className={cx(
-                  'grow items-center justify-between md:flex md:flex-row md:space-y-0',
-                  '[&>img]:relative [&>img]:h-16 [&>img]:w-auto [&>img]:rounded-xl [&>img]:bg-white [&>img]:px-6 [&>img]:py-4 [&>img]:mix-blend-overlay [&>img]:grayscale lg:[&>img]:px-10'
-                )}
-              >
-                {slices1 && <SliceZone slices={slices1} />}
+          <Box className="hidden pt-12 md:flex">
+            <Stack className="mx-auto w-full max-w-6xl items-center justify-between px-6 md:flex md:px-0 lg:flex-row lg:items-start">
+              <Stack className="lg:no-wrap mx-auto mb-8 items-center justify-between gap-4 lg:mx-0 lg:items-start">
+                <Text className="mb-8 inline-block w-full grow whitespace-nowrap text-center font-semibold text-sky-700 text-xl md:mb-0">
+                  As featured in
+                </Text>
+                <Stack
+                  className={cx(
+                    'grow items-center justify-between md:flex md:flex-row md:space-y-0',
+                    '[&>img]:relative [&>img]:h-16 [&>img]:w-auto [&>img]:rounded-xl [&>img]:bg-white [&>img]:px-6 [&>img]:py-4 [&>img]:mix-blend-overlay [&>img]:grayscale lg:[&>img]:h-18 lg:[&>img]:px-8 lg:[&>img]:py-5'
+                  )}
+                >
+                  {slices1 && <SliceZone slices={slices1} />}
+                </Stack>
+              </Stack>
+              <Stack className="items-center gap-4">
+                <Text className="mb-0 text-center font-semibold text-sky-700 text-xl">
+                  In association with
+                </Text>
+                <Stack className="items-center gap-0">
+                  <Anchor
+                    href="https://www.banktrack.org/"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    <img
+                      src="/img/logos/banktrack.svg"
+                      alt="BankTrack"
+                      className="-mb-1 h-18 rounded-xl bg-white p-6 mix-blend-overlay grayscale"
+                    />
+                  </Anchor>
+                  <Anchor href="/partners" className="text-sm">
+                    See our partners
+                  </Anchor>
+                </Stack>
               </Stack>
             </Stack>
-            <Stack className="items-center gap-1">
-              <Text className="mb-2 text-center font-semibold text-lg text-sky-700">
-                In association with
-              </Text>
-              <Anchor href="https://www.banktrack.org/" rel="noopener noreferrer" target="_blank">
-                <img
-                  src="/img/logos/banktrack.svg"
-                  alt="BankTrack"
-                  className="-mb-1 w-48 rounded-xl bg-white p-5 mix-blend-overlay grayscale"
-                />
-              </Anchor>
-
-              <Anchor href="/partners" className="mt-2 text-sm">
-                See our partners
-              </Anchor>
-            </Stack>
-          </Stack>
+          </Box>
           <Stack>
-            {/* In association with */}
-
             {/* Why Bank.Green? teaser */}
             <Group className="mx-auto items-center gap-1 text-4xl text-gray-700 leading-4 md:mt-16">
               Why{' '}
@@ -101,10 +106,9 @@ export function HomePage({ page }: Props) {
               </svg>
             </Box>
           </Stack>
+          {/* Swoosh transitions from green gradient to white */}
+          <Swoosh color="var(--color-white)" />
         </Stack>
-
-        {/* Swoosh transitions from green gradient to white */}
-        <Swoosh color="var(--color-white)" />
       </Box>
 
       {/* Why Bank.Green section - white background with ATM illustration */}
