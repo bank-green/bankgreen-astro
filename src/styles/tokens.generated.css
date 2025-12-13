@@ -6,16 +6,16 @@
  */
 
 @theme {
-  --breakpoint-xxs: 20em;
-  --breakpoint-xs: 32em;
-  --breakpoint-sm: 48em;
-  --breakpoint-md: 62em;
-  --breakpoint-lg: 80em;
-  --breakpoint-xl: 96em;
-  --breakpoint-xxl: 120em;
-  --breakpoint-mobile: 32em;
-  --breakpoint-max: 80em;
-  --breakpoint-min: 20em;
+  --breakpoint-xxs: 20rem;
+  --breakpoint-xs: 32rem;
+  --breakpoint-sm: 48rem;
+  --breakpoint-md: 62rem;
+  --breakpoint-lg: 72rem;
+  --breakpoint-xl: 96rem;
+  --breakpoint-xxl: 120rem;
+  --breakpoint-mobile: 32rem;
+  --breakpoint-max: 72rem;
+  --breakpoint-min: 20rem;
   --font-body: Reddit Sans, sans-serif;
   --font-headings: Reddit Sans, serif;
   --color-sushi-50: #F2F7EB;
@@ -136,10 +136,10 @@
   --color-borderHeavy: #8B9BC5;
   --color-borderHover: #5DBAFF;
   --color-borderLight: #BFC9E3;
-  --color-linkActive: #1A3F8F;
-  --color-linkDefault: #1E4FBF;
-  --color-linkHover: #2563EB;
-  --color-linkVisited: #1E4FBF;
+  --color-linkActive: #2563EB;
+  --color-linkDefault: #1A3F8F;
+  --color-linkHover: #1E4FBF;
+  --color-linkVisited: #1A3F8F;
   --color-textDefault: #282d46;
   --color-textHeadings: #282d46;
   --color-textInverse: #FFFFFF;

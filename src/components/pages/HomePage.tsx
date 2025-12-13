@@ -5,6 +5,7 @@ import type { PrismicDocument, RichTextField } from '@prismicio/client'
 import { SliceZone } from '@slices'
 import cx from 'clsx'
 import theme from '../../styles/theme'
+import LocationSearch from '../forms/LocationSearch'
 
 interface Props {
   page: PrismicDocument | null
@@ -33,7 +34,7 @@ export function HomePage({ page }: Props) {
           <Box className="mx-auto flex h-48 w-full max-w-2xl grow items-center justify-center rounded-2xl bg-white/30 lg:max-w-1/2">
             <Stack className="items-center">
               <Text>Check if your bank is funding fossil fuels</Text>
-              <Text className="text-gray-500">[FORM]</Text>
+              <LocationSearch />
             </Stack>
           </Box>
         </Group>

@@ -69,9 +69,10 @@
   }
 
   a,
-  a:-webkit-any-link {
+  a:-webkit-any-link,
+  a.mantine-Anchor-root {
     text-decoration: none;
-    @apply no-underline;
+    @apply no-underline hover:underline underline-offset-3 decoration-dotted decoration-from-font;
   }
   a.link {
     @apply transition-all duration-100 font-medium text-linkDefault hover:underline hover:text-linkHover active:text-linkActive focus:underline;
@@ -88,7 +89,7 @@
   }
 
   ::selection {
-    @apply bg-sushi-500 text-white rounded;
+    @apply bg-sushi-500/25 text-textDefault;
   }
 
   .bg-gradient-gray-light {

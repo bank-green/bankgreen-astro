@@ -11,7 +11,7 @@ import {
   type MantineColorsTuple,
   type MantineThemeColors,
 } from '@mantine/core'
-
+import cx from 'clsx'
 // Design tokens are shared between Mantine and Tailwind
 import { breakpointTokens, colorTokens, fontTokens } from './tokens.mjs'
 
@@ -40,7 +40,10 @@ export const theme = createTheme({
   components: {
     Anchor: {
       classNames: {
-        root: 'transition-all duration-200 font-medium text-linkDefault hover:text-linkHover active:text-linkActive',
+        root: cx(
+          'font-medium text-linkDefault transition-all duration-200 hover:text-linkHover active:text-linkActive',
+          'no-underline decoration-[0.01em] decoration-wavy underline-offset-from-font hover:underline'
+        ),
       },
     },
     AppShell: {
