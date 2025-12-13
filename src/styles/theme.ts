@@ -76,6 +76,11 @@ export const theme = createTheme({
         root: 'px-0',
       },
     }),
+    Input: {
+      classNames: {
+        input: 'bg-white border-sushi-500 focus:border-sushi-700 rounded-md',
+      },
+    },
     LoadingOverlay: {
       classNames: {
         overlay: 'bg-sushi-100/50 backdrop-blur-[2px]',

@@ -89,7 +89,7 @@
   }
 
   ::selection {
-    @apply bg-sushi-500/25 text-textDefault;
+    @apply bg-sky-500/25 text-textDefault;
   }
 
   .bg-gradient-gray-light {
