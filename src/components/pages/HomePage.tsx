@@ -1,11 +1,11 @@
+import BankLocationSearch from '@components/forms/BankLocationSearch'
 import { Swoosh } from '@components/Swoosh'
 import { renderRichText } from '@lib/prismicHelpers'
 import { Anchor, Box, Group, MantineProvider, Stack, Text, Title } from '@mantine/core'
 import type { PrismicDocument, RichTextField } from '@prismicio/client'
 import { SliceZone } from '@slices'
+import theme from '@styles/theme'
 import cx from 'clsx'
-import theme from '../../styles/theme'
-import LocationSearch from '../forms/LocationSearch'
 
 interface Props {
   page: PrismicDocument | null
@@ -23,7 +23,7 @@ export function HomePage({ page }: Props) {
     <MantineProvider theme={theme}>
       {/* Hero section with green gradient background - breaks out of container */}
       <Box data-breakout className="bg-linear-to-b from-sushi-100 to-sushi-200">
-        <Group className="mx-auto max-w-6xl items-center justify-between gap-12 px-6 pt-20 pb-24 md:px-0 lg:gap-0 lg:pb-30">
+        <Group className="mx-auto max-w-6xl items-start justify-between gap-12 px-6 pt-20 pb-24 md:px-0 lg:gap-0 lg:pb-30">
           <Title
             order={1}
             className="mx-auto block max-w-3xl bg-linear-to-tr from-sky-600 via-sushi-500 to-green-500 bg-clip-text text-center font-medium text-4xl text-transparent sm:text-5xl lg:max-w-1/2 lg:pr-6 lg:text-left"
@@ -31,11 +31,8 @@ export function HomePage({ page }: Props) {
             {title}
           </Title>
 
-          <Box className="mx-auto flex h-48 w-full max-w-2xl grow items-center justify-center rounded-2xl bg-white/30 lg:max-w-1/2">
-            <Stack className="items-center">
-              <Text>Check if your bank is funding fossil fuels</Text>
-              <LocationSearch />
-            </Stack>
+          <Box className="mx-auto flex w-full max-w-2xl grow justify-start lg:max-w-1/2">
+            <BankLocationSearch />
           </Box>
         </Group>
 

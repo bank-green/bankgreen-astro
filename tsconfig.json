@@ -4,13 +4,15 @@
     "jsx": "react-jsx",
     "jsxImportSource": "react",
     "baseUrl": ".",
+    "resolveJsonModule": true,
     "paths": {
       "@/*": ["src/*"],
       "@components/*": ["src/components/*"],
       "@layouts/*": ["src/layouts/*"],
       "@lib/*": ["src/lib/*"],
       "@slices": ["src/slices"],
-      "@slices/*": ["src/slices/*"]
+      "@slices/*": ["src/slices/*"],
+      "@styles/*": ["src/styles/*"]
     }
   }
 }
