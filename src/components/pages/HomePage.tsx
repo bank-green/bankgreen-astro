@@ -6,6 +6,7 @@ import type { PrismicDocument, RichTextField } from '@prismicio/client'
 import { SliceZone } from '@slices'
 import theme from '@styles/theme'
 import cx from 'clsx'
+import type { Bank } from '../../lib/banks'
 
 interface Props {
   page: PrismicDocument | null
@@ -19,11 +20,17 @@ export function HomePage({ page }: Props) {
   const description3 = page?.data?.description3 as RichTextField | undefined
   const description4 = page?.data?.description4 as RichTextField | undefined
 
+  function handleBankSelect(bank: Bank | null) {
+    if (bank) {
+      window.location.href = `/banks/${bank ? bank.tag : ''}`
+    }
+  }
+
   return (
     <MantineProvider theme={theme}>
       {/* Hero section with green gradient background - breaks out of container */}
       <Box data-breakout className="bg-linear-to-b from-sushi-100 to-sushi-200">
-        <Group className="mx-auto max-w-6xl items-start justify-between gap-12 px-6 pt-20 pb-24 md:px-0 lg:gap-0 lg:pb-30">
+        <Group className="mx-auto max-w-6xl items-end justify-between gap-12 px-6 pt-20 pb-24 md:px-0 lg:gap-0 lg:pb-30">
           <Title
             order={1}
             className="mx-auto block max-w-3xl bg-linear-to-tr from-sky-600 via-sushi-500 to-green-500 bg-clip-text text-center font-medium text-4xl text-transparent sm:text-5xl lg:max-w-1/2 lg:pr-6 lg:text-left"
@@ -31,8 +38,8 @@ export function HomePage({ page }: Props) {
             {title}
           </Title>
 
-          <Box className="mx-auto flex w-full max-w-2xl grow justify-start lg:max-w-1/2">
-            <BankLocationSearch />
+          <Box className="mx-auto flex w-full max-w-lg grow justify-start lg:max-w-1/2">
+            <BankLocationSearch onBankSelect={handleBankSelect} />
           </Box>
         </Group>
 

@@ -1,8 +1,8 @@
-import { Stack, Title } from '@mantine/core'
-import { useState, useEffect } from 'react'
-import LocationSearch from './LocationSearch'
-import BankSearch from './BankSearch'
 import type { Bank } from '@lib/banks'
+import { Stack, Title } from '@mantine/core'
+import { useEffect, useState } from 'react'
+import BankSearch from './BankSearch'
+import LocationSearch from './LocationSearch'
 
 interface BankLocationSearchProps {
   title?: string
@@ -10,16 +10,15 @@ interface BankLocationSearchProps {
 }
 
 function BankLocationSearch({
-  title = 'Check if your bank is funding fossil fuels',
-  onBankSelect
+  title = 'Check whether your bank is funding fossil fuels.',
+  onBankSelect,
 }: BankLocationSearchProps) {
   const [country, setCountry] = useState<string>('')
   const [state, setState] = useState<string>('')
   const [selectedBank, setSelectedBank] = useState<Bank | null>(null)
   const [banks, setBanks] = useState<Bank[]>([])
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
-  // Load banks when country or state changes
   useEffect(() => {
     async function loadBanks() {
       if (!country) {
@@ -27,20 +26,13 @@ function BankLocationSearch({
         return
       }
 
-      // For US, require state
-      if (country === 'US' && !state) {
-        setBanks([])
-        return
-      }
-
       setLoading(true)
 
       try {
-        // TODO: Replace with actual GraphQL query
-        // For now, using placeholder
-        const response = await fetch(`/api/banks?country=${country}${state ? `&state=${state}` : ''}`)
-        const data = await response.json()
-        setBanks(data.banks || [])
+        const { fetchBrandsByCountry } = await import('@lib/queries/brands')
+        const stateQuery = country === 'US' ? state : undefined
+        const brands = await fetchBrandsByCountry(country, stateQuery)
+        setBanks(brands)
       } catch (error) {
         console.error('Error loading banks:', error)
         setBanks([])
@@ -58,8 +50,8 @@ function BankLocationSearch({
   }
 
   return (
-    <Stack gap="md" className="w-full">
-      <Title order={4} className="text-sky-800">
+    <Stack className="relative w-full gap-2 p-2">
+      <Title order={3} className="text-center font-normal text-sky-800 md:text-left">
         {title}
       </Title>
       <LocationSearch
@@ -73,7 +65,7 @@ function BankLocationSearch({
         value={selectedBank}
         onChange={handleBankChange}
         loading={loading}
-        disabled={!country || (country === 'US' && !state)}
+        disabled={!country}
         country={country}
         state={state}
       />

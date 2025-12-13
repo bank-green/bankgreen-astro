@@ -63,14 +63,31 @@ const fuse = new Fuse(US_STATES, { includeScore: true, keys: ['name', 'code'] })
 
 export function findStates(searchName: string): string[] {
   if (!searchName.trim()) {
-    return US_STATES.map(state => state.code)
+    return US_STATES.map((state) => state.code)
   }
 
   const result = fuse.search(searchName)
-  return result.filter(x => x.score !== undefined && x.score < 0.3).map(x => x.item.code)
+  return result.filter((x) => x.score !== undefined && x.score < 0.3).map((x) => x.item.code)
 }
 
 export function getStateName(code: string): string {
-  const state = US_STATES.find(s => s.code === code)
+  const state = US_STATES.find((s) => s.code === code)
   return state?.name || code
+}
+
+/**
+ * Convert a state code to a state tag for GraphQL queries
+ * Format: us-{state-name-slug}
+ * Example: CA -> us-california, NY -> us-new-york
+ *
+ * This matches the cities_light library format used in the Django backend
+ */
+export function getStateTag(code: string): string {
+  const state = US_STATES.find((s) => s.code === code)
+  if (!state) return code
+
+  // Convert state name to slug (lowercase, hyphenated)
+  // This matches cities_light's slug format
+  const slug = state.code.toUpperCase().replace(/\s+/g, '-')
+  return `US-${slug}`
 }

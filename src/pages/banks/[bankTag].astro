@@ -1,18 +1,26 @@
 ---
 import { BankScorePage } from '@components/pages'
 import BaseLayout from '@layouts/BaseLayout.astro'
+import type { Bank } from '@lib/banks'
 
 interface BankData {
-  tag: string
   name: string
-  rating?: string
+  tag: string
+  commentary?: {
+    showOnSustainableBanksPage?: boolean
+  }
 }
 
 export async function getStaticPaths() {
-  // TODO: Fetch all banks from GraphQL
-  // const data = await graphqlFetch(`query { banks { tag } }`);
-  // return data.banks.map((bank) => ({ params: { bankTag: bank.tag } }));
-  return []
+  const { fetchAllBrands } = await import('@lib/queries/brands')
+  const brands = await fetchAllBrands()
+  const data = brands?.filter(
+    (bank: BankData) => bank.commentary?.showOnSustainableBanksPage !== false
+  )
+  const mapped = data?.map((bank: BankData) => ({
+    params: { bankTag: bank.tag },
+  }))
+  return mapped || []
 }
 
 const { bankTag } = Astro.params

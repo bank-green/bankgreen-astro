@@ -1,7 +1,7 @@
-import { Autocomplete, Loader, Text } from '@mantine/core'
-import { useMemo, useState } from 'react'
 import type { Bank } from '@lib/banks'
 import { findBanks } from '@lib/banks'
+import { Autocomplete, Loader } from '@mantine/core'
+import { useMemo, useState } from 'react'
 
 interface BankSearchProps {
   banks: Bank[]
@@ -24,19 +24,15 @@ function BankSearch({
   label = 'Bank',
   placeholder: customPlaceholder,
   country,
-  state,
 }: BankSearchProps) {
   const [search, setSearch] = useState(value?.name || '')
 
   const placeholder = useMemo(() => {
     if (loading) return 'Loading banks...'
     if (!country) return 'Set a country first'
-    // For US, state is required
-    if (country === 'US' && !state) return 'Set a state first'
-    if (!banks.length)
-      return `No bank data found for this ${state ? 'state' : 'country'}`
+    if (!banks.length) return `No bank data found for this country`
     return customPlaceholder || 'Search bank...'
-  }, [loading, country, state, banks.length, customPlaceholder])
+  }, [loading, country, banks.length, customPlaceholder])
 
   const filteredBanks = useMemo(() => findBanks(banks, search), [banks, search])
 
@@ -69,7 +65,7 @@ function BankSearch({
     }
   }
 
-  const handleClear = () => {
+  const _handleClear = () => {
     setSearch('')
     onChange?.(null)
   }
@@ -87,13 +83,7 @@ function BankSearch({
       limit={50}
       leftSection={loading && !disabled ? <Loader size="xs" /> : <span>🏦</span>}
       rightSection={search ? undefined : null}
-      nothingFoundMessage={
-        <Text size="sm" className="text-center p-2">
-          <a href="/not-listed" className="text-sky-600 hover:underline">
-            My bank isn't listed
-          </a>
-        </Text>
-      }
+      onFocus={(e) => e.target.select()}
     />
   )
 }

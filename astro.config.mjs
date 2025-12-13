@@ -1,26 +1,30 @@
+import node from '@astrojs/node'
 import react from '@astrojs/react'
+import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'astro/config'
 
-import sitemap from '@astrojs/sitemap';
-
 // https://astro.build/config
 export default defineConfig({
-  integrations: [react(), {
-    name: 'generate-design-tokens',
-    hooks: {
-      'astro:config:setup': async () => {
-        await import('./src/styles/tokens-to-vars.mjs')
-        console.log('✓ Design tokens generated')
+  integrations: [
+    react(),
+    {
+      name: 'generate-design-tokens',
+      hooks: {
+        'astro:config:setup': async () => {
+          await import('./src/styles/tokens-to-vars.mjs')
+          console.log('✓ Design tokens generated')
+        },
       },
     },
-  }, sitemap()],
+    sitemap(),
+  ],
   vite: {
     plugins: [tailwindcss()],
     optimizeDeps: {
       include: ['react', 'react-dom', '@mantine/core', '@mantine/hooks'],
     },
   },
-  // Static output (default) - perfect for content sites
-  output: 'static',
+  output: 'server',
+  adapter: node({ mode: 'standalone' }),
 })

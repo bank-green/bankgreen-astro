@@ -1,7 +1,7 @@
 import { findCountries, getCountryName } from '@lib/countries'
 import { detectUserLocation } from '@lib/geolocation'
 import { findStates, getStateName } from '@lib/states'
-import { Autocomplete, type AutocompleteProps, Group } from '@mantine/core'
+import { Autocomplete, type AutocompleteProps, Group, Loader } from '@mantine/core'
 import { useEffect, useMemo, useState } from 'react'
 
 interface LocationSearchProps {
@@ -59,6 +59,10 @@ function LocationSearch({
               setSelectedUSState(location.regionCode)
               setUSStateSearch(getStateName(location.regionCode))
               onStateChange?.(location.regionCode)
+            } else {
+              setSelectedUSState('')
+              setUSStateSearch('')
+              onStateChange?.('')
             }
           }
         })
@@ -99,6 +103,8 @@ function LocationSearch({
 
     if (matchedCountry) {
       setSelectedCountry(matchedCountry.value)
+      setSelectedUSState('')
+      setUSStateSearch('')
       onChange?.(matchedCountry.value)
     }
   }
@@ -155,7 +161,7 @@ function LocationSearch({
     <Group>
       <Autocomplete
         label={label}
-        className="min-w-xs"
+        className="grow"
         placeholder={isDetecting ? 'Detecting your location...' : placeholder}
         value={search}
         onChange={handleChange}
@@ -165,12 +171,15 @@ function LocationSearch({
         renderOption={renderAutocompleteOption}
         maxDropdownHeight={300}
         limit={50}
+        leftSection={isDetecting && !disabled && <Loader size="xs" />}
         rightSection={search ? undefined : <span style={{ padding: '4px' }}>📍</span>}
+        onFocus={(e) => e.target.select()}
       />
       {showStateSearch && (
         <Autocomplete
           label="State"
           className="grow"
+          leftSection={isDetecting && !disabled && <Loader size="xs" />}
           placeholder={isDetecting ? 'Detecting your state...' : 'Search state...'}
           value={USStateSearch}
           onChange={handleStateChange}
@@ -179,6 +188,7 @@ function LocationSearch({
           disabled={disabled || isDetecting}
           maxDropdownHeight={300}
           limit={50}
+          onFocus={(e) => e.target.select()}
         />
       )}
     </Group>

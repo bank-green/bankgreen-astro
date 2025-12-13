@@ -76,6 +76,11 @@ export const theme = createTheme({
         root: 'px-0',
       },
     }),
+    LoadingOverlay: {
+      classNames: {
+        overlay: 'bg-sushi-100/50 backdrop-blur-[2px]',
+      },
+    },
   },
 })
 

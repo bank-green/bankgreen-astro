@@ -9,7 +9,11 @@
  *   pnpm add @tanstack/react-query graphql-request graphql
  */
 
-const GRAPHQL_ENDPOINT = import.meta.env.PUBLIC_GRAPHQL_ENDPOINT || 'http://localhost:8000/graphql'
+// Use local API proxy in development to avoid CORS issues
+// In production, this should be set to the actual GraphQL endpoint
+
+const GRAPHQL_ENDPOINT =
+  import.meta.env.MODE === 'production' ? import.meta.env.PUBLIC_GRAPHQL_ENDPOINT : 'api/graphql/'
 
 /**
  * Simple GraphQL fetch function.
@@ -28,6 +32,10 @@ export async function graphqlFetch<T>(
     },
     body: JSON.stringify({ query, variables }),
   })
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`)
+  }
 
   const json = await response.json()
 
