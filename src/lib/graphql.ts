@@ -12,8 +12,8 @@
 // Use local API proxy in development to avoid CORS issues
 // In production, this should be set to the actual GraphQL endpoint
 
-const GRAPHQL_ENDPOINT =
-  import.meta.env.MODE === 'production' ? import.meta.env.PUBLIC_GRAPHQL_ENDPOINT : 'api/graphql/'
+const envEndpoint = import.meta.env.PUBLIC_GRAPHQL_ENDPOINT || 'https://data.bank.green/graphql'
+const GRAPHQL_ENDPOINT = import.meta.env.MODE === 'production' ? envEndpoint : 'api/graphql/'
 
 /**
  * Simple GraphQL fetch function.

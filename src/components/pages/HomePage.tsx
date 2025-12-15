@@ -53,7 +53,7 @@ export function HomePage({ page }: Props) {
                 <Stack
                   className={cx(
                     'grow items-center justify-between md:flex md:flex-row md:space-y-0',
-                    '[&>img]:relative [&>img]:h-16 [&>img]:w-auto [&>img]:rounded-xl [&>img]:bg-white [&>img]:px-6 [&>img]:py-4 [&>img]:mix-blend-hard-light [&>img]:grayscale lg:[&>img]:h-18 lg:[&>img]:px-11 lg:[&>img]:py-5'
+                    '[&>img]:relative [&>img]:h-16 [&>img]:w-auto [&>img]:rounded-xl [&>img]:bg-white [&>img]:px-6 [&>img]:py-4 [&>img]:mix-blend-luminosity [&>img]:grayscale lg:[&>img]:h-18 lg:[&>img]:px-11 lg:[&>img]:py-5'
                   )}
                 >
                   {slices1 && <SliceZone slices={slices1} />}
@@ -72,7 +72,7 @@ export function HomePage({ page }: Props) {
                     <img
                       src="/img/logos/banktrack.svg"
                       alt="BankTrack"
-                      className="-mb-1 h-18 rounded-xl bg-white p-6 mix-blend-hard-light grayscale"
+                      className="-mb-1 h-18 rounded-xl bg-white p-6 mix-blend-luminosity grayscale"
                     />
                   </Anchor>
                   <Anchor href="/partners" className="text-sm">
