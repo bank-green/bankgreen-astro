@@ -9,11 +9,9 @@
  *   pnpm add @tanstack/react-query graphql-request graphql
  */
 
-// Use local API proxy in development to avoid CORS issues
-// In production, this should be set to the actual GraphQL endpoint
-
-const envEndpoint = import.meta.env.PUBLIC_GRAPHQL_ENDPOINT || 'https://data.bank.green/graphql'
-const GRAPHQL_ENDPOINT = import.meta.env.MODE === 'production' ? envEndpoint : 'api/graphql/'
+// Always use the API proxy route to avoid CORS issues
+// The proxy handles forwarding requests to the actual GraphQL endpoint
+const GRAPHQL_ENDPOINT = '/api/graphql'
 
 /**
  * Simple GraphQL fetch function.
