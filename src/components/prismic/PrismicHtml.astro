@@ -1,0 +1,12 @@
+---
+import PrismicDOM from 'prismic-dom';
+
+interface Props {
+  content?: any;
+}
+
+const { content } = Astro.props as Props;
+const html = content ? PrismicDOM.RichText.asHtml(content) : '';
+---
+
+{html && <Fragment set:html={html} />}

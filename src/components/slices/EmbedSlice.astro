@@ -1,0 +1,25 @@
+---
+interface Props {
+  primary?: {
+    target?: {
+      html?: string;
+      provider_name?: string;
+    };
+  };
+  slice_type?: string;
+}
+
+const { primary, slice_type } = Astro.props as Props;
+const embed = primary?.target;
+
+let html = embed?.html || '';
+if (embed?.provider_name === 'YouTube') {
+  html = html.replace(/width="\d+"/, 'width="100%"').replace(/height="\d+"/, 'height="100%"');
+}
+---
+
+{embed?.html && (
+  <figure data-slice-type={slice_type} data-provider={embed.provider_name}>
+    <div set:html={html} />
+  </figure>
+)}

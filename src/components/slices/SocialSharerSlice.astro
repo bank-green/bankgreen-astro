@@ -1,0 +1,53 @@
+---
+import PrismicDOM from 'prismic-dom';
+
+interface Props {
+  primary?: {
+    text?: any;
+  };
+  slice_type?: string;
+}
+
+const { primary, slice_type } = Astro.props as Props;
+
+const shareText = primary?.text ? PrismicDOM.RichText.asText(primary.text) : '';
+const shareUrl = 'https://bank.green';
+const hashtags = ['climatecrisis', 'fossilbanks'];
+
+// Encode for URL sharing
+const encodedText = encodeURIComponent(shareText);
+const encodedUrl = encodeURIComponent(shareUrl);
+const encodedHashtags = hashtags.join(',');
+---
+
+<nav data-slice-type={slice_type} aria-label="Share on social media">
+  <ul>
+    <li>
+      <a
+        href={`https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}&hashtags=${encodedHashtags}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Share on X/Twitter
+      </a>
+    </li>
+    <li>
+      <a
+        href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Share on Facebook
+      </a>
+    </li>
+    <li>
+      <a
+        href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodedUrl}&title=${encodedText}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Share on LinkedIn
+      </a>
+    </li>
+  </ul>
+</nav>

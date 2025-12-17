@@ -1,0 +1,32 @@
+---
+import { asLink } from '@prismicio/client';
+import PrismicText from '../prismic/PrismicText.astro';
+
+interface Props {
+  primary?: {
+    name?: any;
+    description?: any;
+    img?: {
+      url?: string;
+    };
+    link?: any;
+  };
+  slice_type?: string;
+}
+
+const { primary, slice_type } = Astro.props as Props;
+const href = primary?.link ? asLink(primary.link) : undefined;
+---
+
+<article data-slice-type={slice_type}>
+  {primary?.img?.url && (
+    <img src={primary.img.url} alt={primary?.name ? <PrismicText content={primary.name} /> : ''} />
+  )}
+  <h3>
+    <PrismicText content={primary?.name} />
+  </h3>
+  <p>
+    <PrismicText content={primary?.description} />
+  </p>
+  {href && <a href={href}>View profile</a>}
+</article>

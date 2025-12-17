@@ -1,0 +1,68 @@
+---
+// Import all slice components
+import TextSlice from '../slices/TextSlice.astro';
+import ImageSlice from '../slices/ImageSlice.astro';
+import AccordionSlice from '../slices/AccordionSlice.astro';
+import ButtonSlice from '../slices/ButtonSlice.astro';
+import EmbedSlice from '../slices/EmbedSlice.astro';
+import FeaturedInSlice from '../slices/FeaturedInSlice.astro';
+import LeadGen from '../slices/LeadGen.astro';
+import SharePicGallerySlice from '../slices/SharePicGallerySlice.astro';
+import SocialSharerSlice from '../slices/SocialSharerSlice.astro';
+import TableSlice from '../slices/TableSlice.astro';
+import TeamMemberSlice from '../slices/TeamMemberSlice.astro';
+import ThanksSlice from '../slices/ThanksSlice.astro';
+import ErrorMessage from '../slices/ErrorMessage.astro';
+
+interface Props {
+  content?: any[];
+}
+
+const { content } = Astro.props as Props;
+
+interface SliceData {
+  slice_type: string;
+  [key: string]: unknown;
+}
+
+type SliceComponent = any;
+---
+
+{content && content.map((slice: SliceData, index: number) => {
+  const sliceType = slice.slice_type;
+
+  switch (sliceType) {
+    case 'text_slice':
+      return <TextSlice {...slice} />;
+    case 'image_slice':
+      return <ImageSlice {...slice} />;
+    case 'accordion_slice':
+      return <AccordionSlice {...slice} />;
+    case 'button_slice':
+      return <ButtonSlice {...slice} />;
+    case 'embed_slice':
+      return <EmbedSlice {...slice} />;
+    case 'featured_in_slice':
+      return <FeaturedInSlice {...slice} />;
+    case 'lead_gen':
+      return <LeadGen {...slice} />;
+    case 'share_pic_gallery_slice':
+      return <SharePicGallerySlice {...slice} />;
+    case 'social_sharer_slice':
+      return <SocialSharerSlice {...slice} />;
+    case 'table_slice':
+      return <TableSlice {...slice} />;
+    case 'team_member_slice':
+      return <TeamMemberSlice {...slice} />;
+    case 'thanks_slice':
+      return <ThanksSlice {...slice} />;
+    case 'error_message':
+      return <ErrorMessage {...slice} />;
+    default:
+      return (
+        <div data-unknown-slice={sliceType} key={`unknown-${sliceType}-${index}`}>
+          Unknown slice: {sliceType}
+        </div>
+      );
+  }
+})}

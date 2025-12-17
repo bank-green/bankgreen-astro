@@ -1,0 +1,43 @@
+---
+import { Stack } from '@mantine/core';
+import PrismicHtml from '../prismic/PrismicHtml.astro';
+
+interface Props {
+  primary?: {
+    contentlink?: {
+      data?: {
+        title?: string;
+      };
+    };
+    step?: string;
+    title?: string;
+    content?: any;
+  };
+  variation?: string;
+  slice_type?: string;
+}
+
+const { primary, variation, slice_type } = Astro.props as Props;
+
+// Determine title based on variation
+let title = '';
+if (variation === 'default') {
+  const linkedData = primary?.contentlink as { data?: { title?: string } } | undefined;
+  title = linkedData?.data?.title || 'Untitled';
+} else if (variation === 'richTextWithStep') {
+  title = primary?.step ? `${primary.step}: ${primary?.title || ''}` : primary?.title || '';
+} else {
+  title = primary?.title || '';
+}
+---
+
+<details data-slice-type={slice_type} data-slice-variation={variation}>
+  <summary>
+    <h2>{title}</h2>
+  </summary>
+  <div>
+    <Stack>
+      {primary?.content && <PrismicHtml content={primary.content} />}
+    </Stack>
+  </div>
+</details>

@@ -1,0 +1,12 @@
+---
+import PrismicDOM from 'prismic-dom';
+
+interface Props {
+  content?: any;
+}
+
+const { content } = Astro.props as Props;
+const text = content ? PrismicDOM.RichText.asText(content) : '';
+---
+
+{text}

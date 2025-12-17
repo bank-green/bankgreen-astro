@@ -4,41 +4,41 @@
  * Maps Prismic slice types to React components.
  * Use with SliceZone to render arrays of slices from Prismic.
  */
-export { AccordionSlice } from './AccordionSlice'
-export { ButtonSlice } from './ButtonSlice'
-export { EmbedSlice } from './EmbedSlice'
-export { ErrorMessage } from './ErrorMessage'
-export { FeaturedInSlice } from './FeaturedInSlice'
-export { ImageSlice } from './ImageSlice'
-export { LeadGen } from './LeadGen'
-export { SharePicGallerySlice } from './SharePicGallerySlice'
-export { SocialSharerSlice } from './SocialSharerSlice'
-export { TableSlice } from './TableSlice'
-export { TeamMemberSlice } from './TeamMemberSlice'
-export { TextSlice } from './TextSlice'
-export { ThanksSlice } from './ThanksSlice'
+export { AccordionSlice } from '@components/slices/AccordionSlice'
+export { ButtonSlice } from '@components/slices/ButtonSlice'
+export { EmbedSlice } from '@components/slices/EmbedSlice'
+export { ErrorMessage } from '@components/slices/ErrorMessage'
+export { FeaturedInSlice } from '@components/slices/FeaturedInSlice'
+export { ImageSlice } from '@components/slices/ImageSlice'
+export { LeadGen } from '@components/slices/LeadGen'
+export { SharePicGallerySlice } from '@components/slices/SharePicGallerySlice'
+export { SocialSharerSlice } from '@components/slices/SocialSharerSlice'
+export { TableSlice } from '@components/slices/TableSlice'
+export { TeamMemberSlice } from '@components/slices/TeamMemberSlice'
+export { TextSlice } from '@components/slices/TextSlice'
+export { ThanksSlice } from '@components/slices/ThanksSlice'
 
 import type { ComponentType } from 'react'
 
-import { AccordionSlice } from './AccordionSlice'
-import { ButtonSlice } from './ButtonSlice'
-import { EmbedSlice } from './EmbedSlice'
-import { ErrorMessage } from './ErrorMessage'
-import { FeaturedInSlice } from './FeaturedInSlice'
-import { ImageSlice } from './ImageSlice'
-import { LeadGen } from './LeadGen'
-import { SharePicGallerySlice } from './SharePicGallerySlice'
-import { SocialSharerSlice } from './SocialSharerSlice'
-import { TableSlice } from './TableSlice'
-import { TeamMemberSlice } from './TeamMemberSlice'
-import { TextSlice } from './TextSlice'
-import { ThanksSlice } from './ThanksSlice'
+import { AccordionSlice } from '@components/slices/AccordionSlice'
+import { ButtonSlice } from '@components/slices/ButtonSlice'
+import { EmbedSlice } from '@components/slices/EmbedSlice'
+import { ErrorMessage } from '@components/slices/ErrorMessage'
+import { FeaturedInSlice } from '@components/slices/FeaturedInSlice'
+import { ImageSlice } from '@components/slices/ImageSlice'
+import { LeadGen } from '@components/slices/LeadGen'
+import { SharePicGallerySlice } from '@components/slices/SharePicGallerySlice'
+import { SocialSharerSlice } from '@components/slices/SocialSharerSlice'
+import { TableSlice } from '@components/slices/TableSlice'
+import { TeamMemberSlice } from '@components/slices/TeamMemberSlice'
+import { TextSlice } from '@components/slices/TextSlice'
+import { ThanksSlice } from '@components/slices/ThanksSlice'
 
 /**
  * Map of slice type identifiers to their React components.
  * Keys match the slice_type values from Prismic.
  */
-export const sliceComponents: Record<string, ComponentType<{ slice: unknown }>> = {
+export const sliceComponents: Record<string, ComponentType<any>> = {
   accordion_slice: AccordionSlice,
   button_slice: ButtonSlice,
   embed_slice: EmbedSlice,
@@ -93,7 +93,7 @@ export function SliceZone({ slices }: SliceZoneProps) {
           )
         }
 
-        return <Component key={`${slice.slice_type}-${index}`} slice={slice} />
+        return <Component key={`${slice.slice_type}-${index}`} {...slice} />
       })}
     </>
   )
