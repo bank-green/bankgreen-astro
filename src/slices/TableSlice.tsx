@@ -7,10 +7,29 @@
  */
 
 import { renderRichText } from '@lib/prismicHelpers'
-import type { Content } from '@prismicio/client'
+import { Table, Container, Image, Group } from '@mantine/core'
+import type { RichTextField } from '@prismicio/client'
+
+type TableSlice = {
+  slice_type: 'table_slice'
+  variation: string
+  primary: {
+    column_1_header?: string
+    column_2_header?: string
+    column_3_header?: string
+    column_4_header?: string
+  }
+  items: Array<{
+    icon?: { url?: string; name?: string }
+    column_1?: RichTextField
+    column_2?: RichTextField
+    column_3?: RichTextField
+    column_4?: RichTextField
+  }>
+}
 
 interface Props {
-  slice: Content.TableSliceSlice
+  slice: TableSlice
 }
 
 export function TableSlice({ slice }: Props) {
@@ -19,56 +38,45 @@ export function TableSlice({ slice }: Props) {
     return null
   }
 
-  const { column_1_header, column_2_header, column_3_header, column_4_header } = slice.primary as {
-    column_1_header?: string
-    column_2_header?: string
-    column_3_header?: string
-    column_4_header?: string
-  }
+  const { column_1_header, column_2_header, column_3_header, column_4_header } = slice.primary
 
-  const headers = [column_1_header, column_2_header, column_3_header, column_4_header].filter(
-    Boolean
-  )
+  const rows = slice.items.map((row, index) => {
+    const typedRow = row
+
+    return (
+      <Table.Tr key={index}>
+        {typedRow.column_1 && (
+          <Table.Td>
+            <Group gap="sm">
+              {typedRow.icon?.url && (
+                <Image src={typedRow.icon.url} alt={typedRow.icon.name || ''} w={40} h={40} />
+              )}
+              <div>{renderRichText(typedRow.column_1)}</div>
+            </Group>
+          </Table.Td>
+        )}
+        {typedRow.column_2 && <Table.Td>{renderRichText(typedRow.column_2)}</Table.Td>}
+        {typedRow.column_3 && <Table.Td>{renderRichText(typedRow.column_3)}</Table.Td>}
+        {typedRow.column_4 && <Table.Td>{renderRichText(typedRow.column_4)}</Table.Td>}
+      </Table.Tr>
+    )
+  })
 
   return (
-    <table data-slice-type={slice.slice_type} data-slice-variation={slice.variation}>
-      {headers.length > 0 && (
-        <thead>
-          <tr>
-            {column_1_header && <th>{column_1_header}</th>}
-            {column_2_header && <th>{column_2_header}</th>}
-            {column_3_header && <th>{column_3_header}</th>}
-            {column_4_header && <th>{column_4_header}</th>}
-          </tr>
-        </thead>
-      )}
-      <tbody>
-        {slice.items.map((row, index) => {
-          const typedRow = row as {
-            icon?: { url?: string; name?: string }
-            column_1?: Content.TextSliceSlice['primary']['text']
-            column_2?: Content.TextSliceSlice['primary']['text']
-            column_3?: Content.TextSliceSlice['primary']['text']
-            column_4?: Content.TextSliceSlice['primary']['text']
-          }
-
-          return (
-            <tr key={index}>
-              {typedRow.column_1 && (
-                <td>
-                  {typedRow.icon?.url && (
-                    <img src={typedRow.icon.url} alt={typedRow.icon.name || ''} />
-                  )}
-                  {renderRichText(typedRow.column_1)}
-                </td>
-              )}
-              {typedRow.column_2 && <td>{renderRichText(typedRow.column_2)}</td>}
-              {typedRow.column_3 && <td>{renderRichText(typedRow.column_3)}</td>}
-              {typedRow.column_4 && <td>{renderRichText(typedRow.column_4)}</td>}
-            </tr>
-          )
-        })}
-      </tbody>
-    </table>
+    <Container data-slice-type={slice.slice_type} data-slice-variation={slice.variation}>
+      <Table striped highlightOnHover>
+        {(column_1_header || column_2_header || column_3_header || column_4_header) && (
+          <Table.Thead>
+            <Table.Tr>
+              {column_1_header && <Table.Th>{column_1_header}</Table.Th>}
+              {column_2_header && <Table.Th>{column_2_header}</Table.Th>}
+              {column_3_header && <Table.Th>{column_3_header}</Table.Th>}
+              {column_4_header && <Table.Th>{column_4_header}</Table.Th>}
+            </Table.Tr>
+          </Table.Thead>
+        )}
+        <Table.Tbody>{rows}</Table.Tbody>
+      </Table>
+    </Container>
   )
 }

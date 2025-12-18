@@ -1,3 +1,4 @@
+import { Text, Title } from '@mantine/core'
 import * as prismic from '@prismicio/client'
 import type { ReactNode } from 'react'
 
@@ -13,19 +14,43 @@ export function renderRichText(field: prismic.RichTextField | null | undefined):
 
     switch (block.type) {
       case 'heading1':
-        return <h1 key={key}>{renderSpans(block.text, block.spans)}</h1>
+        return (
+          <Title order={1} key={key}>
+            {renderSpans(block.text, block.spans)}
+          </Title>
+        )
       case 'heading2':
-        return <h2 key={key}>{renderSpans(block.text, block.spans)}</h2>
+        return (
+          <Title order={2} key={key}>
+            {renderSpans(block.text, block.spans)}
+          </Title>
+        )
       case 'heading3':
-        return <h3 key={key}>{renderSpans(block.text, block.spans)}</h3>
+        return (
+          <Title order={3} key={key}>
+            {renderSpans(block.text, block.spans)}
+          </Title>
+        )
       case 'heading4':
-        return <h4 key={key}>{renderSpans(block.text, block.spans)}</h4>
+        return (
+          <Title order={4} key={key}>
+            {renderSpans(block.text, block.spans)}
+          </Title>
+        )
       case 'heading5':
-        return <h5 key={key}>{renderSpans(block.text, block.spans)}</h5>
+        return (
+          <Title order={5} key={key}>
+            {renderSpans(block.text, block.spans)}
+          </Title>
+        )
       case 'heading6':
-        return <h6 key={key}>{renderSpans(block.text, block.spans)}</h6>
+        return (
+          <Title order={6} key={key}>
+            {renderSpans(block.text, block.spans)}
+          </Title>
+        )
       case 'paragraph':
-        return <p key={key}>{renderSpans(block.text, block.spans)}</p>
+        return <Text key={key}>{renderSpans(block.text, block.spans)}</Text>
       case 'preformatted':
         return <pre key={key}>{block.text}</pre>
       case 'list-item':
@@ -40,6 +65,7 @@ export function renderRichText(field: prismic.RichTextField | null | undefined):
           </figure>
         )
       case 'embed':
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: This is appropriate for embeds
         return <div key={key} dangerouslySetInnerHTML={{ __html: block.oembed.html || '' }} />
       default:
         return null
@@ -59,14 +85,16 @@ function renderSpans(text: string, spans: prismic.RTInlineNode[]): ReactNode {
   const result: ReactNode[] = []
   let currentPosition = 0
 
-  for (const span of sortedSpans) {
+  for (let i = 0; i < sortedSpans.length; i++) {
+    const span = sortedSpans[i]
+
     // Add text before this span
     if (span.start > currentPosition) {
       result.push(text.slice(currentPosition, span.start))
     }
 
     const spanText = text.slice(span.start, span.end)
-    const spanKey = `span-${span.start}-${span.end}`
+    const spanKey = `span-${i}-${span.start}-${span.end}`
 
     switch (span.type) {
       case 'strong':

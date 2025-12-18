@@ -6,15 +6,23 @@
  * Note: This is a placeholder - the actual sharing functionality
  * will need to be implemented with real share buttons.
  */
-import type { Content } from '@prismicio/client'
+import { Button, Group, Container } from '@mantine/core'
+import type { RichTextField } from '@prismicio/client'
 import { asText } from '@prismicio/client'
 
+type SocialSharerSlice = {
+  slice_type: 'social_sharer_slice'
+  primary: {
+    text?: RichTextField
+  }
+}
+
 interface Props {
-  slice: Content.SocialSharerSliceSlice
+  slice: SocialSharerSlice
 }
 
 export function SocialSharerSlice({ slice }: Props) {
-  const shareText = asText(slice.primary.text)
+  const shareText = asText(slice.primary.text) || ''
   const shareUrl = 'https://bank.green'
   const hashtags = ['climatecrisis', 'fossilbanks']
 
@@ -24,36 +32,40 @@ export function SocialSharerSlice({ slice }: Props) {
   const encodedHashtags = hashtags.join(',')
 
   return (
-    <nav data-slice-type={slice.slice_type} aria-label="Share on social media">
-      <ul>
-        <li>
-          <a
-            href={`https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}&hashtags=${encodedHashtags}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Share on X/Twitter
-          </a>
-        </li>
-        <li>
-          <a
-            href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Share on Facebook
-          </a>
-        </li>
-        <li>
-          <a
-            href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodedUrl}&title=${encodedText}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Share on LinkedIn
-          </a>
-        </li>
-      </ul>
-    </nav>
+    <Container
+      component="nav"
+      data-slice-type={slice.slice_type}
+      aria-label="Share on social media"
+    >
+      <Group>
+        <Button
+          component="a"
+          href={`https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}&hashtags=${encodedHashtags}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          variant="default"
+        >
+          Share on X/Twitter
+        </Button>
+        <Button
+          component="a"
+          href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          variant="default"
+        >
+          Share on Facebook
+        </Button>
+        <Button
+          component="a"
+          href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodedUrl}&title=${encodedText}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          variant="default"
+        >
+          Share on LinkedIn
+        </Button>
+      </Group>
+    </Container>
   )
 }

@@ -5,12 +5,24 @@
  */
 
 import { renderRichText } from '@lib/prismicHelpers'
-import type { Content } from '@prismicio/client'
+import { Container } from '@mantine/core'
+import type { RichTextField } from '@prismicio/client'
+
+type TextSlice = {
+  slice_type: 'text_slice'
+  primary: {
+    text?: RichTextField
+  }
+}
 
 interface Props {
-  slice: Content.TextSliceSlice
+  slice: TextSlice
 }
 
 export function TextSlice({ slice }: Props) {
-  return <section data-slice-type={slice.slice_type}>{renderRichText(slice.primary.text)}</section>
+  return (
+    <Container component="section" data-slice-type={slice.slice_type}>
+      {renderRichText(slice.primary.text)}
+    </Container>
+  )
 }

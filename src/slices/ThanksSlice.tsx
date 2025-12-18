@@ -3,11 +3,21 @@
  *
  * Variations: default
  */
-import type { Content } from '@prismicio/client'
+import { Stack, Title, Text, Container } from '@mantine/core'
+import type { RichTextField } from '@prismicio/client'
 import { asText } from '@prismicio/client'
 
+type ThanksSlice = {
+  slice_type: 'thanks_slice'
+  primary: {
+    title?: RichTextField
+    description?: RichTextField
+    show_explore_section?: boolean
+  }
+}
+
 interface Props {
-  slice: Content.ThanksSliceSlice
+  slice: ThanksSlice
 }
 
 export function ThanksSlice({ slice }: Props) {
@@ -17,15 +27,16 @@ export function ThanksSlice({ slice }: Props) {
   const descriptionText = asText(description)
 
   return (
-    <section data-slice-type={slice.slice_type}>
-      <h1>{titleText}</h1>
-      {descriptionText && <p>{descriptionText}</p>}
-      {show_explore_section && (
-        <nav aria-label="Explore more">
-          {/* Explore section content would go here */}
-          <p>Explore more options...</p>
-        </nav>
-      )}
-    </section>
+    <Container component="section" data-slice-type={slice.slice_type}>
+      <Stack gap="lg">
+        <Title order={1}>{titleText}</Title>
+        {descriptionText && <Text>{descriptionText}</Text>}
+        {show_explore_section && (
+          <nav aria-label="Explore more">
+            <Text>Explore more options...</Text>
+          </nav>
+        )}
+      </Stack>
+    </Container>
   )
 }

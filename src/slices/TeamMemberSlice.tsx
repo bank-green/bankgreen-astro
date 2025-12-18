@@ -3,11 +3,22 @@
  *
  * Variations: default
  */
-import type { Content } from '@prismicio/client'
+import { Button, Card, Image, Stack, Text, Title } from '@mantine/core'
+import type { ImageField, LinkField, RichTextField } from '@prismicio/client'
 import { asLink, asText } from '@prismicio/client'
 
+type TeamMemberSlice = {
+  slice_type: 'team_member_slice'
+  primary: {
+    name?: RichTextField
+    description?: RichTextField
+    img?: ImageField
+    link?: LinkField
+  }
+}
+
 interface Props {
-  slice: Content.TeamMemberSliceSlice
+  slice: TeamMemberSlice
 }
 
 export function TeamMemberSlice({ slice }: Props) {
@@ -18,11 +29,28 @@ export function TeamMemberSlice({ slice }: Props) {
   const href = asLink(link)
 
   return (
-    <article data-slice-type={slice.slice_type}>
-      {img?.url && <img src={img.url} alt={nameText || ''} />}
-      <h3>{nameText}</h3>
-      <p>{descriptionText}</p>
-      {href && <a href={href}>View profile</a>}
-    </article>
+    <Card data-slice-type={slice.slice_type} p="lg" radius="md" className="w-full">
+      <Card.Section className="py-8">
+        {img?.url && (
+          <Image
+            src={img.url}
+            alt={nameText || ''}
+            className="mx-auto aspect-square h-auto w-1/2 rounded-full"
+          />
+        )}
+      </Card.Section>
+
+      <Stack className="grow justify-between">
+        <Stack>
+          <Title order={3}>{nameText}</Title>
+          <Text size="sm">{descriptionText}</Text>
+        </Stack>
+        {href && (
+          <Button component="a" href={href} variant="light" fullWidth>
+            View profile
+          </Button>
+        )}
+      </Stack>
+    </Card>
   )
 }

@@ -6,8 +6,10 @@ import { getSingleSafe } from '@lib/prismic'
 const page = await getSingleSafe('faqpage', {
   fetchLinks: ['accordionitem.title', 'accordionitem.slices'],
 })
+
+const title = page?.data?.title || 'Frequently Asked Questions'
 ---
 
-<BaseLayout title="Frequently Asked Questions">
-  <FaqPage page={page} />
+<BaseLayout title={title}>
+  <FaqPage page={page} client:load />
 </BaseLayout>

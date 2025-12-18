@@ -14,5 +14,5 @@ export function findBanks(banks: Bank[], searchName: string): Bank[] {
 
   const fuse = new Fuse(banks, { threshold: 0.3, keys: ['name', 'aliases'] })
   const result = fuse.search(searchName)
-  return result.map(x => x.item)
+  return result.map((x) => x.item)
 }

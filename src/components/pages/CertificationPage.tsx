@@ -15,12 +15,12 @@ export function CertificationPage({ page }: Props) {
       <article className="prose sm:prose-lg xl:prose-xl mx-auto max-w-4xl xl:max-w-5xl">
         {/* Certification badge */}
         {certificationImg?.url ? (
-          <img src={certificationImg.url} alt="Fossil-free certified badge" className="w-48 h-48" />
+          <img src={certificationImg.url} alt="Fossil-free certified badge" className="h-48 w-48" />
         ) : (
           <img
             src="/img/certification/fossil-free-certified.png"
             alt="Fossil-free certified badge"
-            className="w-48 h-48"
+            className="h-48 w-48"
           />
         )}
 

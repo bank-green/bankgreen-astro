@@ -37,10 +37,10 @@
     --mantine-line-height: 1.55;
     --mantine-color-text: var(--color-sky-900);
     --mantine-h1-font-size: 3rem;
-    --mantine-h1-font-weight: 500;
+    --mantine-h1-font-weight: 600;
     --mantine-h2-font-size: 2.25rem;
-    --mantine-h2-font-weight: 550;
-    --mantine-h3-font-weight: 600;
+    --mantine-h2-font-weight: 700;
+    --mantine-h3-font-weight: 700;
     --mantine-h4-font-weight: 600;
     --mantine-h5-font-weight: 600;
     background-color: var(--color-white);

@@ -1,5 +1,6 @@
 import { PageContent } from '@components/PageContent'
 import { renderRichText } from '@lib/prismicHelpers'
+import { Stack, Title } from '@mantine/core'
 import type { PrismicDocument, RichTextField } from '@prismicio/client'
 import { SliceZone } from '@slices'
 
@@ -13,24 +14,22 @@ export function FaqPage({ page }: Props) {
 
   return (
     <PageContent>
-      <article>
-        <header className="prose">
-          {introduction && introduction.length > 0 ? (
-            renderRichText(introduction)
-          ) : (
-            <h1>Frequently Asked Questions</h1>
-          )}
-        </header>
+      <Stack>
+        {introduction && introduction.length > 0 ? (
+          renderRichText(introduction)
+        ) : (
+          <Title order={1}>Frequently Asked Questions</Title>
+        )}
 
-        <section className="prose sm:prose-lg xl:prose-xl mx-auto max-w-4xl xl:max-w-5xl mb-10">
+        <Stack className="rounded-lg bg-white/90 p-4">
           {slices ? <SliceZone slices={slices} /> : <p>Error loading content.</p>}
-        </section>
+        </Stack>
 
         <section>
           <h2>Take Action with Bank.Green</h2>
           {/* Newsletter signup form placeholder */}
         </section>
-      </article>
+      </Stack>
     </PageContent>
   )
 }

@@ -1,5 +1,6 @@
 import { PageContent } from '@components/PageContent'
 import { renderRichText } from '@lib/prismicHelpers'
+import { Button } from '@mantine/core'
 import type { PrismicDocument } from '@prismicio/client'
 import { SliceZone } from '@slices'
 import { useState } from 'react'
@@ -47,9 +48,9 @@ export function SustainableBanksPage({ page }: Props) {
                 <div className={readMoreP1 ? '' : 'line-clamp-6'}>
                   {renderRichText(introductory[0].primary.text)}
                 </div>
-                <button onClick={() => setReadMoreP1(!readMoreP1)}>
+                <Button variant="default" onClick={() => setReadMoreP1(!readMoreP1)} mt="md">
                   {readMoreP1 ? 'Read less' : 'Read more'}
-                </button>
+                </Button>
               </div>
             )}
 
@@ -59,9 +60,9 @@ export function SustainableBanksPage({ page }: Props) {
                 <div className={readMoreP2 ? '' : 'line-clamp-6'}>
                   <SliceZone slices={introductory.slice(1)} />
                 </div>
-                <button onClick={() => setReadMoreP2(!readMoreP2)}>
+                <Button variant="default" onClick={() => setReadMoreP2(!readMoreP2)} mt="md">
                   {readMoreP2 ? 'Read less' : 'Read more'}
-                </button>
+                </Button>
               </div>
             )}
           </section>

@@ -1,5 +1,6 @@
 import { PageContent } from '@components/PageContent'
 import { renderRichText } from '@lib/prismicHelpers'
+import { Button, Checkbox, Stack, TextInput, Textarea } from '@mantine/core'
 import type { PrismicDocument, RichTextField } from '@prismicio/client'
 
 interface Props {
@@ -29,54 +30,61 @@ export function ContactPage({ page }: Props) {
         </header>
 
         <section>
-          {/* Contact form - will be implemented as a separate component */}
-          <form>
-            <div>
-              <label htmlFor="firstName">Your first name (optional)</label>
-              <input
-                type="text"
+          <form onSubmit={(e) => e.preventDefault()}>
+            <Stack gap="md">
+              <TextInput
+                label="Your first name (optional)"
                 id="firstName"
                 name="firstName"
                 placeholder="First name, so we can say hi"
               />
-            </div>
 
-            <div>
-              <label htmlFor="email">Your email address</label>
-              <input
+              <TextInput
+                label="Your email address"
                 type="email"
                 id="email"
                 name="email"
                 placeholder="Your email address"
                 required
               />
-            </div>
 
-            <div>
-              <label htmlFor="subject">Subject</label>
-              <input type="text" id="subject" name="subject" placeholder="Subject" required />
-            </div>
+              <TextInput
+                label="Subject"
+                id="subject"
+                name="subject"
+                placeholder="Subject"
+                required
+              />
 
-            <div>
-              <label htmlFor="message">Your message</label>
-              <textarea id="message" name="message" placeholder="Your message" rows={3} required />
-            </div>
+              <Textarea
+                label="Your message"
+                id="message"
+                name="message"
+                placeholder="Your message"
+                rows={3}
+                required
+              />
 
-            <div>
-              <label>
-                <input type="checkbox" name="isAgreeMarketing" />I wish to receive more information
-                via email from Bank.Green.
-              </label>
-            </div>
+              <Checkbox
+                name="isAgreeMarketing"
+                label="I wish to receive more information via email from Bank.Green."
+              />
 
-            <div>
-              <label>
-                <input type="checkbox" name="isAgreeTerms" required />I have read and understood
-                Bank.Green's <a href="/privacy">privacy policy</a>.
-              </label>
-            </div>
+              <Checkbox
+                name="isAgreeTerms"
+                label={
+                  <>
+                    I have read and understood Bank.Green's{' '}
+                    <a href="/privacy">privacy policy</a>.
+                  </>
+                }
+                required
+              />
 
-            <button type="submit">Send message</button>
+              <Button type="submit" fullWidth>
+                Send message
+              </Button>
+            </Stack>
           </form>
         </section>
       </article>

@@ -7,16 +7,23 @@
  * implementation with form handling, validation, and submission.
  * This is a semantic placeholder showing the structure.
  */
-import type { Content } from '@prismicio/client'
+import {
+  Container,
+  Stack,
+  Title,
+  List,
+  TextInput,
+  Select,
+  Checkbox,
+  Button,
+} from '@mantine/core'
+import type { RichTextField } from '@prismicio/client'
 import { asText } from '@prismicio/client'
 
-interface Props {
-  slice: Content.LeadGenSlice
-}
-
-export function LeadGen({ slice }: Props) {
-  const primary = slice.primary as {
-    title?: Content.TextSliceSlice['primary']['text']
+type LeadGenSlice = {
+  slice_type: 'lead_gen'
+  primary: {
+    title?: RichTextField
     show_bank_field?: boolean
     show_status_field?: boolean
     form_bank_label?: string
@@ -25,11 +32,19 @@ export function LeadGen({ slice }: Props) {
     form_status_label?: string
     button_label?: string
   }
-
-  const items = slice.items as Array<{
-    bullet_text?: Content.TextSliceSlice['primary']['text']
+  items: Array<{
+    bullet_text?: RichTextField
     dropdown_status_option?: string
   }>
+}
+
+interface Props {
+  slice: LeadGenSlice
+}
+
+export function LeadGen({ slice }: Props) {
+  const primary = slice.primary
+  const items = slice.items
 
   const title = primary.title ? asText(primary.title) : 'Curious about switching to a green bank?'
   const showBankField = primary.show_bank_field ?? true
@@ -46,73 +61,77 @@ export function LeadGen({ slice }: Props) {
     .filter((opt): opt is string => typeof opt === 'string' && opt !== 'Select none (default)')
 
   return (
-    <section data-slice-type={slice.slice_type} aria-labelledby="lead-gen-title">
-      <h2 id="lead-gen-title">{title}</h2>
+    <Container component="section" data-slice-type={slice.slice_type}>
+      <Stack gap="lg">
+        <Title id="lead-gen-title">{title}</Title>
 
-      {bulletPoints.length > 0 && (
-        <ul>
-          {bulletPoints.map((point, index) => (
-            <li key={index}>{point}</li>
-          ))}
-        </ul>
-      )}
-
-      <form>
-        {showBankField && (
-          <div>
-            <label htmlFor="bank">{primary.form_bank_label || 'I am interested in'}</label>
-            {/* Bank search component would go here */}
-            <input type="text" id="bank" name="bank" placeholder="Search for a bank..." />
-          </div>
+        {bulletPoints.length > 0 && (
+          <List>
+            {bulletPoints.map((point, index) => (
+              <List.Item key={index}>{point}</List.Item>
+            ))}
+          </List>
         )}
 
-        <div>
-          <label htmlFor="firstName">{primary.form_name_label || 'First name'}</label>
-          <input
-            type="text"
-            id="firstName"
-            name="firstName"
-            placeholder="First name, so we can say hi"
-          />
-        </div>
+        <form onSubmit={(e) => e.preventDefault()}>
+          <Stack gap="md">
+            {showBankField && (
+              <TextInput
+                label={primary.form_bank_label || 'I am interested in'}
+                id="bank"
+                name="bank"
+                placeholder="Search for a bank..."
+              />
+            )}
 
-        <div>
-          <label htmlFor="email">{primary.form_email_label || 'Email address'}</label>
-          <input type="email" id="email" name="email" placeholder="Your email address" required />
-        </div>
+            <TextInput
+              label={primary.form_name_label || 'First name'}
+              id="firstName"
+              name="firstName"
+              placeholder="First name, so we can say hi"
+            />
 
-        {showStatusField && statusOptions.length > 0 && (
-          <div>
-            <label htmlFor="status">
-              {primary.form_status_label || 'Which option best describes your current status?'}
-            </label>
-            <select id="status" name="status">
-              <option value="">Select an option...</option>
-              {statusOptions.map((option, index) => (
-                <option key={index} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
+            <TextInput
+              label={primary.form_email_label || 'Email address'}
+              id="email"
+              name="email"
+              type="email"
+              placeholder="Your email address"
+              required
+            />
 
-        <div>
-          <label>
-            <input type="checkbox" name="isAgreeMarketing" />I wish to receive more information via
-            email from Bank.Green.
-          </label>
-        </div>
+            {showStatusField && statusOptions.length > 0 && (
+              <Select
+                label={primary.form_status_label || 'Which option best describes your current status?'}
+                id="status"
+                name="status"
+                placeholder="Select an option..."
+                data={statusOptions}
+              />
+            )}
 
-        <div>
-          <label>
-            <input type="checkbox" name="isAgreeTerms" required />I have read and understood
-            Bank.Green's <a href="/privacy">privacy policy</a>.
-          </label>
-        </div>
+            <Checkbox
+              name="isAgreeMarketing"
+              label="I wish to receive more information via email from Bank.Green."
+            />
 
-        <button type="submit">{primary.button_label || 'Complete Sign Up'}</button>
-      </form>
-    </section>
+            <Checkbox
+              name="isAgreeTerms"
+              label={
+                <>
+                  I have read and understood Bank.Green's{' '}
+                  <a href="/privacy">privacy policy</a>.
+                </>
+              }
+              required
+            />
+
+            <Button type="submit" fullWidth>
+              {primary.button_label || 'Complete Sign Up'}
+            </Button>
+          </Stack>
+        </form>
+      </Stack>
+    </Container>
   )
 }

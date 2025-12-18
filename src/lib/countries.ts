@@ -263,7 +263,7 @@ export const fullCountriesList: CountryCode[] = [
   'ZR',
   'ZM',
   'ZW',
-  'AX'
+  'AX',
 ]
 
 export const countriesWithBanks: CountryCode[] = [
@@ -334,7 +334,7 @@ export const countriesWithBanks: CountryCode[] = [
   'UG',
   'US',
   'UY',
-  'ZA'
+  'ZA',
 ]
 
 interface CountryItem {
@@ -343,17 +343,17 @@ interface CountryItem {
 }
 
 const countryNames: CountryItem[] = fullCountriesList
-  .map(code => ({
+  .map((code) => ({
     code,
-    title: get(code)
+    title: get(code),
   }))
   .sort((a, b) => (a.title > b.title ? 1 : -1))
 
 const fuse = new Fuse(countryNames, { includeScore: true, keys: ['title', 'code'] })
 
 const topCountries = countryNames
-  .filter(country => countriesWithBanks.includes(country.code))
-  .map(country => country.code)
+  .filter((country) => countriesWithBanks.includes(country.code))
+  .map((country) => country.code)
 
 export function findCountries(searchName: string): CountryCode[] {
   if (!searchName.trim()) {
@@ -372,20 +372,22 @@ export function findCountries(searchName: string): CountryCode[] {
   }
 
   // Check for exact country code match
-  const exactCodeMatch = countryNames.find(c => c.code.toUpperCase() === upper)
+  const exactCodeMatch = countryNames.find((c) => c.code.toUpperCase() === upper)
   if (exactCodeMatch) {
     return [exactCodeMatch.code]
   }
 
   // Fuzzy search on both name and code
   const result = fuse.search(searchName)
-  const filtered = result.filter(x => x.score !== undefined && x.score < 0.3).map(x => x.item.code)
+  const filtered = result
+    .filter((x) => x.score !== undefined && x.score < 0.3)
+    .map((x) => x.item.code)
 
   // If fuzzy search found nothing, try a simple includes check on code
   if (filtered.length === 0 && upper.length <= 2) {
     const codeMatches = countryNames
-      .filter(c => c.code.toUpperCase().includes(upper))
-      .map(c => c.code)
+      .filter((c) => c.code.toUpperCase().includes(upper))
+      .map((c) => c.code)
     if (codeMatches.length > 0) {
       return codeMatches
     }

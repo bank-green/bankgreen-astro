@@ -1,5 +1,5 @@
 /**
- * AccordionSlice - Expandable accordion with title and content.
+ * AccordionSlice - Expandable accordion with title and content using Mantine Accordion.
  *
  * Variations:
  * - default (Content Link): Links to another Prismic document
@@ -10,19 +10,27 @@
  */
 
 import { renderRichText } from '@lib/prismicHelpers'
-import type { Content } from '@prismicio/client'
-import { asText } from '@prismicio/client'
-import { useState } from 'react'
+import { Accordion, Stack, Title, Text } from '@mantine/core'
+import type { RichTextField } from '@prismicio/client'
+
+type AccordionSlice = {
+  slice_type: 'accordion_slice'
+  variation: 'default' | 'richText' | 'richTextWithStep'
+  primary: {
+    contentlink?: { data?: { title?: string } }
+    step?: string
+    title?: string
+    content?: RichTextField
+  }
+}
 
 interface Props {
-  slice: Content.AccordionSliceSlice
+  slice: AccordionSlice
   // For "default" variation, the linked document's slices need to be passed in
-  linkedContent?: Content.AccordionSliceSlice[]
+  linkedContent?: AccordionSlice[]
 }
 
 export function AccordionSlice({ slice, linkedContent }: Props) {
-  const [isOpen, setIsOpen] = useState(false)
-
   // Determine title based on variation
   let title: string
   if (slice.variation === 'default') {
@@ -39,25 +47,22 @@ export function AccordionSlice({ slice, linkedContent }: Props) {
   }
 
   return (
-    <details
-      data-slice-type={slice.slice_type}
-      data-slice-variation={slice.variation}
-      open={isOpen}
-      onToggle={(e) => setIsOpen((e.target as HTMLDetailsElement).open)}
-    >
-      <summary>
-        <h2>{title}</h2>
-      </summary>
-      <div>
-        {slice.variation === 'default' && linkedContent ? (
-          // Render linked document's slices - would need SliceZone here
-          <p>[Linked content would render here]</p>
-        ) : (
-          renderRichText(
-            (slice.primary as { content?: Content.TextSliceSlice['primary']['text'] }).content
-          )
-        )}
-      </div>
-    </details>
+    <Accordion data-slice-type={slice.slice_type} data-slice-variation={slice.variation}>
+      <Accordion.Item value="accordion-item">
+        <Accordion.Control>
+          <Title order={4}>{title}</Title>
+        </Accordion.Control>
+        <Accordion.Panel>
+          <Stack>
+            {slice.variation === 'default' && linkedContent ? (
+              // Render linked document's slices - would need SliceZone here
+              <Text>[Linked content would render here]</Text>
+            ) : (
+              renderRichText(slice.primary.content)
+            )}
+          </Stack>
+        </Accordion.Panel>
+      </Accordion.Item>
+    </Accordion>
   )
 }

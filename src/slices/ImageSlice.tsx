@@ -5,21 +5,38 @@
  */
 
 import { renderRichText } from '@lib/prismicHelpers'
-import type { Content } from '@prismicio/client'
+import { Image, Stack, Text } from '@mantine/core'
+import type { RichTextField, ImageField } from '@prismicio/client'
+
+type ImageSlice = {
+  slice_type: 'image_slice'
+  primary: {
+    image?: ImageField
+    caption?: RichTextField
+  }
+}
 
 interface Props {
-  slice: Content.ImageSliceSlice
+  slice: ImageSlice
 }
 
 export function ImageSlice({ slice }: Props) {
   const { image, caption } = slice.primary
 
   return (
-    <figure data-slice-type={slice.slice_type}>
+    <Stack component="figure" data-slice-type={slice.slice_type} align="center">
       {image?.url && (
-        <img src={image.url} alt={image.alt || ''} className="mx-auto" style={{ maxWidth: '100%' }} />
+        <Image
+          src={image.url}
+          alt={image.alt || ''}
+          style={{ maxWidth: '100%' }}
+        />
       )}
-      {caption && <figcaption className="text-center">{renderRichText(caption)}</figcaption>}
-    </figure>
+      {caption && (
+        <Text component="figcaption" ta="center" size="sm">
+          {renderRichText(caption)}
+        </Text>
+      )}
+    </Stack>
   )
 }

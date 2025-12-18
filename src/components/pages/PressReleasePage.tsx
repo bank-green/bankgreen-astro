@@ -1,6 +1,7 @@
 import { PageContent } from '@components/PageContent'
 import type { PrismicDocument } from '@prismicio/client'
 import { SliceZone } from '@slices'
+import { Anchor, Box, Stack, Text, Title } from '@mantine/core'
 
 interface Props {
   release: PrismicDocument
@@ -18,42 +19,44 @@ export function PressReleasePage({ release }: Props) {
     <PageContent>
       <article>
         <header>
-          <h1>{title}</h1>
+          <Title order={1} className="mb-6">
+            {title}
+          </Title>
 
-          <div>
+          <Stack className="gap-6">
             {(author || email || phone) && (
-              <div>
-                <p>Contact</p>
-                {author && <p>{author}</p>}
+              <Stack className="gap-2">
+                <Text className="font-semibold">Contact</Text>
+                {author && <Text>{author}</Text>}
                 {email && (
-                  <p>
-                    <a href={`mailto:${email}`}>{email}</a>
-                  </p>
+                  <Text>
+                    <Anchor href={`mailto:${email}`}>{email}</Anchor>
+                  </Text>
                 )}
-                {phone && <p>{phone}</p>}
-              </div>
+                {phone && <Text>{phone}</Text>}
+              </Stack>
             )}
 
             {releaseDate && (
-              <div>
-                <p>For immediate release</p>
-                <p>{releaseDate}</p>
-              </div>
+              <Stack className="gap-2">
+                <Text className="font-semibold">For immediate release</Text>
+                <Text>{releaseDate}</Text>
+              </Stack>
             )}
-          </div>
+          </Stack>
         </header>
 
         <section>
-          <div className="prose sm:prose-lg xl:prose-xl break-words w-full">
+          <Box className="prose sm:prose-lg xl:prose-xl w-full wrap-break-word">
             {slices && <SliceZone slices={slices} />}
-          </div>
+          </Box>
         </section>
 
         <footer>
-          <h2>About Bank.Green</h2>
-          <p>
-            Contact: <a href="mailto:hello@bank.green">hello@bank.green</a>
-          </p>
+          <Title order={2}>About Bank.Green</Title>
+          <Text>
+            Contact: <Anchor href="mailto:hello@bank.green">hello@bank.green</Anchor>
+          </Text>
         </footer>
       </article>
     </PageContent>

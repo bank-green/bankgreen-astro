@@ -1,8 +1,11 @@
 import { PageContent } from '@components/PageContent'
+import { Anchor, Select, SimpleGrid, Stack, Text, Title } from '@mantine/core'
 import type { PrismicDocument } from '@prismicio/client'
 import { SliceZone } from '@slices'
+import { useState } from 'react'
 
 interface TeamMemberSlice {
+  [key: string]: unknown
   slice_type: string
   primary: {
     department?: string
@@ -18,6 +21,7 @@ interface Props {
 }
 
 export function TeamPage({ page }: Props) {
+  const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null)
   const slices = page?.data?.slices
   const slices1 = (page?.data?.slices1 || []) as TeamMemberSlice[]
 
@@ -32,61 +36,73 @@ export function TeamPage({ page }: Props) {
 
   // Get unique departments
   const departments = [
-    ...new Set(teamMembers.map((m) => m.primary?.department).filter(Boolean)),
+    ...new Set(
+      teamMembers.map((m) => m.primary?.department).filter((d): d is string => Boolean(d))
+    ),
   ].sort()
+
+  // Filter team members by selected department
+  const filteredTeamMembers = selectedDepartment
+    ? teamMembers.filter((member) => member.primary?.department === selectedDepartment)
+    : teamMembers
 
   return (
     <PageContent>
-      <article>
+      <Stack className="gap-12">
         {/* Intro content from slices */}
-        <section className="prose sm:prose-lg xl:prose-xl max-w-none">
+        <Stack className="prose max-w-none">
           {slices ? (
             <SliceZone slices={slices} />
           ) : (
             <>
-              <h1>Who we are</h1>
-              <p>
+              <Title order={1}>Who we are</Title>
+              <Text>
                 Bank.Green was founded by a group of volunteers in late 2020. Each of us had been
                 working on ways to raise awareness about the climate crisis, without paying much
                 attention to our money.
-              </p>
+              </Text>
             </>
           )}
-        </section>
+        </Stack>
 
         {/* Directors section */}
         {directors.length > 0 && (
-          <section>
-            <h2>Our Directors</h2>
-            <SliceZone slices={directors} />
-          </section>
+          <Stack>
+            <Title order={2}>Our Directors</Title>
+            <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
+              <SliceZone slices={directors} />
+            </SimpleGrid>
+          </Stack>
         )}
 
         {/* Team members section */}
-        <section>
-          <h2>Meet the Team</h2>
+        <Stack>
+          <Title order={2}>Meet the Team</Title>
 
-          {/* Department filter - placeholder for now */}
-          <nav>
-            <label htmlFor="department-filter">Department:</label>
-            <select id="department-filter">
-              <option value="">All</option>
-              {departments.map((dept) => (
-                <option key={dept} value={dept}>
-                  {dept}
-                </option>
-              ))}
-            </select>
-          </nav>
+          {/* Department filter */}
+          <Stack gap="md" mb="lg">
+            <Select
+              id="department-filter"
+              label="Department"
+              placeholder="All"
+              data={departments}
+              value={selectedDepartment}
+              onChange={setSelectedDepartment}
+              clearable
+              searchable
+            />
+          </Stack>
 
           {/* Team member cards */}
-          <SliceZone slices={teamMembers} />
-        </section>
+          <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg">
+            <SliceZone slices={filteredTeamMembers} />
+          </SimpleGrid>
+        </Stack>
 
-        <footer>
-          <a href="/team/alumni">View Alumni</a>
-        </footer>
-      </article>
+        <Stack>
+          <Anchor href="/team/alumni">View Alumni</Anchor>
+        </Stack>
+      </Stack>
     </PageContent>
   )
 }

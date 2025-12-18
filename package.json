@@ -23,10 +23,10 @@
     "@mantine/core": "^8.3.0",
     "@mantine/hooks": "^8.3.0",
     "@prismicio/client": "^7.21.0",
+    "@prismicio/helpers": "^2.3.9",
     "astro": "^5.16.0",
     "clsx": "^2.1.1",
     "fuse.js": "^7.1.0",
-    "prismic-dom": "^2.2.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

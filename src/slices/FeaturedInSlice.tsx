@@ -3,10 +3,19 @@
  *
  * Variations: default
  */
-import type { Content } from '@prismicio/client'
+import { Image } from '@mantine/core'
+import type { ImageField } from '@prismicio/client'
+
+type FeaturedInSlice = {
+  slice_type: 'featured_in_slice'
+  primary: {
+    logo?: ImageField
+    class?: string
+  }
+}
 
 interface Props {
-  slice: Content.FeaturedInSliceSlice
+  slice: FeaturedInSlice
 }
 
 export function FeaturedInSlice({ slice }: Props) {
@@ -17,8 +26,14 @@ export function FeaturedInSlice({ slice }: Props) {
   // Append width parameter for optimization
   const src = `${logo.url}&w=400`
 
-  // Apply custom class from Prismic or default styling
-  const className = (slice.primary as any).class ?? 'h-10 w-auto'
-
-  return <img data-slice-type={slice.slice_type} src={src} alt={logo.alt || ''} className={className} />
+  return (
+    <Image
+      src={src}
+      alt={logo.alt || ''}
+      data-slice-type={slice.slice_type}
+      mah={40}
+      w="auto"
+      fit="contain"
+    />
+  )
 }

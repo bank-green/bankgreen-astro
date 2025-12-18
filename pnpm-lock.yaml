@@ -29,6 +29,9 @@ importers:
       '@prismicio/client':
         specifier: ^7.21.0
         version: 7.21.0
+      '@prismicio/helpers':
+        specifier: ^2.3.9
+        version: 2.3.9
       astro:
         specifier: ^5.16.0
         version: 5.16.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.53.3)(typescript@5.9.3)(yaml@2.8.2)
@@ -38,9 +41,6 @@ importers:
       fuse.js:
         specifier: ^7.1.0
         version: 7.1.0
-      prismic-dom:
-        specifier: ^2.2.7
-        version: 2.2.7
       react:
         specifier: ^19.0.0
         version: 19.2.1
@@ -1186,11 +1186,17 @@ packages:
     resolution: {integrity: sha512-9FWmywGC4nAsgrVk6khRJQ6Qvzb/KwbwsVqfHIM+N/Hxxn+V34u+L/X1XzCxwMdGWF5lvH8lLmmrOLowpO4KVA==}
     engines: {node: '>=14.15.0'}
 
-  '@prismicio/helpers@1.2.0':
-    resolution: {integrity: sha512-YsOfGgauGeTC5Co8zXvz278Lc/V3fyNaAPTs/y4gGrLmLhYa/eT7+USYvDB9RhKEPhYFnUqBiGWa+3l7BksYOQ==}
+  '@prismicio/helpers@2.3.9':
+    resolution: {integrity: sha512-p7Y1sG83A2YPZvptfAzuZA8xH1bdM2wGRjqSKW9Qa0rAnBq2OfVKRvwl9OMCZML4eLUMxSEUAEWRVSoKpQnJvA==}
+    engines: {node: '>=12.7.0'}
 
-  '@prismicio/richtext@1.1.0':
-    resolution: {integrity: sha512-925JuFiZiIkwu9jmlR9O/U8xCSZk/Y6BQDXKpavoVsKo+n90ml1hGdtWkglIupX+ITQO1ZINyDgUgiY1oG9dsA==}
+  '@prismicio/richtext@2.1.5':
+    resolution: {integrity: sha512-Sf6iCsciPmfK3uQeFmeY9RTRSuhrCVzyU39OkiJ1VJn8O0531pKapGoWS+5WGxouJtE5+jGqV8L+L2mKP7NkXQ==}
+    engines: {node: '>=12.7.0'}
+
+  '@prismicio/types@0.2.9':
+    resolution: {integrity: sha512-1uhHnZTiGeCi+rmO507B8jtnUTCNetdgrC5sfZEw9zsCplfgBELt0+BN1RFsXWLbZbyvR9xzHcrJ87Ykqa8JZA==}
+    engines: {node: '>=12.7.0'}
 
   '@rolldown/pluginutils@1.0.0-beta.27':
     resolution: {integrity: sha512-+d0F4MKMCbeVUJwG96uQ4SgAznZNSq93I3V+9NHA4OpvqG8mRCpGdKmK8l/dl02h2CCDHwW2FqilnTyDcAnqjA==}
@@ -2021,6 +2027,10 @@ packages:
     resolution: {integrity: sha512-4FbRdAX+bSdmo4AUFuS0WNiPz8NgFt+r8ThgNWmlrjQjt1Q7ZR9+zTlce2859x4KSXrwIsaeTqDoKQmtP8pLmQ==}
     engines: {node: '>= 0.8'}
 
+  imgix-url-builder@0.0.3:
+    resolution: {integrity: sha512-8Oc2Cn4+jF06sEfJcVPlWYfD2F6RjrwIMbk1xEzux8unoB5LsvFc/GL1BQ47HPaeE12ReX2nMUcjUslGYWLxHA==}
+    engines: {node: '>=12.7.0'}
+
   imgix-url-builder@0.0.6:
     resolution: {integrity: sha512-lFVbvaE9vMck8qz9j+y6o7vsyc1vZhdqzWu+Wp/nlnOCi9zAErc31QMkZKYUGMNLLzxOO4YIBAUPndTPah8HFg==}
     engines: {node: '>=12.7.0'}
@@ -2473,10 +2483,6 @@ packages:
     resolution: {integrity: sha512-v6UNi1+3hSlVvv8fSaoUbggEM5VErKmmpGA7Pl3HF8V6uKY7rvClBOJlH6yNwQtfTueNkGVpOv/mtWL9L4bgRA==}
     engines: {node: '>=14'}
     hasBin: true
-
-  prismic-dom@2.2.7:
-    resolution: {integrity: sha512-4rJWzBqq/6h15giAzB6L8+eaWLQJrQcM4EAicmtw3mI8DhussbJOgheTeFtTCgvO7e5QEjZA0he5gEbQYfKGmg==}
-    deprecated: 'prismic-dom has moved to @prismicio/helpers! No worries, you''re safe to stay on prismic-dom but it will no longer receive updates nor fixes (excluding security ones). Upgrading to @prismicio/helpers should be straightforward for most users, if any doubt check out the migration guide: https://prismic.io/docs/technologies/prismic-helpers-v2-migration-guide or reach out to us on our community forum: https://community.prismic.io'
 
   prismjs@1.30.0:
     resolution: {integrity: sha512-DEvV2ZF2r2/63V+tK8hQvrR2ZGn10srHbXviTlcv7Kpzw8jWiNTqbVgjO3IY8RxrrOUF8VPMQQFysYYYv0YZxw==}
@@ -4141,9 +4147,17 @@ snapshots:
     dependencies:
       imgix-url-builder: 0.0.6
 
-  '@prismicio/helpers@1.2.0': {}
+  '@prismicio/helpers@2.3.9':
+    dependencies:
+      '@prismicio/richtext': 2.1.5
+      '@prismicio/types': 0.2.9
+      imgix-url-builder: 0.0.3
 
-  '@prismicio/richtext@1.1.0': {}
+  '@prismicio/richtext@2.1.5':
+    dependencies:
+      '@prismicio/types': 0.2.9
+
+  '@prismicio/types@0.2.9': {}
 
   '@rolldown/pluginutils@1.0.0-beta.27': {}
 
@@ -5114,6 +5128,8 @@ snapshots:
       statuses: 2.0.2
       toidentifier: 1.0.1
 
+  imgix-url-builder@0.0.3: {}
+
   imgix-url-builder@0.0.6: {}
 
   import-meta-resolve@4.2.0: {}
@@ -5705,12 +5721,6 @@ snapshots:
       source-map-js: 1.2.1
 
   prettier@3.7.4: {}
-
-  prismic-dom@2.2.7:
-    dependencies:
-      '@prismicio/helpers': 1.2.0
-      '@prismicio/richtext': 1.1.0
-      escape-html: 1.0.3
 
   prismjs@1.30.0: {}
 

@@ -1,4 +1,5 @@
 import { PageContent } from '@components/PageContent'
+import { Card, Container, Grid, Image, Stack, Text, Title, Anchor } from '@mantine/core'
 import type { PrismicDocument } from '@prismicio/client'
 import * as prismic from '@prismicio/client'
 
@@ -27,60 +28,59 @@ export function BlogIndexPage({ posts }: Props) {
 
   return (
     <PageContent>
-      <div className="page-fade-in contain pb-16">
-        <h1 className="mb-4 whitespace-pre-line font-semibold text-2xl">
+      <Container py="xl" size="lg">
+        <Title order={1} mb="lg">
           Bank.Green Blog: Stories and Tips for Divesting From Fossil Fuels
-        </h1>
+        </Title>
 
         {posts.length > 0 ? (
-          <div className="-mx-4 mt-6 grid gap-16 pt-10 md:grid-cols-2 md:gap-x-5 md:gap-y-12">
+          <Grid gutter="lg">
             {posts.map((post) => {
               const imageSrc = getImageSrc(post)
               const description = getDescription(post)
               const publicationDate = post.data.publicationdate as string | undefined
 
               return (
-                <a
-                  key={post.uid}
-                  href={`/blog/${post.uid}`}
-                  className="overflow-hidden rounded-xl border bg-white shadow-soft transition duration-150 ease-in-out hover:border-sushi-500 hover:bg-gray-50"
-                >
-                  {imageSrc && (
-                    <span className="minimal relative inline-block h-52 w-full sm:h-64">
-                      <img
-                        src={imageSrc}
-                        alt=""
-                        loading="lazy"
-                        className="h-full w-full object-cover"
-                      />
-                    </span>
-                  )}
-                  <span className="inline-block p-4">
-                    {publicationDate && (
-                      <p className="text-gray-500 text-sm">
-                        <time dateTime={publicationDate}>{publicationDate}</time>
-                      </p>
-                    )}
-                    <span className="mt-2 block">
-                      <p className="font-semibold text-gray-900 text-xl">
-                        {post.data.title as string}
-                      </p>
-                      {description && <p className="mt-3 text-base text-gray-500">{description}</p>}
-                    </span>
-                    <div className="mt-3">
-                      <span className="font-semibold text-base text-sushi-600 hover:text-sushi-500">
-                        Read full story
-                      </span>
-                    </div>
-                  </span>
-                </a>
+                <Grid.Col key={post.uid} span={{ base: 12, sm: 6 }}>
+                  <Anchor href={`/blog/${post.uid}`} underline="never">
+                    <Card shadow="sm" padding="lg" radius="md" withBorder h="100%">
+                      {imageSrc && (
+                        <Card.Section>
+                          <Image
+                            src={imageSrc}
+                            alt=""
+                            loading="lazy"
+                            height={250}
+                            fit="cover"
+                          />
+                        </Card.Section>
+                      )}
+                      <Stack gap="sm" pt="md">
+                        {publicationDate && (
+                          <Text size="sm" c="dimmed">
+                            <time dateTime={publicationDate}>{publicationDate}</time>
+                          </Text>
+                        )}
+                        <Title order={3}>{post.data.title as string}</Title>
+                        {description && (
+                          <Text size="sm" c="dimmed" lineClamp={3}>
+                            {description}
+                          </Text>
+                        )}
+                        <Text size="sm" fw={600} c="var(--color-sushi-600)">
+                          Read full story →
+                        </Text>
+                      </Stack>
+                    </Card>
+                  </Anchor>
+                </Grid.Col>
               )
             })}
-          </div>
+          </Grid>
         ) : (
-          <h3>Error Loading Content.</h3>
+          <Title order={3}>Error Loading Content.</Title>
         )}
-      </div>
+      </Container>
     </PageContent>
   )
 }

@@ -6,10 +6,15 @@
  * Note: The original uses hardcoded image paths. These would need to be
  * copied to the public/img/social/ directory in the Astro project.
  */
-import type { Content } from '@prismicio/client'
+import { SimpleGrid, Image, Container } from '@mantine/core'
+
+type SharePicGallerySlice = {
+  slice_type: 'share_pic_gallery_slice'
+  primary: Record<string, unknown>
+}
 
 interface Props {
-  slice: Content.SharePicGallerySliceSlice
+  slice: SharePicGallerySlice
 }
 
 const GALLERY_IMAGES = [
@@ -23,14 +28,16 @@ const GALLERY_IMAGES = [
 
 export function SharePicGallerySlice({ slice }: Props) {
   return (
-    <section data-slice-type={slice.slice_type} aria-label="Shareable images gallery">
-      <ul>
+    <Container
+      component="section"
+      data-slice-type={slice.slice_type}
+      aria-label="Shareable images gallery"
+    >
+      <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg">
         {GALLERY_IMAGES.map((image, index) => (
-          <li key={index}>
-            <img src={image.src} alt={image.alt} />
-          </li>
+          <Image key={index} src={image.src} alt={image.alt} />
         ))}
-      </ul>
-    </section>
+      </SimpleGrid>
+    </Container>
   )
 }

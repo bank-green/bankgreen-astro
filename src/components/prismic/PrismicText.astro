@@ -1,12 +1,13 @@
 ---
-import PrismicDOM from 'prismic-dom';
+import type { RichTextField } from '@prismicio/client'
+import * as prismicH from '@prismicio/helpers'
 
 interface Props {
-  content?: any;
+  content?: RichTextField
 }
 
-const { content } = Astro.props as Props;
-const text = content ? PrismicDOM.RichText.asText(content) : '';
+const { content } = Astro.props as Props
+const text = content ? prismicH.asText(content) : ''
 ---
 
 {text}

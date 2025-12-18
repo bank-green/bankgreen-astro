@@ -9,19 +9,21 @@ interface SwooshProps {
 /**
  * Decorative swoosh/wave SVG that creates visual transitions between sections.
  * Used to add curved edges at the top or bottom of full-width background sections.
- * 
+ *
  * The swoosh creates a curved transition effect - when direction is 'up' (default),
  * the wave curves upward from the bottom; when 'down', it's flipped to curve from the top.
  */
-export function Swoosh({ direction = 'up', color = 'var(--color-gray-50)', className = '' }: SwooshProps) {
+export function Swoosh({
+  direction = 'up',
+  color = 'var(--color-gray-50)',
+  className = '',
+}: SwooshProps) {
   const isDown = direction === 'down'
-  
+
   return (
-    <Box
-      className={`relative z-0 py-8 sm:py-10 md:py-12 ${className}`}
-    >
+    <Box className={`relative z-0 py-8 sm:py-10 md:py-12 ${className}`}>
       <svg
-        className="absolute inset-x-0 w-full min-h-full"
+        className="absolute inset-x-0 min-h-full w-full"
         style={{
           top: isDown ? 0 : undefined,
           bottom: isDown ? undefined : 0,

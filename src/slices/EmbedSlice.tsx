@@ -3,10 +3,20 @@
  *
  * Variations: default
  */
-import type { Content } from '@prismicio/client'
+import { Container } from '@mantine/core'
+
+type EmbedSlice = {
+  slice_type: 'embed_slice'
+  primary: {
+    target?: {
+      html?: string
+      provider_name?: string
+    }
+  }
+}
 
 interface Props {
-  slice: Content.EmbedSliceSlice
+  slice: EmbedSlice
 }
 
 export function EmbedSlice({ slice }: Props) {
@@ -23,8 +33,13 @@ export function EmbedSlice({ slice }: Props) {
   }
 
   return (
-    <figure data-slice-type={slice.slice_type} data-provider={embed.provider_name}>
+    <Container
+      component="figure"
+      data-slice-type={slice.slice_type}
+      data-provider={embed.provider_name}
+      style={{ maxWidth: '100%' }}
+    >
       <div dangerouslySetInnerHTML={{ __html: html }} />
-    </figure>
+    </Container>
   )
 }
