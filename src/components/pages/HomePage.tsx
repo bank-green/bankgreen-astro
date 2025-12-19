@@ -33,7 +33,7 @@ export function HomePage({ page }: Props) {
         <Group className="mx-auto max-w-6xl items-end justify-between gap-12 px-6 pt-20 pb-12 md:px-0 lg:gap-0 lg:pb-18">
           <Title
             order={1}
-            className="mx-auto block max-w-3xl bg-linear-to-tr from-sky-600 via-sushi-500 to-green-500 bg-clip-text text-center font-medium text-4xl text-transparent sm:text-5xl lg:max-w-1/2 lg:pr-6 lg:text-left"
+            className="mx-auto block max-w-3xl bg-linear-to-tr from-sky-800 to-sky-500 bg-clip-text text-center text-transparent sm:text-5xl lg:max-w-1/2 lg:pr-6 lg:text-left"
           >
             {title}
           </Title>
@@ -53,7 +53,9 @@ export function HomePage({ page }: Props) {
                 <Stack
                   className={cx(
                     'grow items-center justify-between md:flex md:flex-row md:space-y-0',
-                    '[&>img]:relative [&>img]:h-16 [&>img]:w-auto [&>img]:rounded-xl [&>img]:bg-white [&>img]:px-6 [&>img]:py-4 [&>img]:mix-blend-luminosity [&>img]:grayscale lg:[&>img]:h-18 lg:[&>img]:px-11 lg:[&>img]:py-5'
+                    '[&>img]:rounded-xl [&>img]:bg-white [&>img]:mix-blend-luminosity [&>img]:grayscale',
+                    '[&>img]:relative [&>img]:h-16 [&>img]:min-h-16 [&>img]:w-auto [&>img]:min-w-48 [&>img]:px-6 [&>img]:py-4',
+                    'lg:[&>img]:min-h-18 lg:[&>img]:px-8 lg:[&>img]:py-5'
                   )}
                 >
                   {slices1 && <SliceZone slices={slices1} />}

@@ -99,3 +99,41 @@
 .mantine-Select-dropdown {
   z-index: var(--z-max);
 }
+
+@layer utilities {
+  .prose {
+    :where(h1):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+      color: var(--mantine-color-headings);
+      font-weight: var(--mantine-h1-font-weight);
+      font-size: var(--mantine-h1-font-size);
+    }
+  }
+  .prose {
+    :where(h2):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+      color: var(--mantine-color-headings);
+      font-weight: var(--mantine-h2-font-weight);
+      font-size: var(--mantine-h2-font-size);
+    }
+  }
+  .prose {
+    :where(h3):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+      color: var(--mantine-color-text);
+      font-weight: var(--mantine-h3-font-weight);
+      font-size: var(--mantine-h3-font-size);
+    }
+  }
+  .prose {
+    :where(h4):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+      color: var(--mantine-color-text);
+      font-weight: var(--mantine-h4-font-weight);
+      font-size: var(--mantine-h4-font-size);
+    }
+  }
+  .prose {
+    :where(h5):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+      color: var(--mantine-color-text);
+      font-weight: var(--mantine-h5-font-weight);
+      font-size: var(--mantine-h5-font-size);
+    }
+  }
+}

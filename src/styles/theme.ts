@@ -78,12 +78,21 @@ export const theme = createTheme({
     }),
     Input: {
       classNames: {
-        input: 'bg-white border-sushi-500 focus:border-sushi-700 rounded-md',
+        input: 'bg-white border-gray-300 focus:border-gray-500 rounded-md',
       },
     },
     LoadingOverlay: {
       classNames: {
         overlay: 'bg-sushi-100/50 backdrop-blur-[2px]',
+      },
+    },
+    Tabs: {
+      classNames: {
+        root: 'bg-transparent',
+        panel: 'w-full rounded-lg rounded-tl-none border-none bg-white px-8 pb-8',
+        tab: 'rounded-t-lg border-none bg-white/50 transition-all duration-100 active:bg-white/90 active:translate-y-0.5 active:font-semibold data-active:bg-white hover:text-linkHover active:text-linkActive',
+        list: 'gap-2 border-none bg-sushi-100 before:hidden',
+        tabLabel: 'font-semibold',
       },
     },
   },

@@ -148,6 +148,8 @@ function LocationSearch({
     if (matchedState) {
       setSelectedUSState(matchedState.value)
       onStateChange?.(matchedState.value)
+    } else {
+      onStateChange?.(val)
     }
   }
 
@@ -178,6 +180,7 @@ function LocationSearch({
       {showStateSearch && (
         <Autocomplete
           label="State"
+          clearable
           className="grow"
           leftSection={isDetecting && !disabled && <Loader size="xs" />}
           placeholder={isDetecting ? 'Detecting your state...' : 'Search state...'}
