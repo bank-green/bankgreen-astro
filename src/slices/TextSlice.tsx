@@ -6,17 +6,10 @@
 
 import { renderRichText } from '@lib/prismicHelpers'
 import { Container } from '@mantine/core'
-import type { RichTextField } from '@prismicio/client'
-
-type TextSlice = {
-  slice_type: 'text_slice'
-  primary: {
-    text?: RichTextField
-  }
-}
+import type { TextSlice as TextSliceType } from './types'
 
 interface Props {
-  slice: TextSlice
+  slice: TextSliceType
 }
 
 export function TextSlice({ slice }: Props) {

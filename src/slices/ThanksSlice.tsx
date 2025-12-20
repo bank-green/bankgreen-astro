@@ -3,21 +3,12 @@
  *
  * Variations: default
  */
-import { Stack, Title, Text, Container } from '@mantine/core'
-import type { RichTextField } from '@prismicio/client'
+import { Container, Stack, Text, Title } from '@mantine/core'
 import { asText } from '@prismicio/client'
-
-type ThanksSlice = {
-  slice_type: 'thanks_slice'
-  primary: {
-    title?: RichTextField
-    description?: RichTextField
-    show_explore_section?: boolean
-  }
-}
+import type { ThanksSlice as ThanksSliceType } from './types'
 
 interface Props {
-  slice: ThanksSlice
+  slice: ThanksSliceType
 }
 
 export function ThanksSlice({ slice }: Props) {

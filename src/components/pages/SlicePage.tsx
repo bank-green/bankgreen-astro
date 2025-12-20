@@ -1,6 +1,7 @@
 import { PageContent } from '@components/PageContent'
 import { Loader, Stack, Title } from '@mantine/core'
 import type { PrismicDocument } from '@prismicio/client'
+import type { Slice } from '@slices'
 import { SliceZone } from '@slices'
 import type { ReactNode } from 'react'
 
@@ -20,7 +21,7 @@ interface Props {
  * Use this for pages like disclaimer, privacy, methodology, etc.
  */
 export function SlicePage({ title, page, intro, footer }: Props) {
-  const slices = page?.data?.slices
+  const slices = (page?.data?.slices || []) as Slice[]
 
   return (
     <PageContent>

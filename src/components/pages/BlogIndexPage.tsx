@@ -1,5 +1,5 @@
 import { PageContent } from '@components/PageContent'
-import { Card, Container, Grid, Image, Stack, Text, Title, Anchor } from '@mantine/core'
+import { Anchor, Card, Container, Grid, Image, Stack, Text, Title } from '@mantine/core'
 import type { PrismicDocument } from '@prismicio/client'
 import * as prismic from '@prismicio/client'
 
@@ -46,13 +46,7 @@ export function BlogIndexPage({ posts }: Props) {
                     <Card shadow="sm" padding="lg" radius="md" withBorder h="100%">
                       {imageSrc && (
                         <Card.Section>
-                          <Image
-                            src={imageSrc}
-                            alt=""
-                            loading="lazy"
-                            height={250}
-                            fit="cover"
-                          />
+                          <Image src={imageSrc} alt="" loading="lazy" height={250} fit="cover" />
                         </Card.Section>
                       )}
                       <Stack gap="sm" pt="md">

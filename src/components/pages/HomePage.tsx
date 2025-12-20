@@ -3,6 +3,7 @@ import { Swoosh } from '@components/Swoosh'
 import { renderRichText } from '@lib/prismicHelpers'
 import { Anchor, Box, Group, MantineProvider, Stack, Text, Title } from '@mantine/core'
 import type { PrismicDocument, RichTextField } from '@prismicio/client'
+import type { Slice } from '@slices'
 import { SliceZone } from '@slices'
 import theme from '@styles/theme'
 import cx from 'clsx'
@@ -14,7 +15,7 @@ interface Props {
 
 export function HomePage({ page }: Props) {
   const title = (page?.data?.title as string) || 'Is your money being used to fund climate chaos?'
-  const slices1 = page?.data?.slices1 as Array<{ slice_type: string; [key: string]: unknown }> // "As featured in" logos
+  const slices1 = (page?.data?.slices1 || []) as Slice[] // "As featured in" logos
   const description1 = page?.data?.description1 as RichTextField | undefined
   const description2 = page?.data?.description2 as RichTextField | undefined
   const description3 = page?.data?.description3 as RichTextField | undefined

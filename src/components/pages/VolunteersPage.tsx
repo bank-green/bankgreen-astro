@@ -1,5 +1,6 @@
 import { PageContent } from '@components/PageContent'
 import type { PrismicDocument } from '@prismicio/client'
+import type { Slice } from '@slices'
 import { SliceZone } from '@slices'
 
 interface Props {
@@ -7,7 +8,7 @@ interface Props {
 }
 
 export function VolunteersPage({ page }: Props) {
-  const slices = page?.data?.slices
+  const slices = (page?.data?.slices || []) as Slice[]
 
   return (
     <PageContent>

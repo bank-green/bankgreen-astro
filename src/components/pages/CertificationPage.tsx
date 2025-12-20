@@ -1,5 +1,6 @@
 import { PageContent } from '@components/PageContent'
 import type { PrismicDocument } from '@prismicio/client'
+import type { Slice } from '@slices'
 import { SliceZone } from '@slices'
 
 interface Props {
@@ -8,7 +9,7 @@ interface Props {
 
 export function CertificationPage({ page }: Props) {
   const certificationImg = page?.data?.certification_img
-  const slices = page?.data?.slices
+  const slices = (page?.data?.slices || []) as Slice[]
 
   return (
     <PageContent>

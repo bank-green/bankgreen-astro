@@ -7,29 +7,11 @@
  */
 
 import { renderRichText } from '@lib/prismicHelpers'
-import { Table, Container, Image, Group } from '@mantine/core'
-import type { RichTextField } from '@prismicio/client'
-
-type TableSlice = {
-  slice_type: 'table_slice'
-  variation: string
-  primary: {
-    column_1_header?: string
-    column_2_header?: string
-    column_3_header?: string
-    column_4_header?: string
-  }
-  items: Array<{
-    icon?: { url?: string; name?: string }
-    column_1?: RichTextField
-    column_2?: RichTextField
-    column_3?: RichTextField
-    column_4?: RichTextField
-  }>
-}
+import { Container, Group, Image, Table } from '@mantine/core'
+import type { TableSlice as TableSliceType } from './types'
 
 interface Props {
-  slice: TableSlice
+  slice: TableSliceType
 }
 
 export function TableSlice({ slice }: Props) {

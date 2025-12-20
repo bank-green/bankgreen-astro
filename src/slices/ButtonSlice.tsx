@@ -4,19 +4,11 @@
  * Variations: default
  */
 import { Button } from '@mantine/core'
-import type { LinkField } from '@prismicio/client'
 import { asLink } from '@prismicio/client'
-
-type ButtonSlice = {
-  slice_type: 'button_slice'
-  primary: {
-    link?: LinkField
-    label?: string
-  }
-}
+import type { ButtonSlice as ButtonSliceType } from './types'
 
 interface Props {
-  slice: ButtonSlice
+  slice: ButtonSliceType
 }
 
 export function ButtonSlice({ slice }: Props) {
@@ -24,12 +16,7 @@ export function ButtonSlice({ slice }: Props) {
   const href = asLink(link) || '#'
 
   return (
-    <Button
-      data-slice-type={slice.slice_type}
-      component="a"
-      href={href}
-      variant="filled"
-    >
+    <Button data-slice-type={slice.slice_type} component="a" href={href} variant="filled">
       {label}
     </Button>
   )

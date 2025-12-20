@@ -2,6 +2,7 @@ import { PageContent } from '@components/PageContent'
 import { renderRichText } from '@lib/prismicHelpers'
 import { Stack, Title } from '@mantine/core'
 import type { PrismicDocument, RichTextField } from '@prismicio/client'
+import type { Slice } from '@slices'
 import { SliceZone } from '@slices'
 
 interface Props {
@@ -10,7 +11,7 @@ interface Props {
 
 export function FaqPage({ page }: Props) {
   const introduction = page?.data?.introduction as RichTextField | undefined
-  const slices = page?.data?.slices
+  const slices = (page?.data?.slices || []) as Slice[]
 
   return (
     <PageContent>

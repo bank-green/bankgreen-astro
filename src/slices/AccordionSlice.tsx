@@ -10,24 +10,13 @@
  */
 
 import { renderRichText } from '@lib/prismicHelpers'
-import { Accordion, Stack, Title, Text } from '@mantine/core'
-import type { RichTextField } from '@prismicio/client'
-
-type AccordionSlice = {
-  slice_type: 'accordion_slice'
-  variation: 'default' | 'richText' | 'richTextWithStep'
-  primary: {
-    contentlink?: { data?: { title?: string } }
-    step?: string
-    title?: string
-    content?: RichTextField
-  }
-}
+import { Accordion, Stack, Text, Title } from '@mantine/core'
+import type { AccordionSlice as AccordionSliceType } from './types'
 
 interface Props {
-  slice: AccordionSlice
+  slice: AccordionSliceType
   // For "default" variation, the linked document's slices need to be passed in
-  linkedContent?: AccordionSlice[]
+  linkedContent?: AccordionSliceType[]
 }
 
 export function AccordionSlice({ slice, linkedContent }: Props) {

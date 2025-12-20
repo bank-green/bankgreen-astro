@@ -4,18 +4,10 @@
  * Variations: default
  */
 import { Image } from '@mantine/core'
-import type { ImageField } from '@prismicio/client'
-
-type FeaturedInSlice = {
-  slice_type: 'featured_in_slice'
-  primary: {
-    logo?: ImageField
-    class?: string
-  }
-}
+import type { FeaturedInSlice as FeaturedInSliceType } from './types'
 
 interface Props {
-  slice: FeaturedInSlice
+  slice: FeaturedInSliceType
 }
 
 export function FeaturedInSlice({ slice }: Props) {

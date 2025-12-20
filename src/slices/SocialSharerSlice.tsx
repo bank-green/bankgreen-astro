@@ -6,19 +6,12 @@
  * Note: This is a placeholder - the actual sharing functionality
  * will need to be implemented with real share buttons.
  */
-import { Button, Group, Container } from '@mantine/core'
-import type { RichTextField } from '@prismicio/client'
+import { Button, Container, Group } from '@mantine/core'
 import { asText } from '@prismicio/client'
-
-type SocialSharerSlice = {
-  slice_type: 'social_sharer_slice'
-  primary: {
-    text?: RichTextField
-  }
-}
+import type { SocialSharerSlice as SocialSharerSliceType } from './types'
 
 interface Props {
-  slice: SocialSharerSlice
+  slice: SocialSharerSliceType
 }
 
 export function SocialSharerSlice({ slice }: Props) {

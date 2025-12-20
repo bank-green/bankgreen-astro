@@ -1,7 +1,8 @@
 import { PageContent } from '@components/PageContent'
-import type { PrismicDocument } from '@prismicio/client'
-import { SliceZone } from '@slices'
 import { Anchor, Box, Stack, Text, Title } from '@mantine/core'
+import type { PrismicDocument } from '@prismicio/client'
+import type { Slice } from '@slices'
+import { SliceZone } from '@slices'
 
 interface Props {
   release: PrismicDocument
@@ -13,7 +14,7 @@ export function PressReleasePage({ release }: Props) {
   const email = release.data.email as string | undefined
   const phone = release.data.phone as string | undefined
   const releaseDate = release.data.releasedate as string | undefined
-  const slices = release.data.slices
+  const slices = (release.data.slices || []) as Slice[]
 
   return (
     <PageContent>
@@ -47,7 +48,7 @@ export function PressReleasePage({ release }: Props) {
         </header>
 
         <section>
-          <Box className="prose sm:prose-lg xl:prose-xl w-full wrap-break-word">
+          <Box className="prose sm:prose-lg xl:prose-xl wrap-break-word w-full">
             {slices && <SliceZone slices={slices} />}
           </Box>
         </section>

@@ -4,19 +4,10 @@
  * Variations: default
  */
 import { Container } from '@mantine/core'
-
-type EmbedSlice = {
-  slice_type: 'embed_slice'
-  primary: {
-    target?: {
-      html?: string
-      provider_name?: string
-    }
-  }
-}
+import type { EmbedSlice as EmbedSliceType } from './types'
 
 interface Props {
-  slice: EmbedSlice
+  slice: EmbedSliceType
 }
 
 export function EmbedSlice({ slice }: Props) {

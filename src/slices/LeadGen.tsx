@@ -7,36 +7,9 @@
  * implementation with form handling, validation, and submission.
  * This is a semantic placeholder showing the structure.
  */
-import {
-  Container,
-  Stack,
-  Title,
-  List,
-  TextInput,
-  Select,
-  Checkbox,
-  Button,
-} from '@mantine/core'
-import type { RichTextField } from '@prismicio/client'
+import { Button, Checkbox, Container, List, Select, Stack, TextInput, Title } from '@mantine/core'
 import { asText } from '@prismicio/client'
-
-type LeadGenSlice = {
-  slice_type: 'lead_gen'
-  primary: {
-    title?: RichTextField
-    show_bank_field?: boolean
-    show_status_field?: boolean
-    form_bank_label?: string
-    form_name_label?: string
-    form_email_label?: string
-    form_status_label?: string
-    button_label?: string
-  }
-  items: Array<{
-    bullet_text?: RichTextField
-    dropdown_status_option?: string
-  }>
-}
+import type { LeadGenSlice } from './types'
 
 interface Props {
   slice: LeadGenSlice
@@ -102,7 +75,9 @@ export function LeadGen({ slice }: Props) {
 
             {showStatusField && statusOptions.length > 0 && (
               <Select
-                label={primary.form_status_label || 'Which option best describes your current status?'}
+                label={
+                  primary.form_status_label || 'Which option best describes your current status?'
+                }
                 id="status"
                 name="status"
                 placeholder="Select an option..."
@@ -119,8 +94,7 @@ export function LeadGen({ slice }: Props) {
               name="isAgreeTerms"
               label={
                 <>
-                  I have read and understood Bank.Green's{' '}
-                  <a href="/privacy">privacy policy</a>.
+                  I have read and understood Bank.Green's <a href="/privacy">privacy policy</a>.
                 </>
               }
               required

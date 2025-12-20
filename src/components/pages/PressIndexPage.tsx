@@ -1,6 +1,7 @@
 import { PageContent } from '@components/PageContent'
 import type { PrismicDocument } from '@prismicio/client'
 import * as prismic from '@prismicio/client'
+import type { Slice } from '@slices'
 import { SliceZone } from '@slices'
 
 interface Props {
@@ -9,7 +10,7 @@ interface Props {
 }
 
 export function PressIndexPage({ page, releases }: Props) {
-  const slices = page?.data?.slices
+  const slices = (page?.data?.slices || []) as Slice[]
 
   const getDescription = (release: PrismicDocument): string => {
     const description = release.data.description

@@ -6,15 +6,11 @@
  * Note: The original uses hardcoded image paths. These would need to be
  * copied to the public/img/social/ directory in the Astro project.
  */
-import { SimpleGrid, Image, Container } from '@mantine/core'
-
-type SharePicGallerySlice = {
-  slice_type: 'share_pic_gallery_slice'
-  primary: Record<string, unknown>
-}
+import { Container, Image, SimpleGrid } from '@mantine/core'
+import type { SharePicGallerySlice as SharePicGallerySliceType } from './types'
 
 interface Props {
-  slice: SharePicGallerySlice
+  slice: SharePicGallerySliceType
 }
 
 const GALLERY_IMAGES = [

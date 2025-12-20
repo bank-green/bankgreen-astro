@@ -4,21 +4,11 @@
  * Variations: default
  */
 import { Button, Card, Image, Stack, Text, Title } from '@mantine/core'
-import type { ImageField, LinkField, RichTextField } from '@prismicio/client'
 import { asLink, asText } from '@prismicio/client'
-
-type TeamMemberSlice = {
-  slice_type: 'team_member_slice'
-  primary: {
-    name?: RichTextField
-    description?: RichTextField
-    img?: ImageField
-    link?: LinkField
-  }
-}
+import type { TeamMemberSlice as TeamMemberSliceType } from './types'
 
 interface Props {
-  slice: TeamMemberSlice
+  slice: TeamMemberSliceType
 }
 
 export function TeamMemberSlice({ slice }: Props) {

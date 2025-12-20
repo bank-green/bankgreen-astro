@@ -1,6 +1,7 @@
 import { PageContent } from '@components/PageContent'
 import { Anchor, Select, SimpleGrid, Stack, Text, Title } from '@mantine/core'
 import type { PrismicDocument } from '@prismicio/client'
+import type { Slice } from '@slices'
 import { SliceZone } from '@slices'
 import { useState } from 'react'
 
@@ -22,7 +23,7 @@ interface Props {
 
 export function TeamPage({ page }: Props) {
   const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null)
-  const slices = page?.data?.slices
+  const slices = (page?.data?.slices || []) as Slice[]
   const slices1 = (page?.data?.slices1 || []) as TeamMemberSlice[]
 
   // Filter directors from slices1
@@ -70,7 +71,7 @@ export function TeamPage({ page }: Props) {
           <Stack>
             <Title order={2}>Our Directors</Title>
             <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
-              <SliceZone slices={directors} />
+              <SliceZone slices={directors as unknown as Slice[]} />
             </SimpleGrid>
           </Stack>
         )}
@@ -95,7 +96,7 @@ export function TeamPage({ page }: Props) {
 
           {/* Team member cards */}
           <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg">
-            <SliceZone slices={filteredTeamMembers} />
+            <SliceZone slices={filteredTeamMembers as unknown as Slice[]} />
           </SimpleGrid>
         </Stack>
 

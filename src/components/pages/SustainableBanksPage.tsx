@@ -2,6 +2,7 @@ import { PageContent } from '@components/PageContent'
 import { renderRichText } from '@lib/prismicHelpers'
 import { Box, Spoiler, Stack, Title } from '@mantine/core'
 import type { PrismicDocument } from '@prismicio/client'
+import type { Slice } from '@slices'
 import { SliceZone } from '@slices'
 import { useState } from 'react'
 
@@ -10,10 +11,10 @@ interface Props {
 }
 
 export function SustainableBanksPage({ page }: Props) {
-  const slices = page?.data?.slices
-  const slices1 = page?.data?.slices1
-  const introductory = page?.data?.introductory
-  const footerBanner = page?.data?.footerBanner
+  const slices = (page?.data?.slices || []) as Slice[]
+  const slices1 = (page?.data?.slices1 || []) as Slice[]
+  const introductory = (page?.data?.introductory || []) as Slice[]
+  const footerBanner = (page?.data?.footerBanner || []) as Slice[]
 
   const [_readMoreP1, _setReadMoreP11] = useState(false)
   const [_readMoreP2, _setReadMoreP22] = useState(false)
@@ -44,9 +45,13 @@ export function SustainableBanksPage({ page }: Props) {
         {introductory && introductory.length > 0 && (
           <>
             {/* Why Find a Green Bank? - First item in introductory */}
-            {introductory[0]?.primary?.text && (
+            {introductory[0]?.slice_type === 'text_slice' && (
               <Spoiler maxHeight={200} showLabel="Read more" hideLabel="Read less">
-                <Stack>{renderRichText(introductory[0].primary.text)}</Stack>
+                <Stack>
+                  {renderRichText(
+                    (introductory[0] as Extract<Slice, { slice_type: 'text_slice' }>).primary.text
+                  )}
+                </Stack>
               </Spoiler>
             )}
 

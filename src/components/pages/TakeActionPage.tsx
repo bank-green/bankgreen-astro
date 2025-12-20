@@ -2,6 +2,7 @@ import { PageContent } from '@components/PageContent'
 import { renderRichText } from '@lib/prismicHelpers'
 import { Anchor, Loader, Stack, Tabs, Text, Title } from '@mantine/core'
 import type { PrismicDocument, RichTextField } from '@prismicio/client'
+import type { Slice } from '@slices'
 import { SliceZone } from '@slices'
 
 interface Props {
@@ -13,14 +14,14 @@ export function TakeActionPage({ page }: Props) {
 
   type TabData = {
     id: string
-    slice: Array<{ slice_type: string; [key: string]: unknown }> | undefined
+    slice: Slice[]
   }
 
   const slices: TabData[] = [
-    { id: 'pressure', slice: page?.data?.slices1 },
-    { id: 'switch', slice: page?.data?.slices2 },
-    { id: 'share', slice: page?.data?.slices3 },
-    { id: 'learn', slice: page?.data?.slices4 },
+    { id: 'pressure', slice: (page?.data?.slices1 || []) as Slice[] },
+    { id: 'switch', slice: (page?.data?.slices2 || []) as Slice[] },
+    { id: 'share', slice: (page?.data?.slices3 || []) as Slice[] },
+    { id: 'learn', slice: (page?.data?.slices4 || []) as Slice[] },
   ]
 
   const renderTabButton = (data: TabData) => (

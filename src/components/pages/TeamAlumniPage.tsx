@@ -1,6 +1,7 @@
 import { PageContent } from '@components/PageContent'
 import { Anchor, SimpleGrid, Stack, Title } from '@mantine/core'
 import type { PrismicDocument } from '@prismicio/client'
+import type { Slice } from '@slices'
 import { SliceZone } from '@slices'
 
 interface Props {
@@ -9,10 +10,9 @@ interface Props {
 
 export function TeamAlumniPage({ page }: Props) {
   // Filter slices1 for Alumni department members
-  const alumniSlices =
-    page?.data?.slices1?.filter(
-      (slice: { primary?: { department?: string } }) => slice.primary?.department === 'Alumni'
-    ) || []
+  const alumniSlices = (page?.data?.slices1?.filter(
+    (slice: { primary?: { department?: string } }) => slice.primary?.department === 'Alumni'
+  ) || []) as Slice[]
 
   return (
     <PageContent>

@@ -1,6 +1,6 @@
 import { PageContent } from '@components/PageContent'
 import { renderRichText } from '@lib/prismicHelpers'
-import { Container, Image, Stack, Title, Text } from '@mantine/core'
+import { Container, Image, Stack, Text, Title } from '@mantine/core'
 import type { ImageField, PrismicDocument, RichTextField } from '@prismicio/client'
 import * as prismic from '@prismicio/client'
 
@@ -25,13 +25,7 @@ export function DonatePage({ page }: Props) {
           <Stack gap="lg">
             <section>
               {photo?.url && (
-                <Image
-                  src={photo.url}
-                  alt="donation"
-                  fit="cover"
-                  radius="md"
-                  mb="lg"
-                />
+                <Image src={photo.url} alt="donation" fit="cover" radius="md" mb="lg" />
               )}
 
               <Title order={2}>{titleText}</Title>
@@ -42,14 +36,14 @@ export function DonatePage({ page }: Props) {
                 ) : (
                   <>
                     <Text>
-                      By supporting Bank.Green's mission, you'll empower individuals and businesses to
-                      make responsible financial decisions, channeling their deposits towards green
-                      financial institutions. Bank.Green is a project of a registered charity and all U.S.
-                      donations are tax-deductible.
+                      By supporting Bank.Green's mission, you'll empower individuals and businesses
+                      to make responsible financial decisions, channeling their deposits towards
+                      green financial institutions. Bank.Green is a project of a registered charity
+                      and all U.S. donations are tax-deductible.
                     </Text>
                     <Text>
-                      Your donation will help us raise awareness, provide resources, and foster a global
-                      community dedicated to protecting our planet.
+                      Your donation will help us raise awareness, provide resources, and foster a
+                      global community dedicated to protecting our planet.
                     </Text>
                     <Text>
                       <em>
@@ -70,8 +64,8 @@ export function DonatePage({ page }: Props) {
                   renderRichText(donationDescription)
                 ) : (
                   <Text>
-                    ...and make a big difference in the world. Your donation will give us greater capacity
-                    to green the banking sector and protect our collective future.
+                    ...and make a big difference in the world. Your donation will give us greater
+                    capacity to green the banking sector and protect our collective future.
                   </Text>
                 )}
               </Stack>

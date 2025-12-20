@@ -1,6 +1,6 @@
 import { PageContent } from '@components/PageContent'
 import { renderRichText } from '@lib/prismicHelpers'
-import { Button, Checkbox, Stack, TextInput, Textarea } from '@mantine/core'
+import { Button, Checkbox, Stack, Textarea, TextInput } from '@mantine/core'
 import type { PrismicDocument, RichTextField } from '@prismicio/client'
 
 interface Props {
@@ -74,8 +74,7 @@ export function ContactPage({ page }: Props) {
                 name="isAgreeTerms"
                 label={
                   <>
-                    I have read and understood Bank.Green's{' '}
-                    <a href="/privacy">privacy policy</a>.
+                    I have read and understood Bank.Green's <a href="/privacy">privacy policy</a>.
                   </>
                 }
                 required

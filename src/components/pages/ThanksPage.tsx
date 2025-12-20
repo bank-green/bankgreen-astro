@@ -1,5 +1,6 @@
 import { PageContent } from '@components/PageContent'
 import type { PrismicDocument } from '@prismicio/client'
+import type { Slice } from '@slices'
 import { SliceZone } from '@slices'
 
 interface ThanksPageFallback {
@@ -14,7 +15,7 @@ interface Props {
 }
 
 export function ThanksPage({ page, fallback, pageType }: Props) {
-  const slices = page?.data?.slices
+  const slices = (page?.data?.slices || []) as Slice[]
   const showExplore = pageType !== 'donate-cancelled' && pageType !== 'updates-no'
 
   return (

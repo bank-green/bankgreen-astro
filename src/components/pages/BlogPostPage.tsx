@@ -1,5 +1,6 @@
 import { PageContent } from '@components/PageContent'
 import type { PrismicDocument } from '@prismicio/client'
+import type { Slice } from '@slices'
 import { SliceZone } from '@slices'
 
 interface Props {
@@ -9,7 +10,7 @@ interface Props {
 export function BlogPostPage({ post }: Props) {
   const title = (post.data.title as string) || 'Blog Post'
   const author = post.data.author as string | undefined
-  const slices = post.data.slices
+  const slices = (post.data.slices || []) as Slice[]
 
   const publishedDate = post.first_publication_date
     ? new Date(post.first_publication_date).toLocaleDateString('en-US', {

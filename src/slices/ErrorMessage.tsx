@@ -6,20 +6,11 @@
 
 import { renderRichText } from '@lib/prismicHelpers'
 import { Alert, Stack } from '@mantine/core'
-import type { RichTextField } from '@prismicio/client'
 import { WarningIcon } from '@phosphor-icons/react'
-
-type ErrorMessageSlice = {
-  slice_type: 'error_message'
-  variation: string
-  primary: {
-    title?: string
-    content?: RichTextField
-  }
-}
+import type { ErrorMessageSlice as ErrorMessageSliceType } from './types'
 
 interface Props {
-  slice: ErrorMessageSlice
+  slice: ErrorMessageSliceType
 }
 
 export function ErrorMessage({ slice }: Props) {
@@ -32,9 +23,7 @@ export function ErrorMessage({ slice }: Props) {
       role="alert"
       icon={<WarningIcon />}
     >
-      <Stack gap="xs">
-        {renderRichText(slice.primary.content)}
-      </Stack>
+      <Stack gap="xs">{renderRichText(slice.primary.content)}</Stack>
     </Alert>
   )
 }
