@@ -33,7 +33,6 @@ function BankLocationSearch({
         const { fetchBrandsByCountry } = await import('@lib/queries/brands')
         const stateQuery = country === 'US' ? state : undefined
         const brands = await fetchBrandsByCountry(country, stateQuery)
-        console.log('Fetched brands:', brands)
         setBanks(brands)
       } catch (error) {
         console.error('Error loading banks:', error)

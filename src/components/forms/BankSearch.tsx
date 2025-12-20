@@ -1,6 +1,7 @@
 import type { Bank } from '@lib/banks'
 import { findBanks } from '@lib/banks'
 import { Autocomplete, Loader } from '@mantine/core'
+import { BankIcon } from '@phosphor-icons/react'
 import { useMemo, useState } from 'react'
 
 interface BankSearchProps {
@@ -31,7 +32,7 @@ function BankSearch({
   const placeholder = useMemo(() => {
     if (loading) return 'Loading banks...'
     if (!banks.length) return country ? `No bank data found for this country` : 'No bank data found'
-    return customPlaceholder || 'Search bank...'
+    return customPlaceholder || `Search ${banks.length} banks...`
   }, [loading, banks.length, customPlaceholder, country])
 
   const filteredBanks = useMemo(() => findBanks(banks, search), [banks, search])
@@ -119,7 +120,7 @@ function BankSearch({
       disabled={disabled || loading || !banks.length}
       maxDropdownHeight={300}
       limit={50}
-      leftSection={loading && !disabled ? <Loader size="xs" /> : <span>🏦</span>}
+      leftSection={loading && !disabled ? <Loader size="xs" /> : <BankIcon />}
       rightSection={search ? undefined : null}
       onFocus={(e) => e.target.select()}
     />

@@ -2,6 +2,7 @@ import { findCountries, getCountryName } from '@lib/countries'
 import { detectUserLocation } from '@lib/geolocation'
 import { findStates, getStateName } from '@lib/states'
 import { Autocomplete, type AutocompleteProps, Group, Loader } from '@mantine/core'
+import { MapPinSimpleIcon } from '@phosphor-icons/react'
 import { useEffect, useMemo, useState } from 'react'
 
 interface LocationSearchProps {
@@ -193,7 +194,7 @@ function LocationSearch({
         maxDropdownHeight={300}
         limit={50}
         leftSection={isDetecting && !disabled && <Loader size="xs" />}
-        rightSection={search ? undefined : <span style={{ padding: '4px' }}>📍</span>}
+        rightSection={search ? undefined : <MapPinSimpleIcon size={16} />}
         onFocus={(e) => e.target.select()}
       />
       {showStateSearch && (
