@@ -35,8 +35,8 @@
     --mantine-font-family: var(--font-family);
     --mantine-font-size-md: 1rem;
     --mantine-line-height: 1.55;
-    --mantine-color-text: var(--color-sky-900);
-    --mantine-color-headings: var(--color-sky-800);
+    --mantine-color-text: var(--color-textDefault);
+    --mantine-color-headings: var(--color-textHeadings);
     --mantine-h1-font-size: 3rem;
     --mantine-h1-font-weight: 650;
     --mantine-h2-font-size: 2.25rem;

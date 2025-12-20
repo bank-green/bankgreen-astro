@@ -1,9 +1,9 @@
-import { PageContent } from '@components/PageContent'
 import { renderRichText } from '@lib/prismicHelpers'
-import { Box, Spoiler, Stack, Title } from '@mantine/core'
+import { Box, MantineProvider, Spoiler, Stack } from '@mantine/core'
 import type { PrismicDocument } from '@prismicio/client'
 import type { Slice } from '@slices'
 import { SliceZone } from '@slices'
+import theme from '@styles/theme'
 import { useState } from 'react'
 
 interface Props {
@@ -20,66 +20,75 @@ export function SustainableBanksPage({ page }: Props) {
   const [_readMoreP2, _setReadMoreP22] = useState(false)
 
   return (
-    <PageContent>
-      <Stack className="gap-12">
+    <MantineProvider theme={theme}>
+      <Stack className="mx-auto max-w-6xl gap-12 pt-18">
         {/* Main intro content from Prismic slices */}
         {slices && (
-          <Stack className="prose">
+          <Stack className="prose mx-auto [&_h1]:text-center">
             <SliceZone slices={slices} />
           </Stack>
         )}
 
-        <section>
-          <Title order={2}>Bank Directory</Title>
-          <Box className="h-36 w-full rounded bg-white">[Bank directory with filtering]</Box>
-          {/* Bank directory with filtering - will be a separate component */}
-          {/* This will include:
+        <Box className="mb-24 h-36 w-full rounded bg-white">[Bank directory with filtering]</Box>
+        {/* Bank directory with filtering - will be a separate component */}
+        {/* This will include:
               - LocationSearch for country selection
               - EcoBankFilters for filtering
               - EcoBankCards to display results
               - slices2 shown when no results/error
           */}
-        </section>
+      </Stack>
 
+      <Stack data-breakout className="bg-blue-100 py-24">
         {/* Introductory section (Why Find a Green Bank? + What is the Fossil Free Alliance?) */}
         {introductory && introductory.length > 0 && (
-          <>
+          <Stack className="prose mx-auto max-w-6xl gap-12 pb-18 [&_h1]:text-center">
             {/* Why Find a Green Bank? - First item in introductory */}
             {introductory[0]?.slice_type === 'text_slice' && (
-              <Spoiler maxHeight={200} showLabel="Read more" hideLabel="Read less">
-                <Stack>
-                  {renderRichText(
-                    (introductory[0] as Extract<Slice, { slice_type: 'text_slice' }>).primary.text
-                  )}
-                </Stack>
+              <Spoiler
+                maxHeight={140}
+                showLabel="Read more"
+                hideLabel="Read less"
+                className="mx-auto max-w-3xl rounded-md bg-linear-to-b from-white/50 to-white/10 p-6"
+              >
+                {renderRichText(
+                  (introductory[0] as Extract<Slice, { slice_type: 'text_slice' }>).primary.text
+                )}
               </Spoiler>
             )}
 
             {/* What is the Fossil Free Alliance? - Rest of introductory items */}
             {introductory.length > 1 && (
-              <Spoiler maxHeight={200} showLabel="Read more" hideLabel="Read less">
+              <Spoiler
+                maxHeight={140}
+                showLabel="Read more"
+                hideLabel="Read less"
+                className="mx-auto max-w-3xl rounded-md bg-linear-to-b from-white/50 to-white/10 p-6"
+              >
                 <Stack>
                   <SliceZone slices={introductory.slice(1)} />
                 </Stack>
               </Spoiler>
             )}
-          </>
-        )}
-
-        {/* FAQ section */}
-        {slices1 && slices1.length > 0 && (
-          <Stack className="rounded-lg bg-white p-4">
-            <SliceZone slices={slices1} />
           </Stack>
         )}
 
-        {/* Footer banner - Happy banking stories */}
-        {footerBanner && footerBanner.length > 0 && (
-          <section>
-            <SliceZone slices={footerBanner} />
-          </section>
-        )}
+        <Stack className="mx-auto w-full max-w-6xl gap-12">
+          {/* FAQ section */}
+          {slices1 && slices1.length > 0 && (
+            <Stack className="rounded-lg bg-white p-4">
+              <SliceZone slices={slices1} />
+            </Stack>
+          )}
+
+          {/* Footer banner - Happy banking stories */}
+          {footerBanner && footerBanner.length > 0 && (
+            <Box className="mt-12 rounded-lg bg-sky-800 p-4 text-textInverse">
+              <SliceZone slices={footerBanner} />
+            </Box>
+          )}
+        </Stack>
       </Stack>
-    </PageContent>
+    </MantineProvider>
   )
 }

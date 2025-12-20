@@ -124,10 +124,10 @@ export const baseColorTokens = {
   linkDefault: colorTokens.blue[800],
   linkHover: colorTokens.blue[700],
   linkVisited: colorTokens.blue[800],
-  textDefault: colorTokens.sky[800],
+  textDefault: colorTokens.gray[800],
   textHeadings: colorTokens.sky[800],
-  textInverse: colorTokens.sky[0],
-  textLight: colorTokens.sky[600],
+  textInverse: colorTokens.gray[0],
+  textLight: colorTokens.gray[600],
 }
 
 export const statusColorTokens = {
@@ -153,7 +153,7 @@ export const semanticColorTokens = {
 
 export const fontTokens = {
   body: ['Reddit Sans', 'sans-serif'],
-  headings: ['Reddit Sans', 'serif'],
+  headings: ['Reddit Sans', 'sans-serif'],
   script: ['blitz', 'mono'],
 }
 

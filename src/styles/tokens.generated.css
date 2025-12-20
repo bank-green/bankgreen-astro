@@ -17,7 +17,7 @@
   --breakpoint-max: 72rem;
   --breakpoint-min: 20rem;
   --font-body: Reddit Sans, sans-serif;
-  --font-headings: Reddit Sans, serif;
+  --font-headings: Reddit Sans, sans-serif;
   --color-sushi-50: #F2F7EB;
   --color-sushi-100: #EDF5E5;
   --color-sushi-200: #CEE1B4;
@@ -141,10 +141,10 @@
   --color-linkDefault: #1A3F8F;
   --color-linkHover: #1E4FBF;
   --color-linkVisited: #1A3F8F;
-  --color-textDefault: #282d46;
+  --color-textDefault: #292d30;
   --color-textHeadings: #282d46;
   --color-textInverse: #FFFFFF;
-  --color-textLight: #434F6D;
+  --color-textLight: #42484c;
   --color-bgError: #FCEDE8;
   --color-bgInfo: #EFF6FF;
   --color-bgSuccess: undefined;
