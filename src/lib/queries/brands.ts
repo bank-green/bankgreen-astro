@@ -195,6 +195,13 @@ export const ALL_BRANDS_QUERY = `
         node {
           name
           tag
+          countries {
+            code
+          }
+          stateLicensed {
+            tag
+            name
+          }
           commentary {
             showOnSustainableBanksPage
           }
@@ -211,6 +218,13 @@ export const BRANDS_BY_COUNTRY_QUERY = `
         node {
           name
           tag
+          countries {
+            code
+          }
+          stateLicensed {
+            tag
+            name
+          }
           website
           aliases
         }
@@ -224,6 +238,8 @@ interface BrandNode {
   tag: string
   website?: string | null
   aliases?: string | null
+  countries?: Array<{ code: string }> | null
+  stateLicensed?: Array<{ tag: string; name: string }> | null
 }
 
 interface BrandsResponse {

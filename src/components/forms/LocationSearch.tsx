@@ -29,6 +29,7 @@ function LocationSearch({
   const [_selectedUSState, setSelectedUSState] = useState('')
   const [showStateSearch, setShowStateSearch] = useState(false)
   const [isDetecting, setIsDetecting] = useState(false)
+  const [useAutoDetect, setUseAutoDetect] = useState(autoDetect)
 
   useEffect(() => {
     switch (selectedCountry) {
@@ -45,7 +46,7 @@ function LocationSearch({
 
   // Auto-detect user's location on mount
   useEffect(() => {
-    if (autoDetect && !value) {
+    if (useAutoDetect && !value) {
       setIsDetecting(true)
       detectUserLocation()
         .then((location) => {
@@ -73,7 +74,7 @@ function LocationSearch({
           setIsDetecting(false)
         })
     }
-  }, [autoDetect, value, onChange, onStateChange])
+  }, [useAutoDetect, value, onChange, onStateChange])
 
   // Initialize search value from selected country
   useEffect(() => {
@@ -95,6 +96,15 @@ function LocationSearch({
 
   const handleChange = (val: string) => {
     setSearch(val)
+
+    if (val === '') {
+      setUseAutoDetect(false)
+      setSelectedCountry('')
+      setSelectedUSState('')
+      setUSStateSearch('')
+      onChange?.('')
+      return
+    }
 
     // Check if the value matches a country name exactly
     const matchedCountry = autocompleteData.find(
@@ -166,6 +176,7 @@ function LocationSearch({
         className="grow"
         placeholder={isDetecting ? 'Detecting your location...' : placeholder}
         value={search}
+        clearable
         onChange={handleChange}
         onOptionSubmit={handleOptionSubmit}
         data={autocompleteData}

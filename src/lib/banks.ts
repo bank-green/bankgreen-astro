@@ -5,6 +5,8 @@ export interface Bank {
   tag: string
   website?: string | null
   aliases?: string | null
+  countries?: Array<{ code: string }> | null
+  stateLicensed?: Array<{ tag: string; name: string }> | null
 }
 
 export function findBanks(banks: Bank[], searchName: string): Bank[] {

@@ -23,26 +23,35 @@ function BankSearch({
   loading = false,
   label = 'Bank',
   placeholder: customPlaceholder,
-  country,
+  country = '',
 }: BankSearchProps) {
   const [search, setSearch] = useState(value?.name || '')
 
   const placeholder = useMemo(() => {
     if (loading) return 'Loading banks...'
-    if (!country) return 'Set a country first'
-    if (!banks.length) return `No bank data found for this country`
+    if (!banks.length) return country ? `No bank data found for this country` : 'No bank data found'
     return customPlaceholder || 'Search bank...'
-  }, [loading, country, banks.length, customPlaceholder])
+  }, [loading, banks.length, customPlaceholder, country])
 
   const filteredBanks = useMemo(() => findBanks(banks, search), [banks, search])
 
   const autocompleteData = useMemo(() => {
-    return filteredBanks.map((bank) => ({
-      value: bank.tag,
-      label: bank.name,
-      bank,
-    }))
-  }, [filteredBanks])
+    return filteredBanks.map((bank) => {
+      const bankCountry = bank?.countries?.[0]?.code || ''
+      const bankState = bank?.stateLicensed?.[0]?.name || ''
+      const label =
+        country === ''
+          ? bankState
+            ? `${bank.name} (${bankCountry}, ${bankState})`
+            : `${bank.name} (${bankCountry})`
+          : bank.name
+      return {
+        value: bank.tag,
+        label: label,
+        bank,
+      }
+    })
+  }, [filteredBanks, country])
 
   const handleChange = (val: string) => {
     setSearch(val)

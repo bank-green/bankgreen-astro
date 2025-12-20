@@ -21,17 +21,13 @@ function BankLocationSearch({
 
   useEffect(() => {
     async function loadBanks() {
-      if (!country) {
-        setBanks([])
-        return
-      }
-
       setLoading(true)
 
       try {
         const { fetchBrandsByCountry } = await import('@lib/queries/brands')
         const stateQuery = country === 'US' ? state : undefined
         const brands = await fetchBrandsByCountry(country, stateQuery)
+        console.log('Fetched brands:', brands)
         setBanks(brands)
       } catch (error) {
         console.error('Error loading banks:', error)
@@ -54,18 +50,12 @@ function BankLocationSearch({
       <Title order={3} className="text-center font-normal text-sky-800 md:text-left">
         {title}
       </Title>
-      <LocationSearch
-        value={country}
-        onChange={setCountry}
-        onStateChange={setState}
-        autoDetect={true}
-      />
+      <LocationSearch value={country} onChange={setCountry} onStateChange={setState} />
       <BankSearch
         banks={banks}
         value={selectedBank}
         onChange={handleBankChange}
         loading={loading}
-        disabled={!country}
         country={country}
         state={state}
       />
