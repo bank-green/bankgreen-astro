@@ -8,6 +8,7 @@ interface LocationSearchProps {
   value?: string
   onChange?: (value: string) => void
   onStateChange?: (value: string) => void
+  onInitialized?: () => void
   disabled?: boolean
   label?: string
   placeholder?: string
@@ -18,6 +19,7 @@ function LocationSearch({
   value = '',
   onChange,
   onStateChange,
+  onInitialized,
   disabled = false,
   label = 'Location',
   placeholder = 'Search country...',
@@ -66,15 +68,20 @@ function LocationSearch({
               onStateChange?.('')
             }
           }
+          onInitialized?.()
         })
         .catch((error) => {
           console.error('Failed to auto-detect location:', error)
+          onInitialized?.()
         })
         .finally(() => {
           setIsDetecting(false)
         })
+    } else {
+      // If not using auto-detect, mark as initialized immediately
+      onInitialized?.()
     }
-  }, [useAutoDetect, value, onChange, onStateChange])
+  }, [useAutoDetect, value, onChange, onStateChange, onInitialized])
 
   // Initialize search value from selected country
   useEffect(() => {
@@ -103,6 +110,7 @@ function LocationSearch({
       setSelectedUSState('')
       setUSStateSearch('')
       onChange?.('')
+      onInitialized?.()
       return
     }
 

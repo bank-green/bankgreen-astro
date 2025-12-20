@@ -24,6 +24,7 @@ function BankSearch({
   label = 'Bank',
   placeholder: customPlaceholder,
   country = '',
+  state = '',
 }: BankSearchProps) {
   const [search, setSearch] = useState(value?.name || '')
 
@@ -36,22 +37,50 @@ function BankSearch({
   const filteredBanks = useMemo(() => findBanks(banks, search), [banks, search])
 
   const autocompleteData = useMemo(() => {
+    const formatStateLabel = (state: { tag: string; name: string } | undefined) =>
+      state?.tag ? `${state?.tag?.slice(3)}` || '' : state?.name || ''
+
     return filteredBanks.map((bank) => {
-      const bankCountry = bank?.countries?.[0]?.code || ''
-      const bankState = bank?.stateLicensed?.[0]?.name || ''
+      const bankCountry = bank?.countries
+        ? bank.countries.length === 1
+          ? bank.countries[0]?.code || '' // Only one country
+          : bank.countries.length > 3
+            ? `${bank.countries.length} countries` // Show number of countries if more than 3
+            : bank.countries?.map((c) => c.code).join(', ') // Show all countries if less than 3
+        : ''
+
+      const bankState = bank?.countries
+        ? bank.countries.length === 1
+          ? bank?.stateLicensed
+            ? bank.stateLicensed.length === 1
+              ? formatStateLabel(bank.stateLicensed?.[0]) // Only one state
+              : country === '' // Global search
+                ? bank?.stateLicensed.length > 3
+                  ? `${bank.stateLicensed.length} states` // Show number of states if more than 3
+                  : bank.stateLicensed.map(formatStateLabel).join(', ') // Show all states if less than 3
+                : '' // No state in country search
+            : ''
+          : ''
+        : ''
+
       const label =
-        country === ''
+        country === '' // Global search, show country and state
           ? bankState
-            ? `${bank.name} (${bankCountry}, ${bankState})`
+            ? `${bank.name} (${bankState}, ${bankCountry})`
             : `${bank.name} (${bankCountry})`
-          : bank.name
+          : state === '' // Country search with no state, show state if it exists
+            ? bankState
+              ? `${bank.name} (${bankState})`
+              : bank.name
+            : bank.name // Country and state search, only show bank name
+
       return {
         value: bank.tag,
         label: label,
         bank,
       }
     })
-  }, [filteredBanks, country])
+  }, [filteredBanks, country, state])
 
   const handleChange = (val: string) => {
     setSearch(val)

@@ -18,8 +18,14 @@ function BankLocationSearch({
   const [selectedBank, setSelectedBank] = useState<Bank | null>(null)
   const [banks, setBanks] = useState<Bank[]>([])
   const [loading, setLoading] = useState(true)
+  const [isInitialized, setIsInitialized] = useState(false)
 
   useEffect(() => {
+    // Don't fetch on initial mount - wait for geo-detection or user interaction
+    if (!isInitialized) {
+      return
+    }
+
     async function loadBanks() {
       setLoading(true)
 
@@ -38,7 +44,11 @@ function BankLocationSearch({
     }
 
     loadBanks()
-  }, [country, state])
+  }, [country, state, isInitialized])
+
+  const handleLocationInitialized = () => {
+    setIsInitialized(true)
+  }
 
   const handleBankChange = (bank: Bank | null) => {
     setSelectedBank(bank)
@@ -50,7 +60,12 @@ function BankLocationSearch({
       <Title order={3} className="text-center font-normal text-sky-800 md:text-left">
         {title}
       </Title>
-      <LocationSearch value={country} onChange={setCountry} onStateChange={setState} />
+      <LocationSearch
+        value={country}
+        onChange={setCountry}
+        onStateChange={setState}
+        onInitialized={handleLocationInitialized}
+      />
       <BankSearch
         banks={banks}
         value={selectedBank}
