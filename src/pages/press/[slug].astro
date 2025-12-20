@@ -19,5 +19,5 @@ const title = release.data.title || 'Press Release'
 ---
 
 <BaseLayout title={title}>
-  <PressReleasePage release={release} />
+  <PressReleasePage release={release} client:load />
 </BaseLayout>

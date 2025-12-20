@@ -38,6 +38,16 @@ export const theme = createTheme({
   primaryColor: 'green',
   primaryShade: 6,
   components: {
+    Accordion: {
+      classNames: {
+        root: 'bg-white rounded-lg',
+        item: 'rounded-md border-none bg-gray-100/25',
+        control:
+          ' rounded-md bg-gray-100/25 hover:bg-gray-100/50 active:bg-gray-100/75 transition-all duration-100 border-b-2 border-white',
+        label: 'font-semibold',
+        content: 'py-4',
+      },
+    },
     Anchor: {
       classNames: {
         root: cx(
@@ -55,7 +65,7 @@ export const theme = createTheme({
       },
       classNames: {
         header: 'm-auto max-w-6xl w-full',
-        main: 'm-auto w-full bg-sushi-100',
+        main: 'mx-auto w-full bg-sushi-100',
         footer: 'm-auto max-w-6xl w-full bg-white pt-6',
       },
     },
@@ -84,6 +94,14 @@ export const theme = createTheme({
     LoadingOverlay: {
       classNames: {
         overlay: 'bg-sushi-100/50 backdrop-blur-[2px]',
+      },
+    },
+    Spoiler: {
+      defaultProps: {
+        maxHeight: '5rem',
+      },
+      classNames: {
+        control: 'py-2',
       },
     },
     Tabs: {

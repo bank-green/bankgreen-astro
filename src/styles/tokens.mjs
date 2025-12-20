@@ -56,6 +56,21 @@ export const colorTokens = {
     900: '#1C2032',
     1000: '#000000',
   },
+  gray: {
+    0: '#FFFFFF',
+    50: '#f9fafa',
+    100: '#e4e6e7',
+    200: '#c9cdcf',
+    300: '#aeb4b7',
+    400: '#939b9f',
+    500: '#6b7276',
+    600: '#42484c',
+    700: '#363b3e',
+    800: '#292d30',
+    900: '#1d2022',
+    950: '#0f1011',
+    1000: '#000000',
+  },
   red: {
     50: '#FCEDE8',
     100: '#FADFD7',
@@ -75,10 +90,6 @@ colorTokens.blue = {}
 for (const [shade, value] of Object.entries(colorTokens.ocean)) {
   colorTokens.blue[shade] = value
 }
-colorTokens.gray = {}
-for (const [shade, value] of Object.entries(colorTokens.sky)) {
-  colorTokens.gray[shade] = value
-}
 colorTokens.green = {}
 for (const [shade, value] of Object.entries(colorTokens.sushi)) {
   colorTokens.green[shade] = value
@@ -92,7 +103,7 @@ export const brandColorTokens = {
   primaryDark: colorTokens.sky[800],
   primaryLight: colorTokens.sky[600],
   oceanBlue: colorTokens.sky[800],
-  woodlandGreen: '#1E4132',
+  woodlandGreen: colorTokens.leaf[700],
   pistachioGreen: colorTokens.sushi[100],
   arcticBlue: colorTokens.ocean[100],
 }

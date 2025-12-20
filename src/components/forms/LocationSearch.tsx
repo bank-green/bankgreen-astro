@@ -22,7 +22,7 @@ function LocationSearch({
   onStateChange,
   onInitialized,
   disabled = false,
-  label = 'Location',
+  label = 'Country',
   placeholder = 'Search country...',
   autoDetect = true,
 }: LocationSearchProps) {

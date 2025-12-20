@@ -1,6 +1,6 @@
 import { PageContent } from '@components/PageContent'
 import { renderRichText } from '@lib/prismicHelpers'
-import { Button } from '@mantine/core'
+import { Box, Spoiler, Stack, Title } from '@mantine/core'
 import type { PrismicDocument } from '@prismicio/client'
 import { SliceZone } from '@slices'
 import { useState } from 'react'
@@ -15,21 +15,22 @@ export function SustainableBanksPage({ page }: Props) {
   const introductory = page?.data?.introductory
   const footerBanner = page?.data?.footerBanner
 
-  const [readMoreP1, setReadMoreP1] = useState(false)
-  const [readMoreP2, setReadMoreP2] = useState(false)
+  const [_readMoreP1, _setReadMoreP11] = useState(false)
+  const [_readMoreP2, _setReadMoreP22] = useState(false)
 
   return (
     <PageContent>
-      <article>
+      <Stack className="gap-12">
         {/* Main intro content from Prismic slices */}
         {slices && (
-          <section>
+          <Stack className="prose">
             <SliceZone slices={slices} />
-          </section>
+          </Stack>
         )}
 
         <section>
-          <h2>Bank Directory</h2>
+          <Title order={2}>Bank Directory</Title>
+          <Box className="h-36 w-full rounded bg-white">[Bank directory with filtering]</Box>
           {/* Bank directory with filtering - will be a separate component */}
           {/* This will include:
               - LocationSearch for country selection
@@ -41,38 +42,30 @@ export function SustainableBanksPage({ page }: Props) {
 
         {/* Introductory section (Why Find a Green Bank? + What is the Fossil Free Alliance?) */}
         {introductory && introductory.length > 0 && (
-          <section>
+          <>
             {/* Why Find a Green Bank? - First item in introductory */}
             {introductory[0]?.primary?.text && (
-              <div>
-                <div className={readMoreP1 ? '' : 'line-clamp-6'}>
-                  {renderRichText(introductory[0].primary.text)}
-                </div>
-                <Button variant="default" onClick={() => setReadMoreP1(!readMoreP1)} mt="md">
-                  {readMoreP1 ? 'Read less' : 'Read more'}
-                </Button>
-              </div>
+              <Spoiler maxHeight={200} showLabel="Read more" hideLabel="Read less">
+                <Stack>{renderRichText(introductory[0].primary.text)}</Stack>
+              </Spoiler>
             )}
 
             {/* What is the Fossil Free Alliance? - Rest of introductory items */}
             {introductory.length > 1 && (
-              <div>
-                <div className={readMoreP2 ? '' : 'line-clamp-6'}>
+              <Spoiler maxHeight={200} showLabel="Read more" hideLabel="Read less">
+                <Stack>
                   <SliceZone slices={introductory.slice(1)} />
-                </div>
-                <Button variant="default" onClick={() => setReadMoreP2(!readMoreP2)} mt="md">
-                  {readMoreP2 ? 'Read less' : 'Read more'}
-                </Button>
-              </div>
+                </Stack>
+              </Spoiler>
             )}
-          </section>
+          </>
         )}
 
         {/* FAQ section */}
         {slices1 && slices1.length > 0 && (
-          <section>
+          <Stack className="rounded-lg bg-white p-4">
             <SliceZone slices={slices1} />
-          </section>
+          </Stack>
         )}
 
         {/* Footer banner - Happy banking stories */}
@@ -81,7 +74,7 @@ export function SustainableBanksPage({ page }: Props) {
             <SliceZone slices={footerBanner} />
           </section>
         )}
-      </article>
+      </Stack>
     </PageContent>
   )
 }

@@ -9,5 +9,5 @@ const posts = await getAllByTypeSafe('blogpost', {
 ---
 
 <BaseLayout title="Blog: Stories and Tips for Divesting From Fossil Fuels">
-  <BlogIndexPage posts={posts} />
+  <BlogIndexPage posts={posts} client:load />
 </BaseLayout>

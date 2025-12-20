@@ -9,5 +9,5 @@ const page = await getSingleSafe('teampage', {
 ---
 
 <BaseLayout title="Who We Are">
-  <TeamPage page={page} />
+  <TeamPage page={page} client:load />
 </BaseLayout>

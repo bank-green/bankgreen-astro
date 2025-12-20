@@ -10,5 +10,5 @@ const releases = await getAllByTypeSafe('presspost', {
 ---
 
 <BaseLayout title="Press">
-  <PressIndexPage page={page} releases={releases} />
+  <PressIndexPage page={page} releases={releases} client:load />
 </BaseLayout>

@@ -1,4 +1,5 @@
 import { PageContent } from '@components/PageContent'
+import { Loader, Stack, Title } from '@mantine/core'
 import type { PrismicDocument } from '@prismicio/client'
 import { SliceZone } from '@slices'
 import type { ReactNode } from 'react'
@@ -23,17 +24,15 @@ export function SlicePage({ title, page, intro, footer }: Props) {
 
   return (
     <PageContent>
-      <article className="prose sm:prose-lg xl:prose-xl mx-auto max-w-4xl xl:max-w-5xl">
-        <header>
-          <h1>{title}</h1>
-        </header>
+      <Stack className="prose sm:prose-lg xl:prose-xl mx-auto max-w-6xl xl:max-w-7xl">
+        <Title order={1}>{title}</Title>
 
         {intro}
 
-        <section>{slices ? <SliceZone slices={slices} /> : <p>Content loading...</p>}</section>
+        <section>{slices ? <SliceZone slices={slices} /> : <Loader />}</section>
 
         {footer}
-      </article>
+      </Stack>
     </PageContent>
   )
 }

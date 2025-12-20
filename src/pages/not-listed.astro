@@ -7,5 +7,5 @@ const page = await getByUIDSafe('textonlypages', 'notlisted')
 ---
 
 <BaseLayout title="Bank Not Listed">
-  <NotListedPage page={page} />
+  <NotListedPage page={page} client:load />
 </BaseLayout>

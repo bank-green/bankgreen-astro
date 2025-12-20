@@ -19,5 +19,5 @@ const title = post.data.title || 'Blog Post'
 ---
 
 <BaseLayout title={title}>
-  <BlogPostPage post={post} />
+  <BlogPostPage post={post} client:load />
 </BaseLayout>

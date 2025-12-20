@@ -21,7 +21,7 @@ export function FaqPage({ page }: Props) {
           <Title order={1}>Frequently Asked Questions</Title>
         )}
 
-        <Stack className="rounded-lg bg-white/90 p-4">
+        <Stack className="rounded-lg bg-white p-4">
           {slices ? <SliceZone slices={slices} /> : <p>Error loading content.</p>}
         </Stack>
 
