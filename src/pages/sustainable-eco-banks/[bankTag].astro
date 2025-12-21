@@ -1,12 +1,24 @@
 ---
 import { BankProfilePage } from '@components/pages'
 import BaseLayout from '@layouts/BaseLayout.astro'
+import { fetchBrandByTag } from '@lib/queries/brands'
 
 interface BankData {
-  tag: string
   name: string
+  tag: string
+  website?: string | null
+  commentary?: {
+    rating?: string | null
+    lastReviewed?: string | null
+    headline?: string | null
+    description1?: string | null
+    description2?: string | null
+    description3?: string | null
+    fossilFreeAlliance?: boolean | null
+    showOnSustainableBanksPage?: boolean
+  } | null
+  countries?: Array<{ code: string }> | null
 }
-
 export async function getStaticPaths() {
   // TODO: Fetch all sustainable banks from GraphQL
   // const data = await graphqlFetch(`query { sustainableBanks { tag } }`);
@@ -16,10 +28,15 @@ export async function getStaticPaths() {
 
 const { bankTag } = Astro.params
 
-// TODO: Fetch bank data from GraphQL
-const bank: BankData | null = null
+// Fetch bank data from GraphQL
+const bank = await fetchBrandByTag(bankTag as string)
 
-const bankName = (bank as BankData | null)?.name ?? 'Bank'
+// Redirect to 404 if bank not found
+if (!bank) {
+  return Astro.redirect('/404')
+}
+
+const bankName = bank.name
 const title = `${bankName} Review`
 ---
 

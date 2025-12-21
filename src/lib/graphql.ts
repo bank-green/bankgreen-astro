@@ -9,9 +9,17 @@
  *   pnpm add @tanstack/react-query graphql-request graphql
  */
 
-// Always use the API proxy route to avoid CORS issues
-// The proxy handles forwarding requests to the actual GraphQL endpoint
-const GRAPHQL_ENDPOINT = '/api/graphql'
+// During build (SSG), use the direct endpoint from env var
+// During runtime (client-side), use the API proxy route to avoid CORS
+function getGraphQLEndpoint(): string {
+  // Check if we're running in Node.js (SSG build time)
+  if (typeof window === 'undefined') {
+    // Use environment variable during build
+    return import.meta.env.PUBLIC_GRAPHQL_ENDPOINT || 'https://data.bank.green/graphql'
+  }
+  // Use proxy route in browser
+  return '/api/graphql'
+}
 
 /**
  * Simple GraphQL fetch function.
@@ -21,7 +29,9 @@ export async function graphqlFetch<T>(
   query: string,
   variables?: Record<string, unknown>
 ): Promise<T> {
-  const response = await fetch(GRAPHQL_ENDPOINT, {
+  const endpoint = getGraphQLEndpoint()
+
+  const response = await fetch(endpoint, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
