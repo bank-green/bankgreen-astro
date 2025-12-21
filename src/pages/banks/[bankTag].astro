@@ -1,6 +1,8 @@
 ---
 import { BankScorePage } from '@components/pages'
 import BaseLayout from '@layouts/BaseLayout.astro'
+import { getDefaultFields } from '@lib/banks'
+import { getByUIDSafe, prismicClient } from '@lib/prismic'
 import { fetchBrandByTag } from '@lib/queries/brands'
 
 interface BankData {
@@ -16,6 +18,9 @@ interface BankData {
     description3?: string | null
     fossilFreeAlliance?: boolean | null
     showOnSustainableBanksPage?: boolean
+    institutionType?: {
+      name: string
+    } | null
   } | null
   countries?: Array<{ code: string }> | null
 }
@@ -44,8 +49,33 @@ if (!bank) {
 
 const bankName = bank.name
 const title = `${bankName}'s Climate Score`
+
+// Determine rating (handle credit union logic from Nuxt)
+const getRating = (bank: BankData): string => {
+  const rating = bank.commentary?.rating || 'unknown'
+  const institutionType = bank.commentary?.institutionType?.name
+  const isCreditUnion = institutionType === 'Credit Union'
+  const isRatingUnknown = rating === 'unknown'
+
+  // Credit unions with unknown rating default to 'good'
+  if (isCreditUnion && isRatingUnknown) {
+    return 'good'
+  }
+
+  return rating
+}
+
+const rating = getRating(bank)
+const institutionType = bank.commentary?.institutionType?.name || 'Bank'
+
+// Fetch Prismic defaults based on rating
+const prismicDefaults = await getDefaultFields(prismicClient, rating, bankName, institutionType)
+
+// Fetch Prismic page for SliceZone
+const queryKey = rating === 'unknown' ? `unknownbank-${institutionType.toLowerCase().replace(/\s/g, '')}` : `${rating}bank`
+const prismicPage = await getByUIDSafe('bankpage', queryKey)
 ---
 
 <BaseLayout title={title}>
-  <BankScorePage bank={bank} client:load />
+  <BankScorePage bank={bank} prismicDefaults={prismicDefaults} prismicPage={prismicPage} client:load />
 </BaseLayout>

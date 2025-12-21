@@ -33,6 +33,7 @@ export function Swoosh({
         preserveAspectRatio="none"
         fill={color}
       >
+        <title>Wave decoration</title>
         <path
           d="m0 175c250.16-15.25 489.57-30.193 641.34-62.394 169.21-36.691 264.25-63.393 358.66-111.81l0.1449 175z"
           stroke="none"

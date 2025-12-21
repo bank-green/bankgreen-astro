@@ -14,7 +14,6 @@ export function Header() {
     <>
       <NavLink classes={classes} href="/sustainable-eco-banks" label="Sustainable Banks" />
       <NavLink classes={classes} href="/blog" label="Blog" />
-      <NavLink classes={classes} href="/team" label="Who We Are" />
       <NavLink classes={classes} href="/faq" label="FAQ" />
       <NavLink classes={classes} href="/contact" label="Contact" />
       <NavLink classes={classes} href="/take-action" label="Take Action" />
@@ -44,7 +43,7 @@ export function Header() {
           hiddenFrom="md"
           size="sm"
         />
-        <Group visibleFrom="md">
+        <Group visibleFrom="md" className="gap-8">
           <NavLinks classes="text-sky-200 hover:text-white hover:no-underline transition" />
         </Group>
         <Drawer

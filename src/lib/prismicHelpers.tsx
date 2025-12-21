@@ -1,4 +1,4 @@
-import { Text, Title } from '@mantine/core'
+import { Title, Typography } from '@mantine/core'
 import * as prismic from '@prismicio/client'
 import type { ReactNode } from 'react'
 
@@ -50,7 +50,7 @@ export function renderRichText(field: prismic.RichTextField | null | undefined):
           </Title>
         )
       case 'paragraph':
-        return <Text key={key}>{renderSpans(block.text, block.spans)}</Text>
+        return <>{renderSpans(block.text, block.spans)}</>
       case 'preformatted':
         return <pre key={key}>{block.text}</pre>
       case 'list-item':
@@ -65,8 +65,10 @@ export function renderRichText(field: prismic.RichTextField | null | undefined):
           </figure>
         )
       case 'embed':
-        // biome-ignore lint/security/noDangerouslySetInnerHtml: This is appropriate for embeds
-        return <div key={key} dangerouslySetInnerHTML={{ __html: block.oembed.html || '' }} />
+        return (
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: This is appropriate for embeds
+          <Typography key={key} dangerouslySetInnerHTML={{ __html: block.oembed.html || '' }} />
+        )
       default:
         return null
     }

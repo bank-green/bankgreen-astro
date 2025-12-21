@@ -45,7 +45,7 @@ export function HomePage({ page }: Props) {
 
         {/* As featured in */}
         <Stack className="-mb-24 w-full py-6 pb-24">
-          <Box className="mx-auto hidden w-full max-w-6xl bg-linear-to-br px-12 md:flex lg:rounded-3xl lg:px-0">
+          <Box className="mx-auto hidden w-full max-w-6xl bg-linear-to-br px-12 lg:flex lg:rounded-3xl lg:px-0">
             <Stack className="mx-auto w-full max-w-6xl items-center justify-between px-6 md:flex md:px-0 lg:flex-row lg:items-start">
               <Stack className="lg:no-wrap mx-auto mb-8 items-center justify-between gap-4 lg:mx-0 lg:items-start">
                 <Text className="mb-8 inline-block w-full grow whitespace-nowrap text-center font-semibold text-sky-700 text-xl md:mb-0">
@@ -87,7 +87,7 @@ export function HomePage({ page }: Props) {
           </Box>
           <Stack>
             {/* Why Bank.Green? teaser */}
-            <Group className="mx-auto items-center gap-1 text-4xl text-gray-700 leading-4 md:mt-16">
+            <Group className="mx-auto items-center gap-1 text-4xl text-gray-700 leading-4 lg:mt-16">
               Why{' '}
               <img
                 className="mt-2 ml-2 inline-block h-10 px-0.5"
@@ -119,7 +119,7 @@ export function HomePage({ page }: Props) {
       <Box data-breakout className="bg-white">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-center px-12 py-16 md:flex-row md:px-0">
           <div className="md:w-1/2 md:pr-12">
-            <div className="mb-4 text-lg tracking-wide md:text-2xl [&_strong]:font-semibold [&_strong]:text-gray-800">
+            <div className="prose mb-4 text-lg tracking-wide md:text-2xl [&_strong]:font-semibold [&_strong]:text-gray-800">
               {description1 && description1.length > 0 && renderRichText(description1)}
             </div>
             <div className="mb-12 whitespace-pre-line text-gray-600 tracking-wide md:mb-0 md:text-xl">
@@ -158,7 +158,7 @@ export function HomePage({ page }: Props) {
                 />
               </div>
 
-              <div className="text-right md:w-7/16">
+              <div className="prose text-right md:w-7/16">
                 <div className="mb-4 text-balance text-lg tracking-wide md:text-2xl [&_strong]:font-semibold [&_strong]:text-gray-800">
                   {description3 && description3.length > 0 && renderRichText(description3)}
                 </div>
@@ -174,7 +174,7 @@ export function HomePage({ page }: Props) {
                 <div className="flex flex-col gap-8 lg:flex-row lg:gap-16">
                   {/* Left side - title and benefits */}
                   <div className="lg:w-1/2">
-                    <h2 className="mb-6 font-semibold text-2xl md:text-3xl">
+                    <h2 className="mb-6 font-semibold text-2xl text-textInverse md:text-3xl">
                       Start to Bank Green Today
                     </h2>
                     <ul className="space-y-4">
