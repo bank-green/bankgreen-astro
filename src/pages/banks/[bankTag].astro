@@ -72,7 +72,10 @@ const institutionType = bank.commentary?.institutionType?.name || 'Bank'
 const prismicDefaults = await getDefaultFields(prismicClient, rating, bankName, institutionType)
 
 // Fetch Prismic page for SliceZone
-const queryKey = rating === 'unknown' ? `unknownbank-${institutionType.toLowerCase().replace(/\s/g, '')}` : `${rating}bank`
+const queryKey =
+  rating === 'unknown'
+    ? `unknownbank-${institutionType.toLowerCase().replace(/\s/g, '')}`
+    : `${rating}bank`
 const prismicPage = await getByUIDSafe('bankpage', queryKey)
 ---
 

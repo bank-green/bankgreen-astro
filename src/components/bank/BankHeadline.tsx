@@ -1,5 +1,5 @@
 import { SafeHtml } from '@components/SafeHtml'
-import { Typography } from '@mantine/core'
+import { Anchor, Group, Stack, Text, Title } from '@mantine/core'
 
 interface BankHeadlineProps {
   name: string
@@ -16,35 +16,35 @@ export function BankHeadline({ name, website, subtitle, inheritBrandRating }: Ba
   const logoUrl = `https://cdn.brandfetch.io/${websiteUrl}/icon/fallback/lettermark/h/112/w/112`
 
   return (
-    <div className="col-span-2 md:col-span-1">
-      <div className="mb-4 flex items-center gap-4">
+    <Stack>
+      <Group className="items-center gap-4">
         {logoUrl && (
           <img
             src={logoUrl}
             alt={`${name} logo`}
-            className="h-12 w-12 rounded object-contain"
+            className="h-16 w-16 rounded border border-borderDefault object-contain"
             onError={(e) => {
               e.currentTarget.style.display = 'none'
             }}
           />
         )}
-        <h1 className="font-bold text-3xl text-gray-800 md:text-5xl">{name}</h1>
-      </div>
+        <Title order={2} className="mb-0">
+          {name}
+        </Title>
+      </Group>
 
       {subtitle && (
-        <Typography>
-          <SafeHtml html={subtitle} className="text-gray-700 text-lg md:text-xl" />
-        </Typography>
+        <Title order={4}>
+          <SafeHtml html={subtitle} />
+        </Title>
       )}
 
       {inheritBrandRating && (
-        <p className="mt-4 text-gray-600 text-sm">
+        <Text>
           This brand is rated based on{' '}
-          <a href={`/banks/${inheritBrandRating.tag}`} className="underline hover:text-sushi-500">
-            {inheritBrandRating.name}
-          </a>
-        </p>
+          <Anchor href={`/banks/${inheritBrandRating.tag}`}>{inheritBrandRating.name}</Anchor>
+        </Text>
       )}
-    </div>
+    </Stack>
   )
 }

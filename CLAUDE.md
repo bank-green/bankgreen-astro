@@ -60,6 +60,69 @@ Pages are static Astro components (`.astro`) that render to HTML at build time. 
   - This ensures Mantine context is available during SSR despite Astro slot limitations
 - Styles split into separate imports for tree-shaking
 
+**CRITICAL: Mantine + Tailwind Styling Rules**:
+1. **Always use Mantine components for semantic structure** - Never use raw HTML elements (`<div>`, `<p>`, `<ul>`, `<input>`, `<button>`) in React components
+2. **Style Mantine components exclusively with Tailwind via className** - Do NOT use Mantine style props (`mb=`, `mt=`, `p=`, `ta=`, `size=`, etc.)
+3. **Use Stack/Group for layouts** - Replace `<div className="flex">` with `<Stack>` or `<Group>` + Tailwind classes
+4. **No inline styles** - Use Tailwind arbitrary values instead (e.g., `max-w-[40rem]` or canonical `max-w-160`)
+5. **Avoid redundant Tailwind classes** - Don't add classes that duplicate Mantine's defaults:
+   - `<Group>` is already `flex` (row) - don't add `flex` class
+   - `<Stack>` is already `flex flex-col` - don't add `flex flex-col` classes
+   - `<Title order={1-6}>` already has semantic h1-h6 sizing/weight - don't override with `text-*` or `font-*` classes unless intentionally deviating from semantic HTML
+6. **Component mapping**:
+   - `<h1>` through `<h6>` → `<Title order={1-6} className="...">` (preserves semantic HTML, only add color/spacing classes)
+   - `<p>` → `<Text className="...">`
+   - `<ul>/<li>` → `<List><List.Item>` with custom icons via `icon` prop
+   - `<input>` → `<TextInput className="...">`
+   - `<button>` → `<Button className="...">`
+   - `<div>` (containers) → `<Paper>`, `<Stack>`, or `<Group className="...">`
+   - `<div className="flex">` → `<Group className="...">`
+   - `<div className="flex flex-col">` → `<Stack className="...">`
+
+**Example - CORRECT**:
+```tsx
+import { Button, Group, List, Paper, Stack, Text, TextInput, ThemeIcon, Title } from '@mantine/core'
+import { CheckCircleIcon } from '@phosphor-icons/react'
+
+<Stack className="gap-4">
+  <Title order={2} className="mb-4 text-center text-gray-100">Page Title</Title>
+  <Text className="text-lg text-center">Sign up now</Text>
+  <Paper className="p-6 rounded-lg bg-white shadow-sm">
+    <Group className="gap-2">
+      <TextInput className="flex-1" placeholder="Email" />
+      <Button className="bg-sushi-500 hover:bg-sushi-600">Submit</Button>
+    </Group>
+  </Paper>
+  <List icon={<ThemeIcon color="green" size={24} radius="xl"><CheckCircleIcon size={16} weight="fill" /></ThemeIcon>}>
+    <List.Item>Feature one</List.Item>
+    <List.Item>Feature two</List.Item>
+  </List>
+</Stack>
+```
+
+**Example - WRONG**:
+```tsx
+// ❌ Don't use Mantine props for styling
+<Text size="lg" ta="center" mb="md">Sign up now</Text>
+<Button type="submit" color="green">Submit</Button>
+<Title order={2} mb="lg">Title</Title>
+
+// ❌ Don't use raw HTML elements
+<h2 className="text-2xl font-bold">Title</h2>
+<p className="text-lg">Sign up now</p>
+<button className="bg-green-500">Submit</button>
+<div className="flex gap-2">...</div>
+
+// ❌ Don't use inline styles
+<form style={{ maxWidth: '40rem' }}>...</form>
+
+// ❌ Don't use redundant classes that duplicate Mantine defaults
+<Group className="flex gap-2">...</Group>  // "flex" is redundant
+<Stack className="flex flex-col gap-4">...</Stack>  // "flex flex-col" is redundant
+<Title order={2} className="text-2xl font-semibold">Title</Title>  // size/weight overrides semantic h2
+<Title order={1} className="text-3xl font-bold">Big Title</Title>  // overrides semantic h1
+```
+
 ### Data Fetching
 
 **GraphQL (Django backend)**:
@@ -83,6 +146,12 @@ Pages are static Astro components (`.astro`) that render to HTML at build time. 
 - Path aliases: `@/*` → `src/*`, `@components/*`, `@layouts/*`, `@lib/*`
 - Strict mode enabled (extends `astro/tsconfigs/strict`)
 - JSX mode: `react-jsx`
+
+**Icons**:
+- **ALWAYS use Phosphor Icons** (`@phosphor-icons/react`) - NOT Tabler or other icon libraries
+- Import pattern: `import { IconNameIcon } from '@phosphor-icons/react'` (note the `Icon` suffix)
+- Example: `<CheckCircleIcon size={16} weight="fill" />`
+- Common icons: `CheckCircleIcon`, `BankIcon`, `MapPinSimpleIcon`, `WarningIcon`
 
 ## File Organization
 
@@ -137,15 +206,15 @@ export function MyPage({ page }) {
 ### Using Mantine Components in Pages
 
 ```tsx
-import { Button, Stack } from "@mantine/core";
+import { Button, Stack, Title } from "@mantine/core";
 import { PageContent } from "@components/PageContent";
 
 export function MyPage() {
   return (
     <PageContent>
-      <Stack gap="md">
-        <h1>My Page</h1>
-        <Button>Click me</Button>
+      <Stack className="gap-4">
+        <Title order={1} className="mb-6 text-gray-900">My Page</Title>
+        <Button className="bg-sushi-500 hover:bg-sushi-600">Click me</Button>
       </Stack>
     </PageContent>
   );
@@ -154,6 +223,10 @@ export function MyPage() {
 
 No need to import MantineProvider - `PageContent` provides it automatically.
 
+**Note**:
+- Always style Mantine components with Tailwind classes via `className`, not Mantine props
+- Title components use their semantic `order` prop for h1-h6 sizing - only add color/spacing classes
+
 ### Adding Interactive Islands
 
 Only use `client:*` directives for truly interactive components:
@@ -161,7 +234,7 @@ Only use `client:*` directives for truly interactive components:
 ```tsx
 // src/components/InteractiveForm.tsx
 import { useState } from "react";
-import { Button, TextInput } from "@mantine/core";
+import { Button, Group, Stack, TextInput } from "@mantine/core";
 import { MantineProvider } from "@mantine/core";
 import { theme } from "@/styles/theme";
 
@@ -170,8 +243,17 @@ export function InteractiveForm() {
 
   return (
     <MantineProvider theme={theme}>
-      <TextInput value={value} onChange={(e) => setValue(e.target.value)} />
-      <Button type="submit">Submit</Button>
+      <Stack className="gap-4">
+        <TextInput
+          className="w-full"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          placeholder="Enter text"
+        />
+        <Button type="submit" className="bg-sushi-500 hover:bg-sushi-600">
+          Submit
+        </Button>
+      </Stack>
     </MantineProvider>
   );
 }
@@ -184,6 +266,8 @@ import { InteractiveForm } from "@components/InteractiveForm";
 
 <InteractiveForm client:load />
 ```
+
+**Note**: Interactive islands need their own MantineProvider wrapper. Style all components with Tailwind classes.
 
 ### GraphQL Queries
 
