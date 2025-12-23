@@ -1,3 +1,5 @@
+import { Text } from '@mantine/core'
+
 interface LastReviewedProps {
   lastReviewed?: string | null
 }
@@ -14,8 +16,8 @@ export function LastReviewed({ lastReviewed }: LastReviewedProps) {
   })
 
   return (
-    <p className="mt-4 text-gray-600 text-sm">
+    <Text className="text-gray-600 text-sm">
       Last reviewed: <time dateTime={lastReviewed}>{formattedDate}</time>
-    </p>
+    </Text>
   )
 }

@@ -1,3 +1,4 @@
+export { BankCircle } from './BankCircle'
 export { BankHeadline } from './BankHeadline'
 export { BankLayoutBad } from './BankLayoutBad'
 export { BankLayoutGood } from './BankLayoutGood'

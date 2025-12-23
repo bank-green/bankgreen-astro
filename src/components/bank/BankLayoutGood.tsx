@@ -11,7 +11,7 @@ import {
   ThemeIcon,
   Title,
 } from '@mantine/core'
-import { CheckCircleIcon } from '@phosphor-icons/react'
+import { CheckIcon } from '@phosphor-icons/react'
 import type { Slice } from '@slices'
 import { SliceZone } from '@slices'
 import type { ReactNode } from 'react'
@@ -71,13 +71,13 @@ export function BankLayoutGood({
                     department to turn up – join us!
                   </Text>
                 </Stack>
-                <Stack className="my-8 w-full lg:w-1/2">
+                <Stack className="my-8 w-full rounded-2xl bg-white p-8 pl-4 lg:w-1/2">
                   <List
                     spacing="sm"
                     className="space-y-3"
                     icon={
-                      <ThemeIcon color="green" size={24} radius="xl" className="shrink-0">
-                        <CheckCircleIcon size={16} weight="fill" />
+                      <ThemeIcon color="green.1" size={24} radius="xl" className="shrink-0">
+                        <CheckIcon size={18} weight="bold" className="text-green-500" />
                       </ThemeIcon>
                     }
                   >
@@ -88,11 +88,11 @@ export function BankLayoutGood({
                 </Stack>
               </Group>
               <Stack className="items-center">
-                <Paper className="mt-8 w-full max-w-4xl rounded-lg bg-white p-6 shadow-sm">
+                <Paper className="my-8 w-full max-w-4xl rounded-lg bg-sky-800 p-6 shadow-sm">
                   <Stack className="gap-4">
-                    <Text className="mb-4 text-center text-lg">
+                    <Title order={3} className="mb-4 text-center text-textInverse">
                       Sign up to Bank.Green. We'll take the fight to the banks together.
-                    </Text>
+                    </Title>
                     {/* Placeholder for signup form - will be replaced with actual form */}
                     <form className="mx-auto w-full max-w-160">
                       <Group className="gap-2">
@@ -102,12 +102,7 @@ export function BankLayoutGood({
                           className="flex-1"
                           required
                         />
-                        <Button
-                          type="submit"
-                          className="rounded bg-sushi-500 px-6 py-2 text-white hover:bg-sushi-600"
-                        >
-                          Sign Up
-                        </Button>
+                        <Button type="submit">Join the Money Movement</Button>
                       </Group>
                     </form>
                   </Stack>

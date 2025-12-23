@@ -28,7 +28,7 @@ export function BankHeadline({ name, website, subtitle, inheritBrandRating }: Ba
             }}
           />
         )}
-        <Title order={2} className="mb-0">
+        <Title order={3} className="mb-0 text-2xl text-sky-600 md:text-3xl">
           {name}
         </Title>
       </Group>

@@ -1,4 +1,10 @@
-import { BankHeadline, BankLayoutBad, BankLayoutGood, LastReviewed } from '@components/bank'
+import {
+  BankCircle,
+  BankHeadline,
+  BankLayoutBad,
+  BankLayoutGood,
+  LastReviewed,
+} from '@components/bank'
 import { SafeHtml } from '@components/SafeHtml'
 import type { DefaultFields } from '@lib/banks'
 import { Anchor, Box, Grid, MantineProvider, Stack, Text, Title } from '@mantine/core'
@@ -58,9 +64,9 @@ export function BankScorePage({ bank, prismicDefaults, prismicPage }: Props) {
 
   // Prepare section content
   const section1Content = (
-    <Grid className="mb-8 w-full" gutter={48}>
-      <Grid.Col span={7}>
-        <Stack className="gap-6 lg:pr-32">
+    <Grid className="mx-auto mb-16 w-full max-w-5xl md:mb-32" gutter={48}>
+      <Grid.Col span={{ base: 12, md: 7 }} className="md:mt-8">
+        <Stack className="items-center gap-6">
           <BankHeadline
             name={bank.name}
             website={bank.website}
@@ -68,10 +74,13 @@ export function BankScorePage({ bank, prismicDefaults, prismicPage }: Props) {
             inheritBrandRating={bank.commentary?.inheritBrandRating}
           />
           <Stack>
+            <Title order={2} className="text-center text-3xl md:text-4xl lg:whitespace-nowrap">
+              <SafeHtml html={headline} className="mb-0 leading-tight" />
+            </Title>
             <Box>
               {bank.commentary?.fossilFreeAlliance && (
                 <img
-                  className="float-right ml-6 w-32"
+                  className="float-left mr-6 w-24 md:w-32"
                   src="/img/certification/fossil-free-certified.png"
                   alt="Fossil Free Certification"
                   style={{
@@ -79,35 +88,32 @@ export function BankScorePage({ bank, prismicDefaults, prismicPage }: Props) {
                   }}
                 />
               )}
-              <Title order={3} className="mb-0">
-                <SafeHtml html={headline} />
-              </Title>
-              <Text className="mb-0 text-lg">
+              <Text className="mb-0 text-xl">
                 <SafeHtml className="max-w-lg" html={description1} />
               </Text>
             </Box>
-          </Stack>
-
-          <Stack className="gap-0">
-            <Anchor href="/methodology">How Bank.Green rates institutions</Anchor>
-            <LastReviewed lastReviewed={bank.commentary?.lastReviewed} />
           </Stack>
         </Stack>
       </Grid.Col>
 
       <Grid.Col span="auto" className="items-end">
-        {/* BankCircle placeholder - will be replaced with actual component later */}
-        <div className="mb-4 flex aspect-square w-full max-w-sm items-center justify-center rounded-full bg-gray-200">
-          <span className="font-bold text-4xl text-gray-700">{rating.toUpperCase()}</span>
-        </div>
-        {/* SocialSharer placeholder */}
+        <Stack className="items-center">
+          <Box className="w-full max-w-[20rem] lg:w-[20rem]">
+            <BankCircle rating={rating as 'great' | 'good' | 'ok' | 'bad' | 'worst' | 'unknown'} />
+          </Box>
+          {/* SocialSharer placeholder */}
+          <Stack className="items-center gap-0">
+            <Anchor href="/methodology">How Bank.Green rates institutions</Anchor>
+            <LastReviewed lastReviewed={bank.commentary?.lastReviewed} />
+          </Stack>
+        </Stack>
       </Grid.Col>
     </Grid>
   )
 
   const section2Content = (
     <>
-      <div className="flex w-full flex-col pt-8 pb-16 md:flex-row md:items-start md:justify-between">
+      <Stack className="mx-auto w-full max-w-5xl pt-8 pb-16 md:flex-row md:items-start md:justify-between">
         {/* Text Container */}
         <div className={rating === 'good' || rating === 'great' ? 'md:w-3/6' : 'w-full'}>
           <SafeHtml html={description2} className="prose max-w-none" />
@@ -122,7 +128,7 @@ export function BankScorePage({ bank, prismicDefaults, prismicPage }: Props) {
             alt="Digging for change illustration"
           />
         )}
-      </div>
+      </Stack>
     </>
   )
 
