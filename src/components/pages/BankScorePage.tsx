@@ -73,8 +73,8 @@ export function BankScorePage({ bank, prismicDefaults, prismicPage }: Props) {
             subtitle={subtitle}
             inheritBrandRating={bank.commentary?.inheritBrandRating}
           />
-          <Stack className="gap-8">
-            <Title order={2} className="text-center text-3xl md:text-4xl lg:whitespace-nowrap">
+          <Stack className="items-center gap-8">
+            <Title order={2} className="text-center text-3xl md:text-4xl">
               <SafeHtml html={headline} className="mb-0 leading-tight" />
             </Title>
             <Box>

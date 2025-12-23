@@ -1,5 +1,7 @@
 import { Anchor, Box, Button, Group, Stack, Text, Title } from '@mantine/core'
+import Lottie from 'lottie-react'
 import type { ReactNode } from 'react'
+import { useEffect, useState } from 'react'
 import { Swoosh } from '../Swoosh'
 
 interface BankLayoutBadProps {
@@ -9,122 +11,148 @@ interface BankLayoutBadProps {
 }
 
 export function BankLayoutBad({ section1, section2, section3 }: BankLayoutBadProps) {
+  const [piggyAnimation, setPiggyAnimation] = useState<object | null>(null)
+  const [fishesAnimation, setFishesAnimation] = useState<object | null>(null)
+
+  // Load piggybank Lottie animation
+  useEffect(() => {
+    const loadAnimation = async () => {
+      try {
+        const response = await fetch('/anim/piggy.json')
+        const data = await response.json()
+        setPiggyAnimation(data)
+      } catch (error) {
+        console.error('Failed to load piggybank animation:', error)
+      }
+    }
+    loadAnimation()
+  }, [])
+
+  // Load fishes Lottie animation
+  useEffect(() => {
+    const loadAnimation = async () => {
+      try {
+        const response = await fetch('/anim/fishes.json')
+        const data = await response.json()
+        setFishesAnimation(data)
+      } catch (error) {
+        console.error('Failed to load fishes animation:', error)
+      }
+    }
+    loadAnimation()
+  }, [])
+
   return (
-    <div className="page">
+    <Box className="page">
       {/* SECTION ONE */}
       <Box
         id="section-one"
         className="bg-linear-to-b from-sushi-50 to-sushi-100 pt-28"
         data-breakout
       >
-        <div className="contain page-fade-in relative z-10 grid max-w-5xl grid-cols-2 gap-8 md:gap-10">
+        <Stack className="contain">
           {section1}
-          <Stack className="col-span-2 items-center justify-between gap-12 space-y-4 md:col-span-1 md:space-y-0">
-            <Group className="mt-8 items-center justify-between space-y-2 sm:space-y-0">
-              <Button
-                component="a"
-                href="/sustainable-eco-banks"
-                className="button-green w-auto"
-                size="lg"
-              >
-                Move Your Money
-              </Button>
-            </Group>
-          </Stack>
-        </div>
+          <Group className="mt-8 justify-center">
+            <Button
+              component="a"
+              href="/sustainable-eco-banks"
+              className="button-green w-auto"
+              size="lg"
+            >
+              Move Your Money
+            </Button>
+          </Group>
+        </Stack>
         <Swoosh />
       </Box>
 
       {/* SECTION TWO */}
-      <Box data-breakout className="w-full bg-gray-50">
-        <Box
-          id="section-two"
-          className="contain flex w-full flex-col-reverse items-center justify-center space-y-12 py-8 md:flex-row md:space-x-24 md:space-y-0"
-        >
-          {/* Piggybank illustration - static for now */}
-          <Stack className="w-full max-w-sm md:w-1/2">
-            <img
-              src="/img/illustrations/piggybank.svg"
-              alt="Piggy bank illustration"
-              className="w-full"
-            />
-          </Stack>
-          <Stack className="md:w-1/2">
-            {section2}
-            <Group className="mt-8 flex-col items-center gap-12 md:flex-row md:gap-0">
-              <Group className="w-auto items-center justify-between space-y-2 sm:space-y-0">
-                <Button
-                  component="a"
-                  href="/sustainable-eco-banks"
-                  className="button-green w-auto"
-                  size="lg"
+      <Box id="section-two" className="overflow-hidden bg-gray-50 py-8">
+        <Stack className="contain gap-0">
+          <Group className="flex-col-reverse items-center justify-center gap-8 md:flex-row md:gap-24">
+            {/* Piggybank Lottie animation */}
+            <Box className="w-full max-w-sm md:w-1/2">
+              {piggyAnimation && (
+                <Lottie animationData={piggyAnimation} loop autoplay className="w-full" />
+              )}
+            </Box>
+            <Stack className="gap-4 md:w-1/2">{section2}</Stack>
+          </Group>
+          <Group className="flex-col items-center gap-4 md:flex-row md:justify-center md:gap-8">
+            <Button
+              component="a"
+              href="/sustainable-eco-banks"
+              className="button-green w-auto"
+              size="lg"
+            >
+              Move Your Money
+            </Button>
+            <Box className="md:hidden">
+              <a href="#section-three">
+                <svg
+                  className="w-10 animate-bounce"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  Move Your Money
-                </Button>
-              </Group>
-              <Group className="grow justify-center md:hidden">
-                <a href="#section-three">
-                  <svg
-                    className="w-10 animate-bounce"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <title>Arrow pointing down</title>
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 14l-7 7m0 0l-7-7m7 7V3"
-                    />
-                  </svg>
-                </a>
-              </Group>
-            </Group>
-          </Stack>
-        </Box>
-      </Box>
-
-      {/* SECTION THREE */}
-      <Box id="section-three" className="relative bg-ocean-100" data-breakout>
-        <Swoosh direction="down" />
-        <img
-          className="relative mb-4 inline-block"
-          src="/img/illustrations/fishes.svg"
-          alt="Fish illustration"
-        />
-        <div className="contain relative z-10 max-w-2xl">{section3}</div>
-      </Box>
-
-      {/* CALL TO ACTION */}
-      <Box id="call-to-action" className="bg-ocean-100 pt-8 pb-8" data-breakout>
-        <Stack className="contain items-center justify-center">
-          <Stack gap="lg" className="max-w-3xl">
-            <Title order={2}>Take Action Today</Title>
-            <Text className="text-center text-gray-700 text-lg md:text-xl">
-              Every person who moves their money to a sustainable bank sends a powerful message.
-              Join thousands of others in choosing to support a green future.
-            </Text>
-            <Group className="mt-4 justify-center">
-              <Button
-                component="a"
-                href="/sustainable-eco-banks"
-                size="xl"
-                className="button-green"
-              >
-                Find a Sustainable Bank
-              </Button>
-            </Group>
-          </Stack>
+                  <title>Arrow pointing down</title>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                  />
+                </svg>
+              </a>
+            </Box>
+          </Group>
         </Stack>
       </Box>
 
-      {/* FOOTER IMAGE */}
-      <Box className="pointer-events-none w-full overflow-hidden bg-ocean-100" data-breakout>
-        <div className="-mt-24 sm:-mt-16 lg:-mt-32 pointer-events-none w-full overflow-hidden">
-          {/* Lottie animation placeholder - fishes.json */}
-        </div>
+      {/* SECTION THREE */}
+      {section3 && (
+        <Box id="section-three" className="bg-ocean-100" data-breakout>
+          <Swoosh direction="down" />
+          <Stack className="contain items-center gap-4 pt-32">
+            <img
+              className="mb-4 inline-block"
+              src="/img/illustrations/fishes.svg"
+              alt="Fish illustration"
+            />
+            <Box className="max-w-2xl">{section3}</Box>
+          </Stack>
+        </Box>
+      )}
+
+      {/* CALL TO ACTION */}
+      <Box id="call-to-action" className="bg-ocean-100 text-gray-800" data-breakout>
+        <Stack className="contain items-center gap-8 py-16">
+          <Title order={2} className="text-center">
+            Take Action Today
+          </Title>
+          <Text className="max-w-3xl text-center text-lg md:text-xl">
+            Every person who moves their money to a sustainable bank sends a powerful message. Join
+            thousands of others in choosing to support a green future.
+          </Text>
+          <Button component="a" href="/sustainable-eco-banks" size="xl" className="button-green">
+            Find a Sustainable Bank
+          </Button>
+        </Stack>
+      </Box>
+
+      {/* FOOTER IMAGE - Fishes Lottie animation */}
+      <Box data-breakout className="pointer-events-none flex items-end justify-end bg-ocean-100">
+        <Stack className="w-full justify-end">
+          {fishesAnimation && (
+            <Lottie
+              animationData={fishesAnimation}
+              loop
+              autoplay
+              className="flex flex-col justify-end"
+            />
+          )}
+        </Stack>
       </Box>
 
       {/* FOOTER */}
@@ -140,6 +168,6 @@ export function BankLayoutBad({ section1, section2, section3 }: BankLayoutBadPro
           </Stack>
         </Group>
       </Box>
-    </div>
+    </Box>
   )
 }
