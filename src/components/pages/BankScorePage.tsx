@@ -73,14 +73,14 @@ export function BankScorePage({ bank, prismicDefaults, prismicPage }: Props) {
             subtitle={subtitle}
             inheritBrandRating={bank.commentary?.inheritBrandRating}
           />
-          <Stack>
+          <Stack className="gap-8">
             <Title order={2} className="text-center text-3xl md:text-4xl lg:whitespace-nowrap">
               <SafeHtml html={headline} className="mb-0 leading-tight" />
             </Title>
             <Box>
               {bank.commentary?.fossilFreeAlliance && (
                 <img
-                  className="float-left mr-6 w-24 md:w-32"
+                  className="float-left mr-6 w-20 md:w-24 lg:w-36"
                   src="/img/certification/fossil-free-certified.png"
                   alt="Fossil Free Certification"
                   style={{
@@ -88,7 +88,7 @@ export function BankScorePage({ bank, prismicDefaults, prismicPage }: Props) {
                   }}
                 />
               )}
-              <Text className="mb-0 text-xl">
+              <Text className="mb-0 text-lg md:text-xl">
                 <SafeHtml className="max-w-lg" html={description1} />
               </Text>
             </Box>
@@ -113,11 +113,11 @@ export function BankScorePage({ bank, prismicDefaults, prismicPage }: Props) {
 
   const section2Content = (
     <>
-      <Stack className="mx-auto w-full max-w-5xl pt-8 pb-16 md:flex-row md:items-start md:justify-between">
+      <Stack className="mx-auto w-full max-w-5xl px-8 md:flex-row md:items-start md:justify-between md:px-0">
         {/* Text Container */}
         <div className={rating === 'good' || rating === 'great' ? 'md:w-3/6' : 'w-full'}>
-          <SafeHtml html={description2} className="prose max-w-none" />
-          <SafeHtml html={description3} className="prose mt-4 max-w-none" />
+          <SafeHtml html={description2} className="prose max-w-none text-2xl" />
+          <SafeHtml html={description3} className="prose mt-4 max-w-none text-lg" />
         </div>
 
         {/* Image Container - only for good banks */}

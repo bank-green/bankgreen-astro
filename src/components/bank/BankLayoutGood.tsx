@@ -14,7 +14,9 @@ import {
 import { CheckIcon } from '@phosphor-icons/react'
 import type { Slice } from '@slices'
 import { SliceZone } from '@slices'
+import Lottie from 'lottie-react'
 import type { ReactNode } from 'react'
+import { useEffect, useState } from 'react'
 import { Swoosh } from '../Swoosh'
 
 interface BankLayoutGoodProps {
@@ -32,6 +34,22 @@ export function BankLayoutGood({
   callToActionSlices = [],
   showLeadGenSlice = false,
 }: BankLayoutGoodProps) {
+  const [windmillAnimation, setWindmillAnimation] = useState<object | null>(null)
+
+  // Load windmill Lottie animation
+  useEffect(() => {
+    const loadAnimation = async () => {
+      try {
+        const response = await fetch('/anim/wind_2_without_bg.json')
+        const data = await response.json()
+        setWindmillAnimation(data)
+      } catch (error) {
+        console.error('Failed to load windmill animation:', error)
+      }
+    }
+    loadAnimation()
+  }, [])
+
   return (
     <Box className="page">
       {/* SECTION ONE */}
@@ -45,8 +63,8 @@ export function BankLayoutGood({
       </Box>
 
       {/* SECTION TWO */}
-      <Box id="section-two" className="overflow-hidden bg-gray-50 py-16 text-gray-800">
-        <div className="contain">{section2}</div>
+      <Box id="section-two" className="overflow-hidden bg-gray-50 py-8">
+        {section2}
       </Box>
 
       {/* SECTION THREE */}
@@ -112,10 +130,14 @@ export function BankLayoutGood({
           )}
         </div>
 
-        {/* Footer Image - Placeholder for Lottie animation */}
-        <div className="pointer-events-none flex items-end justify-end">
-          <div className="w-11/12">{/* Lottie animation placeholder */}</div>
-        </div>
+        {/* Footer Image - Windmill Lottie animation */}
+        <Box data-breakout className="pointer-events-none flex items-end justify-end">
+          <Box className="w-full">
+            {windmillAnimation && (
+              <Lottie animationData={windmillAnimation} loop autoplay className="mx-auto w-full" />
+            )}
+          </Box>
+        </Box>
       </Box>
 
       {/* FOOTER */}
