@@ -50,18 +50,11 @@ export function BankLayoutBad({ section1, section2, section3 }: BankLayoutBadPro
         className="bg-linear-to-b from-sushi-50 to-sushi-100 pt-28"
         data-breakout
       >
-        <Stack className="contain">
+        <Stack className="items-center pb-8">
           {section1}
-          <Group className="mt-8 justify-center">
-            <Button
-              component="a"
-              href="/sustainable-eco-banks"
-              className="button-green w-auto"
-              size="lg"
-            >
-              Move Your Money
-            </Button>
-          </Group>
+          <Button component="a" href="/sustainable-eco-banks" size="lg" className="max-w-fit">
+            Move Your Money
+          </Button>
         </Stack>
         <Swoosh />
       </Box>
@@ -79,33 +72,9 @@ export function BankLayoutBad({ section1, section2, section3 }: BankLayoutBadPro
             <Stack className="gap-4 md:w-1/2">{section2}</Stack>
           </Group>
           <Group className="flex-col items-center gap-4 md:flex-row md:justify-center md:gap-8">
-            <Button
-              component="a"
-              href="/sustainable-eco-banks"
-              className="button-green w-auto"
-              size="lg"
-            >
+            <Button component="a" href="/sustainable-eco-banks" size="lg">
               Move Your Money
             </Button>
-            <Box className="md:hidden">
-              <a href="#section-three">
-                <svg
-                  className="w-10 animate-bounce"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <title>Arrow pointing down</title>
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 14l-7 7m0 0l-7-7m7 7V3"
-                  />
-                </svg>
-              </a>
-            </Box>
           </Group>
         </Stack>
       </Box>

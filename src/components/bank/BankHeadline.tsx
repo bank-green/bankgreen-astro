@@ -1,5 +1,6 @@
 import { SafeHtml } from '@components/SafeHtml'
 import { Anchor, Group, Stack, Text, Title } from '@mantine/core'
+import BankLogo from './BankLogo'
 
 interface BankHeadlineProps {
   name: string
@@ -13,20 +14,12 @@ interface BankHeadlineProps {
 
 export function BankHeadline({ name, website, subtitle, inheritBrandRating }: BankHeadlineProps) {
   const websiteUrl = website ? new URL(website).hostname : ''
-  const logoUrl = `https://cdn.brandfetch.io/${websiteUrl}/icon/fallback/lettermark/h/112/w/112`
 
   return (
     <Stack>
       <Group className="items-center gap-4">
-        {logoUrl && (
-          <img
-            src={logoUrl}
-            alt={`${name} logo`}
-            className="h-16 w-16 rounded border border-borderDefault object-contain"
-            onError={(e) => {
-              e.currentTarget.style.display = 'none'
-            }}
-          />
+        {websiteUrl && (
+          <BankLogo brandDomain={websiteUrl} imgClass="rounded object-contain" size={64} />
         )}
         <Title order={3} className="mb-0 text-2xl text-sky-600 md:text-3xl">
           {name}

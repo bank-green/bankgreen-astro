@@ -21,7 +21,7 @@ export function Swoosh({
   const isDown = direction === 'down'
 
   return (
-    <Box className={`relative z-0 py-8 sm:py-10 md:py-12 ${className}`}>
+    <Box className={`pointer-events-none relative z-0 py-8 sm:py-10 md:py-12 ${className}`}>
       <svg
         className="absolute inset-x-0 min-h-full w-full"
         style={{
