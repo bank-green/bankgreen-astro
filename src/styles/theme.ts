@@ -5,6 +5,7 @@
  */
 
 import {
+  Button,
   Container,
   createTheme,
   DEFAULT_THEME,
@@ -36,7 +37,7 @@ export const theme = createTheme({
     textWrap: 'balance',
   },
   primaryColor: 'green',
-  primaryShade: 6,
+  primaryShade: 5,
   components: {
     Accordion: {
       classNames: {
@@ -52,7 +53,7 @@ export const theme = createTheme({
       classNames: {
         root: cx(
           'font-medium text-linkDefault transition-all duration-200 hover:text-linkHover active:text-linkActive',
-          'no-underline decoration-[0.01em] decoration-wavy underline-offset-from-font hover:underline'
+          'no-underline decoration-[0.01em] decoration-wavy underline-offset-from-font'
         ),
       },
     },
@@ -69,6 +70,32 @@ export const theme = createTheme({
         footer: 'm-auto max-w-6xl w-full bg-white pt-6',
       },
     },
+    Button: Button.extend({
+      defaultProps: {
+        variant: 'filled',
+        gradient: {
+          from: 'green.6',
+          to: 'green.5',
+          deg: 135,
+        },
+        autoContrast: false,
+        radius: 'lg',
+      },
+      classNames: {
+        root: cx(
+          'group bg-green-600 font-medium',
+          'transition-all duration-300 hover:duration-150 active:duration-50',
+          'bg-center bg-radial bg-size-[150%_150%] from-green-500/70 via-green-500/50 to-blue-800/30',
+          'hover:bg-green-600 hover:bg-size-[100%_100%]',
+          'active:bg-green-700'
+        ),
+        label: cx(
+          'text-shadow-2xs text-white/90 group-hover:text-white',
+          'transition-all duration-100 group-active:duration-50',
+          'group-hover:text-shadow-md group-active:text-shadow-none'
+        ),
+      },
+    }),
     Container: Container.extend({
       vars: (_, { size, fluid }) => ({
         root: {
@@ -115,5 +142,45 @@ export const theme = createTheme({
     },
   },
 })
+
+// const variantColorResolver: VariantColorsResolver = ({ color, variant, gradient, theme }) => {
+//   const defaultResolvedColors = defaultVariantColorsResolver({ color, variant, gradient, theme })
+//   const parsedColor = parseThemeColor({
+//     color: color || theme.primaryColor,
+//     theme: theme,
+//   })
+
+//   // Override some properties for variant
+//   if (variant === 'filled') {
+//     return {
+//       ...defaultResolvedColors,
+//       color: 'var(--mantine-color-green-1)',
+//       hoverColor: 'var(--mantine-color-white)',
+//       backgroundColor: 'var(--mantine-color-white)',
+//     }
+//   }
+
+//   // Completely override variant
+//   if (variant === 'light') {
+//     return {
+//       background: rgba(parsedColor.value, 0.1),
+//       hover: rgba(parsedColor.value, 0.15),
+//       border: `1px solid ${parsedColor.value}`,
+//       color: darken(parsedColor.value, 0.1),
+//     }
+//   }
+
+//   // Add new variants support
+//   if (variant === 'danger') {
+//     return {
+//       background: 'var(--mantine-color-red-9)',
+//       hover: 'var(--mantine-color-red-8)',
+//       color: 'var(--mantine-color-white)',
+//       border: 'none',
+//     }
+//   }
+
+//   return defaultResolvedColors
+// }
 
 export default theme

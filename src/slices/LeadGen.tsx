@@ -8,24 +8,34 @@
  * This is a semantic placeholder showing the structure.
  */
 import { Button, Checkbox, Container, List, Select, Stack, TextInput, Title } from '@mantine/core'
-import { asText } from '@prismicio/client'
+import { asText, type RichTextField } from '@prismicio/client'
 import type { LeadGenSlice } from './types'
 
 interface Props {
   slice: LeadGenSlice
 }
 
+/**
+ * Safely extract text from a field that might be a RichTextField or a plain string.
+ */
+function safeAsText(field: RichTextField | string | undefined | null): string {
+  if (!field) return ''
+  if (typeof field === 'string') return field
+  if (Array.isArray(field)) return asText(field)
+  return ''
+}
+
 export function LeadGen({ slice }: Props) {
   const primary = slice.primary
   const items = slice.items
 
-  const title = primary.title ? asText(primary.title) : 'Curious about switching to a green bank?'
+  const title = safeAsText(primary.title) || 'Curious about switching to a green bank?'
   const showBankField = primary.show_bank_field ?? true
   const showStatusField = primary.show_status_field ?? true
 
   // Extract bullet points for the value proposition list
   const bulletPoints = items
-    .map((item) => (item.bullet_text ? asText(item.bullet_text) : ''))
+    .map((item) => safeAsText(item.bullet_text))
     .filter((text) => text.length > 0)
 
   // Extract status options for the dropdown

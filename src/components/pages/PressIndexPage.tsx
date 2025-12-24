@@ -15,7 +15,7 @@ export function PressIndexPage({ page, releases }: Props) {
   const getDescription = (release: PrismicDocument): string => {
     const description = release.data.description
     if (!description) return ''
-    return prismic.asText(description)
+    return prismic.asText(description) ?? ''
   }
 
   return (

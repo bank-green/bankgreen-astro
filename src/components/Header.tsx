@@ -18,12 +18,7 @@ export function Header() {
       <NavLink classes={classes} href="/contact" label="Contact" />
       <NavLink classes={classes} href="/take-action" label="Take Action" />
       <NavLink classes={classes} href="/impact" label="Switch Survey" />
-      <Button
-        href="/donate"
-        size="compact-md"
-        component="a"
-        className="rounded-full bg-leaf-300 px-4 text-sky-800"
-      >
+      <Button href="/donate" size="compact-md" component="a" className="rounded-full px-4">
         Donate
       </Button>
     </>

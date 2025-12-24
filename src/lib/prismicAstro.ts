@@ -53,7 +53,7 @@ export function richTextToHtml(field: prismic.RichTextField | null | undefined):
 /**
  * Renders text with inline spans to HTML string.
  */
-function renderSpansToHtml(text: string, spans: prismic.RTTextNodeSpan[]): string {
+function renderSpansToHtml(text: string, spans: prismic.RTInlineNode[]): string {
   if (!spans || spans.length === 0) return escapeHtml(text)
 
   // Sort spans by start position

@@ -74,11 +74,19 @@
     overflow-y: scroll;
   }
 
-  a,
-  a:-webkit-any-link,
-  a.mantine-Anchor-root {
+  a:not(.mantine-Button-root):not(:has(.mantine-Card-root)) {
     text-decoration: none;
     @apply no-underline hover:underline underline-offset-3 decoration-dotted decoration-from-font;
+  }
+
+  a.mantine-Anchor-root:not(:has(.mantine-Card-root)) {
+    @apply hover:underline;
+  }
+
+  a.mantine-Button-root,
+  a:has(.mantine-Card-root) {
+    text-decoration: none;
+    @apply no-underline hover:no-underline;
   }
   a.link {
     @apply transition-all duration-100 font-medium text-linkDefault hover:underline hover:text-linkHover active:text-linkActive focus:underline;

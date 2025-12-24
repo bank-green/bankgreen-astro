@@ -1,6 +1,6 @@
-import { Button, Paper, Stack, TextInput, Title } from '@mantine/core'
+import { Button, MantineProvider, Paper, Stack, TextInput, Title } from '@mantine/core'
 import { useState } from 'react'
-import { MantineWrapper } from './MantineWrapper'
+import { theme } from '../styles/theme'
 
 /**
  * Example contact form as a React island.
@@ -60,8 +60,8 @@ function ContactFormInner() {
  */
 export function ContactForm() {
   return (
-    <MantineWrapper>
+    <MantineProvider theme={theme}>
       <ContactFormInner />
-    </MantineWrapper>
+    </MantineProvider>
   )
 }
