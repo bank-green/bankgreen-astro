@@ -1,4 +1,4 @@
-import { Title, Typography } from '@mantine/core'
+import { Title } from '@mantine/core'
 import * as prismic from '@prismicio/client'
 import type { ReactNode } from 'react'
 
@@ -67,7 +67,7 @@ export function renderRichText(field: prismic.RichTextField | null | undefined):
       case 'embed':
         return (
           // biome-ignore lint/security/noDangerouslySetInnerHtml: This is appropriate for embeds
-          <Typography key={key} dangerouslySetInnerHTML={{ __html: block.oembed.html || '' }} />
+          <div key={key} dangerouslySetInnerHTML={{ __html: block.oembed.html || '' }} />
         )
       default:
         return null

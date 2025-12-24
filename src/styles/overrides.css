@@ -136,4 +136,14 @@
       font-size: var(--mantine-h5-font-size);
     }
   }
+  .tracking-wide {
+    --tw-tracking: var(--tracking-normal);
+    letter-spacing: var(--tracking-normal);
+  }
+  .prose {
+    .tracking-wide {
+      --tw-tracking: var(--tracking-normal);
+      letter-spacing: var(--tracking-normal);
+    }
+  }
 }

@@ -52,6 +52,17 @@
     color: var(--mantine-color-headings);
   }
 
+  .text-textInverse {
+    h1,
+    h2 {
+      color: var(--color-sky-100);
+    }
+    a.visited,
+    a:-webkit-any-link {
+      color: var(--color-linkInverse);
+    }
+  }
+
   h1,
   h2,
   h3,

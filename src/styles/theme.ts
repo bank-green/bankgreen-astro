@@ -83,16 +83,16 @@ export const theme = createTheme({
       },
       classNames: {
         root: cx(
-          'group bg-green-600 font-medium',
-          'transition-all duration-300 hover:duration-150 active:duration-50',
-          'bg-center bg-radial bg-size-[150%_150%] from-green-500/70 via-green-500/50 to-blue-800/30',
-          'hover:bg-green-600 hover:bg-size-[100%_100%]',
-          'active:bg-green-700'
+          'group bg-green-600 shadow-sm hover:shadow-md active:shadow-xs',
+          'transition-all duration-350 hover:duration-250 active:duration-50',
+          'bg-center bg-radial bg-size-[125%_150%] from-blue-800/10 via-green-500/60 to-green-500/70',
+          'hover:bg-green-600 hover:bg-position-[center_top_25%] hover:bg-size-[200%_150%]',
+          'active:bg-position-[center_bottom_25%]'
         ),
         label: cx(
-          'text-shadow-2xs text-white/90 group-hover:text-white',
+          'font-semibold text-white/95 group-hover:text-white',
           'transition-all duration-100 group-active:duration-50',
-          'group-hover:text-shadow-md group-active:text-shadow-none'
+          'group-hover:text-shadow-md/15 group-active:text-shadow-none'
         ),
       },
     }),

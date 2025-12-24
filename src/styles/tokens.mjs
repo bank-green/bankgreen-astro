@@ -124,6 +124,7 @@ export const baseColorTokens = {
   linkDefault: colorTokens.blue[800],
   linkHover: colorTokens.blue[700],
   linkVisited: colorTokens.blue[800],
+  linkInverse: colorTokens.blue[400],
   textDefault: colorTokens.gray[800],
   textHeadings: colorTokens.sky[800],
   textInverse: colorTokens.gray[0],
