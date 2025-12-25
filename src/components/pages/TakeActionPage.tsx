@@ -32,7 +32,7 @@ export function TakeActionPage({ page }: Props) {
 
   const renderTabPanel = (data: TabData) => (
     <Tabs.Panel value={data.id} key={data.id}>
-      <Stack className="px-4 py-8">
+      <Stack className="gap-6 px-4 py-8">
         {data.slice ? <SliceZone slices={data.slice} /> : <Loader />}
       </Stack>
     </Tabs.Panel>

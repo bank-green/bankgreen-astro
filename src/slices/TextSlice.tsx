@@ -15,7 +15,7 @@ interface Props {
 
 export function TextSlice({ slice, className }: Props) {
   return (
-    <Stack component="section" data-slice-type={slice.slice_type} className={className}>
+    <Stack component="section" data-slice-type={slice.slice_type} className={`gap-6 ${className}`}>
       {renderRichText(slice.primary.text)}
     </Stack>
   )

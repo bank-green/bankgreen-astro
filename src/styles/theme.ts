@@ -46,7 +46,7 @@ export const theme = createTheme({
         control:
           ' rounded-md bg-gray-200/50 hover:bg-gray-200/75 active:bg-gray-200/80 transition-all duration-100 border-b-2 border-white',
         label: 'font-semibold',
-        content: 'py-4',
+        content: 'py-4 [&_li]:list-disc [&_li]:ml-4 [&_li]:marker:text-green-500',
       },
     },
     Anchor: {

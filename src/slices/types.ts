@@ -13,7 +13,12 @@ export type AccordionSlice = {
   slice_type: 'accordion_slice'
   variation: 'default' | 'richText' | 'richTextWithStep'
   primary: {
-    contentlink?: { data?: { title?: string } }
+    contentlink?: {
+      data?: {
+        title?: string
+        slices?: Slice[]
+      }
+    }
     step?: string
     title?: string
     content?: RichTextField

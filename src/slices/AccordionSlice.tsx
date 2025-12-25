@@ -10,23 +10,25 @@
  */
 
 import { renderRichText } from '@lib/prismicHelpers'
-import { Accordion, Stack, Text, Title } from '@mantine/core'
-import type { AccordionSlice as AccordionSliceType } from './types'
+import { Accordion, Stack, Title } from '@mantine/core'
+import { NestedSliceZone } from './NestedSliceZone'
+import type { AccordionSlice as AccordionSliceType, Slice } from './types'
 
 interface Props {
   slice: AccordionSliceType
   className?: string
-  // For "default" variation, the linked document's slices need to be passed in
-  linkedContent?: AccordionSliceType[]
 }
 
-export function AccordionSlice({ slice, className, linkedContent }: Props) {
-  // Determine title based on variation
+export function AccordionSlice({ slice, className }: Props) {
+  // Determine title and extract linked slices based on variation
   let title: string
+  let linkedSlices: Slice[] | undefined
+
   if (slice.variation === 'default') {
-    // Content Link variation - title comes from linked document
-    const linkedData = slice.primary.contentlink as { data?: { title?: string } } | undefined
-    title = linkedData?.data?.title || 'Untitled'
+    // Content Link variation - title and slices come from linked document
+    const linkedData = slice.primary.contentlink?.data
+    title = linkedData?.title || 'Untitled'
+    linkedSlices = linkedData?.slices
   } else if (slice.variation === 'richTextWithStep') {
     const primary = slice.primary as { step?: string; title?: string }
     title = primary.step ? `${primary.step}: ${primary.title || ''}` : primary.title || ''
@@ -48,9 +50,8 @@ export function AccordionSlice({ slice, className, linkedContent }: Props) {
         </Accordion.Control>
         <Accordion.Panel>
           <Stack className="[&_a]:inline">
-            {slice.variation === 'default' && linkedContent ? (
-              // Render linked document's slices - would need SliceZone here
-              <Text>[Linked content would render here]</Text>
+            {slice.variation === 'default' && linkedSlices ? (
+              <NestedSliceZone slices={linkedSlices} />
             ) : (
               renderRichText(slice.primary.content)
             )}
