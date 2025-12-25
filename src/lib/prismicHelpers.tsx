@@ -1,5 +1,6 @@
 import { Text, Title } from '@mantine/core'
 import * as prismic from '@prismicio/client'
+import { serialize } from '@prismicio/richtext'
 import type { ReactNode } from 'react'
 
 /**
@@ -100,54 +101,74 @@ export function renderRichText(
 
 /**
  * Renders text with inline spans (bold, italic, links, etc.)
+ * Uses Prismic's serialize function to properly handle nested/overlapping spans
  */
 function renderSpans(text: string, spans: prismic.RTInlineNode[]): ReactNode {
   if (!spans || spans.length === 0) return text
 
-  // Sort spans by start position
-  const sortedSpans = [...spans].sort((a, b) => a.start - b.start)
+  // Create a minimal block node for serialize()
+  const block = {
+    type: 'paragraph' as const,
+    text,
+    spans,
+  }
 
-  const result: ReactNode[] = []
-  let currentPosition = 0
+  // Define React serializer for inline elements
+  const serializer = (
+    type: string,
+    // biome-ignore lint/suspicious/noExplicitAny: Prismic serialize API uses any for node parameter
+    node: any,
+    textContent: string | undefined,
+    children: ReactNode[],
+    key: string
+  ): ReactNode => {
+    switch (type) {
+      case 'paragraph':
+        // For inline rendering, we want just the children, not the <p> wrapper
+        return <>{children}</>
 
-  for (let i = 0; i < sortedSpans.length; i++) {
-    const span = sortedSpans[i]
-
-    // Add text before this span
-    if (span.start > currentPosition) {
-      result.push(text.slice(currentPosition, span.start))
-    }
-
-    const spanText = text.slice(span.start, span.end)
-    const spanKey = `span-${i}-${span.start}-${span.end}`
-
-    switch (span.type) {
       case 'strong':
-        result.push(<strong key={spanKey}>{spanText}</strong>)
-        break
+        return <strong key={key}>{children}</strong>
+
       case 'em':
-        result.push(<em key={spanKey}>{spanText}</em>)
-        break
-      case 'hyperlink':
-        result.push(
-          <a key={spanKey} href={prismic.asLink(span.data) || '#'} className="inline">
-            {spanText}
+        return <em key={key}>{children}</em>
+
+      case 'hyperlink': {
+        const href = prismic.asLink(node.data) || '#'
+        const isExternal = node.data?.link_type === 'Web'
+
+        return (
+          <a
+            key={key}
+            href={href}
+            className="inline"
+            {...(isExternal && {
+              target: '_blank',
+              rel: 'noopener noreferrer',
+            })}
+          >
+            {children}
           </a>
         )
-        break
+      }
+
+      case 'label':
+        return (
+          <span key={key} data-label={node.data?.label}>
+            {children}
+          </span>
+        )
+
       default:
-        result.push(spanText)
+        return textContent
     }
-
-    currentPosition = span.end
   }
 
-  // Add remaining text after last span
-  if (currentPosition < text.length) {
-    result.push(text.slice(currentPosition))
-  }
+  // Serialize using Prismic's tree builder
+  const result = serialize([block], serializer)
 
-  return result
+  // Return the first element (which is the paragraph with its children)
+  return result[0] || text
 }
 
 /**

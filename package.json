@@ -25,6 +25,7 @@
     "@phosphor-icons/react": "^2.1.10",
     "@prismicio/client": "^7.21.0",
     "@prismicio/helpers": "^2.3.9",
+    "@prismicio/richtext": "^2.1.5",
     "astro": "^5.16.0",
     "clsx": "^2.1.1",
     "fuse.js": "^7.1.0",
