@@ -1,6 +1,8 @@
 import { PageContent } from '@components/PageContent'
 import { renderRichText } from '@lib/prismicHelpers'
+import { Grid, Stack } from '@mantine/core'
 import type { PrismicDocument, RichTextField } from '@prismicio/client'
+import { TypeformEmbed } from '../TypeformEmbed'
 
 interface Props {
   page: PrismicDocument | null
@@ -12,34 +14,19 @@ export function ImpactPage({ page }: Props) {
   const text3 = page?.data?.text3 as RichTextField | undefined
 
   return (
-    <PageContent>
-      <article>
-        <header>
-          {text1 && text1.length > 0 ? (
-            renderRichText(text1)
-          ) : (
-            <h1>Opened an account with a bank that doesn't finance fossil fuels?</h1>
-          )}
-
-          {text2 && text2.length > 0 ? (
-            renderRichText(text2)
-          ) : (
-            <h2>Maximise your impact by letting us know.</h2>
-          )}
-
-          {text3 && text3.length > 0 ? (
-            renderRichText(text3)
-          ) : (
-            <p>
-              Taking this survey helps advocate for change. Bank.Green uses your response to push
-              fossil banks to divest, push sustainable eco banks to improve their customer
-              experience, and encourage other people to join you in greening their finances.
-            </p>
-          )}
-        </header>
-
-        <section>{/* Switch survey form will be embedded here */}</section>
-      </article>
+    <PageContent fullWidth>
+      <Grid className="mb-24 bg-leaf-700 p-8 lg:rounded-2xl" gutter="4rem">
+        <Grid.Col span={{ base: 12, sm: 6 }}>
+          <Stack className="gap-12 text-textInverse [&_h1]:text-textInverse [&_h2]:text-textInverse">
+            {text1 && text1.length > 0 && renderRichText(text1)}
+            {text2 && text2.length > 0 && renderRichText(text2)}
+            {text3 && text3.length > 0 && renderRichText(text3)}
+          </Stack>
+        </Grid.Col>
+        <Grid.Col span={{ base: 12, sm: 6 }}>
+          <TypeformEmbed />
+        </Grid.Col>
+      </Grid>
     </PageContent>
   )
 }

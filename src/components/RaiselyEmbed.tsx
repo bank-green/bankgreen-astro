@@ -1,20 +1,20 @@
-import { useEffect } from 'react';
-import { Container, MantineProvider } from '@mantine/core';
-import { theme } from '@/styles/theme';
+import { Container, MantineProvider } from '@mantine/core'
+import { useEffect } from 'react'
+import { theme } from '@/styles/theme'
 
 export function RaiselyEmbed() {
   useEffect(() => {
     // Load Raisely script dynamically after component mounts
-    const script = document.createElement('script');
-    script.src = 'https://cdn.raisely.com/v3/public/embed.js';
-    script.async = true;
-    document.body.appendChild(script);
+    const script = document.createElement('script')
+    script.src = 'https://cdn.raisely.com/v3/public/embed.js'
+    script.async = true
+    document.body.appendChild(script)
 
     return () => {
       // Cleanup script on unmount
-      document.body.removeChild(script);
-    };
-  }, []);
+      document.body.removeChild(script)
+    }
+  }, [])
 
   return (
     <MantineProvider theme={theme}>
@@ -28,5 +28,5 @@ export function RaiselyEmbed() {
         />
       </Container>
     </MantineProvider>
-  );
+  )
 }
