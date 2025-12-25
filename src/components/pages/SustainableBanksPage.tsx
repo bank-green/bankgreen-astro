@@ -4,6 +4,7 @@ import type { Slice } from '@slices'
 import { SliceZone } from '@slices'
 import theme from '@styles/theme'
 import { useState } from 'react'
+import { MoneySmokeAnimation } from '../animations'
 import { PageContent } from '../PageContent'
 
 interface Props {
@@ -40,7 +41,7 @@ export function SustainableBanksPage({ page }: Props) {
               */}
         </Stack>
 
-        <Stack data-breakout className="bg-blue-100 py-24">
+        <Box data-breakout className="bg-blue-100 pt-24">
           {/* Introductory section (Why Find a Green Bank? + What is the Fossil Free Alliance?) */}
           {introductory && introductory.length > 0 && (
             <Stack className="mx-auto max-w-6xl gap-12 pb-18 [&_h1]:text-center">
@@ -70,15 +71,19 @@ export function SustainableBanksPage({ page }: Props) {
                 <SliceZone slices={slices1} />
               </Stack>
             )}
-
-            {/* Footer banner - Happy banking stories */}
-            {footerBanner && footerBanner.length > 0 && (
-              <Box className="mt-12 rounded-lg bg-sky-800 p-4 text-textInverse">
-                <SliceZone slices={footerBanner} />
-              </Box>
-            )}
           </Stack>
-        </Stack>
+
+          {/* Footer banner - Happy banking stories */}
+          {footerBanner && footerBanner.length > 0 && (
+            <Box className="mx-auto mt-12 w-full max-w-6xl rounded-2xl bg-sky-800 p-12 text-textInverse [&_h4]:text-3xl [&_li]:ml-4">
+              <SliceZone slices={footerBanner} />
+            </Box>
+          )}
+          {/* Smokestack animation */}
+          <Stack className="mx-auto aspect-690/340 max-w-[690px] justify-end object-cover object-bottom">
+            <MoneySmokeAnimation className="-mb-1 w-full" />
+          </Stack>
+        </Box>
       </PageContent>
     </MantineProvider>
   )

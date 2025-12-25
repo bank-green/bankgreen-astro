@@ -28,9 +28,12 @@ export function BlogIndexPage({ posts }: Props) {
 
   return (
     <PageContent>
-      <Title order={1} mb="lg">
-        Bank.Green Blog: Stories and Tips for Divesting From Fossil Fuels
-      </Title>
+      <Stack className="mb-8 gap-0">
+        <Title order={1} className="mb-0">
+          Bank.Green Blog:
+        </Title>
+        <Title order={3}>Stories and Tips for Divesting From Fossil Fuels</Title>
+      </Stack>
 
       {posts.length > 0 ? (
         <Grid gutter="lg">

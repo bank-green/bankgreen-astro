@@ -225,10 +225,9 @@ export function HomePage({ page }: Props) {
           </Box>
         </Box>
 
-        {/* Money smoke animation */}
-
+        {/* Smokestack animation */}
         <Stack className="mx-auto aspect-690/340 max-w-[690px] justify-end object-cover object-bottom">
-          <MoneySmokeAnimation className="mb-0 w-full" />
+          <MoneySmokeAnimation className="-mb-1 w-full" />
         </Stack>
       </Box>
     </MantineProvider>

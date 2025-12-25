@@ -1,4 +1,5 @@
 import { PageContent } from '@components/PageContent'
+import { Anchor, Card, Grid, Image, Stack, Text, Title } from '@mantine/core'
 import type { PrismicDocument } from '@prismicio/client'
 import * as prismic from '@prismicio/client'
 
@@ -21,43 +22,67 @@ export function PartnersPage({ page }: Props) {
 
   return (
     <PageContent>
-      <article>
-        <header>
-          <h1>{title}</h1>
-          <p>{description}</p>
-        </header>
+      <Stack className="gap-8">
+        <Stack className="gap-4 text-center">
+          <Title order={1} className="text-gray-900">
+            {title}
+          </Title>
+          <Text className="text-gray-700 text-lg">{description}</Text>
+        </Stack>
 
-        <section>
-          <ul>
-            {partners.map((partner, index) => {
-              const href = prismic.asLink(partner.url)
-              const imgSrc = partner.img?.url
+        <Grid gutter="lg">
+          {partners.map((partner, index) => {
+            const href = prismic.asLink(partner.url)
+            const imgSrc = partner.img?.url
 
-              return (
-                <li key={partner.name || index}>
-                  {href ? (
-                    <a href={href} rel="noopener noreferrer" target="_blank">
-                      {imgSrc && (
-                        <img src={imgSrc} alt={partner.name || 'Partner logo'} loading="lazy" />
+            return (
+              <Grid.Col key={partner.name || index} span={{ base: 12, sm: 6, md: 4, lg: 3 }}>
+                {href ? (
+                  <Anchor href={href} underline="never" target="_blank" rel="noopener noreferrer">
+                    <Card shadow="sm" padding="lg" radius="md" withBorder className="h-full">
+                      {imgSrc ? (
+                        <Card.Section>
+                          <Image
+                            src={imgSrc}
+                            alt={partner.name || 'Partner logo'}
+                            fit="contain"
+                            height={150}
+                            className="p-4"
+                          />
+                        </Card.Section>
+                      ) : (
+                        <Stack className="min-h-[150px] items-center justify-center gap-2">
+                          <Text className="text-center font-semibold">{partner.name}</Text>
+                        </Stack>
                       )}
-                      {!imgSrc && <span>{partner.name}</span>}
-                    </a>
-                  ) : (
-                    <>
-                      {imgSrc && (
-                        <img src={imgSrc} alt={partner.name || 'Partner logo'} loading="lazy" />
-                      )}
-                      {!imgSrc && <span>{partner.name}</span>}
-                    </>
-                  )}
-                </li>
-              )
-            })}
-          </ul>
-        </section>
+                    </Card>
+                  </Anchor>
+                ) : (
+                  <Card shadow="sm" padding="lg" radius="md" withBorder className="h-full">
+                    {imgSrc ? (
+                      <Card.Section>
+                        <Image
+                          src={imgSrc}
+                          alt={partner.name || 'Partner logo'}
+                          fit="contain"
+                          height={150}
+                          className="p-4"
+                        />
+                      </Card.Section>
+                    ) : (
+                      <Stack className="min-h-[150px] items-center justify-center gap-2">
+                        <Text className="text-center font-semibold">{partner.name}</Text>
+                      </Stack>
+                    )}
+                  </Card>
+                )}
+              </Grid.Col>
+            )
+          })}
+        </Grid>
 
-        <section>{/* Newsletter signup form placeholder */}</section>
-      </article>
+        <Stack className="mt-12 gap-4">{/* Newsletter signup form placeholder */}</Stack>
+      </Stack>
     </PageContent>
   )
 }

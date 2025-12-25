@@ -56,7 +56,7 @@ function BankLocationSearch({
 
   return (
     <Stack className="relative w-full gap-2 p-2">
-      <Title order={3} className="text-center font-normal text-sky-800 md:text-left">
+      <Title order={4} className="text-center md:text-left">
         {title}
       </Title>
       <LocationSearch

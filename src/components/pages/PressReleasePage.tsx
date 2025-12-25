@@ -18,48 +18,44 @@ export function PressReleasePage({ release }: Props) {
 
   return (
     <PageContent>
-      <article>
-        <header>
-          <Title order={1} className="mb-6">
-            {title}
-          </Title>
+      <Stack className="rounded-2xl bg-white p-12">
+        <Title order={2} className="mb-6">
+          {title}
+        </Title>
 
-          <Stack className="gap-6">
-            {(author || email || phone) && (
-              <Stack className="gap-2">
-                <Text className="font-semibold">Contact</Text>
-                {author && <Text>{author}</Text>}
-                {email && (
-                  <Text>
-                    <Anchor href={`mailto:${email}`}>{email}</Anchor>
-                  </Text>
-                )}
-                {phone && <Text>{phone}</Text>}
-              </Stack>
-            )}
+        <Stack className="gap-6">
+          {(author || email || phone) && (
+            <Stack className="gap-0">
+              <Text className="font-semibold">Contact:</Text>
+              {author && <Text>{author}</Text>}
+              {email && (
+                <Text>
+                  <Anchor href={`mailto:${email}`}>{email}</Anchor>
+                </Text>
+              )}
+              {phone && <Text>{phone}</Text>}
+            </Stack>
+          )}
 
-            {releaseDate && (
-              <Stack className="gap-2">
-                <Text className="font-semibold">For immediate release</Text>
-                <Text>{releaseDate}</Text>
-              </Stack>
-            )}
-          </Stack>
-        </header>
+          {releaseDate && (
+            <Stack className="gap-0">
+              <Title order={4} className="font-semibold">
+                For immediate release
+              </Title>
+              <Title order={5} className="mb-6">
+                {releaseDate}
+              </Title>
+            </Stack>
+          )}
+        </Stack>
 
-        <section>
-          <Box className="prose sm:prose-lg xl:prose-xl wrap-break-word w-full">
-            {slices && <SliceZone slices={slices} />}
-          </Box>
-        </section>
+        <Box className="w-full max-w-3xl">{slices && <SliceZone slices={slices} />}</Box>
 
-        <footer>
-          <Title order={2}>About Bank.Green</Title>
-          <Text>
-            Contact: <Anchor href="mailto:hello@bank.green">hello@bank.green</Anchor>
-          </Text>
-        </footer>
-      </article>
+        <Title order={2}>About Bank.Green</Title>
+        <Text>
+          Contact: <Anchor href="mailto:hello@bank.green">hello@bank.green</Anchor>
+        </Text>
+      </Stack>
     </PageContent>
   )
 }

@@ -14,10 +14,7 @@ interface Props {
 export function PageContent({ children, fullWidth = false }: Props) {
   return (
     <MantineProvider theme={theme}>
-      <Container
-        strategy="grid"
-        className={fullWidth ? 'px-0 pt-12 pb-16' : 'px-6 pt-12 pb-16 lg:px-0'}
-      >
+      <Container strategy="grid" className={fullWidth ? 'px-0 pt-12' : 'px-6 pt-12 pb-16 lg:px-0'}>
         {children}
       </Container>
     </MantineProvider>

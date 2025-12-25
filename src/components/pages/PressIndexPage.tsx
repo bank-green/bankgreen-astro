@@ -1,4 +1,5 @@
 import { PageContent } from '@components/PageContent'
+import { Anchor, Card, Grid, Stack, Text, Title } from '@mantine/core'
 import type { PrismicDocument } from '@prismicio/client'
 import * as prismic from '@prismicio/client'
 import type { Slice } from '@slices'
@@ -20,46 +21,57 @@ export function PressIndexPage({ page, releases }: Props) {
 
   return (
     <PageContent>
-      <article>
+      <Stack className="gap-8">
         {slices ? (
-          <header>
-            <SliceZone slices={slices} />
-          </header>
+          <SliceZone slices={slices} />
         ) : (
-          <header>
-            <h1>Press</h1>
-            <p>
+          <Stack className="gap-4 text-center">
+            <Title order={1} className="text-gray-900">
+              Press
+            </Title>
+            <Text className="text-gray-700 text-lg">
               For press or media enquiries, please write to{' '}
-              <a href="mailto:hello@bank.green">hello@bank.green</a>
-            </p>
-          </header>
+              <Anchor href="mailto:hello@bank.green">hello@bank.green</Anchor>
+            </Text>
+          </Stack>
         )}
 
-        <section>
-          {releases.length > 0 ? (
-            <ul>
-              {releases.map((release) => {
-                const description = getDescription(release)
-                const releaseDate = release.data.releasedate as string | undefined
+        {releases.length > 0 ? (
+          <Grid gutter="lg">
+            {releases.map((release) => {
+              const description = getDescription(release)
+              const releaseDate = release.data.releasedate as string | undefined
 
-                return (
-                  <li key={release.uid}>
-                    <article>
-                      {releaseDate && <time dateTime={releaseDate}>{releaseDate}</time>}
-                      <h2>
-                        <a href={`/press/${release.uid}`}>{release.data.title as string}</a>
-                      </h2>
-                      {description && <p>{description}</p>}
-                    </article>
-                  </li>
-                )
-              })}
-            </ul>
-          ) : (
-            <p>No press releases available.</p>
-          )}
-        </section>
-      </article>
+              return (
+                <Grid.Col key={release.uid} span={{ base: 12, sm: 6 }}>
+                  <Anchor href={`/press/${release.uid}`} underline="never">
+                    <Card shadow="sm" padding="lg" radius="md" withBorder h="100%">
+                      <Stack gap="sm" pt="md">
+                        {releaseDate && (
+                          <Text size="sm" c="dimmed">
+                            <time dateTime={releaseDate}>{releaseDate}</time>
+                          </Text>
+                        )}
+                        <Title order={3}>{release.data.title as string}</Title>
+                        {description && (
+                          <Text size="sm" c="dimmed" lineClamp={3}>
+                            {description}
+                          </Text>
+                        )}
+                        <Text size="sm" fw={600} c="var(--color-sushi-600)">
+                          Read full release →
+                        </Text>
+                      </Stack>
+                    </Card>
+                  </Anchor>
+                </Grid.Col>
+              )
+            })}
+          </Grid>
+        ) : (
+          <Text className="text-center text-gray-500">No press releases available.</Text>
+        )}
+      </Stack>
     </PageContent>
   )
 }

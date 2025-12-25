@@ -21,7 +21,7 @@ export function ImageSlice({ slice, className }: Props) {
       component="figure"
       data-slice-type={slice.slice_type}
       align="center"
-      className={className}
+      className={`m-0 ${className}`}
     >
       {image?.url && <Image src={image.url} alt={image.alt || ''} style={{ maxWidth: '100%' }} />}
       {caption && (

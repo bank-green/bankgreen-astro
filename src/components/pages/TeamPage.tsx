@@ -51,7 +51,7 @@ export function TeamPage({ page }: Props) {
     <PageContent>
       <Stack className="gap-12">
         {/* Intro content from slices */}
-        <Stack className="prose max-w-none">
+        <Stack>
           {slices ? (
             <SliceZone slices={slices} />
           ) : (

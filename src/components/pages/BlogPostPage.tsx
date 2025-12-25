@@ -1,4 +1,5 @@
 import { PageContent } from '@components/PageContent'
+import { Stack, Title } from '@mantine/core'
 import type { PrismicDocument } from '@prismicio/client'
 import type { Slice } from '@slices'
 import { SliceZone } from '@slices'
@@ -32,30 +33,25 @@ export function BlogPostPage({ post }: Props) {
 
   return (
     <PageContent>
-      <div className="page-fade-in contain pt-24 pb-8 sm:pt-32 sm:pb-10 md:pb-12">
-        <div className="mx-auto mt-4 mb-8 max-w-3xl sm:text-center">
-          <h1 className="mb-4 font-extrabold text-2xl text-sushi-900 sm:text-5xl">{title}</h1>
+      <Stack className="mx-auto mb-16">
+        <Title order={1}>{title}</Title>
+        <Title order={4}>
           {isUpdated && modifiedDate ? (
-            <span className="font-semibold text-base text-gray-700">
+            <>
               Updated {modifiedDate}
               {author && ` by ${author}`}
-            </span>
+            </>
           ) : (
             publishedDate && (
-              <span className="font-semibold text-base text-gray-700">
+              <>
                 Posted {publishedDate}
                 {author && ` by ${author}`}
-              </span>
+              </>
             )
           )}
-        </div>
-
-        <div className="flex flex-col items-center justify-center">
-          <div className="prose sm:prose-lg xl:prose-xl wrap-break-word w-full">
-            {slices && <SliceZone slices={slices} />}
-          </div>
-        </div>
-      </div>
+        </Title>
+      </Stack>
+      <Stack className="[&_h2]:text-2xl">{slices && <SliceZone slices={slices} />}</Stack>
 
       {/* Footer section with call to action */}
       <div className="bg-arctic-blue text-gray-800">

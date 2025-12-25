@@ -122,7 +122,7 @@ export const baseColorTokens = {
   borderLight: colorTokens.gray[200],
   linkActive: colorTokens.blue[600],
   linkDefault: colorTokens.blue[800],
-  linkHover: colorTokens.blue[700],
+  linkHover: colorTokens.blue[600],
   linkVisited: colorTokens.blue[800],
   linkInverse: colorTokens.blue[400],
   textDefault: colorTokens.gray[800],
