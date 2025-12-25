@@ -128,14 +128,14 @@ export const theme = createTheme({
         maxHeight: 160,
       },
       classNames: {
-        root: 'mx-auto max-w-4xl rounded-md bg-white p-6 pb-8',
+        root: 'mx-auto max-w-4xl rounded-md bg-(--spoiler-bg-color,white) pb-8',
         content: cx(
-          'relative mb-6',
+          'relative mb-8',
           'before:absolute before:inset-0 before:z-10 before:content-[""]',
-          'before:bg-linear-to-b before:from-40% before:from-transparent before:to-100% before:to-white',
+          'before:bg-linear-to-b before:from-60% before:from-transparent before:to-(--spoiler-bg-color,white) before:to-100%',
           '[button[aria-expanded=true]~&]:before:opacity-0'
         ),
-        control: '-mt-16 ml-6 py-4',
+        control: '-mt-16 py-4',
       },
     },
     Tabs: {

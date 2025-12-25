@@ -26,7 +26,7 @@ export function SustainableBanksPage({ page }: Props) {
         <Stack className="px-6 md:px-0">
           {/* Main intro content from Prismic slices */}
           {slices && (
-            <Stack className="gap-8 **:text-balance [&_h1]:mb-6 [&_p]:text-xl">
+            <Stack className="gap-8 **:text-balance [&_h1]:mb-2 [&_p]:text-xl">
               <SliceZone slices={slices} />
             </Stack>
           )}
@@ -44,10 +44,14 @@ export function SustainableBanksPage({ page }: Props) {
         <Box data-breakout className="bg-blue-100 pt-24">
           {/* Introductory section (Why Find a Green Bank? + What is the Fossil Free Alliance?) */}
           {introductory && introductory.length > 0 && (
-            <Stack className="mx-auto max-w-6xl gap-12 pb-18 [&_h1]:text-center">
+            <Stack className="mx-auto max-w-6xl gap-8 pb-18 [&_h1]:mb-0 [&_h1]:text-center">
               {/* Why Find a Green Bank? - First item in introductory */}
               {introductory[0]?.slice_type === 'text_slice' && (
-                <Spoiler showLabel="Read more" hideLabel="Read less">
+                <Spoiler
+                  showLabel="Read more"
+                  hideLabel="Read less"
+                  className="[--spoiler-bg-color:var(--color-blue-100)]"
+                >
                   {/* Note: this is calling Array.slice, not referring to a slice object! */}
                   <SliceZone slices={introductory.slice(0, 1)} />
                 </Spoiler>
@@ -55,7 +59,11 @@ export function SustainableBanksPage({ page }: Props) {
 
               {/* What is the Fossil Free Alliance? - Rest of introductory items */}
               {introductory.length > 1 && (
-                <Spoiler showLabel="Read more" hideLabel="Read less">
+                <Spoiler
+                  showLabel="Read more"
+                  hideLabel="Read less"
+                  className="[--spoiler-bg-color:var(--color-blue-100)]"
+                >
                   <Stack className="[&>figure]:mx-auto [&>figure]:w-32">
                     <SliceZone slices={introductory.slice(1)} />
                   </Stack>
