@@ -2,13 +2,27 @@ import { ATMAnimation, MoneySmokeAnimation } from '@components/animations'
 import BankLocationSearch from '@components/forms/BankLocationSearch'
 import { Swoosh } from '@components/Swoosh'
 import { renderRichText } from '@lib/prismicHelpers'
-import { Anchor, Box, Group, MantineProvider, Stack, Text, Title } from '@mantine/core'
+import {
+  Anchor,
+  Box,
+  Grid,
+  Group,
+  List,
+  MantineProvider,
+  Paper,
+  Stack,
+  Text,
+  ThemeIcon,
+  Title,
+} from '@mantine/core'
+import { CheckIcon } from '@phosphor-icons/react'
 import type { PrismicDocument, RichTextField } from '@prismicio/client'
 import type { Slice } from '@slices'
 import { SliceZone } from '@slices'
 import theme from '@styles/theme'
 import cx from 'clsx'
 import type { Bank } from '../../lib/banks'
+import ArrowDown from '../animations/ArrowDown'
 
 interface Props {
   page: PrismicDocument | null
@@ -98,18 +112,7 @@ export function HomePage({ page }: Props) {
               ?
             </Group>
             {/* Arrow down bounce animation */}
-            <Box className="mx-auto mt-4 flex h-10 w-10 animate-bounce justify-center text-sushi-500">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                className="h-8 w-8"
-              >
-                <title>Scroll down</title>
-                <path d="M12 5v14M5 12l7 7 7-7" />
-              </svg>
-            </Box>
+            <ArrowDown className="mx-auto mt-4" />
           </Stack>
           {/* Swoosh transitions from green gradient to white */}
           <Swoosh color="var(--color-white)" />
@@ -118,25 +121,25 @@ export function HomePage({ page }: Props) {
 
       {/* Why Bank.Green section - white background with ATM illustration */}
       <Box data-breakout className="bg-white">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-center px-12 py-16 md:flex-row md:px-0">
-          <div className="md:w-1/2 md:pr-12">
-            <div className="prose mb-4">
+        <Grid className="mx-auto flex max-w-6xl flex-col items-center justify-center px-12 py-16 md:flex-row lg:px-0">
+          <Grid.Col span={{ base: 12, md: 6 }} className="flex flex-col">
+            <Stack className="my-auto md:pr-12">
               {description1 &&
                 description1.length > 0 &&
-                renderRichText(description1, 'text-lg md:text-2xl')}
-            </div>
-            <div className="mb-12 md:mb-0">
+                renderRichText(description1, 'text-xl md:text-3xl')}
               {description2 &&
                 description2.length > 0 &&
-                renderRichText(description2, ' md:text-xl')}
-            </div>
-          </div>
+                renderRichText(description2, 'text-xl md:text-2xl')}
+            </Stack>
+          </Grid.Col>
 
-          {/* ATM animation */}
-          <Box className="h-[400px] w-[450px] md:pl-12">
-            <ATMAnimation />
-          </Box>
-        </div>
+          <Grid.Col span={{ base: 12, md: 6 }}>
+            {/* ATM animation */}
+            <Box className="mx-auto aspect-450/400 w-full max-w-xl md:pl-12">
+              <ATMAnimation />
+            </Box>
+          </Grid.Col>
+        </Grid>
       </Box>
 
       {/* Arctic blue section with bank illustration and lead gen form - breaks out of container */}
@@ -146,100 +149,85 @@ export function HomePage({ page }: Props) {
 
         <Box data-container>
           {/* Bank illustration section */}
-          <Stack className="z-10 mx-auto flex max-w-6xl flex-col items-center justify-center px-12 pt-8 pb-4 md:flex-row md:px-0 md:pb-16">
+          <Grid className="z-10 mx-auto max-w-6xl items-center justify-center px-12 pt-8 pb-4 md:pb-16 lg:px-0">
             {/* Bank illustration - on left for desktop */}
-            <Box className="md:w-5/8 md:pr-8">
-              <img
-                src="/img/illustrations/bank.svg"
-                alt="Bank building illustration"
-                className="w-full"
-                width="100%"
-                height="auto"
-              />
-            </Box>
-
-            <Stack className="text-right md:w-3/8 md:pl-1">
-              {description3 &&
-                description3.length > 0 &&
-                renderRichText(description3, ' text-lg md:text-2xl')}
-              {description4 &&
-                description4.length > 0 &&
-                renderRichText(description4, 'text-balance md:text-xl')}
-            </Stack>
-          </Stack>
+            <Grid.Col span={{ base: 12, md: 7 }} className="md:w-5/8 md:pr-8">
+              <Box className="mx-auto h-auto w-full max-w-xl">
+                <img
+                  src="/img/illustrations/bank.svg"
+                  alt="Bank building illustration"
+                  width="100%"
+                  height="auto"
+                />
+              </Box>
+            </Grid.Col>
+            <Grid.Col
+              span={{ base: 12, md: 5 }}
+              className="flex flex-col py-8 md:pl-1 md:text-right"
+            >
+              <Stack className="my-auto md:pl-1 md:text-right">
+                {description3 &&
+                  description3.length > 0 &&
+                  renderRichText(description3, 'text-xl md:text-2xl')}
+                {description4 &&
+                  description4.length > 0 &&
+                  renderRichText(description4, 'md:text-xl')}
+              </Stack>
+            </Grid.Col>
+          </Grid>
 
           {/* Lead gen form section - dark blue card */}
-          <div id="join" className="mx-auto max-w-6xl px-6 pb-8 lg:px-0">
-            <div className="rounded-2xl bg-primaryDark p-8 text-white md:p-12">
-              <div className="flex flex-col gap-8 lg:flex-row lg:gap-16">
+          <Box id="join" className="mx-auto max-w-6xl px-6 pb-8 lg:px-0">
+            <Paper className="rounded-2xl bg-primaryDark p-8 text-white md:p-12">
+              <Grid gutter={0}>
                 {/* Left side - title and benefits */}
-                <div className="lg:w-1/2">
-                  <h2 className="mb-6 font-semibold text-2xl text-textInverse md:text-3xl">
+                <Grid.Col span={{ base: 12, md: 6 }} className="pb-12">
+                  <Title order={2} className="mb-6 text-2xl text-textInverse md:text-3xl">
                     Start to Bank Green Today
-                  </h2>
-                  <ul className="space-y-4">
-                    <li className="flex items-start gap-3">
-                      <svg
-                        className="mt-0.5 h-5 w-5 shrink-0 text-sushi-500"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
+                  </Title>
+                  <List
+                    spacing="sm"
+                    className="space-y-3 pl-0"
+                    icon={
+                      <ThemeIcon
+                        color="transparent"
+                        size={20}
+                        radius="xl"
+                        className="ml-0 shrink-0"
                       >
-                        <title>Checkmark</title>
-                        <path
-                          fillRule="evenodd"
-                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      <span>Learn how to take action on fossil fuel finance.</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <svg
-                        className="mt-0.5 h-5 w-5 shrink-0 text-sushi-500"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <title>Checkmark</title>
-                        <path
-                          fillRule="evenodd"
-                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      <span>Discover green banking and how easy it is to switch.</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <svg
-                        className="mt-0.5 h-5 w-5 shrink-0 text-sushi-500"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <title>Checkmark</title>
-                        <path
-                          fillRule="evenodd"
-                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      <span>Stay up to date with climate finance news.</span>
-                    </li>
-                  </ul>
-                </div>
+                        <CheckIcon size={20} weight="bold" className="-mb-2 text-green-500" />
+                      </ThemeIcon>
+                    }
+                  >
+                    <List.Item>
+                      <Text component="span">Learn how to take action on fossil fuel finance.</Text>
+                    </List.Item>
+                    <List.Item>
+                      <Text component="span">
+                        Discover green banking and how easy it is to switch.
+                      </Text>
+                    </List.Item>
+                    <List.Item>
+                      <Text component="span">Stay up to date with climate finance news.</Text>
+                    </List.Item>
+                  </List>
+                </Grid.Col>
 
                 {/* Right side - form placeholder */}
-                <div className="lg:w-1/2">
-                  <div className="flex h-full min-h-48 items-center justify-center rounded-xl bg-white/10 p-6">
-                    <Text className="text-white/60">[Lead Gen Form]</Text>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+                <Grid.Col
+                  span={{ base: 12, md: 6 }}
+                  className="h-full min-h-48 items-center justify-center rounded-xl bg-white/10 p-6"
+                >
+                  <Text className="text-white/60">[Lead Gen Form]</Text>
+                </Grid.Col>
+              </Grid>
+            </Paper>
+          </Box>
         </Box>
 
         {/* Money smoke animation */}
 
-        <Stack className="mx-auto h-[340px] w-[690px] object-cover object-bottom">
+        <Stack className="mx-auto aspect-690/340 max-w-[690px] justify-end object-cover object-bottom">
           <MoneySmokeAnimation className="mb-0 w-full" />
         </Stack>
       </Box>
