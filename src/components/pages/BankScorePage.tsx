@@ -169,8 +169,8 @@ export function BankScorePage({ bank, prismicDefaults, prismicPage }: Props) {
           {isBadBank ? (
             <Stack className="contain gap-0">
               <Group className="flex-col-reverse items-center justify-center gap-8 md:flex-row md:gap-24">
-                <Box className="w-full max-w-sm md:w-1/2">
-                  <PiggyAnimation className="w-full" />
+                <Box className="max-h-[901px] w-full max-w-sm md:w-1/2">
+                  <PiggyAnimation />
                 </Box>
                 <Stack className="gap-4 md:w-1/2">
                   <SafeHtml html={description2} className="prose max-w-none text-2xl" />

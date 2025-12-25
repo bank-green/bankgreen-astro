@@ -1,3 +1,4 @@
+import { Box } from '@mantine/core'
 import Lottie from 'lottie-react'
 import { useEffect, useState } from 'react'
 
@@ -21,7 +22,24 @@ export function PiggyAnimation({ className }: PiggyAnimationProps) {
     loadAnimation()
   }, [])
 
-  if (!animationData) return null
+  if (!animationData) {
+    return (
+      <Box className="aspect-490/1150">
+        <img
+          src="/img/illustrations/piggybank.svg"
+          alt="Piggy bank"
+          className={className}
+          style={{ width: '100%', height: '50%', objectFit: 'contain' }}
+        />
+        <img
+          src="/img/illustrations/oilrig.svg"
+          alt="Oil rig"
+          className={className}
+          style={{ width: '100%', height: '50%', objectFit: 'contain' }}
+        />
+      </Box>
+    )
+  }
 
   return <Lottie animationData={animationData} loop autoplay className={className} />
 }

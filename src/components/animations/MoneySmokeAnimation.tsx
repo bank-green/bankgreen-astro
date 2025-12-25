@@ -21,7 +21,16 @@ export function MoneySmokeAnimation({ className }: MoneySmokeAnimationProps) {
     loadAnimation()
   }, [])
 
-  if (!animationData) return null
+  if (!animationData) {
+    return (
+      <img
+        src="/img/illustrations/paperwinds.svg"
+        alt="Landscape"
+        className={className}
+        style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+      />
+    )
+  }
 
   return <Lottie animationData={animationData} loop autoplay className={className} />
 }

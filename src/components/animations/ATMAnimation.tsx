@@ -21,7 +21,16 @@ export function ATMAnimation({ className }: ATMAnimationProps) {
     loadAnimation()
   }, [])
 
-  if (!animationData) return null
+  if (!animationData) {
+    return (
+      <img
+        src="/img/illustrations/atm.svg"
+        alt="ATM"
+        className={className}
+        style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+      />
+    )
+  }
 
   return <Lottie animationData={animationData} loop autoplay className={className} />
 }

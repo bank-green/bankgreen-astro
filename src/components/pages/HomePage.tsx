@@ -133,9 +133,9 @@ export function HomePage({ page }: Props) {
           </div>
 
           {/* ATM animation */}
-          <div className="max-w-full md:w-1/2 md:pl-12">
-            <ATMAnimation className="w-full" />
-          </div>
+          <Box className="h-[400px] w-[450px] md:pl-12">
+            <ATMAnimation />
+          </Box>
         </div>
       </Box>
 
