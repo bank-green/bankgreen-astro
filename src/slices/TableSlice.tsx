@@ -23,11 +23,11 @@ export function TableSlice({ slice, className }: Props) {
 
   const { column_1_header, column_2_header, column_3_header, column_4_header } = slice.primary
 
-  const rows = slice.items.map((row, index) => {
+  const rows = slice.items.map((row, _index) => {
     const typedRow = row
 
     return (
-      <Table.Tr key={index}>
+      <Table.Tr key={slice.slice_type}>
         {typedRow.column_1 && (
           <Table.Td>
             <Group gap="sm">

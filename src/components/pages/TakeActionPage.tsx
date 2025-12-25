@@ -1,6 +1,6 @@
 import { PageContent } from '@components/PageContent'
 import { renderRichText } from '@lib/prismicHelpers'
-import { Anchor, Loader, Stack, Tabs, Text, Title } from '@mantine/core'
+import { Anchor, Loader, Stack, Tabs, Title } from '@mantine/core'
 import type { PrismicDocument, RichTextField } from '@prismicio/client'
 import type { Slice } from '@slices'
 import { SliceZone } from '@slices'
@@ -25,12 +25,14 @@ export function TakeActionPage({ page }: Props) {
   ]
 
   const renderTabButton = (data: TabData) => (
-    <Tabs.Tab value={data.id}>{data.id.charAt(0).toUpperCase() + data.id.slice(1)}</Tabs.Tab>
+    <Tabs.Tab key={data.id} value={data.id}>
+      {data.id.charAt(0).toUpperCase() + data.id.slice(1)}
+    </Tabs.Tab>
   )
 
   const renderTabPanel = (data: TabData) => (
-    <Tabs.Panel value={data.id}>
-      <Stack className="prose md:prose-lg px-4">
+    <Tabs.Panel value={data.id} key={data.id}>
+      <Stack className="px-4 py-8">
         {data.slice ? <SliceZone slices={data.slice} /> : <Loader />}
       </Stack>
     </Tabs.Panel>
@@ -39,20 +41,8 @@ export function TakeActionPage({ page }: Props) {
   return (
     <PageContent>
       <Stack className="gap-12">
-        <Stack>
-          {introduction && introduction.length > 0 ? (
-            renderRichText(introduction)
-          ) : (
-            <>
-              <Title order={1}>Take action</Title>
-              <Text>
-                Do you watch or read climate crisis news and think: "Ok, this is bad, but what now?
-                What can I do about this?" We do too. Even this website, as it alerts you to the
-                destructive cycle that our money is stuck in, might be making you feel overwhelmed
-                and powerless. Well, no more! It's time to take action:
-              </Text>
-            </>
-          )}
+        <Stack className="[&_h3]:text-4xl [&_p]:m-0 [&_p]:text-lg">
+          {introduction && introduction.length > 0 && renderRichText(introduction)}
         </Stack>
 
         <Tabs defaultValue="pressure" variant="outline">

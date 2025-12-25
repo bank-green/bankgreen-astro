@@ -29,10 +29,15 @@ export function EmbedSlice({ slice, className }: Props) {
       component="figure"
       data-slice-type={slice.slice_type}
       data-provider={embed.provider_name}
-      style={{ maxWidth: '100%' }}
-      className={className}
+      className={`w-full ${className}`}
     >
-      <div dangerouslySetInnerHTML={{ __html: html }} />
+      <div className="relative aspect-video w-full">
+        <div
+          className="absolute inset-0 [&_iframe]:h-full [&_iframe]:w-full"
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: <>
+          dangerouslySetInnerHTML={{ __html: html }}
+        />
+      </div>
     </Container>
   )
 }

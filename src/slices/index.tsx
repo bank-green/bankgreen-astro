@@ -144,7 +144,14 @@ export function SliceZone({ slices, className }: SliceZoneProps) {
         // TypeScript now knows that Component expects the correct slice type
         // We need a type assertion here because TypeScript can't guarantee
         // the slice matches the component's expected type at this level
-        return <Component key={key} slice={slice as never} className={className} />
+        return (
+          <Component
+            key={key}
+            slice={slice as never}
+            className={className}
+            data-slice-type={slice.slice_type}
+          />
+        )
       })}
     </>
   )

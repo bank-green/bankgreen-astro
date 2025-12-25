@@ -70,6 +70,7 @@
   h5,
   h6 {
     margin-top: 0;
+    margin-block-start: 0;
   }
 
   /** Legacy global styles from Nuxt app **/

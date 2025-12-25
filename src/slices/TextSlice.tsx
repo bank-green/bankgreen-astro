@@ -5,7 +5,7 @@
  */
 
 import { renderRichText } from '@lib/prismicHelpers'
-import { Container } from '@mantine/core'
+import { Stack } from '@mantine/core'
 import type { TextSlice as TextSliceType } from './types'
 
 interface Props {
@@ -15,8 +15,8 @@ interface Props {
 
 export function TextSlice({ slice, className }: Props) {
   return (
-    <Container component="section" data-slice-type={slice.slice_type} className={className}>
+    <Stack component="section" data-slice-type={slice.slice_type} className={className}>
       {renderRichText(slice.primary.text)}
-    </Container>
+    </Stack>
   )
 }

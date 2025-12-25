@@ -22,7 +22,8 @@ export function ButtonSlice({ slice, className }: Props) {
       component="a"
       href={href}
       variant="filled"
-      className={className}
+      className={`max-w-fit ${className}`}
+      size="md"
     >
       {label}
     </Button>

@@ -42,9 +42,9 @@ export const theme = createTheme({
     Accordion: {
       classNames: {
         root: 'bg-white rounded-lg',
-        item: 'rounded-md border-none bg-gray-100/25',
+        item: 'rounded-md border-none bg-gray-100/50',
         control:
-          ' rounded-md bg-gray-100/25 hover:bg-gray-100/50 active:bg-gray-100/75 transition-all duration-100 border-b-2 border-white',
+          ' rounded-md bg-gray-200/50 hover:bg-gray-200/75 active:bg-gray-200/80 transition-all duration-100 border-b-2 border-white',
         label: 'font-semibold',
         content: 'py-4',
       },
@@ -141,9 +141,14 @@ export const theme = createTheme({
     Tabs: {
       classNames: {
         root: 'bg-transparent',
-        panel: 'w-full rounded-lg rounded-tl-none border-none bg-white px-8 pb-8',
-        tab: 'rounded-t-lg border-none bg-white/50 transition-all duration-100 active:bg-white/90 active:translate-y-0.5 active:font-semibold data-active:bg-white hover:text-linkHover active:text-linkActive',
-        list: 'gap-2 border-none bg-sushi-100 before:hidden',
+        panel: 'w-full rounded-lg rounded-tl-none border-none bg-white px-4 pb-8',
+        tab: cx(
+          'rounded-t-lg border-none bg-white/50 lg:px-8',
+          'transition-all duration-100',
+          'hover:text-linkHover',
+          'active:translate-y-0.5 active:bg-white/90 active:text-linkActive data-active:bg-white'
+        ),
+        list: 'gap-0.5 sm:gap-2 border-none bg-sushi-100 before:hidden',
         tabLabel: 'font-semibold',
       },
     },
