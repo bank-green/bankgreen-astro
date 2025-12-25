@@ -1,4 +1,4 @@
-import { Title } from '@mantine/core'
+import { Text, Title } from '@mantine/core'
 import * as prismic from '@prismicio/client'
 import type { ReactNode } from 'react'
 
@@ -6,7 +6,10 @@ import type { ReactNode } from 'react'
  * Renders Prismic RichText field to semantic HTML.
  * Uses a simple recursive approach to convert Prismic's structured text to React elements.
  */
-export function renderRichText(field: prismic.RichTextField | null | undefined): ReactNode {
+export function renderRichText(
+  field: prismic.RichTextField | null | undefined,
+  className?: string | undefined
+): ReactNode {
   if (!field || field.length === 0) return null
 
   return field.map((block, index) => {
@@ -15,59 +18,79 @@ export function renderRichText(field: prismic.RichTextField | null | undefined):
     switch (block.type) {
       case 'heading1':
         return (
-          <Title order={1} key={key}>
+          <Title order={1} key={key} className={className}>
             {renderSpans(block.text, block.spans)}
           </Title>
         )
       case 'heading2':
         return (
-          <Title order={2} key={key}>
+          <Title order={2} key={key} className={className}>
             {renderSpans(block.text, block.spans)}
           </Title>
         )
       case 'heading3':
         return (
-          <Title order={3} key={key}>
+          <Title order={3} key={key} className={className}>
             {renderSpans(block.text, block.spans)}
           </Title>
         )
       case 'heading4':
         return (
-          <Title order={4} key={key}>
+          <Title order={4} key={key} className={className}>
             {renderSpans(block.text, block.spans)}
           </Title>
         )
       case 'heading5':
         return (
-          <Title order={5} key={key}>
+          <Title order={5} key={key} className={className}>
             {renderSpans(block.text, block.spans)}
           </Title>
         )
       case 'heading6':
         return (
-          <Title order={6} key={key}>
+          <Title order={6} key={key} className={className}>
             {renderSpans(block.text, block.spans)}
           </Title>
         )
       case 'paragraph':
-        return <>{renderSpans(block.text, block.spans)}</>
+        return (
+          <Text key={key} className={className}>
+            {renderSpans(block.text, block.spans)}
+          </Text>
+        )
       case 'preformatted':
-        return <pre key={key}>{block.text}</pre>
+        return (
+          <pre key={key} className={className}>
+            {block.text}
+          </pre>
+        )
       case 'list-item':
-        return <li key={key}>{renderSpans(block.text, block.spans)}</li>
+        return (
+          <li key={key} className={className}>
+            {renderSpans(block.text, block.spans)}
+          </li>
+        )
       case 'o-list-item':
-        return <li key={key}>{renderSpans(block.text, block.spans)}</li>
+        return (
+          <li key={key} className={className}>
+            {renderSpans(block.text, block.spans)}
+          </li>
+        )
       case 'image':
         return (
-          <figure key={key}>
+          <figure key={key} className={className}>
             <img src={block.url} alt={block.alt || ''} />
             {block.alt && <figcaption>{block.alt}</figcaption>}
           </figure>
         )
       case 'embed':
         return (
-          // biome-ignore lint/security/noDangerouslySetInnerHtml: This is appropriate for embeds
-          <div key={key} dangerouslySetInnerHTML={{ __html: block.oembed.html || '' }} />
+          <div
+            key={key}
+            // biome-ignore lint/security/noDangerouslySetInnerHtml: This is appropriate for embeds
+            dangerouslySetInnerHTML={{ __html: block.oembed.html || '' }}
+            className={className}
+          />
         )
       default:
         return null
@@ -107,7 +130,7 @@ function renderSpans(text: string, spans: prismic.RTInlineNode[]): ReactNode {
         break
       case 'hyperlink':
         result.push(
-          <a key={spanKey} href={prismic.asLink(span.data) || '#'}>
+          <a key={spanKey} href={prismic.asLink(span.data) || '#'} className="inline">
             {spanText}
           </a>
         )

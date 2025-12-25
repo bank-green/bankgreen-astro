@@ -8,9 +8,10 @@ import type { FeaturedInSlice as FeaturedInSliceType } from './types'
 
 interface Props {
   slice: FeaturedInSliceType
+  className?: string
 }
 
-export function FeaturedInSlice({ slice }: Props) {
+export function FeaturedInSlice({ slice, className }: Props) {
   const { logo } = slice.primary
 
   if (!logo?.url) return null
@@ -26,6 +27,7 @@ export function FeaturedInSlice({ slice }: Props) {
       mah={40}
       w="auto"
       fit="contain"
+      className={className}
     />
   )
 }

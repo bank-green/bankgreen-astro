@@ -10,13 +10,19 @@ import type { ImageSlice as ImageSliceType } from './types'
 
 interface Props {
   slice: ImageSliceType
+  className?: string
 }
 
-export function ImageSlice({ slice }: Props) {
+export function ImageSlice({ slice, className }: Props) {
   const { image, caption } = slice.primary
 
   return (
-    <Stack component="figure" data-slice-type={slice.slice_type} align="center">
+    <Stack
+      component="figure"
+      data-slice-type={slice.slice_type}
+      align="center"
+      className={className}
+    >
       {image?.url && <Image src={image.url} alt={image.alt || ''} style={{ maxWidth: '100%' }} />}
       {caption && (
         <Text component="figcaption" ta="center" size="sm">

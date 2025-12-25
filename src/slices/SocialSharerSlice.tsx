@@ -12,9 +12,10 @@ import type { SocialSharerSlice as SocialSharerSliceType } from './types'
 
 interface Props {
   slice: SocialSharerSliceType
+  className?: string
 }
 
-export function SocialSharerSlice({ slice }: Props) {
+export function SocialSharerSlice({ slice, className }: Props) {
   const shareText = asText(slice.primary.text) || ''
   const shareUrl = 'https://bank.green'
   const hashtags = ['climatecrisis', 'fossilbanks']
@@ -29,6 +30,7 @@ export function SocialSharerSlice({ slice }: Props) {
       component="nav"
       data-slice-type={slice.slice_type}
       aria-label="Share on social media"
+      className={className}
     >
       <Group>
         <Button

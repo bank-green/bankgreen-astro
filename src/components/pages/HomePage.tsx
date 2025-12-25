@@ -1,3 +1,4 @@
+import { ATMAnimation, MoneySmokeAnimation } from '@components/animations'
 import BankLocationSearch from '@components/forms/BankLocationSearch'
 import { Swoosh } from '@components/Swoosh'
 import { renderRichText } from '@lib/prismicHelpers'
@@ -119,132 +120,128 @@ export function HomePage({ page }: Props) {
       <Box data-breakout className="bg-white">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-center px-12 py-16 md:flex-row md:px-0">
           <div className="md:w-1/2 md:pr-12">
-            <div className="prose mb-4 text-lg tracking-wide md:text-2xl [&_strong]:font-semibold [&_strong]:text-gray-800">
-              {description1 && description1.length > 0 && renderRichText(description1)}
+            <div className="prose mb-4">
+              {description1 &&
+                description1.length > 0 &&
+                renderRichText(description1, 'text-lg md:text-2xl')}
             </div>
-            <div className="mb-12 whitespace-pre-line text-gray-600 tracking-wide md:mb-0 md:text-xl">
-              {description2 && description2.length > 0 && renderRichText(description2)}
+            <div className="mb-12 md:mb-0">
+              {description2 &&
+                description2.length > 0 &&
+                renderRichText(description2, ' md:text-xl')}
             </div>
           </div>
 
-          {/* ATM illustration */}
+          {/* ATM animation */}
           <div className="max-w-full md:w-1/2 md:pl-12">
-            <img
-              src="/img/illustrations/atm.svg"
-              alt="Person at ATM illustration"
-              className="w-full"
-            />
+            <ATMAnimation className="w-full" />
           </div>
         </div>
       </Box>
 
       {/* Arctic blue section with bank illustration and lead gen form - breaks out of container */}
-      <Box data-breakout className="bg-arcticBlue text-gray-800">
-        <div className="overflow-hidden">
-          {/* Swoosh transitions from white down into arctic blue */}
-          <Swoosh direction="down" color="var(--color-white)" />
+      <Box data-breakout className="bg-arcticBlue">
+        {/* Swoosh transitions from white down into arctic blue */}
+        <Swoosh direction="down" color="var(--color-white)" />
 
-          <Box data-container>
-            {/* Bank illustration section */}
-            <div className="z-10 mx-auto flex max-w-6xl flex-col items-center justify-center px-12 pt-8 pb-4 md:flex-row md:px-0 md:pb-16">
-              {/* Bank illustration - on left for desktop */}
-              <div className="md:w-9/16 md:pr-24">
-                <img
-                  src="/img/illustrations/bank.svg"
-                  alt="Bank building illustration"
-                  className="w-full"
-                  width="100%"
-                  height="auto"
-                />
-              </div>
+        <Box data-container>
+          {/* Bank illustration section */}
+          <Stack className="z-10 mx-auto flex max-w-6xl flex-col items-center justify-center px-12 pt-8 pb-4 md:flex-row md:px-0 md:pb-16">
+            {/* Bank illustration - on left for desktop */}
+            <Box className="md:w-5/8 md:pr-8">
+              <img
+                src="/img/illustrations/bank.svg"
+                alt="Bank building illustration"
+                className="w-full"
+                width="100%"
+                height="auto"
+              />
+            </Box>
 
-              <div className="prose text-right md:w-7/16">
-                <div className="mb-4 text-balance text-lg tracking-wide md:text-2xl [&_strong]:font-semibold [&_strong]:text-gray-800">
-                  {description3 && description3.length > 0 && renderRichText(description3)}
+            <Stack className="text-right md:w-3/8 md:pl-1">
+              {description3 &&
+                description3.length > 0 &&
+                renderRichText(description3, ' text-lg md:text-2xl')}
+              {description4 &&
+                description4.length > 0 &&
+                renderRichText(description4, 'text-balance md:text-xl')}
+            </Stack>
+          </Stack>
+
+          {/* Lead gen form section - dark blue card */}
+          <div id="join" className="mx-auto max-w-6xl px-6 pb-8 lg:px-0">
+            <div className="rounded-2xl bg-primaryDark p-8 text-white md:p-12">
+              <div className="flex flex-col gap-8 lg:flex-row lg:gap-16">
+                {/* Left side - title and benefits */}
+                <div className="lg:w-1/2">
+                  <h2 className="mb-6 font-semibold text-2xl text-textInverse md:text-3xl">
+                    Start to Bank Green Today
+                  </h2>
+                  <ul className="space-y-4">
+                    <li className="flex items-start gap-3">
+                      <svg
+                        className="mt-0.5 h-5 w-5 shrink-0 text-sushi-500"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <title>Checkmark</title>
+                        <path
+                          fillRule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      <span>Learn how to take action on fossil fuel finance.</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <svg
+                        className="mt-0.5 h-5 w-5 shrink-0 text-sushi-500"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <title>Checkmark</title>
+                        <path
+                          fillRule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      <span>Discover green banking and how easy it is to switch.</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <svg
+                        className="mt-0.5 h-5 w-5 shrink-0 text-sushi-500"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <title>Checkmark</title>
+                        <path
+                          fillRule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      <span>Stay up to date with climate finance news.</span>
+                    </li>
+                  </ul>
                 </div>
-                <div className="mb-12 text-balance text-gray-600 tracking-wide md:mb-0 md:text-xl">
-                  {description4 && description4.length > 0 && renderRichText(description4)}
-                </div>
-              </div>
-            </div>
 
-            {/* Lead gen form section - dark blue card */}
-            <div id="join" className="mx-auto max-w-6xl px-6 pb-8 lg:px-0">
-              <div className="rounded-2xl bg-primaryDark p-8 text-white md:p-12">
-                <div className="flex flex-col gap-8 lg:flex-row lg:gap-16">
-                  {/* Left side - title and benefits */}
-                  <div className="lg:w-1/2">
-                    <h2 className="mb-6 font-semibold text-2xl text-textInverse md:text-3xl">
-                      Start to Bank Green Today
-                    </h2>
-                    <ul className="space-y-4">
-                      <li className="flex items-start gap-3">
-                        <svg
-                          className="mt-0.5 h-5 w-5 shrink-0 text-sushi-500"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <title>Checkmark</title>
-                          <path
-                            fillRule="evenodd"
-                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                        <span>Learn how to take action on fossil fuel finance.</span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <svg
-                          className="mt-0.5 h-5 w-5 shrink-0 text-sushi-500"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <title>Checkmark</title>
-                          <path
-                            fillRule="evenodd"
-                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                        <span>Discover green banking and how easy it is to switch.</span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <svg
-                          className="mt-0.5 h-5 w-5 shrink-0 text-sushi-500"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <title>Checkmark</title>
-                          <path
-                            fillRule="evenodd"
-                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                        <span>Stay up to date with climate finance news.</span>
-                      </li>
-                    </ul>
-                  </div>
-
-                  {/* Right side - form placeholder */}
-                  <div className="lg:w-1/2">
-                    <div className="flex h-full min-h-48 items-center justify-center rounded-xl bg-white/10 p-6">
-                      <Text className="text-white/60">[Lead Gen Form]</Text>
-                    </div>
+                {/* Right side - form placeholder */}
+                <div className="lg:w-1/2">
+                  <div className="flex h-full min-h-48 items-center justify-center rounded-xl bg-white/10 p-6">
+                    <Text className="text-white/60">[Lead Gen Form]</Text>
                   </div>
                 </div>
               </div>
-            </div>
-          </Box>
-
-          {/* Money smoke animation placeholder */}
-          <div className="flex flex-row items-center justify-center">
-            <div className="h-42 w-full object-cover object-bottom md:max-w-2xl">
-              {/* Placeholder for Lottie money_smoke animation */}
-              <img src="/img/illustrations/landscape.svg" alt="" className="w-full" />
             </div>
           </div>
-        </div>
+        </Box>
+
+        {/* Money smoke animation */}
+
+        <Stack className="mx-auto h-[340px] w-[690px] object-cover object-bottom">
+          <MoneySmokeAnimation className="mb-0 w-full" />
+        </Stack>
       </Box>
     </MantineProvider>
   )

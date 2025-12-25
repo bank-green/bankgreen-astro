@@ -8,9 +8,10 @@ import type { EmbedSlice as EmbedSliceType } from './types'
 
 interface Props {
   slice: EmbedSliceType
+  className?: string
 }
 
-export function EmbedSlice({ slice }: Props) {
+export function EmbedSlice({ slice, className }: Props) {
   const embed = slice.primary.target
 
   if (!embed?.html) {
@@ -29,6 +30,7 @@ export function EmbedSlice({ slice }: Props) {
       data-slice-type={slice.slice_type}
       data-provider={embed.provider_name}
       style={{ maxWidth: '100%' }}
+      className={className}
     >
       <div dangerouslySetInnerHTML={{ __html: html }} />
     </Container>

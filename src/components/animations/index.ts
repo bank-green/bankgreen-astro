@@ -1,3 +1,5 @@
+export { ATMAnimation } from './ATMAnimation'
 export { FishesAnimation } from './FishesAnimation'
+export { MoneySmokeAnimation } from './MoneySmokeAnimation'
 export { PiggyAnimation } from './PiggyAnimation'
 export { WindmillAnimation } from './WindmillAnimation'

@@ -12,9 +12,10 @@ import type { TableSlice as TableSliceType } from './types'
 
 interface Props {
   slice: TableSliceType
+  className?: string
 }
 
-export function TableSlice({ slice }: Props) {
+export function TableSlice({ slice, className }: Props) {
   // Default variation is not rendered in the original
   if (slice.variation === 'default') {
     return null
@@ -45,7 +46,11 @@ export function TableSlice({ slice }: Props) {
   })
 
   return (
-    <Container data-slice-type={slice.slice_type} data-slice-variation={slice.variation}>
+    <Container
+      data-slice-type={slice.slice_type}
+      data-slice-variation={slice.variation}
+      className={className}
+    >
       <Table striped highlightOnHover>
         {(column_1_header || column_2_header || column_3_header || column_4_header) && (
           <Table.Thead>

@@ -1,10 +1,10 @@
-import { renderRichText } from '@lib/prismicHelpers'
 import { Box, MantineProvider, Spoiler, Stack } from '@mantine/core'
 import type { PrismicDocument } from '@prismicio/client'
 import type { Slice } from '@slices'
 import { SliceZone } from '@slices'
 import theme from '@styles/theme'
 import { useState } from 'react'
+import { renderRichText } from '../../lib/prismicHelpers'
 
 interface Props {
   page: PrismicDocument | null
@@ -24,7 +24,7 @@ export function SustainableBanksPage({ page }: Props) {
       <Stack className="mx-auto max-w-6xl gap-12 pt-18">
         {/* Main intro content from Prismic slices */}
         {slices && (
-          <Stack className="prose mx-auto [&_h1]:text-center">
+          <Stack className="mx-auto gap-8 **:max-w-4xl **:text-balance **:text-center [&_h1]:mb-6 [&_p]:text-xl">
             <SliceZone slices={slices} />
           </Stack>
         )}
@@ -45,12 +45,7 @@ export function SustainableBanksPage({ page }: Props) {
           <Stack className="prose mx-auto max-w-6xl gap-12 pb-18 [&_h1]:text-center">
             {/* Why Find a Green Bank? - First item in introductory */}
             {introductory[0]?.slice_type === 'text_slice' && (
-              <Spoiler
-                maxHeight={140}
-                showLabel="Read more"
-                hideLabel="Read less"
-                className="mx-auto max-w-3xl rounded-md bg-linear-to-b from-white/50 to-white/10 p-6"
-              >
+              <Spoiler showLabel="Read more" hideLabel="Read less">
                 {renderRichText(
                   (introductory[0] as Extract<Slice, { slice_type: 'text_slice' }>).primary.text
                 )}
@@ -59,13 +54,8 @@ export function SustainableBanksPage({ page }: Props) {
 
             {/* What is the Fossil Free Alliance? - Rest of introductory items */}
             {introductory.length > 1 && (
-              <Spoiler
-                maxHeight={140}
-                showLabel="Read more"
-                hideLabel="Read less"
-                className="mx-auto max-w-3xl rounded-md bg-linear-to-b from-white/50 to-white/10 p-6"
-              >
-                <Stack>
+              <Spoiler showLabel="Read more" hideLabel="Read less">
+                <Stack className="[&>figure]:mx-auto [&>figure]:w-32">
                   <SliceZone slices={introductory.slice(1)} />
                 </Stack>
               </Spoiler>
@@ -73,10 +63,10 @@ export function SustainableBanksPage({ page }: Props) {
           </Stack>
         )}
 
-        <Stack className="mx-auto w-full max-w-6xl gap-12">
+        <Stack className="mx-auto w-full max-w-4xl gap-12">
           {/* FAQ section */}
           {slices1 && slices1.length > 0 && (
-            <Stack className="rounded-lg bg-white p-4">
+            <Stack className="rounded-lg bg-white p-4 [&_a]:inline">
               <SliceZone slices={slices1} />
             </Stack>
           )}

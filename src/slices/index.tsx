@@ -59,7 +59,7 @@ export type {
  * Each component expects the exact slice type that corresponds to its key.
  */
 type SliceComponentMap = {
-  [K in SliceType]: ComponentType<{ slice: SliceTypeMap[K] }>
+  [K in SliceType]: ComponentType<{ slice: SliceTypeMap[K]; className?: string }>
 }
 
 /**
@@ -110,9 +110,10 @@ function isValidSliceType(sliceType: string): sliceType is SliceType {
 
 interface SliceZoneProps {
   slices: Slice[]
+  className?: string | undefined
 }
 
-export function SliceZone({ slices }: SliceZoneProps) {
+export function SliceZone({ slices, className }: SliceZoneProps) {
   if (!slices || !Array.isArray(slices)) {
     return null
   }
@@ -126,7 +127,12 @@ export function SliceZone({ slices }: SliceZoneProps) {
         if (!isValidSliceType(slice.slice_type)) {
           console.warn(`Unknown slice type: ${slice.slice_type}`)
           return (
-            <div key={key} data-slice-type={slice.slice_type} data-unknown="true">
+            <div
+              key={key}
+              data-slice-type={slice.slice_type}
+              data-unknown="true"
+              className={className}
+            >
               Unknown slice type: {slice.slice_type}
             </div>
           )
@@ -138,7 +144,7 @@ export function SliceZone({ slices }: SliceZoneProps) {
         // TypeScript now knows that Component expects the correct slice type
         // We need a type assertion here because TypeScript can't guarantee
         // the slice matches the component's expected type at this level
-        return <Component key={key} slice={slice as never} />
+        return <Component key={key} slice={slice as never} className={className} />
       })}
     </>
   )

@@ -13,6 +13,7 @@ import type { LeadGenSlice } from './types'
 
 interface Props {
   slice: LeadGenSlice
+  className?: string
 }
 
 /**
@@ -25,7 +26,7 @@ function safeAsText(field: RichTextField | string | undefined | null): string {
   return ''
 }
 
-export function LeadGen({ slice }: Props) {
+export function LeadGen({ slice, className }: Props) {
   const primary = slice.primary
   const items = slice.items
 
@@ -44,7 +45,7 @@ export function LeadGen({ slice }: Props) {
     .filter((opt): opt is string => typeof opt === 'string' && opt !== 'Select none (default)')
 
   return (
-    <Container component="section" data-slice-type={slice.slice_type}>
+    <Container component="section" data-slice-type={slice.slice_type} className={className}>
       <Stack gap="lg">
         <Title id="lead-gen-title">{title}</Title>
 

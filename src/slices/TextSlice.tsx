@@ -10,11 +10,12 @@ import type { TextSlice as TextSliceType } from './types'
 
 interface Props {
   slice: TextSliceType
+  className?: string
 }
 
-export function TextSlice({ slice }: Props) {
+export function TextSlice({ slice, className }: Props) {
   return (
-    <Container component="section" data-slice-type={slice.slice_type}>
+    <Container component="section" data-slice-type={slice.slice_type} className={className}>
       {renderRichText(slice.primary.text)}
     </Container>
   )

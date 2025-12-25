@@ -9,9 +9,10 @@ import type { TeamMemberSlice as TeamMemberSliceType } from './types'
 
 interface Props {
   slice: TeamMemberSliceType
+  className?: string
 }
 
-export function TeamMemberSlice({ slice }: Props) {
+export function TeamMemberSlice({ slice, className }: Props) {
   const { name, description, img, link } = slice.primary
 
   const nameText = asText(name)
@@ -19,7 +20,12 @@ export function TeamMemberSlice({ slice }: Props) {
   const href = asLink(link)
 
   return (
-    <Card data-slice-type={slice.slice_type} p="lg" radius="md" className="w-full">
+    <Card
+      data-slice-type={slice.slice_type}
+      p="lg"
+      radius="md"
+      className={`w-full ${className || ''}`}
+    >
       <Card.Section className="py-8">
         {img?.url && (
           <Image

@@ -15,11 +15,12 @@ import type { AccordionSlice as AccordionSliceType } from './types'
 
 interface Props {
   slice: AccordionSliceType
+  className?: string
   // For "default" variation, the linked document's slices need to be passed in
   linkedContent?: AccordionSliceType[]
 }
 
-export function AccordionSlice({ slice, linkedContent }: Props) {
+export function AccordionSlice({ slice, className, linkedContent }: Props) {
   // Determine title based on variation
   let title: string
   if (slice.variation === 'default') {
@@ -36,13 +37,17 @@ export function AccordionSlice({ slice, linkedContent }: Props) {
   }
 
   return (
-    <Accordion data-slice-type={slice.slice_type} data-slice-variation={slice.variation}>
+    <Accordion
+      data-slice-type={slice.slice_type}
+      data-slice-variation={slice.variation}
+      className={className}
+    >
       <Accordion.Item value="accordion-item">
         <Accordion.Control>
           <Title order={4}>{title}</Title>
         </Accordion.Control>
         <Accordion.Panel>
-          <Stack>
+          <Stack className="[&_a]:inline">
             {slice.variation === 'default' && linkedContent ? (
               // Render linked document's slices - would need SliceZone here
               <Text>[Linked content would render here]</Text>

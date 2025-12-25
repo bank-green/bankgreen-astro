@@ -125,10 +125,17 @@ export const theme = createTheme({
     },
     Spoiler: {
       defaultProps: {
-        maxHeight: '5rem',
+        maxHeight: 160,
       },
       classNames: {
-        control: 'py-2',
+        root: 'mx-auto max-w-4xl rounded-md bg-white p-6 pb-8',
+        content: cx(
+          'relative mb-6',
+          'before:absolute before:inset-0 before:z-10 before:content-[""]',
+          'before:bg-linear-to-b before:from-40% before:from-transparent before:to-100% before:to-white',
+          '[button[aria-expanded=true]~&]:before:opacity-0'
+        ),
+        control: '-mt-16 ml-6 py-4',
       },
     },
     Tabs: {

@@ -11,6 +11,7 @@ import type { SharePicGallerySlice as SharePicGallerySliceType } from './types'
 
 interface Props {
   slice: SharePicGallerySliceType
+  className?: string
 }
 
 const GALLERY_IMAGES = [
@@ -22,12 +23,13 @@ const GALLERY_IMAGES = [
   { src: '/img/social/social-image-6.jpg', alt: 'Social share image 6' },
 ]
 
-export function SharePicGallerySlice({ slice }: Props) {
+export function SharePicGallerySlice({ slice, className }: Props) {
   return (
     <Container
       component="section"
       data-slice-type={slice.slice_type}
       aria-label="Shareable images gallery"
+      className={className}
     >
       <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg">
         {GALLERY_IMAGES.map((image, index) => (

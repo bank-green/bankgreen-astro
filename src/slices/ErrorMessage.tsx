@@ -11,9 +11,10 @@ import type { ErrorMessageSlice as ErrorMessageSliceType } from './types'
 
 interface Props {
   slice: ErrorMessageSliceType
+  className?: string
 }
 
-export function ErrorMessage({ slice }: Props) {
+export function ErrorMessage({ slice, className }: Props) {
   return (
     <Alert
       title={slice.primary.title}
@@ -22,6 +23,7 @@ export function ErrorMessage({ slice }: Props) {
       data-slice-variation={slice.variation}
       role="alert"
       icon={<WarningIcon />}
+      className={className}
     >
       <Stack gap="xs">{renderRichText(slice.primary.content)}</Stack>
     </Alert>
