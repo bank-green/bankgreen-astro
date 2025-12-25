@@ -1,5 +1,5 @@
 import { PageContent } from '@components/PageContent'
-import { Anchor, Select, SimpleGrid, Stack, Text, Title } from '@mantine/core'
+import { Anchor, Select, SimpleGrid, Stack, Title } from '@mantine/core'
 import type { PrismicDocument } from '@prismicio/client'
 import type { Slice } from '@slices'
 import { SliceZone } from '@slices'
@@ -51,20 +51,7 @@ export function TeamPage({ page }: Props) {
     <PageContent>
       <Stack className="gap-12">
         {/* Intro content from slices */}
-        <Stack>
-          {slices ? (
-            <SliceZone slices={slices} />
-          ) : (
-            <>
-              <Title order={1}>Who we are</Title>
-              <Text>
-                Bank.Green was founded by a group of volunteers in late 2020. Each of us had been
-                working on ways to raise awareness about the climate crisis, without paying much
-                attention to our money.
-              </Text>
-            </>
-          )}
-        </Stack>
+        <Stack className="[&_p]:text-lg">{slices && <SliceZone slices={slices} />}</Stack>
 
         {/* Directors section */}
         {directors.length > 0 && (
