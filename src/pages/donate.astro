@@ -1,5 +1,6 @@
 ---
 import { DonatePage } from '@components/pages'
+import { RaiselyEmbed } from '@components/RaiselyEmbed'
 import BaseLayout from '@layouts/BaseLayout.astro'
 import { getSingleSafe } from '@lib/prismic'
 
@@ -9,5 +10,3 @@ const page = await getSingleSafe('donationpage')
 <BaseLayout title="Donate">
   <DonatePage page={page} client:load />
 </BaseLayout>
-
-<script src="https://cdn.raisely.com/v3/public/embed.js" defer async></script>

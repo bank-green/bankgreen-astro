@@ -1,8 +1,9 @@
 import { PageContent } from '@components/PageContent'
 import { renderRichText } from '@lib/prismicHelpers'
-import { Image, Stack, Text, Title } from '@mantine/core'
+import { Box, Grid, Image, Stack, Title } from '@mantine/core'
 import type { ImageField, PrismicDocument, RichTextField } from '@prismicio/client'
 import * as prismic from '@prismicio/client'
+import { RaiselyEmbed } from '../RaiselyEmbed'
 
 interface Props {
   page: PrismicDocument | null
@@ -19,38 +20,35 @@ export function DonatePage({ page }: Props) {
   const donationTitleText = donationTitle ? prismic.asText(donationTitle) : 'Donate to Bank.Green'
 
   return (
-    <PageContent>
-      <Stack gap="lg">
-        {photo?.url && <Image src={photo.url} alt="donation" fit="cover" radius="md" mb="lg" />}
+    <PageContent fullWidth>
+      <Grid gutter={{ base: 'lg' }}>
+        <Grid.Col span={{ base: 12, sm: 6 }}>
+          <Stack className="px-6 pb-8 lg:px-0">
+            {photo?.url && <Image src={photo.url} alt="donation" fit="cover" radius="lg" mb="lg" />}
+            <Title order={2}>{titleText}</Title>
+            {description && description.length > 0 && renderRichText(description, 'text-lg')}
+          </Stack>
+        </Grid.Col>
+        <Grid.Col span={{ base: 12, sm: 6 }}>
+          <Stack className="relative gap-6 bg-leaf-700 pt-6 text-center text-textInverse sm:rounded-2xl md:px-12">
+            <Title order={1} className="text-textInverse">
+              {donationTitleText}
+            </Title>
+            <Box className="mx-auto max-w-lg">
+              {donationDescription &&
+                donationDescription.length > 0 &&
+                renderRichText(donationDescription)}
+            </Box>
 
-        <Title order={2}>{titleText}</Title>
-
-        <Stack gap="md">
-          {description && description.length > 0 && renderRichText(description)}
-        </Stack>
-
-        <Title order={1}>{donationTitleText}</Title>
-
-        <Stack gap="md">
-          {donationDescription && donationDescription.length > 0 ? (
-            renderRichText(donationDescription)
-          ) : (
-            <Text>
-              ...and make a big difference in the world. Your donation will give us greater capacity
-              to green the banking sector and protect our collective future.
-            </Text>
-          )}
-        </Stack>
-
-        {/* Raisely donation widget will be embedded here */}
-        <div
-          className="raisely-donate"
-          data-campaign-path="bankgreen-donate"
-          data-profile=""
-          data-width="100%"
-          data-height="800"
-        />
-      </Stack>
+            <RaiselyEmbed />
+            <Image
+              className="-top-4 md:-top-8 -right-4 md:-right-8 absolute h-12 w-auto md:h-20"
+              src="/img/logos/bankgreen-logo.png"
+              alt="Bank Green"
+            />
+          </Stack>
+        </Grid.Col>
+      </Grid>
     </PageContent>
   )
 }
