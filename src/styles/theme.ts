@@ -37,16 +37,23 @@ export const theme = createTheme({
     textWrap: 'balance',
   },
   primaryColor: 'green',
-  primaryShade: 5,
+  primaryShade: 6,
   components: {
     Accordion: {
       classNames: {
         root: 'rounded-lg',
-        item: 'rounded-md border-none bg-gray-100/50',
+        item: 'rounded-md border-none bg-sky-900/5',
         control:
-          ' rounded-md bg-gray-200/50 hover:bg-gray-200/75 active:bg-gray-200/80 transition-all duration-100 border-b-2 border-white',
+          'rounded-md bg-sky-600 text-textInverse hover:bg-sky-700 active:bg-sky-500 transition-all duration-100 border-b-2 border-white',
         label: 'font-semibold',
         content: 'py-4 [&_li]:list-disc [&_li]:ml-4 [&_li]:marker:text-green-500',
+      },
+    },
+    Alert: {
+      classNames: {
+        title: 'text-lg',
+        message: 'text-base',
+        body: 'pl-2',
       },
     },
     Anchor: {
@@ -81,20 +88,13 @@ export const theme = createTheme({
         autoContrast: false,
         radius: 'lg',
       },
-      classNames: {
-        root: cx(
-          'group bg-green-600 shadow-sm hover:shadow-md active:shadow-xs',
-          'transition-all duration-350 hover:duration-250 active:duration-50',
-          'bg-center bg-radial bg-size-[125%_150%] from-blue-800/10 via-green-500/60 to-green-500/70',
-          'hover:bg-green-600 hover:bg-position-[center_top_25%] hover:bg-size-[200%_150%]',
-          'active:bg-position-[center_bottom_25%]'
-        ),
-        label: cx(
-          'font-semibold text-white/95 group-hover:text-white',
-          'transition-all duration-100 group-active:duration-50',
-          'group-hover:text-shadow-md/15 group-active:text-shadow-none'
-        ),
-      },
+      classNames: (_theme, props) => ({
+        root: cx('font-medium transition-all duration-200 hover:duration-50', {
+          'bg-center bg-radial bg-size-[125%_150%] from-blue-800/5 via-green-500/60 to-green-500/70':
+            props.variant === 'filled',
+        }),
+        label: cx({ '[--button-color:text-textLink]': props.variant === 'default' }),
+      }),
     }),
     Container: Container.extend({
       vars: (_, { size, fluid }) => ({

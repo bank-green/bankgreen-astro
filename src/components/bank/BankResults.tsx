@@ -32,9 +32,7 @@ function BankResults({ banks, loading, error, country }: BankResultsProps) {
   // No country selected
   if (!country) {
     return (
-      <Alert title="No country selected" color="blue">
-        Please select a country to view sustainable banks.
-      </Alert>
+      <Alert title="No country selected">Please select a country to view sustainable banks.</Alert>
     )
   }
 

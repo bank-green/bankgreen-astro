@@ -14,7 +14,7 @@ interface EcoBankFiltersProps {
   onFilterChange: (filters: EcoBankFiltersType) => void
 }
 
-function EcoBankFilters({ country, onFilterChange }: EcoBankFiltersProps) {
+function EcoBankFilters({ onFilterChange }: EcoBankFiltersProps) {
   const [filterState, setFilterState] = useState<EcoBankFiltersType>(DEFAULT_FILTER_STATE)
   const [accordionValue, setAccordionValue] = useState<string[]>([
     'customersServed',
@@ -65,10 +65,15 @@ function EcoBankFilters({ country, onFilterChange }: EcoBankFiltersProps) {
     <Stack className="rounded-2xl md:sticky md:top-8 md:p-0">
       {/* Header with Filter title + Reset */}
       <Group className="justify-between">
-        <Text>Filters</Text>
+        <Text className="font-semibold">Filters</Text>
         <Group>
           {isFilterDirty && (
-            <Button variant="subtle" size="compact-xs" onClick={handleReset}>
+            <Button
+              variant="subtle"
+              size="compact-xs"
+              onClick={handleReset}
+              classNames={{ label: 'text-xs' }}
+            >
               Reset
             </Button>
           )}

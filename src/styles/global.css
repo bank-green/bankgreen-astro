@@ -31,6 +31,7 @@
     background-color: var(--color-sushi-100);
   }
   body {
+    --mantine-color-default-color: var(--color-linkDefault);
     --mantine-color-body: var(--color-white);
     --mantine-font-family: var(--font-family);
     --mantine-font-size-md: 1rem;
@@ -92,22 +93,28 @@
     overflow-y: scroll;
   }
 
-  a:not(.mantine-Button-root):not(:has(.mantine-Card-root)) {
+  a:not([class^="mantine"]):not(:has([class^="mantine"])):-webkit-any-link,
+  a:not([class^="mantine"]):not(:has([class^="mantine"])).link {
+    @apply transition-all duration-150 font-medium text-linkDefault hover:underline hover:text-linkHover active:text-linkActive focus:underline;
+  }
+
+  a:not([class^="mantine"]):not(:has([class^="mantine"])) {
     text-decoration: none;
-    @apply no-underline hover:underline underline-offset-3 decoration-dotted decoration-from-font;
+    @apply no-underline hover:underline underline-offset-0 hover:underline-offset-1 decoration-[0.5em] hover:decoration-[0.15em] decoration-green-500/15;
   }
 
   a.mantine-Anchor-root:not(:has(.mantine-Card-root)) {
     @apply hover:underline;
   }
 
+  .text-textInverse a {
+    @apply text-linkInverse!;
+  }
+
   a.mantine-Button-root,
   a:has(.mantine-Card-root) {
     text-decoration: none;
     @apply no-underline hover:no-underline;
-  }
-  a.link {
-    @apply transition-all duration-100 font-medium text-linkDefault hover:underline hover:text-linkHover active:text-linkActive focus:underline;
   }
   .underlineLink a {
     @apply hover:underline;
@@ -124,37 +131,12 @@
     @apply bg-sky-500/25 text-textDefault;
   }
 
-  .bg-gradient-gray-light {
-    background: linear-gradient(180deg, #f4f8fd 44.37%, #e2f0fc 100%);
-  }
-
   .contain {
     @apply w-full max-w-6xl mx-auto px-6;
   }
 
   .overflow-y-scroll {
     -webkit-overflow-scrolling: touch;
-  }
-
-  .button-green {
-    @apply block font-medium bg-sushi-500 hover:bg-sushi-600 focus:outline-none border border-transparent focus:ring-2 focus:ring-offset-2 focus:ring-sushi-500 text-white p-4 text-center w-full rounded-2xl capitalize;
-  }
-
-  .button-green-outline {
-    @apply block font-medium bg-white hover:bg-pistachioGreen focus:outline-none border border-sushi-500 focus:ring-2 focus:ring-offset-2 focus:ring-sushi-500 text-sushi-500 p-4 text-center w-full rounded-2xl capitalize;
-  }
-
-  a.button-green {
-    @apply no-underline;
-  }
-
-  .button-green.disabled {
-    @apply opacity-50;
-    pointer-events: none;
-  }
-
-  .button-white {
-    @apply block font-medium bg-gray-100 hover:bg-gray-200 focus:outline-none border border-transparent focus:ring-2 focus:ring-offset-2 focus:ring-gray-100 text-primaryDark p-4 text-center w-full rounded-2xl capitalize;
   }
 
   .font-secondary a {
