@@ -1,189 +1,14 @@
 /**
- * From Nuxt:
- * 
- * query BrandsByCountryQuery($country: String, $state: String) {
-  brands(country: $country, stateLicensed: $state) {
-    edges {
-      node {
-        name
-        tag
-        website
-        aliases
-      }
-    }
-  }
-}
-
-query BrandsQuery(
-  $country: String
-  $recommendedOnly: Boolean
-  $rating: [String]
-  $first: Int
-) {
-  brands(
-    country: $country
-    recommendedOnly: $recommendedOnly
-    rating: $rating
-    first: $first
-    displayOnWebsite: true
-  ) {
-    edges {
-      node {
-        name
-        tag
-        website
-      }
-    }
-  }
-}
-
-query FilteredBrandsQuery(
-  $country: String
-  $first: Int
-  $topPick: Boolean
-  $recommendedOnly: Boolean
-  $fossilFreeAlliance: Boolean
-  $withCommentary: Boolean = false
-  $stateLicensed: String
-  $harvestData: HarvestDataFilterInput
-) {
-  brands(
-    country: $country
-    first: $first
-    topPick: $topPick
-    recommendedOnly: $recommendedOnly
-    fossilFreeAlliance: $fossilFreeAlliance
-    stateLicensed: $stateLicensed
-    harvestData: $harvestData
-  ) {
-    edges {
-      node {
-        name
-        tag
-        website
-        aliases
-        commentary @include(if: $withCommentary) {
-          ...commentaryFields
-        }
-        harvestData {
-          customersServed
-          depositProducts
-          financialFeatures
-          services
-          institutionalInformation
-          policies
-          loanProducts
-          interestRates
-        }
-      }
-    }
-  }
-}
-
-query BrandByTagQuery($tag: String!) {
-  brand(tag: $tag) {
-    tag
-    name
-    website
-    commentary {
-      lastReviewed
-      rating
-      ratingInherited
-      inheritBrandRating {
-        tag
-        name
-      }
-      fossilFreeAlliance
-      headline
-      description1
-      description2
-      description3
-      subtitle
-      institutionType {
-        name
-      }
-      institutionCredentials {
-        name
-        prismicApiId
-      }
-    }
-    countries {
-      code
-    }
-  }
-}
-
-query EmbraceBrandQuery {
-  brandsFilteredByEmbraceCampaign(id: 1) {
-    name
-    website
-    tag
-  }
-}
-
-query AllBanksList {
-  brands {
-    edges {
-      node {
-        name
-        tag
-        commentary {
-          showOnSustainableBanksPage
-        }
-      }
-    }
-  }
-}
-
-fragment commentaryFields on Commentary {
-  rating
-  ratingInherited
-  inheritBrandRating {
-    tag
-    name
-  }
-  description3
-  lastReviewed
-  amountFinancedSince2016
-  topPick
-  fossilFreeAlliance
-  fossilFreeAllianceRating
-  showOnSustainableBanksPage
-  institutionType {
-    name
-  }
-  institutionCredentials {
-    name
-    prismicApiId
-  }
-}
-
-fragment bankFeaturesFields on BrandFeature {
-  offered
-  feature {
-    name
-  }
-  details
-}
-
-query HarvestDataQuery($tag: String!) {
-  harvestData(tag: $tag) {
-    customersServed
-    depositProducts
-    financialFeatures
-    services
-    institutionalInformation
-    policies
-    loanProducts
-    interestRates
-  }
-}
-
- * 
- * 
- * 
+ * GraphQL queries for brands and eco banks
  */
 
+import type { EcoBankCard } from '@lib/types/eco-banks'
+import {
+  extractDepositProtection,
+  extractFeatures,
+  extractInterestRate,
+  sortEcoBanks,
+} from '@lib/utils/eco-banks'
 import type { Bank } from '../banks'
 import { graphqlFetch } from '../graphql'
 import { getStateTag } from '../states'
@@ -384,5 +209,142 @@ export async function fetchBrandByTag(tag: string): Promise<BrandByTagNode | nul
   } catch (error) {
     console.error(`Error fetching brand by tag (${tag}):`, error)
     return null
+  }
+}
+
+// Filtered Brands Query for Eco Banks
+export const FILTERED_BRANDS_QUERY = `
+  query FilteredBrandsQuery(
+    $country: String
+    $first: Int
+    $recommendedOnly: Boolean
+    $stateLicensed: String
+    $harvestData: HarvestDataFilterInput
+  ) {
+    brands(
+      country: $country
+      first: $first
+      recommendedOnly: $recommendedOnly
+      stateLicensed: $stateLicensed
+      harvestData: $harvestData
+    ) {
+      edges {
+        node {
+          name
+          tag
+          website
+          commentary {
+            topPick
+            fossilFreeAlliance
+            fossilFreeAllianceRating
+            showOnSustainableBanksPage
+          }
+          harvestData {
+            customersServed
+            depositProducts
+            services
+            loanProducts
+            financialFeatures
+            policies
+          }
+        }
+      }
+    }
+  }
+`
+
+// Interfaces for FilteredBrands query
+interface FilteredBrandCommentary {
+  topPick?: boolean | null
+  fossilFreeAlliance?: boolean | null
+  fossilFreeAllianceRating?: number | null
+  showOnSustainableBanksPage?: boolean | null
+}
+
+interface FilteredBrandNode {
+  name: string
+  tag: string
+  website?: string | null
+  commentary?: FilteredBrandCommentary | null
+  harvestData?: Record<string, unknown> | null
+}
+
+interface FilteredBrandsResponse {
+  brands: {
+    edges: Array<{
+      node: FilteredBrandNode
+    }>
+  }
+}
+
+export async function fetchFilteredBrands(variables: {
+  country: string
+  stateLicensed?: string | null
+  harvestData?: Record<string, string[]> | null
+  first?: number
+  recommendedOnly?: boolean
+}): Promise<EcoBankCard[]> {
+  try {
+    // Convert state code to state tag if provided
+    const stateTag = variables.stateLicensed ? getStateTag(variables.stateLicensed) : null
+
+    const queryVariables = {
+      country: variables.country,
+      stateLicensed: stateTag,
+      harvestData: variables.harvestData,
+      first: variables.first ?? 300,
+      recommendedOnly: variables.recommendedOnly ?? true,
+    }
+
+    const data = await graphqlFetch<FilteredBrandsResponse>(FILTERED_BRANDS_QUERY, queryVariables)
+
+    if (!data?.brands?.edges) {
+      console.warn('No brands data in response')
+      return []
+    }
+
+    // Filter by showOnSustainableBanksPage
+    const filteredBrands = data.brands.edges
+      .map((edge) => edge.node)
+      .filter((brand) => brand.commentary?.showOnSustainableBanksPage)
+
+    // Sort by topPick, fossilFreeAllianceRating, name
+    const sortedBrands = [...filteredBrands].sort(sortEcoBanks)
+
+    // Determine if country excludes credit cards (France and Germany)
+    const isNoCredit = variables.country === 'FR' || variables.country === 'DE'
+
+    // Transform to EcoBankCard format
+    const ecoBankCards: EcoBankCard[] = sortedBrands.map((brand) => {
+      const harvestData = brand.harvestData
+
+      // Extract nested data structures with proper typing
+      const financialFeatures = harvestData?.financialFeatures as
+        | Record<string, unknown>
+        | undefined
+      const interestRatesData = financialFeatures?.interest_rates as
+        | Record<string, unknown>
+        | undefined
+      const rates = interestRatesData?.rates as unknown
+
+      const policies = harvestData?.policies as Record<string, unknown> | undefined
+      const depositProtection = policies?.deposit_protection as unknown
+
+      return {
+        name: brand.name,
+        tag: brand.tag,
+        website: brand.website || '',
+        topPick: brand.commentary?.topPick || false,
+        fossilFreeAlliance: brand.commentary?.fossilFreeAlliance || false,
+        interestRate: extractInterestRate(rates as never),
+        depositProtection: extractDepositProtection(depositProtection as never),
+        features: extractFeatures(harvestData, isNoCredit),
+      }
+    })
+
+    return ecoBankCards
+  } catch (error) {
+    console.error('Error fetching filtered brands:', error)
+    return []
   }
 }

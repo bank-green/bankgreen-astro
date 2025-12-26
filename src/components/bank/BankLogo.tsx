@@ -11,6 +11,9 @@ const BankLogo = ({
   const brandFetchClientId = '1idgd9eLaoZ3OpDvC0X'
 
   const getSrc = (brandDomain: string) => {
+    if (brandDomain.includes('http')) {
+      brandDomain = new URL(brandDomain).hostname
+    }
     switch (brandDomain) {
       case 'monzo.com':
         return '/img/logos/monzo.png'

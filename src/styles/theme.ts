@@ -41,7 +41,7 @@ export const theme = createTheme({
   components: {
     Accordion: {
       classNames: {
-        root: 'bg-white rounded-lg',
+        root: 'rounded-lg',
         item: 'rounded-md border-none bg-gray-100/50',
         control:
           ' rounded-md bg-gray-200/50 hover:bg-gray-200/75 active:bg-gray-200/80 transition-all duration-100 border-b-2 border-white',
@@ -137,6 +137,9 @@ export const theme = createTheme({
         ),
         control: '-mt-16 py-4',
       },
+    },
+    Switch: {
+      classNames: { label: 'pl-2' },
     },
     Tabs: {
       classNames: {

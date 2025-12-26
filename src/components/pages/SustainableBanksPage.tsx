@@ -32,7 +32,7 @@ export function SustainableBanksPage({ page }: Props) {
             </Stack>
           )}
 
-          <Box className="mb-24 h-36 w-full rounded bg-white">
+          <Box className="mt-12 mb-24 w-full">
             <BankDirectory />
           </Box>
         </Stack>
