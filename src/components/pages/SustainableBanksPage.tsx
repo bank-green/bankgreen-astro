@@ -5,6 +5,7 @@ import { SliceZone } from '@slices'
 import theme from '@styles/theme'
 import { useState } from 'react'
 import { MoneySmokeAnimation } from '../animations'
+import BankDirectory from '../forms/BankDirectory'
 import { PageContent } from '../PageContent'
 
 interface Props {
@@ -31,14 +32,9 @@ export function SustainableBanksPage({ page }: Props) {
             </Stack>
           )}
 
-          <Box className="mb-24 h-36 w-full rounded bg-white">[Bank directory with filtering]</Box>
-          {/* Bank directory with filtering - will be a separate component */}
-          {/* This will include:
-              - LocationSearch for country selection
-              - EcoBankFilters for filtering
-              - EcoBankCards to display results
-              - slices2 shown when no results/error
-              */}
+          <Box className="mb-24 h-36 w-full rounded bg-white">
+            <BankDirectory />
+          </Box>
         </Stack>
 
         <Box data-breakout className="bg-blue-100 pt-24">
