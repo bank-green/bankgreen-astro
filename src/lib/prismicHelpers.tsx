@@ -1,4 +1,4 @@
-import { Text, Title } from '@mantine/core'
+import { Image, Text, Title } from '@mantine/core'
 import * as prismic from '@prismicio/client'
 import { serialize } from '@prismicio/richtext'
 import type { ReactNode } from 'react'
@@ -78,12 +78,7 @@ export function renderRichText(
           </li>
         )
       case 'image':
-        return (
-          <figure key={key} className={className}>
-            <img src={block.url} alt={block.alt || ''} />
-            {block.alt && <figcaption>{block.alt}</figcaption>}
-          </figure>
-        )
+        return <Image key={key} className={className} src={block.url} alt={block.alt || ''} />
       case 'embed':
         return (
           <div

@@ -23,11 +23,9 @@ export function PartnersPage({ page }: Props) {
   return (
     <PageContent>
       <Stack className="gap-8">
-        <Stack className="gap-4 text-center">
-          <Title order={1} className="text-gray-900">
-            {title}
-          </Title>
-          <Text className="text-gray-700 text-lg">{description}</Text>
+        <Stack className="gap-4">
+          <Title order={1}>{title}</Title>
+          <Text className="text-lg">{description}</Text>
         </Stack>
 
         <Grid gutter="lg">
@@ -39,7 +37,7 @@ export function PartnersPage({ page }: Props) {
               <Grid.Col key={partner.name || index} span={{ base: 12, sm: 6, md: 4, lg: 3 }}>
                 {href ? (
                   <Anchor href={href} underline="never" target="_blank" rel="noopener noreferrer">
-                    <Card shadow="sm" padding="lg" radius="md" withBorder className="h-full">
+                    <Card className="h-full">
                       {imgSrc ? (
                         <Card.Section>
                           <Image
