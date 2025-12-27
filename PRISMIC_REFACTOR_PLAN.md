@@ -448,7 +448,7 @@ Each of these pairs (Astro page + React page component) should be merged into a 
 | `src/pages/donate.astro` | `DonatePage.tsx` | May have interactive elements |
 | `src/pages/embrace.astro` | `EmbracePage.tsx` | Simple conversion |
 | `src/pages/certification.astro` | `CertificationPage.tsx` | Simple conversion |
-| `src/pages/impact.astro` | `ImpactPage.tsx` | Simple conversion |
+| `src/pages/impact.astro` | `SwitchSurveyPage.tsx` | Simple conversion |
 | `src/pages/join.astro` | `JoinPage.tsx` | Form needs `client:load` |
 | `src/pages/partners.astro` | `PartnersPage.tsx` | Simple conversion |
 | `src/pages/not-listed.astro` | `NotListedPage.tsx` | Form needs `client:load` |

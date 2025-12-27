@@ -5,8 +5,10 @@ import { renderRichText } from '@lib/prismicHelpers'
 import {
   Anchor,
   Box,
+  Card,
   Grid,
   Group,
+  Image,
   List,
   MantineProvider,
   Paper,
@@ -46,17 +48,26 @@ export function HomePage({ page }: Props) {
     <MantineProvider theme={theme}>
       {/* Hero section with green gradient background - breaks out of container */}
       <Box data-breakout className="bg-linear-to-b from-sushi-100 to-sushi-200">
-        <Group className="mx-auto max-w-6xl items-end justify-between gap-12 px-6 pt-20 pb-12 md:px-0 lg:gap-0 lg:pb-18">
-          <Title
-            order={1}
-            className="mx-auto block max-w-3xl bg-linear-to-tr from-sky-800 to-sky-500 bg-clip-text text-center text-transparent sm:text-5xl lg:max-w-1/2 lg:pr-6 lg:text-left"
-          >
-            {title}
-          </Title>
-          <Box className="mx-auto flex w-full max-w-lg grow justify-start lg:max-w-1/2">
-            <BankLocationSearch onBankSelect={handleBankSelect} />
-          </Box>
-        </Group>
+        <Grid className="contain items-end gap-12 pt-20 pb-12 lg:pb-18">
+          <Grid.Col span={{ base: 12, md: 7 }}>
+            <Title
+              order={1}
+              className={cx(
+                'mx-auto block max-w-xl text-center md:text-left',
+                'md:mx-0 md:text-6xl lg:pr-6',
+                'bg-linear-to-tr from-sky-800 to-sky-500',
+                'bg-clip-text text-transparent'
+              )}
+            >
+              {title}
+            </Title>
+          </Grid.Col>
+          <Grid.Col span={{ base: 12, md: 5 }}>
+            <Box className="mx-auto flex w-full justify-start">
+              <BankLocationSearch onBankSelect={handleBankSelect} />
+            </Box>
+          </Grid.Col>
+        </Grid>
 
         {/* As featured in */}
         <Stack className="-mb-24 w-full py-6 pb-24">
@@ -81,17 +92,19 @@ export function HomePage({ page }: Props) {
                 <Text className="mb-0 text-center font-semibold text-sky-700 text-xl">
                   In association with
                 </Text>
-                <Stack className="items-center gap-0">
+                <Stack className="items-center gap-2">
                   <Anchor
                     href="https://www.banktrack.org/"
                     rel="noopener noreferrer"
                     target="_blank"
                   >
-                    <img
-                      src="/img/logos/banktrack.svg"
-                      alt="BankTrack"
-                      className="-mb-1 h-18 rounded-xl bg-white p-6 mix-blend-luminosity grayscale"
-                    />
+                    <Card variant="color-hover" className="-mb-1 h-18 w-auto">
+                      <Image
+                        src="/img/logos/banktrack.svg"
+                        alt="BankTrack"
+                        className="h-full w-auto"
+                      />
+                    </Card>
                   </Anchor>
                   <Anchor href="/partners" className="text-sm">
                     See our partners
@@ -104,8 +117,8 @@ export function HomePage({ page }: Props) {
             {/* Why Bank.Green? teaser */}
             <Group className="mx-auto items-center gap-1 text-4xl text-gray-700 leading-4 lg:mt-16">
               Why{' '}
-              <img
-                className="mt-2 ml-2 inline-block h-10 px-0.5"
+              <Image
+                className="mt-2 ml-2 inline-block h-10 w-auto px-0.5"
                 src="/img/trim-hor-light.svg"
                 alt="Bank.Green"
               />
@@ -121,9 +134,9 @@ export function HomePage({ page }: Props) {
 
       {/* Why Bank.Green section - white background with ATM illustration */}
       <Box data-breakout className="bg-white">
-        <Grid className="mx-auto flex max-w-6xl flex-col items-center justify-center px-12 py-16 md:flex-row lg:px-0">
+        <Grid className="contain flex flex-col items-center justify-center py-16 md:flex-row">
           <Grid.Col span={{ base: 12, md: 6 }} className="flex flex-col">
-            <Stack className="my-auto md:pr-12">
+            <Stack className="mx-auto my-auto max-w-xl md:pr-12">
               {description1 &&
                 description1.length > 0 &&
                 renderRichText(description1, 'text-xl md:text-3xl')}
@@ -149,11 +162,11 @@ export function HomePage({ page }: Props) {
 
         <Box data-container>
           {/* Bank illustration section */}
-          <Grid className="z-10 mx-auto max-w-6xl items-center justify-center px-12 pt-8 pb-4 md:pb-16 lg:px-0">
+          <Grid className="contain z-10 items-center justify-center pt-8 pb-4 md:pb-16">
             {/* Bank illustration - on left for desktop */}
             <Grid.Col span={{ base: 12, md: 7 }} className="md:w-5/8 md:pr-8">
               <Box className="mx-auto h-auto w-full max-w-xl">
-                <img
+                <Image
                   src="/img/illustrations/bank.svg"
                   alt="Bank building illustration"
                   width="100%"
@@ -165,7 +178,7 @@ export function HomePage({ page }: Props) {
               span={{ base: 12, md: 5 }}
               className="flex flex-col py-8 md:pl-1 md:text-right"
             >
-              <Stack className="my-auto md:pl-1 md:text-right">
+              <Stack className="mx-auto my-auto max-w-xl md:pr-4 md:pl-1 md:text-right">
                 {description3 &&
                   description3.length > 0 &&
                   renderRichText(description3, 'text-xl md:text-2xl')}
@@ -177,7 +190,7 @@ export function HomePage({ page }: Props) {
           </Grid>
 
           {/* Lead gen form section - dark blue card */}
-          <Box id="join" className="mx-auto max-w-6xl px-6 pb-8 lg:px-0">
+          <Box id="join" className="contain pb-8">
             <Paper className="rounded-2xl bg-primaryDark p-8 text-white md:p-12">
               <Grid gutter={0}>
                 {/* Left side - title and benefits */}

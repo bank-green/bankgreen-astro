@@ -5,7 +5,7 @@ export function Header() {
   const [opened, { toggle }] = useDisclosure()
 
   const NavLink = ({ classes, href, label }: { classes: string; href: string; label: string }) => (
-    <Anchor href={href} className={classes} underline="hover">
+    <Anchor href={href} className={classes}>
       {label}
     </Anchor>
   )
@@ -25,7 +25,7 @@ export function Header() {
   )
 
   return (
-    <AppShell.Header className="flex w-full items-center bg-sky-800 px-4 py-0 lg:mt-2 lg:rounded-xl lg:pl-6">
+    <AppShell.Header className="flex w-full items-center bg-sky-800 px-4 py-0 lg:mt-2 lg:rounded-xl">
       <Group className="w-full items-center justify-between">
         <Anchor href="/" className="h-full" underline="never">
           <img src="/img/logo.svg" alt="Bank.Green" className="mt-2 ml-1 h-5 w-auto" />
@@ -39,7 +39,7 @@ export function Header() {
           size="sm"
         />
         <Group visibleFrom="md" className="gap-8">
-          <NavLinks classes="text-sky-200 hover:text-white hover:no-underline transition" />
+          <NavLinks classes="text-sky-200 hover:text-white hover:no-underline!" />
         </Group>
         <Drawer
           opened={opened}

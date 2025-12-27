@@ -60,14 +60,14 @@ function EcoBankDirectory() {
         <Drawer opened={filtersOpen} onClose={closeFilters}>
           <EcoBankFilters country={country} onFilterChange={setFilterState} />
         </Drawer>
-        <Box visibleFrom="sm" className="md:sticky md:top-8 md:p-0">
+        <Box visibleFrom="sm" className="sticky top-0 z-10 md:top-8 md:p-0">
           <EcoBankFilters country={country} onFilterChange={setFilterState} />
         </Box>
       </Grid.Col>
 
       <Grid.Col span={{ base: 12, md: 9 }}>
-        <Stack className="gap-8">
-          <Group className="w-full items-end">
+        <Stack className="gap-2">
+          <Group className="-mx-4 -mt-4 sticky top-0 z-10 w-[calc(100%+2rem)] items-end justify-end gap-0 bg-sushi-100 px-4 py-4">
             <Button
               hiddenFrom="sm"
               variant="default"
@@ -83,7 +83,7 @@ function EcoBankDirectory() {
                 setStateCode('') // Reset state when country changes
               }}
               onStateChange={setStateCode}
-              className="w-full"
+              className="w-full max-w-xl"
             />
           </Group>
 

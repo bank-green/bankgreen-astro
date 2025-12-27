@@ -6,6 +6,7 @@
 
 import {
   Button,
+  Card,
   Container,
   createTheme,
   DEFAULT_THEME,
@@ -103,15 +104,21 @@ export const theme = createTheme({
         }),
       }),
     }),
-    Card: {
+    Card: Card.extend({
       defaultProps: {
         withBorder: false,
         padding: '1.5rem',
       },
-      classNames: {
-        root: 'rounded-xl',
-      },
-    },
+      classNames: (_theme, props) => ({
+        root: cx('rounded-xl', {
+          [`
+            transition-all duration-200
+            mix-blend-luminosity grayscale-100 hover:mix-blend-normal hover:grayscale-0
+            shadow-lg/0 hover:shadow-lg active:shadow-xs
+          `]: props.variant === 'color-hover',
+        }),
+      }),
+    }),
     Container: Container.extend({
       vars: (_, { size, fluid }) => ({
         root: {
@@ -164,14 +171,14 @@ export const theme = createTheme({
     Tabs: {
       classNames: {
         root: 'bg-transparent',
-        panel: 'w-full rounded-lg rounded-tl-none border-none bg-white px-4 pb-8',
+        panel: 'w-full rounded-lg rounded-tl-none border-none bg-(--tabs-bg-color,white) px-4 pb-8',
         tab: cx(
-          'rounded-t-lg border-none bg-white/50 lg:px-8',
+          'rounded-t-lg border-none bg-(--tabs-bg-color,white)/50 lg:px-8',
           'transition-all duration-100',
           'hover:text-linkHover',
-          'active:translate-y-0.5 active:bg-white/90 active:text-linkActive data-active:bg-white'
+          'active:translate-y-0.5 active:bg-(--tabs-bg-color,white)/90 active:text-linkActive data-active:bg-(--tabs-bg-color,white)'
         ),
-        list: 'gap-0.5 sm:gap-2 border-none bg-sushi-100 before:hidden',
+        list: 'gap-0.5 sm:gap-2 border-none bg-(--tabs-container-bg-color,--mantine-color-bg) before:hidden',
         tabLabel: 'font-semibold',
       },
     },

@@ -37,7 +37,7 @@ export function PartnersPage({ page }: Props) {
               <Grid.Col key={partner.name || index} span={{ base: 12, sm: 6, md: 4, lg: 3 }}>
                 {href ? (
                   <Anchor href={href} underline="never" target="_blank" rel="noopener noreferrer">
-                    <Card className="h-full">
+                    <Card variant="color-hover">
                       {imgSrc ? (
                         <Card.Section>
                           <Image

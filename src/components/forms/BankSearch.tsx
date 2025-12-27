@@ -14,6 +14,7 @@ interface BankSearchProps {
   placeholder?: string
   country?: string
   state?: string
+  className?: string
 }
 
 function BankSearch({
@@ -26,6 +27,7 @@ function BankSearch({
   placeholder: customPlaceholder,
   country = '',
   state = '',
+  className = '',
 }: BankSearchProps) {
   const [search, setSearch] = useState(value?.name || '')
 
@@ -112,6 +114,7 @@ function BankSearch({
   return (
     <Autocomplete
       label={label}
+      className={`mx-auto grow ${className}`}
       placeholder={placeholder}
       value={search}
       onChange={handleChange}

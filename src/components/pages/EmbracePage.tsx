@@ -1,5 +1,6 @@
 import { PageContent } from '@components/PageContent'
 import { renderRichText } from '@lib/prismicHelpers'
+import { Stack, Title } from '@mantine/core'
 import type { PrismicDocument, RichTextField } from '@prismicio/client'
 
 interface Props {
@@ -13,20 +14,14 @@ export function EmbracePage({ page }: Props) {
 
   return (
     <PageContent>
-      <article>
-        <header>
-          <h1>{title}</h1>
-          <h3>{subtitle}</h3>
+      <Stack className="contain">
+        <Title order={1}>{title}</Title>
+        <Title order={3}>{subtitle}</Title>
 
-          {description1 && description1.length > 0 ? (
-            renderRichText(description1)
-          ) : (
-            <p>Share your concerns and suggestions in the form below.</p>
-          )}
-        </header>
+        {description1 && description1.length > 0 && renderRichText(description1)}
 
         <section>{/* Embrace form component will be implemented here */}</section>
-      </article>
+      </Stack>
     </PageContent>
   )
 }

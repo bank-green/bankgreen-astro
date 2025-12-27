@@ -1,12 +1,12 @@
 ---
-import { ImpactPage } from '@components/pages'
+import { SwitchSurveyPage } from '@components/pages'
 import BaseLayout from '@layouts/BaseLayout.astro'
 import { getByUIDSafe } from '@lib/prismic'
 
-// Impact page uses textonlypages with UID "impactpage"
+// SwitchSurveyPage uses textonlypages with UID "impactpage"
 const page = await getByUIDSafe('textonlypages', 'impactpage')
 ---
 
 <BaseLayout title="Switch Survey">
-  <ImpactPage page={page} client:load />
+  <SwitchSurveyPage page={page} client:load />
 </BaseLayout>

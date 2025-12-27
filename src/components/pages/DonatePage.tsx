@@ -3,6 +3,7 @@ import { renderRichText } from '@lib/prismicHelpers'
 import { Box, Grid, Image, Stack, Title } from '@mantine/core'
 import type { ImageField, PrismicDocument, RichTextField } from '@prismicio/client'
 import * as prismic from '@prismicio/client'
+import { CornerLogoContainer } from '../CornerLogo'
 import { RaiselyEmbed } from '../RaiselyEmbed'
 
 interface Props {
@@ -30,7 +31,7 @@ export function DonatePage({ page }: Props) {
           </Stack>
         </Grid.Col>
         <Grid.Col span={{ base: 12, sm: 6 }}>
-          <Stack className="relative gap-6 bg-leaf-700 pt-6 text-center text-textInverse sm:rounded-2xl md:px-12">
+          <CornerLogoContainer className="gap-6 p-8 pt-6 text-center sm:rounded-xl md:px-12">
             <Title order={1} className="text-textInverse">
               {donationTitleText}
             </Title>
@@ -41,12 +42,7 @@ export function DonatePage({ page }: Props) {
             </Box>
 
             <RaiselyEmbed />
-            <Image
-              className="-top-4 md:-top-8 -right-4 md:-right-8 absolute h-12 w-auto drop-shadow-lg md:h-20"
-              src="/img/logos/bankgreen-logo.png"
-              alt="Bank Green"
-            />
-          </Stack>
+          </CornerLogoContainer>
         </Grid.Col>
       </Grid>
     </PageContent>
