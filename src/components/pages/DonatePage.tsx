@@ -22,7 +22,7 @@ export function DonatePage({ page }: Props) {
 
   return (
     <PageContent fullWidth>
-      <Grid gutter={{ base: 'lg' }}>
+      <Grid gutter={{ base: 'lg' }} className="mt-8 mb-16">
         <Grid.Col span={{ base: 12, sm: 6 }}>
           <Stack className="px-6 pb-8 lg:px-0">
             {photo?.url && <Image src={photo.url} alt="donation" fit="cover" radius="lg" mb="lg" />}

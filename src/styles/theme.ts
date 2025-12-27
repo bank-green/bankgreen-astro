@@ -113,7 +113,7 @@ export const theme = createTheme({
         root: cx('rounded-xl', {
           [`
             transition-all duration-200
-            mix-blend-luminosity grayscale-100 hover:mix-blend-normal hover:grayscale-0
+            mix-blend-luminosity grayscale-100 hover:mix-blend-normal hover:filter-none
             shadow-lg/0 hover:shadow-lg active:shadow-xs
           `]: props.variant === 'color-hover',
         }),

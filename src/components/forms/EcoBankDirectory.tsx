@@ -83,7 +83,7 @@ function EcoBankDirectory() {
                 setStateCode('') // Reset state when country changes
               }}
               onStateChange={setStateCode}
-              className="w-full max-w-xl"
+              className="w-full max-w-lg"
             />
           </Group>
 
