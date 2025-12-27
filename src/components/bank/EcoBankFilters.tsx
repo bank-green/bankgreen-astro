@@ -22,26 +22,19 @@ function EcoBankFilters({ onFilterChange }: EcoBankFiltersProps) {
     'loanProducts',
     'services',
   ])
-
-  // Check if filters are dirty (different from default)
   const isFilterDirty = useMemo(() => isDirty(filterState, DEFAULT_FILTER_STATE), [filterState])
-
-  // Reset filters when country changes
   useEffect(() => {
     setFilterState(DEFAULT_FILTER_STATE)
   }, [])
 
-  // Emit filter changes to parent
   useEffect(() => {
     onFilterChange(filterState)
   }, [filterState, onFilterChange])
 
-  // Handle reset button
   const handleReset = () => {
     setFilterState(DEFAULT_FILTER_STATE)
   }
 
-  // Handle expand all checkbox
   const handleExpandAll = (checked: boolean) => {
     if (checked) {
       setAccordionValue(['customersServed', 'depositProducts', 'loanProducts', 'services'])
@@ -50,7 +43,6 @@ function EcoBankFilters({ onFilterChange }: EcoBankFiltersProps) {
     }
   }
 
-  // Handle individual checkbox change
   const handleCheckboxChange = (category: FilterCategory, optionKey: string, checked: boolean) => {
     setFilterState((prev) => ({
       ...prev,
@@ -65,7 +57,7 @@ function EcoBankFilters({ onFilterChange }: EcoBankFiltersProps) {
     <Stack>
       {/* Header with Filter title + Reset */}
       <Group className="justify-between">
-        <Text className="font-semibold">Filters</Text>
+        <Text>Filters</Text>
         <Group>
           {isFilterDirty && (
             <Button
@@ -78,7 +70,7 @@ function EcoBankFilters({ onFilterChange }: EcoBankFiltersProps) {
             </Button>
           )}
           <Switch
-            label="Expand all"
+            label="Expand"
             checked={accordionValue.length === 4}
             onChange={(event) => handleExpandAll(event.currentTarget.checked)}
           />

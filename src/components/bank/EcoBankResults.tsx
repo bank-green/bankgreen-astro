@@ -7,9 +7,20 @@ interface BankResultsProps {
   loading: boolean
   error: string | null
   country: string
+  expandAll: boolean
+  onCardToggle?: (bankTag: string, isOpened: boolean) => void
+  resetTrigger?: number
 }
 
-function EcoBankResults({ banks, loading, error, country }: BankResultsProps) {
+function EcoBankResults({
+  banks,
+  loading,
+  error,
+  country,
+  expandAll,
+  onCardToggle,
+  resetTrigger,
+}: BankResultsProps) {
   // Loading state
   if (loading) {
     return (
@@ -49,7 +60,13 @@ function EcoBankResults({ banks, loading, error, country }: BankResultsProps) {
   return (
     <Stack className="gap-6">
       {banks.map((bank) => (
-        <EcoBankCard key={bank.tag} bank={bank} />
+        <EcoBankCard
+          key={bank.tag}
+          bank={bank}
+          externalOpened={expandAll}
+          onToggle={onCardToggle}
+          resetTrigger={resetTrigger}
+        />
       ))}
     </Stack>
   )

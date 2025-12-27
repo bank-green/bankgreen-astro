@@ -15,25 +15,56 @@ import {
 import { useDisclosure } from '@mantine/hooks'
 import { CaretDownIcon, CaretRightIcon } from '@phosphor-icons/react'
 import cx from 'clsx'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import BankLogo from './BankLogo'
 
 interface EcoBankCardProps {
   bank: EcoBankCardType
+  externalOpened?: boolean
+  onToggle?: (bankTag: string, isOpened: boolean) => void
+  resetTrigger?: number
 }
 
-function EcoBankCard({ bank }: EcoBankCardProps) {
+function EcoBankCard({ bank, externalOpened, onToggle, resetTrigger }: EcoBankCardProps) {
   const [opened, { toggle }] = useDisclosure(true)
   const [childHovered, setChildHovered] = useState(false)
+  const [userOverride, setUserOverride] = useState<boolean | null>(null)
+
+  // If user has manually toggled, use their override; otherwise use external control or internal state
+  const effectiveOpened =
+    userOverride !== null ? userOverride : externalOpened !== undefined ? externalOpened : opened
+
+  // Reset user override when external control changes (when user toggles the "Expand all" switch)
+  // biome-ignore lint/correctness/useExhaustiveDependencies: intentionally only reset on externalOpened change
+  useEffect(() => {
+    setUserOverride(null)
+  }, [externalOpened])
+
+  // Reset user override when reset trigger changes (when Switch is toggled)
+  useEffect(() => {
+    if (resetTrigger !== undefined) {
+      setUserOverride(null)
+    }
+  }, [resetTrigger])
+
+  const handleToggle = () => {
+    const newState = !effectiveOpened
+    // Set user override to opposite of current effective state
+    setUserOverride(newState)
+    // Also toggle internal state for when externalOpened is undefined
+    toggle()
+    // Notify parent of the change
+    if (onToggle) {
+      onToggle(bank.tag, newState)
+    }
+  }
 
   return (
     <Card
       className={cx('bg-white/80 transition-all hover:shadow-md', {
         'group hover:bg-white': !childHovered,
       })}
-      onClick={(_e) => {
-        toggle()
-      }}
+      onClick={handleToggle}
     >
       {/* Header: Logo + Name + Badges */}
       <Card.Section className="p-6 transition-all group-has-aria-hidden:pb-1">
@@ -65,7 +96,7 @@ function EcoBankCard({ bank }: EcoBankCardProps) {
         </Group>
       </Card.Section>
 
-      <Collapse in={opened}>
+      <Collapse in={effectiveOpened}>
         <Stack className="gap-0">
           <Divider />
           {/* Interest Rate + Deposit Protection */}
@@ -108,21 +139,22 @@ function EcoBankCard({ bank }: EcoBankCardProps) {
           <Divider />
 
           {/* Learn more link */}
-          <Card.Section className="p-4 pr-2 pb-4">
+          <Card.Section className="p-4 pr-4 pb-4">
             <Group className="justify-end">
               <Button
-                variant="subtle"
+                variant="filled"
+                size="compact-md"
                 component="a"
-                size="compact-sm"
+                className="rounded-full px-4"
                 href={`/sustainable-eco-banks/${bank.tag}`}
                 onMouseEnter={() => setChildHovered(true)}
                 onMouseLeave={() => setChildHovered(false)}
                 onClick={(e) => {
                   e.stopPropagation()
                 }}
+                rightSection={<CaretRightIcon size={16} weight="bold" />}
               >
                 Learn more
-                <CaretRightIcon size={16} />
               </Button>
             </Group>
           </Card.Section>

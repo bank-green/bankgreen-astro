@@ -5,7 +5,7 @@ import {
   type EcoBankFilters as EcoBankFiltersType,
 } from '@lib/types/eco-banks'
 import { buildHarvestDataFilter } from '@lib/utils/eco-banks'
-import { Box, Button, Drawer, Grid, Group, Stack } from '@mantine/core'
+import { Box, Button, Drawer, Grid, Stack, Switch } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { FunnelSimpleIcon } from '@phosphor-icons/react'
 import { useEffect, useState } from 'react'
@@ -21,6 +21,9 @@ function EcoBankDirectory() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [filtersOpen, { open: openFilters, close: closeFilters }] = useDisclosure(false)
+  const [expandAll, setExpandAll] = useState(true)
+  const [cardStates, setCardStates] = useState<Map<string, boolean>>(new Map())
+  const [cardsKey, setCardsKey] = useState(0)
 
   // Fetch banks when country, state, or filters change
   useEffect(() => {
@@ -54,25 +57,52 @@ function EcoBankDirectory() {
     fetchBanks()
   }, [country, stateCode, filterState])
 
+  const handleCardToggle = (bankTag: string, isOpened: boolean) => {
+    setCardStates((prev) => {
+      const newStates = new Map(prev)
+      newStates.set(bankTag, isOpened)
+      return newStates
+    })
+  }
+
+  const handleExpandAll = (checked: boolean) => {
+    setExpandAll(checked)
+    // Clear individual card states when using the switch
+    setCardStates(new Map())
+    // Increment key to force cards to remount and reset their userOverride state
+    setCardsKey((prev) => prev + 1)
+  }
+
+  // Compute if all cards are expanded (for Switch checked state)
+  // If any card has been individually collapsed, the switch should be unchecked
+  const allCardsExpanded =
+    banks.length > 0 &&
+    banks.every((bank) => {
+      // If card has an individual state, use that; otherwise use expandAll
+      const cardState = cardStates.get(bank.tag)
+      return cardState !== undefined ? cardState : expandAll
+    })
+
   return (
-    <Grid gutter="xl">
+    <Grid gutter={32}>
       <Grid.Col span={{ base: 12, md: 3 }}>
         <Drawer opened={filtersOpen} onClose={closeFilters}>
           <EcoBankFilters country={country} onFilterChange={setFilterState} />
         </Drawer>
-        <Box visibleFrom="sm" className="sticky top-0 z-10 md:top-8 md:p-0">
+        <Box visibleFrom="md" className="sticky top-0 z-10 md:top-8 md:p-0">
           <EcoBankFilters country={country} onFilterChange={setFilterState} />
         </Box>
       </Grid.Col>
 
       <Grid.Col span={{ base: 12, md: 9 }}>
         <Stack className="gap-2">
-          <Group className="-mx-4 -mt-4 sticky top-0 z-10 w-[calc(100%+2rem)] items-end justify-end gap-0 bg-sushi-100 px-4 py-4">
+          <Stack className="-mx-4 -mt-4 sticky top-0 z-10 w-[calc(100%+2rem)] items-end justify-between gap-2 bg-sushi-100 px-4 py-3 md:flex-row md:items-center">
             <Button
-              hiddenFrom="sm"
-              variant="default"
+              hiddenFrom="md"
+              variant="transparent"
+              size="compact-sm"
               onClick={openFilters}
-              leftSection={<FunnelSimpleIcon size={16} />}
+              leftSection={<FunnelSimpleIcon size={14} />}
             >
               Filters
             </Button>
@@ -85,9 +115,23 @@ function EcoBankDirectory() {
               onStateChange={setStateCode}
               className="w-full max-w-lg"
             />
-          </Group>
+            <Switch
+              label="Expand cards"
+              className="absolute top-0 right-4 mt-4 mb-2 md:relative"
+              checked={allCardsExpanded}
+              onChange={(event) => handleExpandAll(event.currentTarget.checked)}
+            />
+          </Stack>
 
-          <EcoBankResults banks={banks} loading={loading} error={error} country={country} />
+          <EcoBankResults
+            banks={banks}
+            loading={loading}
+            error={error}
+            country={country}
+            expandAll={expandAll}
+            onCardToggle={handleCardToggle}
+            resetTrigger={cardsKey}
+          />
         </Stack>
       </Grid.Col>
     </Grid>
