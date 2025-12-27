@@ -3,7 +3,7 @@ import { BankCircle, LastReviewed } from '@components/bank'
 import { SafeHtml } from '@components/SafeHtml'
 import { Swoosh } from '@components/Swoosh'
 import type { DefaultFields } from '@lib/banks'
-import { Anchor, Box, Button, Grid, Group, Stack, Text, Title } from '@mantine/core'
+import { Anchor, Box, Button, Grid, Group, Image, Stack, Text, Title } from '@mantine/core'
 import type { PrismicDocument } from '@prismicio/client'
 import { type Slice, SliceZone } from '@slices'
 import BankLogo from '../bank/BankLogo'
@@ -69,12 +69,12 @@ export function BankScorePage({ bank, prismicDefaults, prismicPage, prismicNotLi
   return (
     <PageContent fullWidth>
       {/* SECTION ONE - Header with bank info */}
-      <Box id="section-one" className="pt-20" data-breakout>
-        <Stack className={isBadBank ? 'items-center pb-8' : 'contain md:min-h-128'}>
+      <Box id="section-one" className="pt-16" data-breakout>
+        <Stack className="contain items-center pb-8 md:min-h-128">
           <Grid className="mx-auto mb-16 w-full max-w-5xl md:mb-12" gutter={48}>
             <Grid.Col span={{ base: 12, md: 7 }}>
-              <Stack className="gap-6 px-6 md:px-0">
-                <Stack>
+              <Stack className="mx-auto items-center gap-6 px-6 md:px-0">
+                <Stack className="items-start">
                   <Group className="items-center gap-4">
                     {websiteUrl && (
                       <BankLogo
@@ -98,21 +98,21 @@ export function BankScorePage({ bank, prismicDefaults, prismicPage, prismicNotLi
                       </Anchor>
                     </Text>
                   )}
-                </Stack>{' '}
-                <Stack className="gap-8">
-                  <SafeHtml html={headline} className="mb-0 font-semibold text-2xl md:text-3xl" />
-                  <Stack>
-                    <SafeHtml className="mb-0 max-w-lg text-lg md:text-xl" html={description1} />
-                    {bank.commentary?.fossilFreeAlliance && (
-                      <img
-                        className="float-left mr-6 w-20 md:w-24 lg:w-36"
-                        src="/img/certification/fossil-free-certified.png"
-                        alt="Fossil Free Certification"
-                        style={{
-                          shapeOutside: 'circle(50%)',
-                        }}
-                      />
-                    )}
+                  <Stack className="gap-8">
+                    <SafeHtml html={headline} className="mb-0 font-semibold text-3xl" />
+                    <Stack>
+                      <SafeHtml className="mb-0 max-w-lg text-xl" html={description1} />
+                      {bank.commentary?.fossilFreeAlliance && (
+                        <Image
+                          className="float-left mr-6 w-20 md:w-24 lg:w-36"
+                          src="/img/certification/fossil-free-certified.png"
+                          alt="Fossil Free Certification"
+                          style={{
+                            shapeOutside: 'circle(50%)',
+                          }}
+                        />
+                      )}
+                    </Stack>
                   </Stack>
                 </Stack>
               </Stack>
@@ -147,9 +147,9 @@ export function BankScorePage({ bank, prismicDefaults, prismicPage, prismicNotLi
       </Box>
 
       {/* SECTION TWO - Description content */}
-      <Box id="section-two" className="overflow-hidden bg-white">
-        {isBadBank ? (
-          <Stack className="contain gap-0">
+      <Box data-breakout id="section-two" className="overflow-hidden bg-white">
+        {isBadBank && (
+          <Stack className="contain gap-0 pt-8">
             <Group className="flex-col-reverse items-center justify-center gap-8 md:flex-row md:gap-24">
               <Box className="max-h-[901px] w-full max-w-sm md:w-1/2">
                 <PiggyAnimation />
@@ -165,35 +165,34 @@ export function BankScorePage({ bank, prismicDefaults, prismicPage, prismicNotLi
               </Button>
             </Group>
           </Stack>
-        ) : (
-          isGoodBank && (
-            <Stack className="mx-auto w-full max-w-5xl px-8 md:flex-row md:items-start md:justify-between md:px-0">
-              <Box className={isGoodBank ? 'md:w-3/6' : 'w-full'}>
-                <SafeHtml html={description2} className="prose max-w-none text-2xl" />
-                <SafeHtml html={description3} className="prose mt-4 max-w-none text-lg" />
-              </Box>
-              {isGoodBank && (
-                <img
-                  className="mt-8 md:order-first md:mt-0 md:ml-4 md:w-2/6"
-                  src="/img/illustrations/dig.svg"
-                  alt="Digging for change illustration"
-                />
-              )}
-            </Stack>
-          )
+        )}
+        {isGoodBank && (
+          <Grid className="mx-auto mb-16 w-full max-w-6xl px-12 md:mb-12 lg:px-0" gutter={48}>
+            <Grid.Col span={{ base: 12, md: 7 }}>
+              <Image
+                className="mx-auto mt-8 max-w-xl md:mt-0"
+                src="/img/illustrations/dig.svg"
+                alt="Digging for change illustration"
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 5 }}>
+              <SafeHtml html={description2} className="prose max-w-none text-2xl" />
+              <SafeHtml html={description3} className="prose mt-4 max-w-none text-lg" />
+            </Grid.Col>
+          </Grid>
         )}
       </Box>
 
       {/* SECTION THREE - Only for bad banks */}
       {isBadBank && description4 && (
         <Box id="section-three" className="bg-ocean-100" data-breakout>
-          <Swoosh direction="down" />
-          <Stack className="contain items-center gap-4 pt-32">
-            <img
-              className="mb-4 inline-block"
-              src="/img/illustrations/fishes.svg"
-              alt="Fish illustration"
-            />
+          <Swoosh direction="down" color="white" />
+          <Image
+            className="mb-4 inline-block max-w-sm"
+            src="/img/illustrations/fishes.svg"
+            alt="Fish illustration"
+          />
+          <Stack className="contain items-center gap-4">
             <Stack className="max-w-2xl text-lg">
               <SafeHtml html={description4} className="mx-auto text-center" />
             </Stack>
@@ -218,7 +217,7 @@ export function BankScorePage({ bank, prismicDefaults, prismicPage, prismicNotLi
           </Stack>
         ) : ctaSlices && ctaSlices.length > 0 ? (
           <>
-            <Swoosh direction="down" />
+            <Swoosh direction="down" color="white" />
             <Box className="contain pt-32 pb-16">
               <Box className="mx-auto max-w-5xl rounded-3xl bg-sky-800 p-12 text-textInverse">
                 <SliceZone slices={ctaSlices} />

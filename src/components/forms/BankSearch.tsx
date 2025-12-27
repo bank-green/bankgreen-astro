@@ -1,7 +1,7 @@
 import type { Bank } from '@lib/banks'
 import { findBanks } from '@lib/banks'
-import { Anchor, Autocomplete, Loader, Stack } from '@mantine/core'
-import { BankIcon } from '@phosphor-icons/react'
+import { Anchor, Autocomplete, Group, Loader, Stack } from '@mantine/core'
+import { BankIcon, CaretRightIcon } from '@phosphor-icons/react'
 import { useMemo, useState } from 'react'
 
 interface BankSearchProps {
@@ -106,13 +106,8 @@ function BankSearch({
     }
   }
 
-  const _handleClear = () => {
-    setSearch('')
-    onChange?.(null)
-  }
-
   return (
-    <Stack className="items-center gap-2">
+    <Stack className="items-end gap-2">
       <Autocomplete
         label={label}
         className={`mx-auto grow ${className}`}
@@ -129,7 +124,9 @@ function BankSearch({
         onFocus={(e) => e.target.select()}
       />
       <Anchor href="/not-listed" variant="transparent" size="compact-sm" className="w-auto">
-        My bank isn't listed
+        <Group className="items-center gap-1">
+          My bank isn't listed <CaretRightIcon />
+        </Group>
       </Anchor>
     </Stack>
   )
