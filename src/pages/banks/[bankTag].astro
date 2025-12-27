@@ -77,8 +77,9 @@ const queryKey =
     ? `unknownbank-${institutionType.toLowerCase().replace(/\s/g, '')}`
     : `${rating}bank`
 const prismicPage = await getByUIDSafe('bankpage', queryKey)
+const prismicNotListed = await getByUIDSafe('textonlypages', 'notlisted')
 ---
 
 <BaseLayout title={title}>
-  <BankScorePage bank={bank} prismicDefaults={prismicDefaults} prismicPage={prismicPage} client:load />
+  <BankScorePage bank={bank} prismicDefaults={prismicDefaults} prismicPage={prismicPage} prismicNotListed={prismicNotListed} client:load />
 </BaseLayout>

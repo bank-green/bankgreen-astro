@@ -1,6 +1,6 @@
 import type { Bank } from '@lib/banks'
 import { findBanks } from '@lib/banks'
-import { Autocomplete, Loader } from '@mantine/core'
+import { Anchor, Autocomplete, Loader, Stack } from '@mantine/core'
 import { BankIcon } from '@phosphor-icons/react'
 import { useMemo, useState } from 'react'
 
@@ -112,21 +112,26 @@ function BankSearch({
   }
 
   return (
-    <Autocomplete
-      label={label}
-      className={`mx-auto grow ${className}`}
-      placeholder={placeholder}
-      value={search}
-      onChange={handleChange}
-      onOptionSubmit={handleOptionSubmit}
-      data={autocompleteData}
-      disabled={disabled || loading || !banks.length}
-      maxDropdownHeight={300}
-      limit={50}
-      leftSection={loading && !disabled ? <Loader size="xs" /> : <BankIcon />}
-      rightSection={search ? undefined : null}
-      onFocus={(e) => e.target.select()}
-    />
+    <Stack className="items-center gap-2">
+      <Autocomplete
+        label={label}
+        className={`mx-auto grow ${className}`}
+        placeholder={placeholder}
+        value={search}
+        onChange={handleChange}
+        onOptionSubmit={handleOptionSubmit}
+        data={autocompleteData}
+        disabled={disabled || loading || !banks.length}
+        maxDropdownHeight={300}
+        limit={50}
+        leftSection={loading && !disabled ? <Loader size="xs" /> : <BankIcon />}
+        rightSection={search ? undefined : null}
+        onFocus={(e) => e.target.select()}
+      />
+      <Anchor href="/not-listed" variant="transparent" size="compact-sm" className="w-auto">
+        My bank isn't listed
+      </Anchor>
+    </Stack>
   )
 }
 

@@ -51,8 +51,8 @@ export function LeadGen({ slice, className }: Props) {
 
         {bulletPoints.length > 0 && (
           <List>
-            {bulletPoints.map((point, index) => (
-              <List.Item key={index}>{point}</List.Item>
+            {bulletPoints.map((point) => (
+              <List.Item key={point}>{point}</List.Item>
             ))}
           </List>
         )}

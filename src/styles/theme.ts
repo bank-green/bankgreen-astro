@@ -100,7 +100,8 @@ export const theme = createTheme({
           `]: props.variant === 'filled',
         }),
         label: cx('no-underline focus:no-underline', {
-          '[--button-color:text-textLink]': props.variant === 'default',
+          'text-linkDefault [--button-color:--color-linkDefault] hover:text-linkHover':
+            props.variant === 'default' || props.variant === 'transparent',
         }),
       }),
     }),

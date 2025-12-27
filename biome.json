@@ -89,6 +89,12 @@
           }
         }
       }
+    },
+    {
+      "includes": ["public/anim/fishes.json", "public/anim/piggy.json"],
+      "files": {
+        "maxSize": 2097152
+      }
     }
   ]
 }

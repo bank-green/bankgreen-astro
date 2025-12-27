@@ -32,8 +32,8 @@ export function SharePicGallerySlice({ slice, className }: Props) {
       className={className}
     >
       <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg">
-        {GALLERY_IMAGES.map((image, index) => (
-          <Image key={index} src={image.src} alt={image.alt} />
+        {GALLERY_IMAGES.map((image) => (
+          <Image key={image.src} src={image.src} alt={image.alt} />
         ))}
       </SimpleGrid>
     </Container>
