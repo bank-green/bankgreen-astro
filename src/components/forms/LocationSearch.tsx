@@ -14,6 +14,7 @@ interface LocationSearchProps {
   label?: string
   placeholder?: string
   autoDetect?: boolean
+  className?: string
 }
 
 function LocationSearch({
@@ -25,6 +26,7 @@ function LocationSearch({
   label = 'Country',
   placeholder = 'Search country...',
   autoDetect = true,
+  className = '',
 }: LocationSearchProps) {
   const [search, setSearch] = useState('')
   const [selectedCountry, setSelectedCountry] = useState(value)
@@ -179,10 +181,10 @@ function LocationSearch({
   }
 
   return (
-    <Group>
+    <Group className={className}>
       <Autocomplete
         label={label}
-        className="grow"
+        className="max-w-md grow"
         placeholder={isDetecting ? 'Detecting your location...' : placeholder}
         value={search}
         clearable
@@ -201,7 +203,7 @@ function LocationSearch({
         <Autocomplete
           label="State"
           clearable
-          className="grow"
+          className="max-w-md grow"
           leftSection={isDetecting && !disabled && <Loader size="xs" />}
           placeholder={isDetecting ? 'Detecting your state...' : 'Search state...'}
           value={USStateSearch}

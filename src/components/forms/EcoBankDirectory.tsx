@@ -67,7 +67,7 @@ function EcoBankDirectory() {
 
       <Grid.Col span={{ base: 12, md: 9 }}>
         <Stack className="gap-8">
-          <Group className="items-end">
+          <Group className="w-full items-end">
             <Button
               hiddenFrom="sm"
               variant="default"
@@ -83,6 +83,7 @@ function EcoBankDirectory() {
                 setStateCode('') // Reset state when country changes
               }}
               onStateChange={setStateCode}
+              className="w-full"
             />
           </Group>
 
