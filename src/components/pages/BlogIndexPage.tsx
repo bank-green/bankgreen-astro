@@ -45,7 +45,7 @@ export function BlogIndexPage({ posts }: Props) {
             return (
               <Grid.Col key={post.uid} span={{ base: 12, sm: 6 }}>
                 <Anchor href={`/blog/${post.uid}`} underline="never">
-                  <Card shadow="sm" padding="lg" radius="md" withBorder h="100%">
+                  <Card className="h-full">
                     {imageSrc && (
                       <Card.Section>
                         <Image src={imageSrc} alt="" loading="lazy" height={250} fit="cover" />

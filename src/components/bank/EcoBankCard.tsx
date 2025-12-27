@@ -23,13 +23,12 @@ interface EcoBankCardProps {
 }
 
 function EcoBankCard({ bank }: EcoBankCardProps) {
-  const [opened, { toggle }] = useDisclosure(false)
+  const [opened, { toggle }] = useDisclosure(true)
   const [childHovered, setChildHovered] = useState(false)
 
   return (
     <Card
-      withBorder
-      className={cx('rounded-lg bg-white/80 p-6 transition-all hover:shadow-md', {
+      className={cx('bg-white/80 transition-all hover:shadow-md', {
         'group hover:bg-white': !childHovered,
       })}
       onClick={(_e) => {
@@ -109,7 +108,7 @@ function EcoBankCard({ bank }: EcoBankCardProps) {
           <Divider />
 
           {/* Learn more link */}
-          <Card.Section className="p-4 pr-2 pb-3">
+          <Card.Section className="p-4 pr-2 pb-4">
             <Group className="justify-end">
               <Button
                 variant="subtle"

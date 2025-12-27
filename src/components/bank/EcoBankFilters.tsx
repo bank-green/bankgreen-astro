@@ -62,7 +62,7 @@ function EcoBankFilters({ onFilterChange }: EcoBankFiltersProps) {
   }
 
   return (
-    <Stack className="rounded-2xl md:sticky md:top-8 md:p-0">
+    <Stack>
       {/* Header with Filter title + Reset */}
       <Group className="justify-between">
         <Text className="font-semibold">Filters</Text>

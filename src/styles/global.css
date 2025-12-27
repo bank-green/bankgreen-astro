@@ -44,7 +44,9 @@
     --mantine-h2-font-weight: 700;
     --mantine-h3-font-size: 1.75rem;
     --mantine-h3-font-weight: 700;
-    --mantine-h4-font-weight: 600;
+    --mantine-h4-font-size: 1.35rem;
+    --mantine-h4-font-weight: 650;
+    --mantine-h5-font-size: 1.15rem;
     --mantine-h5-font-weight: 600;
     background-color: var(--color-white);
     color: var(--mantine-color-text);
@@ -132,7 +134,7 @@
   }
 
   .contain {
-    @apply w-full max-w-6xl mx-auto px-6;
+    @apply w-full max-w-6xl mx-auto px-6 lg:px-0;
   }
 
   .overflow-y-scroll {

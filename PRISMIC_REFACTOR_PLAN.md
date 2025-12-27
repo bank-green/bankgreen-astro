@@ -463,7 +463,7 @@ Each of these pairs (Astro page + React page component) should be merged into a 
 | `src/pages/thanks/[type].astro` | `ThanksPage.tsx` | Uses `getStaticPaths` |
 | `src/pages/index.astro` | `HomePage.tsx` | **Complex** - see below |
 | `src/pages/banks/[bankTag].astro` | `BankProfilePage.tsx` | **Complex** - see below |
-| `src/pages/sustainable-eco-banks/index.astro` | `SustainableBanksPage.tsx` | **Complex** - see below |
+| `src/pages/sustainable-eco-banks/index.astro` | `EcoBanksPage.tsx` | **Complex** - see below |
 
 ---
 
@@ -497,7 +497,7 @@ const page = await getSingleSafe('homepage')
 </BaseLayout>
 ```
 
-#### `BankProfilePage.tsx` / `SustainableBanksPage.tsx`
+#### `BankProfilePage.tsx` / `EcoBanksPage.tsx`
 - **Complexity**: High
 - **Interactive elements**: Bank search, filtering, GraphQL queries
 - **Recommendation**: Keep as React islands or consider moving data fetching to API routes

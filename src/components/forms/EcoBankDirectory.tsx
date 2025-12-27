@@ -5,19 +5,22 @@ import {
   type EcoBankFilters as EcoBankFiltersType,
 } from '@lib/types/eco-banks'
 import { buildHarvestDataFilter } from '@lib/utils/eco-banks'
-import { Grid, Stack } from '@mantine/core'
+import { Box, Button, Drawer, Grid, Group, Stack } from '@mantine/core'
+import { useDisclosure } from '@mantine/hooks'
+import { FunnelSimpleIcon } from '@phosphor-icons/react'
 import { useEffect, useState } from 'react'
-import BankResults from '../bank/BankResults'
 import EcoBankFilters from '../bank/EcoBankFilters'
+import EcoBankResults from '../bank/EcoBankResults'
 import LocationSearch from './LocationSearch'
 
-function BankDirectory() {
+function EcoBankDirectory() {
   const [country, setCountry] = useState<string>('')
   const [stateCode, setStateCode] = useState<string>('')
   const [filterState, setFilterState] = useState<EcoBankFiltersType>(DEFAULT_FILTER_STATE)
   const [banks, setBanks] = useState<EcoBankCard[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [filtersOpen, { open: openFilters, close: closeFilters }] = useDisclosure(false)
 
   // Fetch banks when country, state, or filters change
   useEffect(() => {
@@ -54,25 +57,40 @@ function BankDirectory() {
   return (
     <Grid gutter="xl">
       <Grid.Col span={{ base: 12, md: 3 }}>
-        <EcoBankFilters country={country} onFilterChange={setFilterState} />
+        <Drawer opened={filtersOpen} onClose={closeFilters}>
+          <EcoBankFilters country={country} onFilterChange={setFilterState} />
+        </Drawer>
+        <Box visibleFrom="sm" className="md:sticky md:top-8 md:p-0">
+          <EcoBankFilters country={country} onFilterChange={setFilterState} />
+        </Box>
       </Grid.Col>
 
       <Grid.Col span={{ base: 12, md: 9 }}>
         <Stack className="gap-8">
-          <LocationSearch
-            value={country}
-            onChange={(newCountry) => {
-              setCountry(newCountry)
-              setStateCode('') // Reset state when country changes
-            }}
-            onStateChange={setStateCode}
-          />
+          <Group className="items-end">
+            <Button
+              hiddenFrom="sm"
+              variant="default"
+              onClick={openFilters}
+              leftSection={<FunnelSimpleIcon size={16} />}
+            >
+              Filters
+            </Button>
+            <LocationSearch
+              value={country}
+              onChange={(newCountry) => {
+                setCountry(newCountry)
+                setStateCode('') // Reset state when country changes
+              }}
+              onStateChange={setStateCode}
+            />
+          </Group>
 
-          <BankResults banks={banks} loading={loading} error={error} country={country} />
+          <EcoBankResults banks={banks} loading={loading} error={error} country={country} />
         </Stack>
       </Grid.Col>
     </Grid>
   )
 }
 
-export default BankDirectory
+export default EcoBankDirectory

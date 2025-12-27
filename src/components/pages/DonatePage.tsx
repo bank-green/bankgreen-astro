@@ -42,7 +42,7 @@ export function DonatePage({ page }: Props) {
 
             <RaiselyEmbed />
             <Image
-              className="-top-4 md:-top-8 -right-4 md:-right-8 absolute h-12 w-auto md:h-20"
+              className="-top-4 md:-top-8 -right-4 md:-right-8 absolute h-12 w-auto drop-shadow-lg md:h-20"
               src="/img/logos/bankgreen-logo.png"
               alt="Bank Green"
             />

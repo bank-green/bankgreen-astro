@@ -9,13 +9,13 @@ interface BankResultsProps {
   country: string
 }
 
-function BankResults({ banks, loading, error, country }: BankResultsProps) {
+function EcoBankResults({ banks, loading, error, country }: BankResultsProps) {
   // Loading state
   if (loading) {
     return (
       <Stack className="items-center justify-center py-12">
         <Loader size="lg" />
-        <Text c="dimmed">Loading banks...</Text>
+        <Text>Loading banks...</Text>
       </Stack>
     )
   }
@@ -55,4 +55,4 @@ function BankResults({ banks, loading, error, country }: BankResultsProps) {
   )
 }
 
-export default BankResults
+export default EcoBankResults

@@ -45,8 +45,8 @@ export function PressIndexPage({ page, releases }: Props) {
               return (
                 <Grid.Col key={release.uid} span={{ base: 12, sm: 6 }}>
                   <Anchor href={`/press/${release.uid}`} underline="never">
-                    <Card shadow="sm" padding="lg" radius="md" withBorder h="100%">
-                      <Stack gap="sm" pt="md">
+                    <Card className="h-full">
+                      <Stack className="h-full">
                         {releaseDate && (
                           <Text size="sm" c="dimmed">
                             <time dateTime={releaseDate}>{releaseDate}</time>

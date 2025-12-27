@@ -5,14 +5,14 @@ import { SliceZone } from '@slices'
 import theme from '@styles/theme'
 import { useState } from 'react'
 import { MoneySmokeAnimation } from '../animations'
-import BankDirectory from '../forms/BankDirectory'
+import EcoBankDirectory from '../forms/EcoBankDirectory'
 import { PageContent } from '../PageContent'
 
 interface Props {
   page: PrismicDocument | null
 }
 
-export function SustainableBanksPage({ page }: Props) {
+export function EcoBanksPage({ page }: Props) {
   const slices = (page?.data?.slices || []) as Slice[]
   const slices1 = (page?.data?.slices1 || []) as Slice[]
   const introductory = (page?.data?.introductory || []) as Slice[]
@@ -24,18 +24,18 @@ export function SustainableBanksPage({ page }: Props) {
   return (
     <MantineProvider theme={theme}>
       <PageContent fullWidth>
-        <Stack className="px-6 md:px-0">
+        <Box className="contain">
           {/* Main intro content from Prismic slices */}
           {slices && (
-            <Stack className="gap-8 **:text-balance [&_h1]:mb-2 [&_p]:text-xl">
+            <Stack className="gap-8 [&_h1]:mb-2 [&_p]:text-xl">
               <SliceZone slices={slices} />
             </Stack>
           )}
 
           <Box className="mt-12 mb-24 w-full">
-            <BankDirectory />
+            <EcoBankDirectory />
           </Box>
-        </Stack>
+        </Box>
 
         <Box data-breakout className="bg-blue-100 pt-24">
           {/* Introductory section (Why Find a Green Bank? + What is the Fossil Free Alliance?) */}

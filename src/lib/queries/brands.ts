@@ -73,6 +73,7 @@ export const BRAND_BY_TAG_QUERY = `
           name
         }
         fossilFreeAlliance
+        topPick
         headline
         description1
         description2
@@ -89,6 +90,21 @@ export const BRAND_BY_TAG_QUERY = `
       countries {
         code
       }
+    }
+  }
+`
+
+export const HARVEST_DATA_QUERY = `
+  query HarvestDataQuery($tag: String!) {
+    harvestData(tag: $tag) {
+      customersServed
+      depositProducts
+      financialFeatures
+      services
+      institutionalInformation
+      policies
+      loanProducts
+      interestRates
     }
   }
 `
@@ -346,5 +362,37 @@ export async function fetchFilteredBrands(variables: {
   } catch (error) {
     console.error('Error fetching filtered brands:', error)
     return []
+  }
+}
+
+// HarvestData interfaces
+export interface HarvestData {
+  customersServed?: Record<string, unknown> | null
+  depositProducts?: Record<string, unknown> | null
+  financialFeatures?: Record<string, unknown> | null
+  services?: Record<string, unknown> | null
+  institutionalInformation?: Record<string, unknown> | null
+  policies?: Record<string, unknown> | null
+  loanProducts?: Record<string, unknown> | null
+  interestRates?: Record<string, unknown> | null
+}
+
+interface HarvestDataResponse {
+  harvestData: HarvestData | null
+}
+
+export async function fetchHarvestData(tag: string): Promise<HarvestData | null> {
+  try {
+    const data = await graphqlFetch<HarvestDataResponse>(HARVEST_DATA_QUERY, { tag })
+
+    if (!data?.harvestData) {
+      console.warn(`No harvest data found for tag: ${tag}`)
+      return null
+    }
+
+    return data.harvestData
+  } catch (error) {
+    console.error(`Error fetching harvest data for tag (${tag}):`, error)
+    return null
   }
 }

@@ -46,7 +46,7 @@ export function AccordionSlice({ slice, className }: Props) {
     >
       <Accordion.Item value="accordion-item">
         <Accordion.Control>
-          <Title order={4}>{title}</Title>
+          <Title order={5}>{title}</Title>
         </Accordion.Control>
         <Accordion.Panel>
           <Stack className="[&_a]:inline">

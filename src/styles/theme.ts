@@ -37,7 +37,7 @@ export const theme = createTheme({
     textWrap: 'balance',
   },
   primaryColor: 'green',
-  primaryShade: 6,
+  primaryShade: 5,
   components: {
     Accordion: {
       classNames: {
@@ -45,12 +45,13 @@ export const theme = createTheme({
         item: 'rounded-md border-none bg-sky-900/5',
         control:
           'rounded-md bg-sky-600 text-textInverse hover:bg-sky-700 active:bg-sky-500 transition-all duration-100 border-b-2 border-white',
-        label: 'font-semibold',
+        label: 'font-semibold text-lg',
         content: 'py-4 [&_li]:list-disc [&_li]:ml-4 [&_li]:marker:text-green-500',
       },
     },
     Alert: {
       classNames: {
+        root: 'bg-white',
         title: 'text-lg',
         message: 'text-base',
         body: 'pl-2',
@@ -59,8 +60,8 @@ export const theme = createTheme({
     Anchor: {
       classNames: {
         root: cx(
-          'font-medium text-linkDefault transition-all duration-200 hover:text-linkHover active:text-linkActive',
-          'no-underline decoration-[0.01em] decoration-wavy underline-offset-from-font'
+          'text-linkDefault transition-all duration-150 hover:text-linkHover active:text-linkActive',
+          'decoration-[0.5em] decoration-green-500/15 underline-offset-0 hover:underline hover:decoration-[0.15em] hover:underline-offset-1'
         ),
       },
     },
@@ -89,13 +90,28 @@ export const theme = createTheme({
         radius: 'lg',
       },
       classNames: (_theme, props) => ({
-        root: cx('font-medium transition-all duration-200 hover:duration-50', {
-          'bg-center bg-radial bg-size-[125%_150%] from-blue-800/5 via-green-500/60 to-green-500/70':
-            props.variant === 'filled',
+        root: cx({
+          [`
+            bg-center bg-radial bg-size-[225%_350%] hover:bg-size-[100%_150%] 
+            from-green-600/50 to-green-500 
+            bg-green-500 active:bg-green-700 hover:bg-green-600 
+            transition-all duration-300 hover:duration-100 active:duration-50
+          `]: props.variant === 'filled',
         }),
-        label: cx({ '[--button-color:text-textLink]': props.variant === 'default' }),
+        label: cx('no-underline focus:no-underline', {
+          '[--button-color:text-textLink]': props.variant === 'default',
+        }),
       }),
     }),
+    Card: {
+      defaultProps: {
+        withBorder: false,
+        padding: '1.5rem',
+      },
+      classNames: {
+        root: 'rounded-xl',
+      },
+    },
     Container: Container.extend({
       vars: (_, { size, fluid }) => ({
         root: {
@@ -113,11 +129,6 @@ export const theme = createTheme({
         root: 'px-0',
       },
     }),
-    Input: {
-      classNames: {
-        input: 'bg-white border-gray-300 focus:border-gray-500 rounded-md',
-      },
-    },
     LoadingOverlay: {
       classNames: {
         overlay: 'bg-sushi-100/50 backdrop-blur-[2px]',
@@ -140,6 +151,15 @@ export const theme = createTheme({
     },
     Switch: {
       classNames: { label: 'pl-2' },
+    },
+    Table: {
+      defaultProps: {
+        horizontalSpacing: 0,
+      },
+      classNames: {
+        td: 'text-sm',
+        tr: 'border-b-borderLight has-[th]:border-b-borderDefault',
+      },
     },
     Tabs: {
       classNames: {

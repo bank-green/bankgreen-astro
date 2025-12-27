@@ -131,21 +131,21 @@
   --color-paper: #f9fafa;
   --color-bgContrast: #e4e6e7;
   --color-bgDefault: #FFFFFF;
-  --color-bgInverse: #292d30;
-  --color-borderDefault: #aeb4b7;
-  --color-borderFocus: #5e892a;
-  --color-borderHeavy: #939b9f;
+  --color-bgInverse: #282d46;
+  --color-borderDefault: #c9cdcf;
+  --color-borderFocus: #7BB123;
+  --color-borderHeavy: #aeb4b7;
   --color-borderHover: #7BB123;
-  --color-borderLight: #c9cdcf;
+  --color-borderLight: #e4e6e7;
   --color-linkActive: #7BB123;
-  --color-linkDefault: #4f6f25;
-  --color-linkHover: #5e892a;
+  --color-linkDefault: #5e892a;
+  --color-linkHover: #7BB123;
   --color-linkVisited: #35471C;
   --color-linkInverse: #B7D290;
   --color-textDefault: #292d30;
   --color-textHeadings: #282d46;
   --color-textInverse: #FFFFFF;
-  --color-textLight: #42484c;
+  --color-textLight: #6b7276;
   --color-bgError: #FCEDE8;
   --color-bgInfo: #EFF6FF;
   --color-bgSuccess: undefined;
@@ -156,6 +156,6 @@
   --color-borderWarning: #FAB104;
   --color-textError: #BA4033;
   --color-textInfo: #2563EB;
-  --color-textSuccess: #123F30;
+  --color-textSuccess: #7BB123;
   --color-textWarning: #966A02;
 }

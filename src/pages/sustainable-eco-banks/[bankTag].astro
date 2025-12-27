@@ -1,24 +1,9 @@
 ---
 import { BankProfilePage } from '@components/pages'
 import BaseLayout from '@layouts/BaseLayout.astro'
-import { fetchBrandByTag } from '@lib/queries/brands'
+import { getByUIDSafe, prismicClient } from '@lib/prismic'
+import { fetchBrandByTag, fetchHarvestData } from '@lib/queries/brands'
 
-interface BankData {
-  name: string
-  tag: string
-  website?: string | null
-  commentary?: {
-    rating?: string | null
-    lastReviewed?: string | null
-    headline?: string | null
-    description1?: string | null
-    description2?: string | null
-    description3?: string | null
-    fossilFreeAlliance?: boolean | null
-    showOnSustainableBanksPage?: boolean
-  } | null
-  countries?: Array<{ code: string }> | null
-}
 export async function getStaticPaths() {
   // TODO: Fetch all sustainable banks from GraphQL
   // const data = await graphqlFetch(`query { sustainableBanks { tag } }`);
@@ -36,10 +21,20 @@ if (!bank) {
   return Astro.redirect('/404')
 }
 
+// Fetch harvest data
+const harvestData = await fetchHarvestData(bankTag as string)
+
+// Fetch Prismic data (sfipage) for editorial content
+const prismicData = await getByUIDSafe('sfipage', bankTag as string)
+
+// Fetch Prismic defaults for institution credential images
+const prismicDefaults = await prismicClient.getByID('ZFpGfhEAACEAuFIf').catch(() => null)
+
 const bankName = bank.name
-const title = `${bankName} Review`
+const title = `${bankName} Review and Service Offering`
+const description = `Learn about ${bankName}'s environmental rating, services, and sustainable banking options.`
 ---
 
-<BaseLayout title={title}>
-  <BankProfilePage bank={bank} client:load />
+<BaseLayout title={title} description={description}>
+  <BankProfilePage bank={bank} harvestData={harvestData} prismicData={prismicData} prismicDefaults={prismicDefaults} client:load />
 </BaseLayout>

@@ -1,5 +1,5 @@
 ---
-import { SustainableBanksPage } from '@components/pages'
+import { EcoBanksPage } from '@components/pages'
 import BaseLayout from '@layouts/BaseLayout.astro'
 import { getSingleSafe } from '@lib/prismic'
 
@@ -9,5 +9,5 @@ const page = await getSingleSafe('ecobankspage', {
 ---
 
 <BaseLayout title="Find Green & Sustainable Banks In Your Area">
-  <SustainableBanksPage page={page} client:load />
+  <EcoBanksPage page={page} client:load />
 </BaseLayout>
