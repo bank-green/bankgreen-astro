@@ -1,6 +1,7 @@
+import { ActiveCampaignContactForm } from '@components/forms/ActiveCampaignContactForm'
 import { PageContent } from '@components/PageContent'
 import { renderRichText } from '@lib/prismicHelpers'
-import { Box, Button, Checkbox, Stack, Textarea, TextInput } from '@mantine/core'
+import { Box, Stack } from '@mantine/core'
 import type { PrismicDocument, RichTextField } from '@prismicio/client'
 import { CornerLogoContainer } from '../CornerLogo'
 
@@ -20,59 +21,19 @@ export function ContactPage({ page }: Props) {
           </Stack>
 
           <Box className="mx-auto w-full max-w-md">
-            <form onSubmit={(e) => e.preventDefault()}>
-              <Stack>
-                <TextInput
-                  label="Your first name (optional)"
-                  id="firstName"
-                  name="firstName"
-                  placeholder="First name, so we can say hi"
-                />
-
-                <TextInput
-                  label="Your email address"
-                  type="email"
-                  id="email"
-                  name="email"
-                  placeholder="Your email address"
-                  required
-                />
-
-                <TextInput
-                  label="Subject"
-                  id="subject"
-                  name="subject"
-                  placeholder="Subject"
-                  required
-                />
-
-                <Textarea
-                  label="Your message"
-                  id="message"
-                  name="message"
-                  placeholder="Your message"
-                  rows={3}
-                  required
-                />
-
-                <Checkbox
-                  name="isAgreeMarketing"
-                  label="I wish to receive more information via email from Bank.Green."
-                />
-
-                <Checkbox
-                  name="isAgreeTerms"
-                  label={
-                    <>
-                      I have read and understood Bank.Green's <a href="/privacy">privacy policy</a>.
-                    </>
-                  }
-                  required
-                />
-
-                <Button type="submit">Send message</Button>
-              </Stack>
-            </form>
+            <ActiveCampaignContactForm
+              tag="contact page form"
+              successRedirect="/thanks-contact"
+              labels={{ submit: 'Send message' }}
+              fields={{
+                firstName: true,
+                email: true,
+                subject: true,
+                message: true,
+                isAgreeMarketing: true,
+                isAgreeTerms: true,
+              }}
+            />
           </Box>
         </Stack>
       </CornerLogoContainer>

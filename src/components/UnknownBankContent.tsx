@@ -1,17 +1,5 @@
-import {
-  Box,
-  Button,
-  Center,
-  Grid,
-  Group,
-  Image,
-  List,
-  Stack,
-  Text,
-  TextInput,
-  ThemeIcon,
-  Title,
-} from '@mantine/core'
+import { ActiveCampaignContactForm } from '@components/forms/ActiveCampaignContactForm'
+import { Box, Center, Grid, Image, List, Stack, Text, ThemeIcon, Title } from '@mantine/core'
 import { CheckIcon } from '@phosphor-icons/react'
 import type { PrismicDocument, RichTextField } from '@prismicio/client'
 import * as prismic from '@prismicio/client'
@@ -97,17 +85,21 @@ export function UnknownBankContent({ page }: Props) {
               <Title order={3} className="mb-4 text-center text-textInverse">
                 Sign up to Bank.Green. We'll take the fight to the banks together.
               </Title>
-              <form className="mx-auto w-full max-w-160">
-                <Group className="gap-2">
-                  <TextInput
-                    type="email"
-                    placeholder="Your email address"
-                    className="flex-1"
-                    required
-                  />
-                  <Button type="submit">Join the Money Movement</Button>
-                </Group>
-              </form>
+              <ActiveCampaignContactForm
+                tag="not listed bottom"
+                dark
+                layout="inline"
+                className="mx-auto w-full max-w-160"
+                labels={{ submit: 'Join the Money Movement' }}
+                fields={{
+                  firstName: false,
+                  email: true,
+                  subject: false,
+                  message: false,
+                  isAgreeMarketing: false,
+                  isAgreeTerms: true,
+                }}
+              />
             </Stack>
           </Box>
         </Stack>

@@ -1,4 +1,5 @@
 import { ATMAnimation, MoneySmokeAnimation } from '@components/animations'
+import { ActiveCampaignContactForm } from '@components/forms/ActiveCampaignContactForm'
 import BankLocationSearch from '@components/forms/BankLocationSearch'
 import { Swoosh } from '@components/Swoosh'
 import { renderRichText } from '@lib/prismicHelpers'
@@ -226,12 +227,25 @@ export function HomePage({ page }: Props) {
                   </List>
                 </Grid.Col>
 
-                {/* Right side - form placeholder */}
+                {/* Right side - lead gen form */}
                 <Grid.Col
                   span={{ base: 12, md: 6 }}
                   className="h-full min-h-48 items-center justify-center rounded-xl bg-white/10 p-6"
                 >
-                  <Text className="text-white/60">[Lead Gen Form]</Text>
+                  <ActiveCampaignContactForm
+                    tag="index bottom"
+                    dark
+                    successRedirect="/thanks"
+                    labels={{ submit: 'Join the Movement' }}
+                    fields={{
+                      firstName: true,
+                      email: true,
+                      subject: false,
+                      message: false,
+                      isAgreeMarketing: true,
+                      isAgreeTerms: true,
+                    }}
+                  />
                 </Grid.Col>
               </Grid>
             </Paper>
