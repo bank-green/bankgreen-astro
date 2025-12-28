@@ -12,17 +12,15 @@
 
 @layer base, components, theme, utilities;
 
-/* 
- * Mantine requires these CSS variables - they're set by MantineProvider
- * but we define fallbacks here for static Astro pages
- */
+*,
+::before,
+::after {
+  border-color: var(--color-borderDefault, currentColor);
+}
 
-@layer base {
-  *,
-  ::before,
-  ::after {
-    border-color: var(--color-borderDefault, currentColor);
-  }
+input {
+  background-color: white;
+  border: 1px solid var(--color-borderDefault, currentColor);
 }
 
 @layer theme {
