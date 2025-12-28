@@ -13,7 +13,6 @@ import {
   Grid,
   Group,
   MantineProvider,
-  Paper,
   SimpleGrid,
   Stack,
   Text,
@@ -21,6 +20,7 @@ import {
 } from '@mantine/core'
 import type { PrismicDocument } from '@prismicio/client'
 import theme from '@styles/theme'
+import ContactFormContainer from '../forms/ContactFormContainer'
 
 interface BankData {
   tag: string
@@ -227,21 +227,28 @@ export function BankProfilePage({ bank, harvestData, prismicData, prismicDefault
             </Grid>
           </Stack>
 
-          {/* LEAD GENERATION FORM */}
-          <Box id="lead-gen" className="contain">
-            <Paper className="rounded-xl bg-bgInverse px-6 py-12 text-textInverse sm:px-8 sm:py-12">
-              <Stack className="mx-auto max-w-3xl gap-6">
-                <Title order={1}>Curious about switching to a green bank?</Title>
-                <Text>
-                  Sign up to learn more about {bank.name} and other sustainable banking options.
-                </Text>
-                {/* TODO: Add lead generation form component */}
-                <Box className="min-h-48 rounded-lg bg-gray-50 p-6">
-                  <Text className="text-center text-gray-400">[Lead Gen Form Placeholder]</Text>
-                </Box>
-              </Stack>
-            </Paper>
-          </Box>
+          <ContactFormContainer
+            listItems={[
+              'Learn how to take action on fossil fuel finance.',
+              'Discover green banking and how easy it is to switch.',
+              'Stay up to date with climate finance news.',
+            ]}
+            title="Curious about switching to a green bank?"
+            tag="green bank"
+            successRedirect="/thanks"
+            labels={{ submit: 'Complete Sign Up' }}
+            className=""
+            fields={{
+              firstName: true,
+              email: true,
+              bank: false,
+              subject: false,
+              message: false,
+              status: true,
+              isAgreeMarketing: true,
+              isAgreeTerms: true,
+            }}
+          />
         </Stack>
       </Box>
     </MantineProvider>

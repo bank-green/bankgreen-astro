@@ -36,7 +36,7 @@ export function EcoBanksPage({ page }: Props) {
         </Box>
       </Box>
 
-      <Box data-breakout className="bg-blue-100 pt-24">
+      <Box data-breakout className="bg-linear-to-b from-white to-blue-100 pt-24">
         {/* Introductory section (Why Find a Green Bank? + What is the Fossil Free Alliance?) */}
         {introductory && introductory.length > 0 && (
           <Stack className="contain gap-8 pb-18 [&_h1]:mb-0 [&_h1]:text-center">
@@ -45,7 +45,7 @@ export function EcoBanksPage({ page }: Props) {
               <Spoiler
                 showLabel="Read more"
                 hideLabel="Read less"
-                className="[--spoiler-bg-color:var(--color-blue-100)]"
+                className="[--spoiler-bg-color:white]"
               >
                 {/* Note: this is calling Array.slice, not referring to a slice object! */}
                 <SliceZone slices={introductory.slice(0, 1)} />
@@ -57,7 +57,7 @@ export function EcoBanksPage({ page }: Props) {
               <Spoiler
                 showLabel="Read more"
                 hideLabel="Read less"
-                className="[--spoiler-bg-color:var(--color-blue-100)]"
+                className="[--spoiler-bg-color:white]"
               >
                 <Stack className="[&>figure]:mx-auto [&>figure]:w-32">
                   <SliceZone slices={introductory.slice(1)} />

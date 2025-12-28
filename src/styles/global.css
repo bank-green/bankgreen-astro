@@ -16,13 +16,27 @@
  * Mantine requires these CSS variables - they're set by MantineProvider
  * but we define fallbacks here for static Astro pages
  */
-:root {
-  --font-family:
-    "Reddit Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--color-borderDefault, currentColor);
+  }
 }
 
 @layer theme {
+  :root {
+    --font-family:
+      "Reddit Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      "Helvetica Neue", Arial, sans-serif;
+    --mantine-color-bg: var(--color-sushi-100);
+    --mantine-color-body: var(--color-white);
+    --mantine-color-default-color: var(--color-linkDefault);
+    --mantine-color-default-border: var(--color-borderDefault);
+    --mantine-color-text: var(--color-textDefault);
+    --mantine-color-headings: var(--color-textHeadings);
+  }
   html {
     scroll-behavior: smooth;
     font-family: var(--font-family);
@@ -31,32 +45,44 @@
     background-color: var(--mantine-color-bg);
   }
   body {
-    --mantine-color-default-color: var(--color-linkDefault);
-    --mantine-color-bg: var(--color-sushi-100);
-    --mantine-color-body: var(--color-white);
     --mantine-font-family: var(--font-family);
-    --mantine-font-size-md: 1rem;
     --mantine-line-height: 1.55;
-    --mantine-color-text: var(--color-textDefault);
-    --mantine-color-headings: var(--color-textHeadings);
-    --mantine-h1-font-size: 2.5rem;
+
+    /* Fluid typography scale  @link https://utopia.fyi/type/calculator?c=360,16,1.125,1240,19,1.125,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
+    --mantine-font-size-md: clamp(1rem, 0.9489rem + 0.2273vw, 1.125rem);
+    --mantine-h5-font-size: clamp(1.125rem, 1.0675rem + 0.2557vw, 1.2656rem);
+    --mantine-h4-font-size: clamp(1.2656rem, 1.2009rem + 0.2876vw, 1.4238rem);
+    --mantine-h3-font-size: clamp(1.4238rem, 1.351rem + 0.3236vw, 1.6018rem);
+    --mantine-h2-font-size: clamp(1.6018rem, 1.5199rem + 0.364vw, 1.802rem);
+    --mantine-h1-font-size: clamp(1.802rem, 1.7099rem + 0.4096vw, 2.0273rem);
+
     --mantine-h1-font-weight: 650;
-    --mantine-h1-line-height: 1.2;
-    --mantine-h2-font-size: 2.15rem;
+    --mantine-h1-line-height: 1.1;
     --mantine-h2-font-weight: 700;
-    --mantine-h2-line-height: 1.2;
-    --mantine-h3-font-size: 1.75rem;
+    --mantine-h2-line-height: 1.1;
     --mantine-h3-font-weight: 700;
-    --mantine-h3-line-height: 1.2;
-    --mantine-h4-font-size: 1.35rem;
+    --mantine-h3-line-height: 1.1;
     --mantine-h4-font-weight: 650;
-    --mantine-h4-line-height: 1.2;
-    --mantine-h5-font-size: 1.15rem;
+    --mantine-h4-line-height: 1.1;
     --mantine-h5-font-weight: 600;
-    --mantine-h5-line-height: 1.2;
+    --mantine-h5-line-height: 1.1;
     background-color: var(--mantine-color-body);
     color: var(--mantine-color-text);
   }
+
+  /* @link https://utopia.fyi/type/calculator?c=360,16,1.125,1240,18,1.125,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
+
+  :root {
+    --mantine-h--2: clamp(0.7901rem, 0.7497rem + 0.1796vw, 0.8889rem);
+    --mantine-h--1: clamp(0.8889rem, 0.8434rem + 0.202vw, 1rem);
+    --mantine-h-0: clamp(1rem, 0.9489rem + 0.2273vw, 1.125rem);
+    --mantine-h-1: clamp(1.125rem, 1.0675rem + 0.2557vw, 1.2656rem);
+    --mantine-h-2: clamp(1.2656rem, 1.2009rem + 0.2876vw, 1.4238rem);
+    --mantine-h-3: clamp(1.4238rem, 1.351rem + 0.3236vw, 1.6018rem);
+    --mantine-h-4: clamp(1.6018rem, 1.5199rem + 0.364vw, 1.802rem);
+    --mantine-h-5: clamp(1.802rem, 1.7099rem + 0.4096vw, 2.0273rem);
+  }
+
   h1,
   h2,
   h3 {
@@ -65,8 +91,9 @@
 
   .text-textInverse {
     h1,
-    h2 {
-      color: var(--color-sky-100);
+    h2,
+    h3 {
+      color: var(--color-textInverse);
     }
     a.visited,
     a:-webkit-any-link {

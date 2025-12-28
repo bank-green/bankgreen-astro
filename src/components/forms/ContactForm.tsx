@@ -1,16 +1,26 @@
-import { Anchor, Button, Checkbox, Group, Stack, Text, Textarea, TextInput } from '@mantine/core'
-import { CircleNotchIcon } from '@phosphor-icons/react'
+import { Button, Checkbox, Select, Stack, Text, Textarea, TextInput } from '@mantine/core'
+import { Turnstile } from '@marsidev/react-turnstile'
 import { useState } from 'react'
 
-export interface ActiveCampaignContactFormProps {
+export interface ContactFormProps {
   /** Tag used for ActiveCampaign segmentation */
-  tag: string
+  tag:
+    | 'contact page form'
+    | 'FAQ bottom'
+    | 'green bank'
+    | 'green directory'
+    | 'index bottom'
+    | 'join form'
+    | 'not listed bottom'
+    | 'partners bottom'
   /** Fields to show in the form */
   fields?: {
     firstName?: boolean
     email?: boolean
+    bank?: boolean
     subject?: boolean
     message?: boolean
+    status?: boolean
     isAgreeMarketing?: boolean
     isAgreeTerms?: boolean
   }
@@ -18,14 +28,17 @@ export interface ActiveCampaignContactFormProps {
   labels?: {
     firstName?: string
     email?: string
+    bank?: string
     subject?: string
     message?: string
+    status?: string
     submit?: string
   }
   /** Custom placeholders for fields */
   placeholders?: {
     firstName?: string
     email?: string
+    bank?: string
     subject?: string
     message?: string
   }
@@ -33,12 +46,6 @@ export interface ActiveCampaignContactFormProps {
   successRedirect?: string
   /** Callback when form is successfully submitted (if no redirect) */
   onSuccess?: () => void
-  /** Use dark theme styling */
-  dark?: boolean
-  /** Additional class name for the form */
-  className?: string
-  /** Layout style - 'stacked' or 'inline' */
-  layout?: 'stacked' | 'inline'
 }
 
 interface FormWarnings {
@@ -51,38 +58,42 @@ interface FormWarnings {
 const defaultFields = {
   firstName: true,
   email: true,
+  bank: false,
   subject: false,
   message: false,
+  status: false,
   isAgreeMarketing: true,
   isAgreeTerms: true,
 }
 
+const STATUS_OPTIONS = ['Student', 'Employed', 'Self-employed', 'Retired', 'Unemployed']
+
 const defaultLabels = {
-  firstName: 'Your first name (optional)',
-  email: 'Your email address',
+  firstName: 'First name',
+  email: 'Email address',
+  bank: 'Bank name',
   subject: 'Subject',
-  message: 'Your message',
+  message: 'Message',
+  status: 'Which option best describes your current status?',
   submit: 'Submit',
 }
 
 const defaultPlaceholders = {
-  firstName: 'First name, so we can say hi',
-  email: 'Your email address',
-  subject: 'Subject',
+  firstName: 'Your first name',
+  email: 'You email address',
+  bank: 'Your bank name',
+  subject: 'Message subject',
   message: 'Your message',
 }
 
-export function ActiveCampaignContactForm({
+export function ContactForm({
   tag,
   fields: fieldsProp,
   labels: labelsProp,
   placeholders: placeholdersProp,
   successRedirect,
   onSuccess,
-  dark = false,
-  className = '',
-  layout = 'stacked',
-}: ActiveCampaignContactFormProps) {
+}: ContactFormProps) {
   const fields = { ...defaultFields, ...fieldsProp }
   const labels = { ...defaultLabels, ...labelsProp }
   const placeholders = { ...defaultPlaceholders, ...placeholdersProp }
@@ -90,16 +101,23 @@ export function ActiveCampaignContactForm({
   // Form state
   const [firstName, setFirstName] = useState('')
   const [email, setEmail] = useState('')
+  const [bank, setBank] = useState('')
   const [subject, setSubject] = useState('')
   const [message, setMessage] = useState('')
+  const [status, setStatus] = useState<string | null>(null)
   const [isAgreeMarketing, setIsAgreeMarketing] = useState(false)
   const [isAgreeTerms, setIsAgreeTerms] = useState(false)
+  const [captchaToken, setCaptchaToken] = useState<string>('')
 
   // UI state
-  const [busy, setBusy] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [showWarnings, setShowWarnings] = useState(false)
   const [isSent, setIsSent] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  // Environment
+  const isDev = import.meta.env.DEV
+  const captchaSitekey = import.meta.env.PUBLIC_CLOUDFLARE_CAPTCHA_SITEKEY
 
   // Compute warnings
   const getWarnings = (): FormWarnings => {
@@ -136,11 +154,11 @@ export function ActiveCampaignContactForm({
     setShowWarnings(true)
     setError(null)
 
-    if (hasWarnings || busy) {
+    if (hasWarnings || isLoading) {
       return
     }
 
-    setBusy(true)
+    setIsLoading(true)
 
     try {
       const response = await fetch('/api/contact', {
@@ -149,10 +167,13 @@ export function ActiveCampaignContactForm({
         body: JSON.stringify({
           firstName: firstName.trim(),
           email: email.trim(),
+          bank: bank.trim(),
           subject: subject.trim(),
           message: message.trim(),
+          currentStatus: status,
           tag,
           isAgreeMarketing,
+          captchaToken,
         }),
       })
 
@@ -171,74 +192,21 @@ export function ActiveCampaignContactForm({
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred')
     } finally {
-      setTimeout(() => setBusy(false), 100)
+      setTimeout(() => setIsLoading(false), 100)
     }
   }
 
   // Success state
   if (isSent && !successRedirect) {
     return (
-      <Stack className={`items-center justify-center gap-4 ${className}`}>
-        <Text className={dark ? 'text-white' : 'text-gray-900'}>
-          Thank you! We'll be in touch soon.
-        </Text>
+      <Stack className="items-center justify-center gap-4">
+        <Text>Thank you! We'll be in touch soon.</Text>
       </Stack>
     )
   }
 
-  const inputClasses = dark
-    ? '[&_input]:bg-white/10 [&_input]:text-white [&_input]:placeholder-white/50'
-    : ''
-  const textareaClasses = dark
-    ? '[&_textarea]:bg-white/10 [&_textarea]:text-white [&_textarea]:placeholder-white/50'
-    : ''
-  const checkboxClasses = dark ? '[&_label]:text-white/90' : ''
-
-  // Inline layout for simple forms (like UnknownBankContent)
-  if (layout === 'inline') {
-    return (
-      <form onSubmit={handleSubmit} className={className}>
-        <Stack className="gap-4">
-          <Group className="gap-2">
-            <TextInput
-              type="email"
-              placeholder={placeholders.email}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              error={warnings.email}
-              className={`flex-1 ${inputClasses}`}
-              required
-            />
-            <Button type="submit" disabled={busy} className="bg-sushi-500 hover:bg-sushi-600">
-              {busy ? <CircleNotchIcon className="animate-spin" size={20} /> : labels.submit}
-            </Button>
-          </Group>
-          {fields.isAgreeTerms && (
-            <Checkbox
-              checked={isAgreeTerms}
-              onChange={(e) => setIsAgreeTerms(e.target.checked)}
-              error={warnings.isAgreeTerms}
-              className={checkboxClasses}
-              label={
-                <Text span className={dark ? 'text-white/80' : ''}>
-                  I have read and understood Bank.Green's{' '}
-                  <Anchor href="/privacy" className={dark ? 'text-white underline' : ''}>
-                    privacy policy
-                  </Anchor>
-                  .
-                </Text>
-              }
-            />
-          )}
-          {error && <Text className="text-red-500 text-sm">{error}</Text>}
-        </Stack>
-      </form>
-    )
-  }
-
-  // Stacked layout (default)
   return (
-    <form onSubmit={handleSubmit} className={className}>
+    <form onSubmit={handleSubmit} className="w-full">
       <Stack className="gap-4">
         {fields.firstName && (
           <TextInput
@@ -246,8 +214,6 @@ export function ActiveCampaignContactForm({
             placeholder={placeholders.firstName}
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
-            className={inputClasses}
-            classNames={dark ? { label: 'text-white/90' } : undefined}
           />
         )}
 
@@ -259,9 +225,16 @@ export function ActiveCampaignContactForm({
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             error={warnings.email}
-            className={inputClasses}
-            classNames={dark ? { label: 'text-white/90' } : undefined}
             required
+          />
+        )}
+
+        {fields.bank && (
+          <TextInput
+            label={labels.bank}
+            placeholder={placeholders.bank}
+            value={bank}
+            onChange={(e) => setBank(e.target.value)}
           />
         )}
 
@@ -272,8 +245,6 @@ export function ActiveCampaignContactForm({
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
             error={warnings.subject}
-            className={inputClasses}
-            classNames={dark ? { label: 'text-white/90' } : undefined}
             required
           />
         )}
@@ -286,58 +257,55 @@ export function ActiveCampaignContactForm({
             onChange={(e) => setMessage(e.target.value)}
             error={warnings.message}
             rows={3}
-            className={textareaClasses}
-            classNames={dark ? { label: 'text-white/90' } : undefined}
             required
           />
         )}
 
-        {fields.isAgreeMarketing && (
-          <Checkbox
-            checked={isAgreeMarketing}
-            onChange={(e) => setIsAgreeMarketing(e.target.checked)}
-            className={checkboxClasses}
-            label={
-              <Text span className={dark ? 'text-white/80' : ''}>
-                I wish to receive more information via email from Bank.Green.
-              </Text>
-            }
+        {fields.status && (
+          <Select
+            label={labels.status}
+            placeholder="Select an option"
+            data={STATUS_OPTIONS}
+            value={status}
+            onChange={setStatus}
           />
         )}
 
-        {fields.isAgreeTerms && (
-          <Checkbox
-            checked={isAgreeTerms}
-            onChange={(e) => setIsAgreeTerms(e.target.checked)}
-            error={warnings.isAgreeTerms}
-            className={checkboxClasses}
-            label={
-              <Text span className={dark ? 'text-white/80' : ''}>
-                I have read and understood Bank.Green's{' '}
-                <Anchor href="/privacy" className={dark ? 'text-white underline' : ''}>
-                  privacy policy
-                </Anchor>
-                .
-              </Text>
-            }
-          />
-        )}
-
-        {error && <Text className="text-red-500 text-sm">{error}</Text>}
-
-        <Button type="submit" disabled={busy} className="bg-sushi-500 hover:bg-sushi-600">
-          {busy ? (
-            <Group className="items-center gap-2">
-              <CircleNotchIcon className="animate-spin" size={20} />
-              <Text span>Sending...</Text>
-            </Group>
-          ) : (
-            labels.submit
+        <Stack className="my-4 gap-2">
+          {fields.isAgreeMarketing && (
+            <Checkbox
+              checked={isAgreeMarketing}
+              onChange={(e) => setIsAgreeMarketing(e.target.checked)}
+              label="I wish to receive more information via email from Bank.Green."
+            />
           )}
+
+          {fields.isAgreeTerms && (
+            <Checkbox
+              checked={isAgreeTerms}
+              onChange={(e) => setIsAgreeTerms(e.target.checked)}
+              error={warnings.isAgreeTerms}
+              label={
+                <>
+                  I have read and understood Bank.Green's <a href="/privacy">privacy policy</a>.
+                </>
+              }
+            />
+          )}
+        </Stack>
+
+        {!isDev && captchaSitekey && (
+          <Turnstile siteKey={captchaSitekey} onSuccess={setCaptchaToken} />
+        )}
+
+        {error && <Text className="text-sm text-textError">{error}</Text>}
+
+        <Button type="submit" loading={isLoading}>
+          {labels.submit}
         </Button>
       </Stack>
     </form>
   )
 }
 
-export default ActiveCampaignContactForm
+export default ContactForm

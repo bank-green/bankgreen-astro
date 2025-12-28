@@ -16,7 +16,6 @@ interface Props {
 export function NotListedPage({ page }: Props) {
   const slices = (page?.data?.slices || []) as Slice[]
 
-  // If page has slices, use SliceZone pattern
   if (slices && slices.length > 0) {
     return (
       <PageContent>
@@ -27,10 +26,8 @@ export function NotListedPage({ page }: Props) {
     )
   }
 
-  // Fallback to legacy text fields if no slices
   const text1 = page?.data?.text1 as RichTextField | undefined
   const text2 = page?.data?.text2 as RichTextField | undefined
-
   const titleText = text1 ? prismic.asText(text1) : ''
 
   return (
@@ -40,7 +37,7 @@ export function NotListedPage({ page }: Props) {
           <Stack className="items-center gap-8">
             <SmileySadIcon size={64} className="text-green-600" />
             {titleText && (
-              <Title order={2} className="text-center">
+              <Title order={1} className="text-center">
                 {titleText}
               </Title>
             )}

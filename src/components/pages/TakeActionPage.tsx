@@ -1,6 +1,6 @@
 import { PageContent } from '@components/PageContent'
 import { renderRichText } from '@lib/prismicHelpers'
-import { Anchor, Loader, Stack, Tabs, Title } from '@mantine/core'
+import { Button, Loader, Stack, Tabs, Title } from '@mantine/core'
 import type { PrismicDocument, RichTextField } from '@prismicio/client'
 import type { Slice } from '@slices'
 import { SliceZone } from '@slices'
@@ -51,10 +51,12 @@ export function TakeActionPage({ page }: Props) {
         </Tabs>
 
         {/* Call to action */}
-        <section>
-          <Title order={2}>Start to Bank Green Today</Title>
-          <Anchor href="/sustainable-eco-banks">Move Your Money Today</Anchor>
-        </section>
+        <Stack>
+          <Title order={2}>Start to Bank Green</Title>
+          <Button component="a" className="max-w-fit" size="lg" href="/sustainable-eco-banks">
+            Move Your Money Today
+          </Button>
+        </Stack>
       </Stack>
     </PageContent>
   )

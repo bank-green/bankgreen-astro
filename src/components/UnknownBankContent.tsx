@@ -1,8 +1,8 @@
-import { ActiveCampaignContactForm } from '@components/forms/ActiveCampaignContactForm'
 import { Box, Center, Grid, Image, List, Stack, Text, ThemeIcon, Title } from '@mantine/core'
-import { CheckIcon } from '@phosphor-icons/react'
+import { CheckCircleIcon } from '@phosphor-icons/react'
 import type { PrismicDocument, RichTextField } from '@prismicio/client'
 import * as prismic from '@prismicio/client'
+import ContactFormContainer from './forms/ContactFormContainer'
 import { Swoosh } from './Swoosh'
 
 const CHECK_LIST = [
@@ -66,10 +66,19 @@ export function UnknownBankContent({ page }: Props) {
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 6 }}>
               <List
-                className="space-y-3 rounded-2xl bg-white p-8"
+                classNames={{
+                  root: 'space-y-1 rounded-2xl bg-white p-8',
+                  item: 'md:text-lg',
+                  itemWrapper: 'items-start',
+                }}
                 icon={
-                  <ThemeIcon color="green.1" size={24} radius="xl" className="shrink-0">
-                    <CheckIcon size={18} weight="bold" className="text-green-500" />
+                  <ThemeIcon
+                    color="transparent"
+                    size={24}
+                    radius="xl"
+                    className="ml-0 shrink-0 pl-0"
+                  >
+                    <CheckCircleIcon size={24} className="-mb-2 text-green-500" />
                   </ThemeIcon>
                 }
               >
@@ -79,29 +88,22 @@ export function UnknownBankContent({ page }: Props) {
               </List>
             </Grid.Col>
           </Grid>
-
-          <Box className="contain my-8 w-full bg-sky-800 p-8 lg:rounded-2xl">
-            <Stack className="gap-4">
-              <Title order={3} className="mb-4 text-center text-textInverse">
-                Sign up to Bank.Green. We'll take the fight to the banks together.
-              </Title>
-              <ActiveCampaignContactForm
-                tag="not listed bottom"
-                dark
-                layout="inline"
-                className="mx-auto w-full max-w-160"
-                labels={{ submit: 'Join the Money Movement' }}
-                fields={{
-                  firstName: false,
-                  email: true,
-                  subject: false,
-                  message: false,
-                  isAgreeMarketing: false,
-                  isAgreeTerms: true,
-                }}
-              />
-            </Stack>
-          </Box>
+          <ContactFormContainer
+            title="Sign up to Bank.Green. We'll take the fight to the banks together."
+            showList={false}
+            tag="not listed bottom"
+            className="mx-auto w-full"
+            labels={{ submit: 'Submit' }}
+            fields={{
+              firstName: true,
+              email: true,
+              bank: true,
+              subject: false,
+              message: false,
+              isAgreeMarketing: true,
+              isAgreeTerms: true,
+            }}
+          />
         </Stack>
       </Box>
     </>

@@ -1,8 +1,8 @@
-import { ActiveCampaignContactForm } from '@components/forms/ActiveCampaignContactForm'
 import { PageContent } from '@components/PageContent'
 import { renderRichText } from '@lib/prismicHelpers'
 import { Box, Stack } from '@mantine/core'
 import type { PrismicDocument, RichTextField } from '@prismicio/client'
+import { ContactForm } from '@/components/forms/ContactForm'
 import { CornerLogoContainer } from '../CornerLogo'
 
 interface Props {
@@ -21,7 +21,7 @@ export function ContactPage({ page }: Props) {
           </Stack>
 
           <Box className="mx-auto w-full max-w-md">
-            <ActiveCampaignContactForm
+            <ContactForm
               tag="contact page form"
               successRedirect="/thanks-contact"
               labels={{ submit: 'Send message' }}

@@ -2,6 +2,7 @@ import { PageContent } from '@components/PageContent'
 import { Anchor, Card, Grid, Image, Stack, Text, Title } from '@mantine/core'
 import type { PrismicDocument } from '@prismicio/client'
 import * as prismic from '@prismicio/client'
+import ContactFormContainer from '../forms/ContactFormContainer'
 
 interface Partner {
   name?: string
@@ -21,8 +22,8 @@ export function PartnersPage({ page }: Props) {
   const partners = (page?.data?.partners || []) as Partner[]
 
   return (
-    <PageContent>
-      <Stack className="gap-8">
+    <PageContent fullWidth>
+      <Stack className="contain gap-8">
         <Stack className="gap-4">
           <Title order={1}>{title}</Title>
           <Text className="text-lg">{description}</Text>
@@ -78,9 +79,23 @@ export function PartnersPage({ page }: Props) {
             )
           })}
         </Grid>
-
-        <Stack className="mt-12 gap-4">{/* Newsletter signup form placeholder */}</Stack>
       </Stack>
+      <ContactFormContainer
+        tag="partners bottom"
+        successRedirect="/thanks"
+        labels={{ submit: 'Join the Money Movement' }}
+        className="my-18 bg-sushi-100"
+        fields={{
+          firstName: true,
+          email: true,
+          bank: false,
+          subject: false,
+          message: false,
+          status: false,
+          isAgreeMarketing: true,
+          isAgreeTerms: true,
+        }}
+      />
     </PageContent>
   )
 }

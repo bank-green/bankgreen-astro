@@ -35,7 +35,6 @@ export const theme = createTheme({
   fontFamily: fontTokens.body.join(', '),
   headings: {
     fontFamily: fontTokens.headings.join(', '),
-    textWrap: 'balance',
   },
   primaryColor: 'green',
   primaryShade: 5,
@@ -137,6 +136,11 @@ export const theme = createTheme({
         root: 'px-0',
       },
     }),
+    Input: {
+      classNames: {
+        input: 'disabled:opacity-50 disabled:bg-white',
+      },
+    },
     LoadingOverlay: {
       classNames: {
         overlay: 'bg-sushi-100/50 backdrop-blur-[2px]',
@@ -144,15 +148,14 @@ export const theme = createTheme({
     },
     Spoiler: {
       defaultProps: {
-        maxHeight: 160,
+        maxHeight: 140,
       },
       classNames: {
-        root: 'mx-auto max-w-4xl rounded-md bg-(--spoiler-bg-color,white) pb-8',
+        root: 'mx-auto max-w-4xl rounded-md pb-8',
         content: cx(
           'relative mb-8',
-          'before:absolute before:inset-0 before:z-10 before:content-[""]',
-          'before:bg-linear-to-b before:from-60% before:from-transparent before:to-(--spoiler-bg-color,white) before:to-100%',
-          '[button[aria-expanded=true]~&]:before:opacity-0'
+          'mask-b-from-50% mask-b-to-100%',
+          '[button[aria-expanded=true]~&]:mask-none'
         ),
         control: '-mt-16 py-4',
       },
@@ -185,45 +188,5 @@ export const theme = createTheme({
     },
   },
 })
-
-// const variantColorResolver: VariantColorsResolver = ({ color, variant, gradient, theme }) => {
-//   const defaultResolvedColors = defaultVariantColorsResolver({ color, variant, gradient, theme })
-//   const parsedColor = parseThemeColor({
-//     color: color || theme.primaryColor,
-//     theme: theme,
-//   })
-
-//   // Override some properties for variant
-//   if (variant === 'filled') {
-//     return {
-//       ...defaultResolvedColors,
-//       color: 'var(--mantine-color-green-1)',
-//       hoverColor: 'var(--mantine-color-white)',
-//       backgroundColor: 'var(--mantine-color-white)',
-//     }
-//   }
-
-//   // Completely override variant
-//   if (variant === 'light') {
-//     return {
-//       background: rgba(parsedColor.value, 0.1),
-//       hover: rgba(parsedColor.value, 0.15),
-//       border: `1px solid ${parsedColor.value}`,
-//       color: darken(parsedColor.value, 0.1),
-//     }
-//   }
-
-//   // Add new variants support
-//   if (variant === 'danger') {
-//     return {
-//       background: 'var(--mantine-color-red-9)',
-//       hover: 'var(--mantine-color-red-8)',
-//       color: 'var(--mantine-color-white)',
-//       border: 'none',
-//     }
-//   }
-
-//   return defaultResolvedColors
-// }
 
 export default theme

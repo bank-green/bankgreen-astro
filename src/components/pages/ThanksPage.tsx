@@ -1,4 +1,5 @@
 import { PageContent } from '@components/PageContent'
+import { Anchor, List, Stack, Text, Title } from '@mantine/core'
 import type { PrismicDocument } from '@prismicio/client'
 import type { Slice } from '@slices'
 import { SliceZone } from '@slices'
@@ -20,35 +21,35 @@ export function ThanksPage({ page, fallback, pageType }: Props) {
 
   return (
     <PageContent>
-      <article>
-        {slices ? (
-          <section>
-            <SliceZone slices={slices} />
-          </section>
-        ) : (
-          <section>
-            <h1>{fallback.title}</h1>
-            {fallback.description && <p>{fallback.description}</p>}
-          </section>
-        )}
+      {slices ? (
+        <SliceZone slices={slices} />
+      ) : (
+        <Stack className="gap-8">
+          <Title order={1} className="text-gray-900">
+            {fallback.title}
+          </Title>
+          {fallback.description && <Text className="text-lg">{fallback.description}</Text>}
+        </Stack>
+      )}
 
-        {showExplore && (
-          <section>
-            <h2>Explore More</h2>
-            <ul>
-              <li>
-                <a href="/sustainable-eco-banks">Find a sustainable bank</a>
-              </li>
-              <li>
-                <a href="/blog">Read our blog</a>
-              </li>
-              <li>
-                <a href="/take-action">Take action</a>
-              </li>
-            </ul>
-          </section>
-        )}
-      </article>
+      {showExplore && (
+        <Stack className="mt-12 gap-6">
+          <Title order={2} className="text-gray-900">
+            Explore More
+          </Title>
+          <List>
+            <List.Item>
+              <Anchor href="/sustainable-eco-banks">Find a sustainable bank</Anchor>
+            </List.Item>
+            <List.Item>
+              <Anchor href="/blog">Read our blog</Anchor>
+            </List.Item>
+            <List.Item>
+              <Anchor href="/take-action">Take action</Anchor>
+            </List.Item>
+          </List>
+        </Stack>
+      )}
     </PageContent>
   )
 }

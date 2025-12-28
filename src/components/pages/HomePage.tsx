@@ -1,31 +1,17 @@
 import { ATMAnimation, MoneySmokeAnimation } from '@components/animations'
-import { ActiveCampaignContactForm } from '@components/forms/ActiveCampaignContactForm'
 import BankLocationSearch from '@components/forms/BankLocationSearch'
 import { Swoosh } from '@components/Swoosh'
 import { renderRichText } from '@lib/prismicHelpers'
-import {
-  Anchor,
-  Box,
-  Card,
-  Grid,
-  Group,
-  Image,
-  List,
-  MantineProvider,
-  Paper,
-  Stack,
-  Text,
-  ThemeIcon,
-  Title,
-} from '@mantine/core'
-import { CheckIcon } from '@phosphor-icons/react'
+import { Anchor, Box, Card, Grid, Group, Image, Stack, Text, Title } from '@mantine/core'
+
 import type { PrismicDocument, RichTextField } from '@prismicio/client'
 import type { Slice } from '@slices'
 import { SliceZone } from '@slices'
-import theme from '@styles/theme'
 import cx from 'clsx'
 import type { Bank } from '../../lib/banks'
 import ArrowDown from '../animations/ArrowDown'
+import ContactFormContainer from '../forms/ContactFormContainer'
+import { PageContent } from '../PageContent'
 
 interface Props {
   page: PrismicDocument | null
@@ -46,10 +32,10 @@ export function HomePage({ page }: Props) {
   }
 
   return (
-    <MantineProvider theme={theme}>
+    <PageContent fullWidth>
       {/* Hero section with green gradient background - breaks out of container */}
       <Box data-breakout className="bg-linear-to-b from-sushi-100 to-sushi-200">
-        <Grid className="contain items-end gap-12 pt-20 pb-12 lg:pb-18">
+        <Grid className="contain items-end gap-12 pt-8 pb-12 md:pt-20 lg:pb-18">
           <Grid.Col span={{ base: 12, md: 7 }}>
             <Title
               order={1}
@@ -116,10 +102,10 @@ export function HomePage({ page }: Props) {
           </Box>
           <Stack>
             {/* Why Bank.Green? teaser */}
-            <Group className="mx-auto items-center gap-1 text-4xl text-gray-700 leading-4 lg:mt-16">
+            <Group className="mx-auto items-center gap-1 text-2xl text-gray-700 leading-4 sm:text-4xl lg:mt-16">
               Why{' '}
               <Image
-                className="mt-2 ml-2 inline-block h-10 w-auto px-0.5"
+                className="mt-2 ml-2 inline-block h-6 w-auto px-0.5 sm:h-10"
                 src="/img/trim-hor-light.svg"
                 alt="Bank.Green"
               />
@@ -189,74 +175,31 @@ export function HomePage({ page }: Props) {
               </Stack>
             </Grid.Col>
           </Grid>
-
-          {/* Lead gen form section - dark blue card */}
-          <Box id="join" className="contain pb-8">
-            <Paper className="rounded-2xl bg-primaryDark p-8 text-white md:p-12">
-              <Grid gutter={0}>
-                {/* Left side - title and benefits */}
-                <Grid.Col span={{ base: 12, md: 6 }} className="pb-12">
-                  <Title order={2} className="mb-6 text-2xl text-textInverse md:text-3xl">
-                    Start to Bank Green Today
-                  </Title>
-                  <List
-                    spacing="sm"
-                    className="space-y-3 pl-0"
-                    icon={
-                      <ThemeIcon
-                        color="transparent"
-                        size={20}
-                        radius="xl"
-                        className="ml-0 shrink-0"
-                      >
-                        <CheckIcon size={20} weight="bold" className="-mb-2 text-green-500" />
-                      </ThemeIcon>
-                    }
-                  >
-                    <List.Item>
-                      <Text component="span">Learn how to take action on fossil fuel finance.</Text>
-                    </List.Item>
-                    <List.Item>
-                      <Text component="span">
-                        Discover green banking and how easy it is to switch.
-                      </Text>
-                    </List.Item>
-                    <List.Item>
-                      <Text component="span">Stay up to date with climate finance news.</Text>
-                    </List.Item>
-                  </List>
-                </Grid.Col>
-
-                {/* Right side - lead gen form */}
-                <Grid.Col
-                  span={{ base: 12, md: 6 }}
-                  className="h-full min-h-48 items-center justify-center rounded-xl bg-white/10 p-6"
-                >
-                  <ActiveCampaignContactForm
-                    tag="index bottom"
-                    dark
-                    successRedirect="/thanks"
-                    labels={{ submit: 'Join the Movement' }}
-                    fields={{
-                      firstName: true,
-                      email: true,
-                      subject: false,
-                      message: false,
-                      isAgreeMarketing: true,
-                      isAgreeTerms: true,
-                    }}
-                  />
-                </Grid.Col>
-              </Grid>
-            </Paper>
-          </Box>
         </Box>
+
+        <ContactFormContainer
+          title="Start to Bank Green Today"
+          tag="index bottom"
+          successRedirect="/thanks"
+          labels={{ submit: 'Complete Sign Up' }}
+          className="bg-arcticBlue"
+          fields={{
+            firstName: true,
+            email: true,
+            bank: false,
+            subject: false,
+            message: false,
+            status: true,
+            isAgreeMarketing: true,
+            isAgreeTerms: true,
+          }}
+        />
 
         {/* Smokestack animation */}
         <Stack className="mx-auto aspect-690/340 max-w-[690px] justify-end object-cover object-bottom">
           <MoneySmokeAnimation className="-mb-1 w-full" />
         </Stack>
       </Box>
-    </MantineProvider>
+    </PageContent>
   )
 }

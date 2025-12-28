@@ -1,9 +1,10 @@
 import { PageContent } from '@components/PageContent'
 import { renderRichText } from '@lib/prismicHelpers'
-import { Stack, Title } from '@mantine/core'
+import { Stack } from '@mantine/core'
 import type { PrismicDocument, RichTextField } from '@prismicio/client'
 import type { Slice } from '@slices'
 import { SliceZone } from '@slices'
+import ContactFormContainer from '../forms/ContactFormContainer'
 
 interface Props {
   page: PrismicDocument | null
@@ -14,22 +15,30 @@ export function FaqPage({ page }: Props) {
   const slices = (page?.data?.slices || []) as Slice[]
 
   return (
-    <PageContent>
-      <Stack>
-        {introduction && introduction.length > 0 ? (
-          renderRichText(introduction)
-        ) : (
-          <Title order={1}>Frequently Asked Questions</Title>
-        )}
-
-        <Stack className="rounded-lg bg-white p-4">
-          {slices ? <SliceZone slices={slices} /> : <p>Error loading content.</p>}
+    <PageContent fullWidth>
+      <Stack data-breakout>
+        <Stack className="contain gap-8 bg-white p-8 lg:rounded-2xl">
+          {introduction && introduction.length > 0 && renderRichText(introduction)}
+          <Stack>{slices ? <SliceZone slices={slices} /> : <p>Error loading content.</p>}</Stack>
         </Stack>
 
-        <section>
-          <h2>Take Action with Bank.Green</h2>
-          {/* Newsletter signup form placeholder */}
-        </section>
+        <ContactFormContainer
+          title="Take action with Bank.Green"
+          tag="FAQ bottom"
+          successRedirect="/thanks"
+          labels={{ submit: 'Join the Money Movement' }}
+          className="my-18"
+          fields={{
+            firstName: true,
+            email: true,
+            bank: false,
+            subject: false,
+            message: false,
+            status: false,
+            isAgreeMarketing: true,
+            isAgreeTerms: true,
+          }}
+        />
       </Stack>
     </PageContent>
   )
