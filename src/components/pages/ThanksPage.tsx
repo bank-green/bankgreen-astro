@@ -1,5 +1,6 @@
+import { ThanksTopEcoBanksWidget } from '@components/bank/ThanksTopEcoBanksWidget'
 import { PageContent } from '@components/PageContent'
-import { Anchor, Image, List, SimpleGrid, Stack, Text, Title } from '@mantine/core'
+import { Image, SimpleGrid, Stack, Text, Title } from '@mantine/core'
 import type { PrismicDocument, RichTextField } from '@prismicio/client'
 import * as prismic from '@prismicio/client'
 import type { Slice } from '@slices'
@@ -34,7 +35,7 @@ export function ThanksPage({ page, fallback, pageType }: Props) {
         <SimpleGrid cols={{ base: 1, md: 2 }} className="gap-12">
           <Image src="/img/illustrations/dig.svg" />
 
-          <Stack>
+          <Stack className="justify-center">
             {hasSlices ? (
               <SliceZone slices={slices} />
             ) : hasTextFields ? (
@@ -48,30 +49,17 @@ export function ThanksPage({ page, fallback, pageType }: Props) {
                 {fallback.description && <Text className="text-lg">{fallback.description}</Text>}
               </Stack>
             )}
-
-            {showExplore && (
-              <section>
-                <Stack className="mt-12 w-full gap-6">
-                  <Title order={2}>Bank on a better future</Title>
-                  <Text>
-                    Not happy with your bank's score? Explore sustainable banks in your area.
-                  </Text>
-                  <List>
-                    <List.Item>
-                      <Anchor href="/sustainable-eco-banks">Find a sustainable bank</Anchor>
-                    </List.Item>
-                    <List.Item>
-                      <Anchor href="/blog">Read our blog</Anchor>
-                    </List.Item>
-                    <List.Item>
-                      <Anchor href="/take-action">Take action</Anchor>
-                    </List.Item>
-                  </List>
-                </Stack>
-              </section>
-            )}
           </Stack>
         </SimpleGrid>
+        {showExplore && (
+          <section>
+            <Stack className="mt-12 w-full gap-6 text-center">
+              <Title order={2}>Top sustainable banks near you</Title>
+              <Text>Based on your location, here are highly-rated sustainable banks:</Text>
+              <ThanksTopEcoBanksWidget />
+            </Stack>
+          </section>
+        )}
       </CornerLogoContainer>
     </PageContent>
   )

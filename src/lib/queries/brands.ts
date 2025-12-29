@@ -396,3 +396,109 @@ export async function fetchHarvestData(tag: string): Promise<HarvestData | null>
     return null
   }
 }
+
+// Lightweight query for ThanksTopEcoBanksWidget
+export const TOP_SUSTAINABLE_BANKS_QUERY = `
+  query TopSustainableBanksQuery($country: String, $first: Int) {
+    brands(
+      country: $country
+      first: $first
+      recommendedOnly: true
+    ) {
+      edges {
+        node {
+          name
+          tag
+          website
+          commentary {
+            topPick
+            fossilFreeAlliance
+            fossilFreeAllianceRating
+            showOnSustainableBanksPage
+          }
+        }
+      }
+    }
+  }
+`
+
+export interface SimpleBankCard {
+  name: string
+  tag: string
+  website: string
+  topPick: boolean
+  fossilFreeAlliance: boolean
+}
+
+interface TopSustainableBankCommentary {
+  topPick?: boolean | null
+  fossilFreeAlliance?: boolean | null
+  fossilFreeAllianceRating?: number | null
+  showOnSustainableBanksPage?: boolean | null
+}
+
+interface TopSustainableBankNode {
+  name: string
+  tag: string
+  website?: string | null
+  commentary?: TopSustainableBankCommentary | null
+}
+
+interface TopSustainableBanksResponse {
+  brands: {
+    edges: Array<{
+      node: TopSustainableBankNode
+    }>
+  }
+}
+
+export async function fetchTopSustainableBanks(
+  country: string,
+  limit: number = 3
+): Promise<SimpleBankCard[]> {
+  try {
+    const data = await graphqlFetch<TopSustainableBanksResponse>(TOP_SUSTAINABLE_BANKS_QUERY, {
+      country,
+      first: limit,
+    })
+
+    if (!data?.brands?.edges) {
+      console.warn('No brands data in response')
+      return []
+    }
+
+    // Filter by showOnSustainableBanksPage
+    const filteredBanks = data.brands.edges
+      .map((edge) => edge.node)
+      .filter((bank) => bank.commentary?.showOnSustainableBanksPage)
+
+    // Sort by topPick → fossilFreeAllianceRating → name
+    const sortedBanks = [...filteredBanks].sort((a, b) => {
+      // Top picks first
+      if (a.commentary?.topPick && !b.commentary?.topPick) return -1
+      if (!a.commentary?.topPick && b.commentary?.topPick) return 1
+
+      // Then by fossilFreeAllianceRating (higher is better)
+      const ratingA = a.commentary?.fossilFreeAllianceRating ?? 0
+      const ratingB = b.commentary?.fossilFreeAllianceRating ?? 0
+      if (ratingA !== ratingB) return ratingB - ratingA
+
+      // Finally by name alphabetically
+      return a.name.localeCompare(b.name)
+    })
+
+    // Transform to SimpleBankCard format
+    const simpleBankCards: SimpleBankCard[] = sortedBanks.map((bank) => ({
+      name: bank.name,
+      tag: bank.tag,
+      website: bank.website || '',
+      topPick: bank.commentary?.topPick || false,
+      fossilFreeAlliance: bank.commentary?.fossilFreeAlliance || false,
+    }))
+
+    return simpleBankCards
+  } catch (error) {
+    console.error('Error fetching top sustainable banks:', error)
+    return []
+  }
+}
