@@ -1,14 +1,35 @@
 /**
- * LeadGen - Lead generation form slice.
+ * LeadGen - Lead generation form slice using shared ContactFormContainer.
  *
  * Variations: default
  *
- * Note: This is a complex interactive component that will need full
- * implementation with form handling, validation, and submission.
- * This is a semantic placeholder showing the structure.
+ * Features:
+ * - Full form validation and submission to /api/contact
+ * - Turnstile CAPTCHA integration
+ * - Customizable field visibility (bank, status)
+ * - Custom labels from Prismic
+ * - Bullet point list from Prismic items
+ * - Success redirect not configured (defaults to inline thank you message)
+ *
+ * LIMITATIONS:
+ * - Status field options are hardcoded in ContactForm (cannot use custom options from Prismic)
+ * - Uses two-column layout with dark background (matches HomePage/FaqPage style)
+ * - Ignores items[].dropdown_status_option field (ContactForm has fixed status options)
+ *
+ * Prismic fields:
+ * - primary.title: Main heading (RichTextField)
+ * - primary.show_bank_field: Toggle bank field visibility (default: true)
+ * - primary.show_status_field: Toggle status dropdown visibility (default: true)
+ * - primary.form_bank_label: Custom label for bank field
+ * - primary.form_name_label: Custom label for first name field
+ * - primary.form_email_label: Custom label for email field
+ * - primary.form_status_label: Custom label for status field
+ * - primary.button_label: Custom submit button text
+ * - items[].bullet_text: Bullet points for value proposition list
+ * - items[].dropdown_status_option: IGNORED (ContactForm uses hardcoded options)
  */
-import { Button, Checkbox, Container, List, Select, Stack, TextInput, Title } from '@mantine/core'
-import { asText, type RichTextField } from '@prismicio/client'
+import ContactFormContainer from '@components/forms/ContactFormContainer'
+import { asText } from '@lib/prismicHelpers'
 import type { LeadGenSlice } from './types'
 
 interface Props {
@@ -17,12 +38,18 @@ interface Props {
 }
 
 /**
- * Safely extract text from a field that might be a RichTextField or a plain string.
+ * Safely extract text from a RichTextField, handling edge cases
  */
-function safeAsText(field: RichTextField | string | undefined | null): string {
+function safeAsText(field: unknown): string {
   if (!field) return ''
   if (typeof field === 'string') return field
-  if (Array.isArray(field)) return asText(field)
+  if (Array.isArray(field) && field.length > 0) {
+    try {
+      return asText(field as Parameters<typeof asText>[0])
+    } catch {
+      return ''
+    }
+  }
   return ''
 }
 
@@ -30,93 +57,44 @@ export function LeadGen({ slice, className }: Props) {
   const primary = slice.primary
   const items = slice.items
 
+  // Convert title from RichTextField to string
   const title = safeAsText(primary.title) || 'Curious about switching to a green bank?'
-  const showBankField = primary.show_bank_field ?? true
-  const showStatusField = primary.show_status_field ?? true
 
-  // Extract bullet points for the value proposition list
-  const bulletPoints = items
+  // Extract bullet points from items (filter out empty strings)
+  const listItems = items
     .map((item) => safeAsText(item.bullet_text))
     .filter((text) => text.length > 0)
 
-  // Extract status options for the dropdown
-  const statusOptions = items
-    .map((item) => item.dropdown_status_option)
-    .filter((opt): opt is string => typeof opt === 'string' && opt !== 'Select none (default)')
+  // Configure field visibility based on Prismic settings
+  const fields = {
+    firstName: true,
+    email: true,
+    bank: primary.show_bank_field ?? true,
+    subject: false,
+    message: false,
+    status: primary.show_status_field ?? true,
+    isAgreeMarketing: true,
+    isAgreeTerms: true,
+  }
+
+  // Configure custom labels from Prismic (with defaults)
+  const labels = {
+    firstName: primary.form_name_label || 'First name',
+    email: primary.form_email_label || 'Email address',
+    bank: primary.form_bank_label || 'I am interested in',
+    status: primary.form_status_label || 'Which option best describes your current status?',
+    submit: primary.button_label || 'Complete Sign Up',
+  }
 
   return (
-    <Container component="section" data-slice-type={slice.slice_type} className={className}>
-      <Stack gap="lg">
-        <Title id="lead-gen-title">{title}</Title>
-
-        {bulletPoints.length > 0 && (
-          <List>
-            {bulletPoints.map((point) => (
-              <List.Item key={point}>{point}</List.Item>
-            ))}
-          </List>
-        )}
-
-        <form onSubmit={(e) => e.preventDefault()}>
-          <Stack gap="md">
-            {showBankField && (
-              <TextInput
-                label={primary.form_bank_label || 'I am interested in'}
-                id="bank"
-                name="bank"
-                placeholder="Search for a bank..."
-              />
-            )}
-
-            <TextInput
-              label={primary.form_name_label || 'First name'}
-              id="firstName"
-              name="firstName"
-              placeholder="First name, so we can say hi"
-            />
-
-            <TextInput
-              label={primary.form_email_label || 'Email address'}
-              id="email"
-              name="email"
-              type="email"
-              placeholder="Your email address"
-              required
-            />
-
-            {showStatusField && statusOptions.length > 0 && (
-              <Select
-                label={
-                  primary.form_status_label || 'Which option best describes your current status?'
-                }
-                id="status"
-                name="status"
-                placeholder="Select an option..."
-                data={statusOptions}
-              />
-            )}
-
-            <Checkbox
-              name="isAgreeMarketing"
-              label="I wish to receive more information via email from Bank.Green."
-            />
-
-            <Checkbox
-              name="isAgreeTerms"
-              label={
-                <>
-                  I have read and understood Bank.Green's <a href="/privacy">privacy policy</a>.
-                </>
-              }
-              required
-            />
-
-            <Button type="submit" fullWidth>
-              {primary.button_label || 'Complete Sign Up'}
-            </Button>
-          </Stack>
-        </form>
-      </Stack>
-    </Container>
+    <ContactFormContainer
+      title={title}
+      showList={listItems.length > 0}
+      listItems={listItems}
+      tag="green bank"
+      fields={fields}
+      labels={labels}
+      className={className}
+    />
   )
 }

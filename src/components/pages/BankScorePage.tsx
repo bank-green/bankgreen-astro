@@ -69,50 +69,48 @@ export function BankScorePage({ bank, prismicDefaults, prismicPage, prismicNotLi
   return (
     <PageContent fullWidth>
       {/* SECTION ONE - Header with bank info */}
-      <Box className="pt-16" data-breakout>
-        <Stack className="contain items-center pb-8 md:min-h-128">
-          <Grid className="mx-auto mb-16 w-full max-w-5xl md:mb-12" gutter={48}>
+      <Box className="pt-8 lg:pt-16" data-breakout>
+        <Stack className="contain items-center from-white via-white to-blue-100 p-8 md:mb-24 md:min-h-128 lg:mb-36 lg:rounded-2xl lg:bg-linear-to-tr">
+          <Grid className="mx-auto w-full" gutter={48}>
             <Grid.Col span={{ base: 12, md: 7 }}>
-              <Stack className="mx-auto items-center gap-6 px-6 md:px-0">
-                <Stack className="items-start">
-                  <Group className="items-center gap-4">
-                    {websiteUrl && (
-                      <BankLogo
-                        brandDomain={websiteUrl}
-                        imgClass="rounded object-contain"
-                        size={64}
+              <Stack className="mx-auto max-w-max items-start gap-6 px-4">
+                <Group className="items-center justify-start gap-4">
+                  {websiteUrl && (
+                    <BankLogo
+                      brandDomain={websiteUrl}
+                      imgClass="rounded object-contain"
+                      size={64}
+                    />
+                  )}
+                  <Title order={3} className="mb-0 text-2xl md:text-3xl">
+                    {bank.name}
+                  </Title>
+                </Group>
+
+                {subtitle && <SafeHtml html={subtitle} className="font-medium text-xl" />}
+
+                {inheritBrandRating && (
+                  <Text>
+                    This brand is rated based on{' '}
+                    <Anchor href={`/banks/${inheritBrandRating.tag}`}>
+                      {inheritBrandRating.name}
+                    </Anchor>
+                  </Text>
+                )}
+                <Stack className="gap-8">
+                  <SafeHtml html={headline} className="mb-0 font-semibold text-3xl" />
+                  <Stack>
+                    <SafeHtml className="mb-0 max-w-lg text-xl" html={description1} />
+                    {bank.commentary?.fossilFreeAlliance && (
+                      <Image
+                        className="float-left mr-6 w-16 md:w-20 lg:w-24"
+                        src="/img/certification/fossil-free-certified.png"
+                        alt="Fossil Free Certification"
+                        style={{
+                          shapeOutside: 'circle(50%)',
+                        }}
                       />
                     )}
-                    <Title order={3} className="mb-0 text-2xl md:text-3xl">
-                      {bank.name}
-                    </Title>
-                  </Group>
-
-                  {subtitle && <SafeHtml html={subtitle} className="font-medium text-xl" />}
-
-                  {inheritBrandRating && (
-                    <Text>
-                      This brand is rated based on{' '}
-                      <Anchor href={`/banks/${inheritBrandRating.tag}`}>
-                        {inheritBrandRating.name}
-                      </Anchor>
-                    </Text>
-                  )}
-                  <Stack className="gap-8">
-                    <SafeHtml html={headline} className="mb-0 font-semibold text-3xl" />
-                    <Stack>
-                      <SafeHtml className="mb-0 max-w-lg text-xl" html={description1} />
-                      {bank.commentary?.fossilFreeAlliance && (
-                        <Image
-                          className="float-left mr-6 w-20 md:w-24 lg:w-36"
-                          src="/img/certification/fossil-free-certified.png"
-                          alt="Fossil Free Certification"
-                          style={{
-                            shapeOutside: 'circle(50%)',
-                          }}
-                        />
-                      )}
-                    </Stack>
                   </Stack>
                 </Stack>
               </Stack>
@@ -219,9 +217,8 @@ export function BankScorePage({ bank, prismicDefaults, prismicPage, prismicNotLi
         <Box className="bg-ocean-100" data-breakout>
           <Swoosh direction="down" color="white" />
           <Box className="contain pt-32 pb-16">
-            <Box className="mx-auto max-w-5xl rounded-3xl bg-sky-800 p-12 text-textInverse">
-              <SliceZone slices={ctaSlices} />
-            </Box>
+            {/* LeadGen slice, for some reason */}
+            <SliceZone slices={ctaSlices} />
           </Box>
         </Box>
       ) : (
