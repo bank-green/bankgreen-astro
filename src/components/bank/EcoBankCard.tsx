@@ -109,7 +109,7 @@ function EcoBankCard({ bank, externalOpened, onToggle, resetTrigger }: EcoBankCa
           </Card.Section>
 
           <Collapse in={effectiveOpened}>
-            <Stack className="gap-0 p-8 pt-0">
+            <Stack className="group/body gap-0 p-8 pt-0">
               {/* Interest Rate + Deposit Protection */}
               <Card.Section className="p-6">
                 <Group className="justify-between">
@@ -156,7 +156,7 @@ function EcoBankCard({ bank, externalOpened, onToggle, resetTrigger }: EcoBankCa
                     variant="transparent"
                     size="sm"
                     classNames={{
-                      root: 'rounded-full px-4 group-hover/card:bg-green-100',
+                      root: 'rounded-full px-4 group-hover/body:bg-green-100',
                       label: 'text-sm',
                     }}
                     rightSection={<CaretRightIcon size={16} weight="bold" />}
