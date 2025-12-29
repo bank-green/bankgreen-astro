@@ -184,7 +184,7 @@ function LocationSearch({
     <Group className={className}>
       <Autocomplete
         label={label}
-        className="mx-auto max-w-sm grow basis-20 md:max-w-xl"
+        className="mx-auto max-w-sm grow basis-30 md:max-w-xl"
         placeholder={isDetecting ? 'Detecting your location...' : placeholder}
         value={search}
         clearable
