@@ -40,10 +40,11 @@ Pages are static Astro components (`.astro`) that render to HTML at build time. 
 
 **Architecture**:
 - The root `<Layout>` component in `BaseLayout.astro` uses `client:load` and provides the main React tree
-- Page components (HomePage, FaqPage, etc.) are regular React components passed through Astro slots - they do NOT use `client:*` directives
-- Only add `client:*` directives to truly interactive sub-components (forms, modals, etc.)
+- **Page components use `client:load`**: All page components (HomePage, FaqPage, SwitchSurveyPage, etc.) are React components that use `client:load` directive when rendered in `.astro` files
+- Page components can import from barrel exports (`@components/pages`) or direct imports - both patterns work
+- Only truly interactive sub-components (forms, modals, dialogs) that need their own islands require separate `client:*` directives
 
-**Rule**: Prefer static Astro components. Only use React islands for the root Layout and truly interactive UI components.
+**Rule**: Page components passed through BaseLayout slots should use `client:load`. Standalone interactive islands (dialogs, banners) also use `client:load` with their own MantineProvider.
 
 ### Dual Styling System
 
@@ -183,25 +184,28 @@ const page = await getSingleSafe("mypage");
 ---
 
 <BaseLayout title="My Page Title">
-  <MyPage page={page} />
+  <MyPage page={page} client:load />
 </BaseLayout>
 ```
 
 ```tsx
 // src/components/pages/MyPage.tsx
 import { PageContent } from "@components/PageContent";
+import { Stack, Title, Text } from "@mantine/core";
 
 export function MyPage({ page }) {
   return (
     <PageContent>
-      <h1>{page?.data?.title}</h1>
-      <p>Your content here...</p>
+      <Stack className="gap-4">
+        <Title order={1}>{page?.data?.title}</Title>
+        <Text>Your content here...</Text>
+      </Stack>
     </PageContent>
   );
 }
 ```
 
-**Important**: Page components like `<MyPage>` should NOT have `client:*` directives. They're regular React components rendered within the Layout island.
+**Important**: Page components like `<MyPage>` should use `client:load` directive. They can be imported from barrel exports (`@components/pages`) or direct imports (`@components/pages/MyPage`).
 
 ### Using Mantine Components in Pages
 

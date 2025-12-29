@@ -1,7 +1,9 @@
 ---
 import '../styles/global.css'
+import { ExitIntentDialog } from '../components/ExitIntentDialog'
 import { GdprBanner } from '../components/GdprBanner'
 import { Layout } from '../components/Layout'
+import { getSingleSafe } from '../lib/prismic'
 
 const { title, description = 'Bank.Green helps you find ethical and sustainable banks' } =
   Astro.props
@@ -9,6 +11,10 @@ const { title, description = 'Bank.Green helps you find ethical and sustainable 
 // Read GDPR cookie values from server-side
 const showBanner = Astro.cookies.get('bg.showbanner')?.value !== 'false'
 const allowCookies = Astro.cookies.get('bg.allowcookies')?.value === 'true'
+
+// Read exit intent cookie and fetch content from Prismic
+const hasSeenExitIntent = Astro.cookies.get('bg.seenExitIntent')?.value === 'true'
+const exitIntentContent = await getSingleSafe('switchsurveyexit')
 ---
 
 <!doctype html>
@@ -35,5 +41,6 @@ const allowCookies = Astro.cookies.get('bg.allowcookies')?.value === 'true'
       <slot />
     </Layout>
     <GdprBanner client:load showBanner={showBanner} allowCookies={allowCookies} />
+    <ExitIntentDialog client:load hasSeenDialog={hasSeenExitIntent} content={exitIntentContent} />
   </body>
 </html>
