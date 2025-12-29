@@ -13,6 +13,9 @@
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
+  /* Fix FOUC: Set Mantine's default border color before MantineProvider hydrates.
+     This ensures inputs don't flash with black borders during page load. */
+  --mantine-color-default-border: var(--color-borderDefault);
 }
 
 /* Select all Mantine components */

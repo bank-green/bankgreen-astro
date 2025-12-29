@@ -3,7 +3,7 @@
  *
  * Variations: default
  */
-import { Container, Stack, Text, Title } from '@mantine/core'
+import { Stack, Text, Title } from '@mantine/core'
 import { asText } from '@prismicio/client'
 import type { ThanksSlice as ThanksSliceType } from './types'
 
@@ -19,16 +19,14 @@ export function ThanksSlice({ slice, className }: Props) {
   const descriptionText = asText(description)
 
   return (
-    <Container component="section" data-slice-type={slice.slice_type} className={className}>
-      <Stack gap="lg">
-        <Title order={1}>{titleText}</Title>
-        {descriptionText && <Text>{descriptionText}</Text>}
-        {show_explore_section && (
-          <nav aria-label="Explore more">
-            <Text>Explore more options...</Text>
-          </nav>
-        )}
-      </Stack>
-    </Container>
+    <Stack data-slice-type={slice.slice_type} className={className}>
+      <Title order={1}>{titleText}</Title>
+      {descriptionText && <Text>{descriptionText}</Text>}
+      {show_explore_section && (
+        <nav aria-label="Explore more">
+          <Text>Explore more options...</Text>
+        </nav>
+      )}
+    </Stack>
   )
 }

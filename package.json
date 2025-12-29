@@ -8,6 +8,9 @@
   },
   "scripts": {
     "dev": "astro dev",
+    "dev:mock": "CONTACT_FORM_MODE=mock CONTACT_FORM_DEBUG=true astro dev",
+    "dev:captcha": "PUBLIC_CAPTCHA_TEST_MODE=true CAPTCHA_TEST_MODE=true astro dev",
+    "dev:integration": "CONTACT_FORM_MODE=real PUBLIC_CAPTCHA_TEST_MODE=true CAPTCHA_TEST_MODE=true CONTACT_FORM_DEBUG=true astro dev",
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check && biome check .",

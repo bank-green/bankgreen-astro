@@ -23,7 +23,7 @@ export function ContactPage({ page }: Props) {
           <Box className="mx-auto w-full max-w-md">
             <ContactForm
               tag="contact page form"
-              successRedirect="/thanks-contact"
+              successRedirect="/thanks/contact"
               labels={{ submit: 'Send message' }}
               fields={{
                 firstName: true,

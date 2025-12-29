@@ -117,7 +117,9 @@ export function ContactForm({
 
   // Environment
   const isDev = import.meta.env.DEV
+  const captchaTestMode = import.meta.env.PUBLIC_CAPTCHA_TEST_MODE === 'true'
   const captchaSitekey = import.meta.env.PUBLIC_CLOUDFLARE_CAPTCHA_SITEKEY
+  const showCaptcha = !isDev || captchaTestMode
 
   // Compute warnings
   const getWarnings = (): FormWarnings => {
@@ -294,7 +296,7 @@ export function ContactForm({
           )}
         </Stack>
 
-        {!isDev && captchaSitekey && (
+        {showCaptcha && captchaSitekey && (
           <Turnstile siteKey={captchaSitekey} onSuccess={setCaptchaToken} />
         )}
 

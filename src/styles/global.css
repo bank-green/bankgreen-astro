@@ -12,29 +12,23 @@
 
 @layer base, components, theme, utilities;
 
-*,
-::before,
-::after {
-  border-color: var(--color-borderDefault, currentColor);
+:root {
+  --font-family:
+    "Reddit Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
 }
 
-input {
+/* Necessary while loading to avoid FOUC on inputs  */
+.mantine-Loader-root {
+  --loader-color: var(--color-linkDefault);
+}
+.mantine-Autocomplete-input {
+  color: var(--color-textDefault);
   background-color: white;
   border: 1px solid var(--color-borderDefault, currentColor);
 }
 
 @layer theme {
-  :root {
-    --font-family:
-      "Reddit Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-      "Helvetica Neue", Arial, sans-serif;
-    --mantine-color-bg: var(--color-sushi-100);
-    --mantine-color-body: var(--color-white);
-    --mantine-color-default-color: var(--color-linkDefault);
-    --mantine-color-default-border: var(--color-borderDefault);
-    --mantine-color-text: var(--color-textDefault);
-    --mantine-color-headings: var(--color-textHeadings);
-  }
   html {
     scroll-behavior: smooth;
     font-family: var(--font-family);
@@ -43,6 +37,12 @@ input {
     background-color: var(--mantine-color-bg);
   }
   body {
+    --mantine-color-bg: var(--color-sushi-100);
+    --mantine-color-body: var(--color-white);
+    --mantine-color-default-color: var(--color-linkDefault);
+    --mantine-color-default-border: var(--color-borderDefault);
+    --mantine-color-text: var(--color-textDefault);
+    --mantine-color-headings: var(--color-textHeadings);
     --mantine-font-family: var(--font-family);
     --mantine-line-height: 1.55;
 
