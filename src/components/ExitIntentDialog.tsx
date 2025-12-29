@@ -13,6 +13,7 @@ import { useEffect } from 'react'
 import {
   clearExitIntentTimeout,
   handleExitIntent,
+  hasSeenDialogStore,
   initExitIntentStore,
   markDialogSeen,
   showDialogStore,
@@ -20,17 +21,17 @@ import {
 import { theme } from '@/styles/theme'
 
 interface ExitIntentDialogProps {
-  hasSeenDialog: boolean
   content: PrismicDocument | null
 }
 
-export function ExitIntentDialog({ hasSeenDialog, content }: ExitIntentDialogProps) {
+export function ExitIntentDialog({ content }: ExitIntentDialogProps) {
   const isOpen = useStore(showDialogStore)
+  const hasSeenDialog = useStore(hasSeenDialogStore)
 
-  // Initialize stores on mount
+  // Initialize stores by reading cookies client-side
   useEffect(() => {
-    initExitIntentStore(hasSeenDialog)
-  }, [hasSeenDialog])
+    initExitIntentStore()
+  }, [])
 
   // Attach event listeners
   useEffect(() => {

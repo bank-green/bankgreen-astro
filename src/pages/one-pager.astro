@@ -1,11 +1,6 @@
 ---
-import { SlicePage } from '@components/pages'
-import BaseLayout from '@layouts/BaseLayout.astro'
-import { getSingleSafe } from '@lib/prismic'
+// Redirect /one-pager to /materials (both use the same Prismic document)
+export const prerender = true
 
-const page = await getSingleSafe('onepagerpage')
+return Astro.redirect('/materials', 301)
 ---
-
-<BaseLayout title="One Pager">
-  <SlicePage title="One Pager" page={page} client:load />
-</BaseLayout>

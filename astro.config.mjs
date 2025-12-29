@@ -22,7 +22,11 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
     optimizeDeps: {
-      include: ['react', 'react-dom', '@mantine/core', '@mantine/hooks'],
+      include: ['react', 'react-dom', '@mantine/core', '@mantine/hooks', 'htmlparser2'],
+    },
+    ssr: {
+      // htmlparser2 needs to be bundled for SSR/static builds
+      noExternal: ['htmlparser2'],
     },
   },
   output: 'server',

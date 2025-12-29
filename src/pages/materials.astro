@@ -1,11 +1,14 @@
 ---
-import { SlicePage } from '@components/pages'
+import { MaterialsPage } from '@components/pages'
 import BaseLayout from '@layouts/BaseLayout.astro'
 import { getSingleSafe } from '@lib/prismic'
 
-const page = await getSingleSafe('materialspage')
+export const prerender = true
+
+// Materials page uses the onepagerpage document with custom fields
+const page = await getSingleSafe('onepagerpage')
 ---
 
 <BaseLayout title="Materials">
-  <SlicePage title="Materials" page={page} client:load />
+  <MaterialsPage page={page} />
 </BaseLayout>

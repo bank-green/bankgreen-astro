@@ -10,18 +10,13 @@ import { useEffect } from 'react'
 import { acceptCookies, declineCookies, initGdprStores, showBannerStore } from '@/lib/gdpr-store'
 import { theme } from '@/styles/theme'
 
-interface GdprBannerProps {
-  showBanner: boolean
-  allowCookies: boolean
-}
-
-export function GdprBanner({ showBanner, allowCookies }: GdprBannerProps) {
+export function GdprBanner() {
   const isOpen = useStore(showBannerStore)
 
   useEffect(() => {
-    // Initialize stores with server-provided values
-    initGdprStores(showBanner, allowCookies)
-  }, [showBanner, allowCookies])
+    // Initialize stores by reading cookies client-side
+    initGdprStores()
+  }, [])
 
   const handleAccept = () => {
     acceptCookies()

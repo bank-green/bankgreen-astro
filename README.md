@@ -1,14 +1,15 @@
-# Astro Frontend
+# Bank.Green Astro Frontend
 
-A content-focused frontend built with Astro, React, Mantine, and Tailwind CSS.
+A content-focused frontend built with Astro, React, Mantine, and Tailwind CSS. Deployed to Cloudflare Workers with hybrid rendering.
 
 ## Tech Stack
 
-- **[Astro 5.2+](https://astro.build/)** - Static site generator with islands architecture
+- **[Astro 5.x](https://astro.build/)** - Hybrid SSR/static site generator with islands architecture
 - **[React 19](https://react.dev/)** - For interactive components (islands)
 - **[Mantine 8](https://mantine.dev/)** - UI component library for React islands
 - **[Tailwind CSS 4](https://tailwindcss.com/)** - Utility-first CSS via Vite plugin
 - **[Biome](https://biomejs.dev/)** - Linting and formatting
+- **[Cloudflare Workers](https://workers.cloudflare.com/)** - Edge deployment with on-demand SSR
 
 ## Getting Started
 
@@ -71,48 +72,81 @@ src/
 
 ## Architecture Notes
 
-### Astro + React Islands
+### Astro Islands + Hybrid Rendering
 
-The app uses a single-island architecture:
+The app uses Astro's **hybrid rendering** approach with React islands for interactivity:
 
-1. **Root Layout Island**: `BaseLayout.astro` renders `<Layout client:load>`, creating the main React tree with MantineProvider
-2. **Page Components**: Passed as children through Astro slots (no `client:*` directives needed)
-3. **Interactive Sub-Components**: Only truly interactive pieces (forms, modals) get `client:*` directives
+**Rendering Modes**:
+- **Static pages** (`export const prerender = true`): Pre-rendered at build time as static HTML
+- **Dynamic pages**: Rendered on-demand by Cloudflare Workers
 
-**Example page structure**:
+**Page Architecture**:
+1. **Root Layout**: `BaseLayout.astro` renders `<Layout client:load>` with header/footer
+2. **Static Content Pages**: Use no `client:*` directive - rendered as pure HTML (blog posts, methodology, glossary)
+3. **Interactive Pages**: Use `client:load` when they need client-side state (forms, accordions)
+4. **Standalone Islands**: `GdprBanner` and `ExitIntentDialog` have their own MantineProvider and manage state via nanostores
+
+**Client Directives** (use sparingly):
+- `client:load` - Hydrate immediately (for interactive pages, header/footer)
+- `client:idle` - Hydrate when browser is idle (for non-critical components like exit intent dialogs)
+- `client:visible` - Hydrate when component enters viewport
+- No directive - Renders as static HTML with zero JavaScript
+
+**Example static content page**:
 
 ```astro
 ---
 // src/pages/my-page.astro
 import BaseLayout from "@layouts/BaseLayout.astro";
-import { MyPage } from "@components/pages/MyPage";
+import { SlicePage } from "@components/pages";
+import { getSingleSafe } from "@lib/prismic";
+
+export const prerender = true  // Pre-render at build time
 
 const page = await getSingleSafe("mypage");
 ---
 
 <BaseLayout title="My Page">
-  <MyPage page={page} />  <!-- No client:* needed! -->
+  <SlicePage title="My Page" page={page} />  <!-- No client:* = pure HTML -->
+</BaseLayout>
+```
+
+**Example interactive page**:
+
+```astro
+---
+// src/pages/my-form.astro
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { MyFormPage } from "@components/pages/MyFormPage";
+import { getSingleSafe } from "@lib/prismic";
+
+const page = await getSingleSafe("myformpage");
+---
+
+<BaseLayout title="My Form">
+  <MyFormPage page={page} client:load />  <!-- client:load for interactivity -->
 </BaseLayout>
 ```
 
 ```tsx
-// src/components/pages/MyPage.tsx
+// src/components/pages/MyFormPage.tsx
 import { PageContent } from "@components/PageContent";
+import { Stack, TextInput, Button } from "@mantine/core";
+import { useState } from "react";
 
-export function MyPage({ page }) {
+export function MyFormPage({ page }) {
+  const [value, setValue] = useState("");
+
   return (
     <PageContent>
-      <h1>{page?.data?.title}</h1>
-      <p>Content here...</p>
+      <Stack className="gap-4">
+        <TextInput value={value} onChange={(e) => setValue(e.target.value)} />
+        <Button>Submit</Button>
+      </Stack>
     </PageContent>
   );
 }
 ```
-
-**Available client directives** (use sparingly):
-- `client:load` - Hydrate immediately on page load
-- `client:idle` - Hydrate when browser is idle
-- `client:visible` - Hydrate when component enters viewport
 
 ### Tailwind CSS 4 + Mantine 8
 
@@ -140,18 +174,36 @@ We use both styling systems:
 
 ### Data Sources
 
-- **Prismic CMS**: Content management (see `src/lib/prismic.ts`)
-- **Django GraphQL**: Dynamic data from backend (see `src/lib/graphql.ts`)
+**Prismic CMS** (content management):
+- Client configured in `src/lib/prismic.ts` with safe wrapper functions
+- Use `getSingleSafe()` for singleton documents (e.g., `getSingleSafe('homepage')`)
+- Use `getByUIDSafe()` for documents with UIDs (e.g., `getByUIDSafe('textonlypages', 'privacy')`)
+- Use `getAllByTypeSafe()` for collections (e.g., `getAllByTypeSafe('blogpost')`)
+- All functions return `null` on error instead of throwing
+
+**Django GraphQL** (dynamic data):
+- Use `graphqlFetch()` from `src/lib/graphql.ts`
+- Endpoint configured via `PUBLIC_GRAPHQL_ENDPOINT` env variable
+- Fetch at build time in `.astro` files for static pages
 
 ## Deployment
 
-This site builds to static files and can be deployed anywhere:
+**Cloudflare Workers** with hybrid rendering:
+- `output: 'server'` in `astro.config.mjs` with `@astrojs/cloudflare` adapter
+- Pages with `export const prerender = true` are built as static HTML at build time
+- Dynamic routes (bank profiles, sustainable-eco-banks) render on-demand via Workers
+- Static assets served from Cloudflare's edge CDN
 
-- **Vercel**: Auto-detects Astro, zero config
-- **Netlify**: Auto-detects Astro, zero config
-- **Cloudflare Pages**: Use the Astro preset
+**Prerendered pages** (static HTML, fastest):
+- Blog posts, press releases (`/blog/*`, `/press/*`)
+- Content pages: methodology, glossary, privacy, disclaimer, materials, one-pager, green-banking-guide
+- 404 page
 
-All platforms support branch preview deployments out of the box.
+**Server-rendered pages** (on-demand):
+- Bank profiles (`/banks/*`, `/sustainable-eco-banks/*`)
+- Pages that need dynamic data or haven't implemented `getStaticPaths()`
+
+**Branch previews**: Automatically deployed via Cloudflare Pages
 
 ## Contributing
 
@@ -163,5 +215,8 @@ All platforms support branch preview deployments out of the box.
 **For new volunteers**:
 - Start by reading through `src/pages/` to understand the page structure
 - Look at `src/components/pages/` for examples of page components
-- See `CLAUDE.md` for detailed architecture patterns and code examples
-- Remember: page components don't need `client:*` directives - they're rendered within the Layout island
+- See [CLAUDE.md](CLAUDE.md) for detailed architecture patterns and code examples
+- Key patterns:
+  - Static content pages: Add `export const prerender = true` and don't use `client:*` directives
+  - Interactive pages: Use `client:load` for pages with forms, accordions, or client state
+  - Prismic content: Use `getSingleSafe()`, `getByUIDSafe()`, or `getAllByTypeSafe()` in `.astro` files

@@ -28,9 +28,12 @@ export const showBannerStore = atom<boolean>(true)
 export const cookieConsentStore = atom<boolean>(false)
 
 /**
- * Initialize stores from cookie values (call this on mount)
+ * Initialize stores by reading cookies client-side (call this on mount)
  */
-export function initGdprStores(showBanner: boolean, allowCookies: boolean): void {
+export function initGdprStores(): void {
+  const showBanner = getCookie(GDPR_COOKIES.SHOW_BANNER) !== 'false'
+  const allowCookies = getCookie(GDPR_COOKIES.ALLOW_COOKIES) === 'true'
+
   showBannerStore.set(showBanner)
   cookieConsentStore.set(allowCookies)
 }
@@ -38,6 +41,19 @@ export function initGdprStores(showBanner: boolean, allowCookies: boolean): void
 /**
  * Client-side cookie utilities
  */
+export function getCookie(name: string): string | null {
+  if (typeof document === 'undefined') return null
+
+  const cookies = document.cookie.split(';')
+  for (const cookie of cookies) {
+    const [cookieName, cookieValue] = cookie.trim().split('=')
+    if (cookieName === name) {
+      return cookieValue
+    }
+  }
+  return null
+}
+
 export function setCookie(name: string, value: string, days: number = 365): void {
   if (typeof document === 'undefined') return
 

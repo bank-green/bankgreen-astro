@@ -3,6 +3,8 @@ import { NotFoundPage } from '@components/pages'
 import BaseLayout from '@layouts/BaseLayout.astro'
 import { getByUIDSafe } from '@lib/prismic'
 
+export const prerender = true
+
 const page = await getByUIDSafe('textonlypages', 'notfound')
 ---
 

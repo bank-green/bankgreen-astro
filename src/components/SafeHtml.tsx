@@ -1,10 +1,7 @@
 import { Text, Title } from '@mantine/core'
-import parse, {
-  type DOMNode,
-  domToReact,
-  type Element,
-  type HTMLReactParserOptions,
-} from 'html-react-parser'
+import type { DOMNode, Element, HTMLReactParserOptions } from 'html-react-parser'
+import { domToReact } from 'html-react-parser'
+import { parseDocument } from 'htmlparser2'
 
 interface SafeHtmlProps {
   html: string | null | undefined
@@ -13,6 +10,7 @@ interface SafeHtmlProps {
 
 /**
  * Parses HTML content from CMS and converts it to Mantine components.
+ * Uses htmlparser2 directly for edge/SSR compatibility (no DOM APIs required).
  * - <h1>-<h6> → <Title order={1-6}>
  * - <p> → <Text>
  * - <span> → <Text span>
@@ -22,6 +20,21 @@ export function SafeHtml({ html, className = '' }: SafeHtmlProps) {
   if (!html) {
     return null
   }
+
+  // Use htmlparser2 directly (works in edge environments without DOM)
+  const dom = parseDocument(html)
+
+  // Clear parent references to avoid circular structure issues with domToReact
+  const clearParents = (nodes: DOMNode[]) => {
+    for (const node of nodes) {
+      // biome-ignore lint/suspicious/noExplicitAny: Required to clear circular refs
+      ;(node as any).parent = null
+      if ('children' in node && Array.isArray(node.children)) {
+        clearParents(node.children as DOMNode[])
+      }
+    }
+  }
+  clearParents(dom.children as DOMNode[])
 
   const options: HTMLReactParserOptions = {
     replace: (domNode) => {
@@ -111,13 +124,13 @@ export function SafeHtml({ html, className = '' }: SafeHtmlProps) {
           // For divs, just return the children without wrapping
           return <>{children}</>
         default:
-          // For all other tags, let html-react-parser handle them naturally
+          // For all other tags, let domToReact handle them naturally
           return
       }
     },
   }
 
-  return <>{parse(html, options)}</>
+  return <>{domToReact(dom.children as DOMNode[], options)}</>
 }
 
 /**

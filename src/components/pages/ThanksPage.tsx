@@ -34,7 +34,6 @@ export function ThanksPage({ page, fallback, pageType }: Props) {
       <CornerLogoContainer className="p-24">
         <SimpleGrid cols={{ base: 1, md: 2 }} className="gap-12">
           <Image src="/img/illustrations/dig.svg" />
-
           <Stack className="justify-center">
             {hasSlices ? (
               <SliceZone slices={slices} />
@@ -52,13 +51,11 @@ export function ThanksPage({ page, fallback, pageType }: Props) {
           </Stack>
         </SimpleGrid>
         {showExplore && (
-          <section>
-            <Stack className="mt-12 w-full gap-6 text-center">
-              <Title order={2}>Top sustainable banks near you</Title>
-              <Text>Based on your location, here are highly-rated sustainable banks:</Text>
-              <ThanksTopEcoBanksWidget />
-            </Stack>
-          </section>
+          <Stack className="mt-12 w-full gap-6 text-center">
+            <Title order={2}>Top sustainable banks near you</Title>
+            <Text>Based on your location, here are highly-rated sustainable banks:</Text>
+            <ThanksTopEcoBanksWidget />
+          </Stack>
         )}
       </CornerLogoContainer>
     </PageContent>

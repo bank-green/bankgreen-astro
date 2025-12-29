@@ -1,12 +1,14 @@
 ---
-import { SlicePage } from '@components/pages'
+import { MaterialsPage } from '@components/pages'
 import BaseLayout from '@layouts/BaseLayout.astro'
 import { getSingleSafe } from '@lib/prismic'
+
+export const prerender = true
 
 // green-banking-guide uses the onepagersimplepage document
 const page = await getSingleSafe('onepagersimplepage')
 ---
 
 <BaseLayout title="Green Banking Guide">
-  <SlicePage title="Green Banking Guide" page={page} client:load />
+  <MaterialsPage page={page} />
 </BaseLayout>

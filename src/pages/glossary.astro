@@ -3,9 +3,11 @@ import { SlicePage } from '@components/pages'
 import BaseLayout from '@layouts/BaseLayout.astro'
 import { getSingleSafe } from '@lib/prismic'
 
+export const prerender = true
+
 const page = await getSingleSafe('glossarypage')
 ---
 
 <BaseLayout title="Glossary">
-  <SlicePage title="Glossary" page={page} client:load />
+  <SlicePage title="Glossary" page={page} />
 </BaseLayout>

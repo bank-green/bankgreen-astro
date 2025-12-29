@@ -5,6 +5,7 @@
  */
 
 import { atom } from 'nanostores'
+import { getCookie } from './gdpr-store'
 
 export const EXIT_INTENT_COOKIE = 'bg.seenExitIntent' as const
 
@@ -12,9 +13,10 @@ export const showDialogStore = atom<boolean>(false)
 export const hasSeenDialogStore = atom<boolean>(false)
 
 /**
- * Initialize stores from cookie values (call this on mount)
+ * Initialize stores by reading cookies client-side (call this on mount)
  */
-export function initExitIntentStore(hasSeenDialog: boolean): void {
+export function initExitIntentStore(): void {
+  const hasSeenDialog = getCookie(EXIT_INTENT_COOKIE) === 'true'
   hasSeenDialogStore.set(hasSeenDialog)
   showDialogStore.set(false)
 }

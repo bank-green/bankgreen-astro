@@ -1,5 +1,5 @@
 ---
-import { BankProfilePage } from '@components/pages'
+import { EcoBankProfilePage } from '@components/pages'
 import BaseLayout from '@layouts/BaseLayout.astro'
 import { getByUIDSafe, prismicClient } from '@lib/prismic'
 import { fetchBrandByTag, fetchHarvestData } from '@lib/queries/brands'
@@ -36,5 +36,5 @@ const description = `Learn about ${bankName}'s environmental rating, services, a
 ---
 
 <BaseLayout title={title} description={description}>
-  <BankProfilePage bank={bank} harvestData={harvestData} prismicData={prismicData} prismicDefaults={prismicDefaults} client:load />
+  <EcoBankProfilePage bank={bank} harvestData={harvestData} prismicData={prismicData} prismicDefaults={prismicDefaults} client:load />
 </BaseLayout>

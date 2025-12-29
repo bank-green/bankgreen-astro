@@ -4,10 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Astro 5.2+ frontend using React 19 islands architecture with Mantine 8 UI components and Tailwind CSS 4. Built for bank.green, a volunteer-run organization.
+Astro 5.x frontend using React 19 islands architecture with Mantine 8 UI components and Tailwind CSS 4. Built for bank.green, a volunteer-run organization.
 
 **Package Manager**: pnpm 9+ (required)
 **Node Version**: 20+ (required)
+**Deployment**: Cloudflare Workers (server mode with selective prerendering)
 
 ## Essential Commands
 
@@ -32,19 +33,30 @@ cp .env.example .env    # Configure environment
 
 ### Astro Islands Pattern
 
-Pages are static Astro components (`.astro`) that render to HTML at build time. Interactive elements use React islands with `client:*` directives:
+Pages are Astro components (`.astro`) with React islands for interactivity. The site uses **hybrid rendering**:
 
-- `client:load` - Hydrate immediately on page load
-- `client:idle` - Hydrate when browser idle
+- **Static pages** (`export const prerender = true`): Pre-rendered at build time as static HTML
+- **Dynamic pages**: Rendered on-demand by Cloudflare Workers
+
+**Client Directives**:
+- `client:load` - Hydrate immediately (for interactive pages, header/footer)
+- `client:idle` - Hydrate when browser is idle (for non-critical components like exit intent dialogs)
 - `client:visible` - Hydrate when component enters viewport
+- No directive - Renders as static HTML with zero JavaScript
 
 **Architecture**:
-- The root `<Layout>` component in `BaseLayout.astro` uses `client:load` and provides the main React tree
-- **Page components use `client:load`**: All page components (HomePage, FaqPage, SwitchSurveyPage, etc.) are React components that use `client:load` directive when rendered in `.astro` files
-- Page components can import from barrel exports (`@components/pages`) or direct imports - both patterns work
-- Only truly interactive sub-components (forms, modals, dialogs) that need their own islands require separate `client:*` directives
+- The root `<Layout>` component in `BaseLayout.astro` uses `client:load` and provides header/footer
+- **Static content pages**: Use no `client:*` directive - rendered as pure HTML (e.g., blog posts, methodology, glossary)
+- **Interactive pages**: Use `client:load` when they need client-side state (e.g., forms, accordions)
+- **Standalone islands**: `GdprBanner` and `ExitIntentDialog` have their own MantineProvider and manage state via nanostores
 
-**Rule**: Page components passed through BaseLayout slots should use `client:load`. Standalone interactive islands (dialogs, banners) also use `client:load` with their own MantineProvider.
+**When to use `client:load`**:
+- Pages with forms, accordions, or user interaction
+- Components that manage client-side state
+
+**When to skip `client:*` directive**:
+- Pure content pages (blog posts, press releases, static info pages)
+- Components that just display data without interaction
 
 ### Dual Styling System
 
@@ -131,9 +143,11 @@ import { CheckCircleIcon } from '@phosphor-icons/react'
 - Endpoint: `PUBLIC_GRAPHQL_ENDPOINT` env variable (defaults to `http://localhost:8000/graphql`)
 - Fetch at build time in `.astro` files, not in React islands
 
-**Prismic CMS** (not yet configured):
-- Placeholder client in `src/lib/prismic.ts`
-- Requires packages: `@prismicio/client @prismicio/richtext`
+**Prismic CMS**:
+- Client configured in `src/lib/prismic.ts` with safe wrapper functions
+- Use `getSingleSafe()`, `getByUIDSafe()`, `getAllByTypeSafe()` - return null on error
+- Rich text rendering: `renderRichText()` in `src/lib/prismicHelpers.tsx`
+- Slices system in `src/slices/` for modular content blocks
 
 ## Code Style
 
@@ -173,39 +187,84 @@ src/
 
 ### Creating a New Page
 
+**Static content page** (no interactivity):
 ```astro
 ---
 // src/pages/my-page.astro
 import BaseLayout from "@layouts/BaseLayout.astro";
-import { MyPage } from "@components/pages/MyPage";
+import { SlicePage } from "@components/pages";
 import { getSingleSafe } from "@lib/prismic";
+
+export const prerender = true  // Pre-render at build time
 
 const page = await getSingleSafe("mypage");
 ---
 
 <BaseLayout title="My Page Title">
-  <MyPage page={page} client:load />
+  <SlicePage title="My Page" page={page} />
+</BaseLayout>
+```
+
+**Interactive page** (forms, state, etc.):
+```astro
+---
+// src/pages/my-form.astro
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { MyFormPage } from "@components/pages/MyFormPage";
+import { getSingleSafe } from "@lib/prismic";
+
+const page = await getSingleSafe("myformpage");
+---
+
+<BaseLayout title="My Form">
+  <MyFormPage page={page} client:load />
 </BaseLayout>
 ```
 
 ```tsx
-// src/components/pages/MyPage.tsx
+// src/components/pages/MyFormPage.tsx
 import { PageContent } from "@components/PageContent";
-import { Stack, Title, Text } from "@mantine/core";
+import { Stack, Title, TextInput, Button } from "@mantine/core";
+import { useState } from "react";
 
-export function MyPage({ page }) {
+export function MyFormPage({ page }) {
+  const [value, setValue] = useState("");
+
   return (
     <PageContent>
       <Stack className="gap-4">
         <Title order={1}>{page?.data?.title}</Title>
-        <Text>Your content here...</Text>
+        <TextInput value={value} onChange={(e) => setValue(e.target.value)} />
+        <Button>Submit</Button>
       </Stack>
     </PageContent>
   );
 }
 ```
 
-**Important**: Page components like `<MyPage>` should use `client:load` directive. They can be imported from barrel exports (`@components/pages`) or direct imports (`@components/pages/MyPage`).
+**Dynamic route with prerendering** (blog posts, etc.):
+```astro
+---
+// src/pages/posts/[slug].astro
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { PostPage } from "@components/pages";
+import { getAllByTypeSafe, getByUIDSafe } from "@lib/prismic";
+
+export const prerender = true
+
+export async function getStaticPaths() {
+  const posts = await getAllByTypeSafe("post");
+  return posts.map((post) => ({ params: { slug: post.uid } }));
+}
+
+const { slug } = Astro.params;
+const post = await getByUIDSafe("post", slug);
+---
+
+<BaseLayout title={post?.data?.title || "Post"}>
+  <PostPage post={post} />
+</BaseLayout>
+```
 
 ### Using Mantine Components in Pages
 
@@ -299,4 +358,17 @@ Copy `.env.example` to `.env`. Variables prefixed with `PUBLIC_` are available c
 
 ## Deployment
 
-Static output mode - deploys to Vercel, Netlify, or Cloudflare Pages with zero configuration.
+**Cloudflare Workers** with hybrid rendering:
+- `output: 'server'` in `astro.config.mjs` with `@astrojs/cloudflare` adapter
+- Pages with `export const prerender = true` are built as static HTML at build time
+- Dynamic routes (bank profiles, sustainable-eco-banks) render on-demand via Workers
+- Static assets served from Cloudflare's edge CDN
+
+**Prerendered pages** (static HTML, fastest):
+- Blog posts, press releases (`/blog/*`, `/press/*`)
+- Content pages: methodology, glossary, privacy, disclaimer, materials, one-pager
+- 404 page
+
+**Server-rendered pages** (on-demand):
+- Bank profiles (`/banks/*`, `/sustainable-eco-banks/*`)
+- Pages that need dynamic data or haven't implemented `getStaticPaths()`

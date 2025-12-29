@@ -69,7 +69,7 @@ export function BankScorePage({ bank, prismicDefaults, prismicPage, prismicNotLi
   return (
     <PageContent fullWidth>
       {/* SECTION ONE - Header with bank info */}
-      <Box id="section-one" className="pt-16" data-breakout>
+      <Box className="pt-16" data-breakout>
         <Stack className="contain items-center pb-8 md:min-h-128">
           <Grid className="mx-auto mb-16 w-full max-w-5xl md:mb-12" gutter={48}>
             <Grid.Col span={{ base: 12, md: 7 }}>
@@ -146,8 +146,7 @@ export function BankScorePage({ bank, prismicDefaults, prismicPage, prismicNotLi
         <Swoosh color="white" />
       </Box>
 
-      {/* SECTION TWO - Description content */}
-      <Box data-breakout id="section-two" className="overflow-hidden bg-white">
+      <Box data-breakout className="overflow-hidden bg-white">
         {isBadBank && (
           <Stack className="contain gap-0 pt-8">
             <Group className="flex-col-reverse items-center justify-center gap-8 md:flex-row md:gap-24">
@@ -185,7 +184,7 @@ export function BankScorePage({ bank, prismicDefaults, prismicPage, prismicNotLi
 
       {/* SECTION THREE - Only for bad banks */}
       {isBadBank && description4 && (
-        <Box id="section-three" className="bg-ocean-100" data-breakout>
+        <Box className="bg-ocean-100" data-breakout>
           <Swoosh direction="down" color="white" />
           <Image
             className="mb-4 inline-block max-w-sm"
@@ -201,8 +200,8 @@ export function BankScorePage({ bank, prismicDefaults, prismicPage, prismicNotLi
       )}
 
       {/* CALL TO ACTION */}
-      <Box id="call-to-action" className="bg-ocean-100 text-gray-800" data-breakout>
-        {isBadBank ? (
+      {isBadBank ? (
+        <Box className="bg-ocean-100" data-breakout>
           <Stack className="contain items-center gap-8 py-16">
             <Title order={2} className="text-center">
               Take Action Today
@@ -215,19 +214,19 @@ export function BankScorePage({ bank, prismicDefaults, prismicPage, prismicNotLi
               Find a Sustainable Bank
             </Button>
           </Stack>
-        ) : ctaSlices && ctaSlices.length > 0 ? (
-          <>
-            <Swoosh direction="down" color="white" />
-            <Box className="contain pt-32 pb-16">
-              <Box className="mx-auto max-w-5xl rounded-3xl bg-sky-800 p-12 text-textInverse">
-                <SliceZone slices={ctaSlices} />
-              </Box>
+        </Box>
+      ) : ctaSlices && ctaSlices.length > 0 ? (
+        <Box className="bg-ocean-100" data-breakout>
+          <Swoosh direction="down" color="white" />
+          <Box className="contain pt-32 pb-16">
+            <Box className="mx-auto max-w-5xl rounded-3xl bg-sky-800 p-12 text-textInverse">
+              <SliceZone slices={ctaSlices} />
             </Box>
-          </>
-        ) : (
-          <UnknownBankContent page={prismicNotListed} />
-        )}
-      </Box>
+          </Box>
+        </Box>
+      ) : (
+        <UnknownBankContent page={prismicNotListed} />
+      )}
 
       {/* FOOTER ANIMATION */}
       <Box data-breakout className="pointer-events-none flex items-end justify-end bg-ocean-100">

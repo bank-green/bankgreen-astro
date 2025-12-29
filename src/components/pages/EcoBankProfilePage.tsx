@@ -65,7 +65,7 @@ function getFirstParagraph(html: string): string {
   return match ? match[0] : html
 }
 
-export function BankProfilePage({ bank, harvestData, prismicData, prismicDefaults }: Props) {
+export function EcoBankProfilePage({ bank, harvestData, prismicData, prismicDefaults }: Props) {
   if (!bank) {
     return (
       <MantineProvider theme={theme}>
@@ -234,7 +234,7 @@ export function BankProfilePage({ bank, harvestData, prismicData, prismicDefault
               'Stay up to date with climate finance news.',
             ]}
             title="Curious about switching to a green bank?"
-            tag="green bank"
+            tag="green directory"
             successRedirect="/thanks"
             labels={{ submit: 'Complete Sign Up' }}
             className=""

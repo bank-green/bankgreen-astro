@@ -98,10 +98,16 @@ export const theme = createTheme({
             transition-all duration-300 hover:duration-100 active:duration-50
           `]: props.variant === 'filled',
         }),
-        label: cx('no-underline focus:no-underline', {
-          'text-linkDefault [--button-color:--color-linkDefault] hover:text-linkHover':
-            props.variant === 'default' || props.variant === 'transparent',
-        }),
+        label: cx(
+          'no-underline focus:no-underline',
+          {
+            'text-linkDefault [--button-color:--color-linkDefault] hover:text-linkHover':
+              props.variant === 'default' || props.variant === 'transparent',
+          },
+          {
+            'text-white': props.variant === 'filled',
+          }
+        ),
       }),
     }),
     Card: Card.extend({
@@ -175,7 +181,7 @@ export const theme = createTheme({
     Tabs: {
       classNames: {
         root: 'bg-transparent',
-        panel: 'w-full rounded-lg rounded-tl-none border-none bg-(--tabs-bg-color,white) px-4 pb-8',
+        panel: 'w-full rounded-lg rounded-tl-none border-none bg-(--tabs-bg-color,white) p-8',
         tab: cx(
           'rounded-t-lg border-none bg-(--tabs-bg-color,white)/50 lg:px-8',
           'transition-all duration-100',
