@@ -3,10 +3,10 @@ import { BankScorePage } from '@components/pages'
 import BaseLayout from '@layouts/BaseLayout.astro'
 import { getDefaultFields } from '@lib/banks'
 import { getByUIDSafe, prismicClient } from '@lib/prismic'
-import { fetchBrandByTag } from '@lib/queries/brands'
+import { fetchAllBrands, fetchBrandByTag } from '@lib/queries/brands'
 
-// SSR mode - each request fetches fresh data from GraphQL
-// This ensures all banks are accessible, not just those from getStaticPaths()
+// Hybrid rendering: prerender known banks at build time, SSR fallback for others
+export const prerender = true
 
 interface BankData {
   name: string
@@ -26,6 +26,19 @@ interface BankData {
     } | null
   } | null
   countries?: Array<{ code: string }> | null
+}
+
+export async function getStaticPaths() {
+  const brands = await fetchAllBrands()
+  // Prerender all banks that should be shown
+  const data = brands?.filter(
+    (bank: BankData) => bank.commentary?.showOnSustainableBanksPage !== false
+  )
+  return (
+    data?.map((bank: BankData) => ({
+      params: { bankTag: bank.tag },
+    })) || []
+  )
 }
 
 const { bankTag } = Astro.params
