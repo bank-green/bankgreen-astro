@@ -3,6 +3,7 @@ import BankLogo from '@components/bank/BankLogo'
 import { LastReviewed } from '@components/bank/LastReviewed'
 import { PageContent } from '@components/PageContent'
 import { SafeHtml } from '@components/SafeHtml'
+import { SocialSharer } from '@components/SocialSharer'
 import { renderRichText } from '@lib/prismicHelpers'
 import type { HarvestData } from '@lib/queries/brands'
 import {
@@ -173,13 +174,17 @@ export function EcoBankProfilePage({ bank, harvestData, prismicData, prismicDefa
               {/* Rating Circle */}
 
               <Stack className="w-full items-center justify-center md:items-end">
-                <Stack className="gap-0 text-center">
+                <Stack className="items-center gap-0 text-center">
                   <Box className="w-88">
                     <BankCircle
                       rating={rating as 'great' | 'good' | 'ok' | 'bad' | 'worst' | 'unknown'}
                     />
                   </Box>
-                  {/* TODO: Add SocialSharer component when available */}
+                  <SocialSharer
+                    shareText={`Check out ${bank.name}'s environmental rating on Bank.Green!`}
+                    shareUrl={`https://bank.green/sustainable-eco-banks/${bank.tag}`}
+                    className="mt-4"
+                  />
                   <Anchor href="/methodology" className="mt-6">
                     How we rate banks
                   </Anchor>

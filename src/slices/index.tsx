@@ -21,18 +21,7 @@ export { ThanksSlice } from './ThanksSlice'
 
 import type { ComponentType } from 'react'
 import { AccordionSlice } from './AccordionSlice'
-import { ButtonSlice } from './ButtonSlice'
-import { EmbedSlice } from './EmbedSlice'
-import { ErrorMessage } from './ErrorMessage'
-import { FeaturedInSlice } from './FeaturedInSlice'
-import { ImageSlice } from './ImageSlice'
-import { LeadGen } from './LeadGen'
-import { SharePicGallerySlice } from './SharePicGallerySlice'
-import { SocialSharerSlice } from './SocialSharerSlice'
-import { TableSlice } from './TableSlice'
-import { TeamMemberSlice } from './TeamMemberSlice'
-import { TextSlice } from './TextSlice'
-import { ThanksSlice } from './ThanksSlice'
+import { baseSliceComponents, isValidSliceType } from './registry'
 import type { Slice, SliceType, SliceTypeMap } from './types'
 
 // Export all types for use in other files
@@ -55,6 +44,9 @@ export type {
   ThanksSlice as ThanksSliceType,
 } from './types'
 
+// Re-export registry utilities
+export { isValidSliceType } from './registry'
+
 /**
  * Type-safe component registry using mapped types.
  * Each component expects the exact slice type that corresponds to its key.
@@ -67,31 +59,12 @@ type SliceComponentMap = {
  * Map of slice type identifiers to their React components.
  * Keys match the slice_type values from Prismic.
  *
- * This registry is fully type-safe: each component expects the exact
- * slice type that corresponds to its slice_type key.
+ * This registry includes all slice components, extending the base registry
+ * with accordion support for top-level slice rendering.
  */
 export const sliceComponents: SliceComponentMap = {
-  accordion_slice: AccordionSlice as ComponentType<{ slice: SliceTypeMap['accordion_slice'] }>,
-  button_slice: ButtonSlice,
-  embed_slice: EmbedSlice,
-  error_message: ErrorMessage,
-  featured_in_slice: FeaturedInSlice,
-  image_slice: ImageSlice,
-  lead_gen: LeadGen,
-  share_pic_gallery_slice: SharePicGallerySlice,
-  social_sharer_slice: SocialSharerSlice,
-  table_slice: TableSlice,
-  team_member_slice: TeamMemberSlice,
-  text_slice: TextSlice,
-  thanks_slice: ThanksSlice,
-}
-
-/**
- * Type guard to check if a slice_type is valid.
- * Narrows the type from string to SliceType.
- */
-function isValidSliceType(sliceType: string): sliceType is SliceType {
-  return sliceType in sliceComponents
+  ...baseSliceComponents,
+  accordion_slice: AccordionSlice,
 }
 
 /**
@@ -126,7 +99,9 @@ export function SliceZone({ slices, className }: SliceZoneProps) {
 
         // Type guard to ensure we have a valid slice type
         if (!isValidSliceType(slice.slice_type)) {
-          console.warn(`Unknown slice type: ${slice.slice_type}`)
+          if (import.meta.env.DEV) {
+            console.warn(`Unknown slice type: ${slice.slice_type}`)
+          }
           return (
             <div
               key={key}
@@ -139,20 +114,16 @@ export function SliceZone({ slices, className }: SliceZoneProps) {
           )
         }
 
-        // Type-safe component lookup - TypeScript knows slice_type is valid
-        const Component = sliceComponents[slice.slice_type]
+        // Get the component for this slice type
+        // The type assertion is safe here because we've validated the slice_type
+        // via isValidSliceType, and the discriminated union guarantees the slice
+        // data matches the expected shape for that slice_type
+        const Component = sliceComponents[slice.slice_type] as ComponentType<{
+          slice: typeof slice
+          className?: string
+        }>
 
-        // TypeScript now knows that Component expects the correct slice type
-        // We need a type assertion here because TypeScript can't guarantee
-        // the slice matches the component's expected type at this level
-        return (
-          <Component
-            key={key}
-            slice={slice as never}
-            className={className}
-            data-slice-type={slice.slice_type}
-          />
-        )
+        return <Component key={key} slice={slice} className={className} data-slice-type={slice.slice_type} />
       })}
     </>
   )

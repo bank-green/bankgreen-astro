@@ -2,13 +2,11 @@
 import { EcoBankProfilePage } from '@components/pages'
 import BaseLayout from '@layouts/BaseLayout.astro'
 import { getByUIDSafe, prismicClient } from '@lib/prismic'
-import { fetchBrandByTag, fetchHarvestData } from '@lib/queries/brands'
+import { fetchAllSustainableBankTags, fetchBrandByTag, fetchHarvestData } from '@lib/queries/brands'
 
 export async function getStaticPaths() {
-  // TODO: Fetch all sustainable banks from GraphQL
-  // const data = await graphqlFetch(`query { sustainableBanks { tag } }`);
-  // return data.sustainableBanks.map((bank) => ({ params: { bankTag: bank.tag } }));
-  return []
+  const tags = await fetchAllSustainableBankTags()
+  return tags.map((tag) => ({ params: { bankTag: tag } }))
 }
 
 const { bankTag } = Astro.params

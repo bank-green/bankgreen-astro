@@ -1,11 +1,23 @@
-import { Image, Text, Title } from '@mantine/core'
+import { Image, List, Text, Title } from '@mantine/core'
 import * as prismic from '@prismicio/client'
 import { serialize } from '@prismicio/richtext'
 import type { ReactNode } from 'react'
+import DOMPurify from 'isomorphic-dompurify'
+
+/**
+ * Sanitizes HTML content for safe rendering.
+ * Allows iframes for embed content (YouTube, etc.)
+ */
+function sanitizeHtml(html: string): string {
+  return DOMPurify.sanitize(html, {
+    ADD_TAGS: ['iframe'],
+    ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling'],
+  })
+}
 
 /**
  * Renders Prismic RichText field to semantic HTML.
- * Uses a simple recursive approach to convert Prismic's structured text to React elements.
+ * Groups consecutive list items into proper <ul>/<ol> containers.
  */
 export function renderRichText(
   field: prismic.RichTextField | null | undefined,
@@ -13,85 +25,143 @@ export function renderRichText(
 ): ReactNode {
   if (!field || field.length === 0) return null
 
-  return field.map((block, index) => {
+  const result: ReactNode[] = []
+  let currentList: { type: 'ul' | 'ol'; items: ReactNode[] } | null = null
+  let listKeyCounter = 0
+
+  const flushList = () => {
+    if (currentList) {
+      const listKey = `list-${listKeyCounter++}`
+      if (currentList.type === 'ul') {
+        result.push(
+          <List key={listKey} className={className}>
+            {currentList.items}
+          </List>
+        )
+      } else {
+        result.push(
+          <List key={listKey} type="ordered" className={className}>
+            {currentList.items}
+          </List>
+        )
+      }
+      currentList = null
+    }
+  }
+
+  field.forEach((block, index) => {
     const key = `block-${index}`
 
     switch (block.type) {
       case 'heading1':
-        return (
+        flushList()
+        result.push(
           <Title order={1} key={key} className={className}>
             {renderSpans(block.text, block.spans)}
           </Title>
         )
+        break
       case 'heading2':
-        return (
+        flushList()
+        result.push(
           <Title order={2} key={key} className={className}>
             {renderSpans(block.text, block.spans)}
           </Title>
         )
+        break
       case 'heading3':
-        return (
+        flushList()
+        result.push(
           <Title order={3} key={key} className={className}>
             {renderSpans(block.text, block.spans)}
           </Title>
         )
+        break
       case 'heading4':
-        return (
+        flushList()
+        result.push(
           <Title order={4} key={key} className={className}>
             {renderSpans(block.text, block.spans)}
           </Title>
         )
+        break
       case 'heading5':
-        return (
+        flushList()
+        result.push(
           <Title order={5} key={key} className={className}>
             {renderSpans(block.text, block.spans)}
           </Title>
         )
+        break
       case 'heading6':
-        return (
+        flushList()
+        result.push(
           <Title order={6} key={key} className={className}>
             {renderSpans(block.text, block.spans)}
           </Title>
         )
+        break
       case 'paragraph':
-        return (
+        flushList()
+        result.push(
           <Text key={key} className={className}>
             {renderSpans(block.text, block.spans)}
           </Text>
         )
+        break
       case 'preformatted':
-        return (
+        flushList()
+        result.push(
           <pre key={key} className={className}>
             {block.text}
           </pre>
         )
+        break
       case 'list-item':
-        return (
-          <li key={key} className={className}>
-            {renderSpans(block.text, block.spans)}
-          </li>
+        // Start new unordered list or continue existing one
+        if (!currentList || currentList.type !== 'ul') {
+          flushList()
+          currentList = { type: 'ul', items: [] }
+        }
+        currentList.items.push(
+          <List.Item key={key}>{renderSpans(block.text, block.spans)}</List.Item>
         )
+        break
       case 'o-list-item':
-        return (
-          <li key={key} className={className}>
-            {renderSpans(block.text, block.spans)}
-          </li>
+        // Start new ordered list or continue existing one
+        if (!currentList || currentList.type !== 'ol') {
+          flushList()
+          currentList = { type: 'ol', items: [] }
+        }
+        currentList.items.push(
+          <List.Item key={key}>{renderSpans(block.text, block.spans)}</List.Item>
         )
+        break
       case 'image':
-        return <Image key={key} className={className} src={block.url} alt={block.alt || ''} />
+        flushList()
+        result.push(<Image key={key} className={className} src={block.url} alt={block.alt || ''} />)
+        break
       case 'embed':
-        return (
+        flushList()
+        result.push(
           <div
             key={key}
-            // biome-ignore lint/security/noDangerouslySetInnerHtml: This is appropriate for embeds
-            dangerouslySetInnerHTML={{ __html: block.oembed.html || '' }}
+            // biome-ignore lint/security/noDangerouslySetInnerHtml: Sanitized embed content from Prismic
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(block.oembed.html || '') }}
             className={className}
           />
         )
+        break
       default:
-        return null
+        flushList()
+        break
     }
   })
+
+  // Flush any remaining list
+  flushList()
+
+  return result
 }
 
 /**
@@ -164,16 +234,6 @@ function renderSpans(text: string, spans: prismic.RTInlineNode[]): ReactNode {
 
   // Return the first element (which is the paragraph with its children)
   return result[0] || text
-}
-
-/**
- * Wraps list items in appropriate list containers.
- * Call this on the result of renderRichText when you expect lists.
- */
-export function wrapLists(nodes: ReactNode): ReactNode {
-  // This is a simplified version - for full list support,
-  // you'd want to group consecutive list items
-  return nodes
 }
 
 /**

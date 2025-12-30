@@ -502,3 +502,63 @@ export async function fetchTopSustainableBanks(
     return []
   }
 }
+
+// Query to fetch all sustainable bank tags for static path generation
+export const ALL_SUSTAINABLE_BANK_TAGS_QUERY = `
+  query AllSustainableBankTags {
+    brands(recommendedOnly: true, first: 1000) {
+      edges {
+        node {
+          tag
+          commentary {
+            showOnSustainableBanksPage
+          }
+        }
+      }
+    }
+  }
+`
+
+interface SustainableBankTagNode {
+  tag: string
+  commentary?: {
+    showOnSustainableBanksPage?: boolean | null
+  } | null
+}
+
+interface AllSustainableBankTagsResponse {
+  brands: {
+    edges: Array<{
+      node: SustainableBankTagNode
+    }>
+  }
+}
+
+/**
+ * Fetches all sustainable bank tags for static path generation.
+ * Used by getStaticPaths() in sustainable-eco-banks/[bankTag].astro
+ */
+export async function fetchAllSustainableBankTags(): Promise<string[]> {
+  try {
+    const data = await graphqlFetch<AllSustainableBankTagsResponse>(
+      ALL_SUSTAINABLE_BANK_TAGS_QUERY,
+      {}
+    )
+
+    if (!data?.brands?.edges) {
+      console.warn('No brands data in response')
+      return []
+    }
+
+    // Filter by showOnSustainableBanksPage and extract tags
+    const tags = data.brands.edges
+      .map((edge) => edge.node)
+      .filter((brand) => brand.commentary?.showOnSustainableBanksPage)
+      .map((brand) => brand.tag)
+
+    return tags
+  } catch (error) {
+    console.error('Error fetching sustainable bank tags:', error)
+    return []
+  }
+}
