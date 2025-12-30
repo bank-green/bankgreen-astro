@@ -31,5 +31,11 @@ export default defineConfig({
     },
   },
   output: 'server',
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    routes: {
+      // Use 'include' strategy so the Worker handles non-prerendered routes
+      // This ensures SSR fallback for banks not in getStaticPaths()
+      strategy: 'include',
+    },
+  }),
 })
