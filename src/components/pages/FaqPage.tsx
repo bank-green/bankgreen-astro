@@ -1,6 +1,6 @@
 import { PageContent } from '@components/PageContent'
 import { renderRichText } from '@lib/prismicHelpers'
-import { Stack } from '@mantine/core'
+import { Stack, Text } from '@mantine/core'
 import type { PrismicDocument, RichTextField } from '@prismicio/client'
 import type { Slice } from '@slices'
 import { SliceZone } from '@slices'
@@ -19,7 +19,9 @@ export function FaqPage({ page }: Props) {
       <Stack data-breakout>
         <Stack className="contain gap-8 bg-white p-8 lg:rounded-2xl">
           {introduction && introduction.length > 0 && renderRichText(introduction)}
-          <Stack>{slices ? <SliceZone slices={slices} /> : <p>Error loading content.</p>}</Stack>
+          <Stack>
+            {slices ? <SliceZone slices={slices} /> : <Text>Error loading content.</Text>}
+          </Stack>
         </Stack>
 
         <ContactFormContainer

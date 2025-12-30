@@ -10,8 +10,9 @@ export function Header() {
     </Anchor>
   )
 
-  const NavLinks = ({ classes }: { classes: string }) => (
+  const NavLinks = ({ showHome, classes }: { showHome: boolean; classes: string }) => (
     <>
+      {showHome && <NavLink classes={classes} href="/" label="Home" />}
       <NavLink classes={classes} href="/sustainable-eco-banks" label="Sustainable Banks" />
       <NavLink classes={classes} href="/blog" label="Blog" />
       <NavLink classes={classes} href="/faq" label="FAQ" />
@@ -39,7 +40,7 @@ export function Header() {
           size="sm"
         />
         <Group visibleFrom="md" className="gap-8">
-          <NavLinks classes="text-sky-200 hover:text-white hover:no-underline!" />
+          <NavLinks showHome={false} classes="text-sky-200 hover:text-white hover:no-underline!" />
         </Group>
         <Drawer
           opened={opened}
@@ -58,7 +59,7 @@ export function Header() {
           }}
         >
           <Stack className="items-start">
-            <NavLinks classes="text-white" />
+            <NavLinks showHome={true} classes="text-white" />
           </Stack>
         </Drawer>
       </Group>

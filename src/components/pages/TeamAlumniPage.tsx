@@ -1,5 +1,5 @@
 import { PageContent } from '@components/PageContent'
-import { Anchor, SimpleGrid, Stack, Title } from '@mantine/core'
+import { Anchor, SimpleGrid, Stack, Text, Title } from '@mantine/core'
 import type { PrismicDocument } from '@prismicio/client'
 import type { Slice } from '@slices'
 import { SliceZone } from '@slices'
@@ -23,7 +23,7 @@ export function TeamAlumniPage({ page }: Props) {
           {alumniSlices.length > 0 ? (
             <SliceZone slices={alumniSlices} />
           ) : (
-            <p>No alumni members to display.</p>
+            <Text>No alumni members to display.</Text>
           )}
         </SimpleGrid>
 

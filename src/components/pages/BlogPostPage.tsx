@@ -1,5 +1,5 @@
 import { PageContent } from '@components/PageContent'
-import { Stack, Title } from '@mantine/core'
+import { Box, Stack, Title } from '@mantine/core'
 import type { PrismicDocument } from '@prismicio/client'
 import type { Slice } from '@slices'
 import { SliceZone } from '@slices'
@@ -54,16 +54,16 @@ export function BlogPostPage({ post }: Props) {
       <Stack className="[&_h2]:text-2xl">{slices && <SliceZone slices={slices} />}</Stack>
 
       {/* Footer section with call to action */}
-      <div className="bg-arctic-blue text-gray-800">
-        <div className="contain">
-          <div className="flex justify-center">
+      <Box className="bg-arctic-blue text-gray-800">
+        <Box className="contain">
+          <Stack className="items-center">
             {/* Call to action component will go here */}
-            <div className="max-w-5xl">
-              <h2>Start to Bank Green Today</h2>
-            </div>
-          </div>
-        </div>
-      </div>
+            <Box className="max-w-5xl">
+              <Title order={2}>Start to Bank Green Today</Title>
+            </Box>
+          </Stack>
+        </Box>
+      </Box>
     </PageContent>
   )
 }
