@@ -5,9 +5,7 @@
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": {
     "binding": "ASSETS",
-    "directory": "./dist",
-    // Run Worker first for bank routes to enable SSR fallback for non-prerendered banks
-    "run_worker_first": ["/banks/*", "/sustainable-eco-banks/*"]
+    "directory": "./dist"
   },
   "vars": {
     "ACTIVE_CAMPAIGN_KEY": "c6cf4fc7eb4671eeffc37f721fd4b35773e90fbed3e138d64fb649a333e2380b490da35e",
