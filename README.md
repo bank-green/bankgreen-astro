@@ -191,17 +191,22 @@ We use both styling systems:
 **Cloudflare Workers** with hybrid rendering:
 - `output: 'server'` in `astro.config.mjs` with `@astrojs/cloudflare` adapter
 - Pages with `export const prerender = true` are built as static HTML at build time
-- Dynamic routes (bank profiles, sustainable-eco-banks) render on-demand via Workers
+- Server-rendered pages render on-demand via Workers
 - Static assets served from Cloudflare's edge CDN
 
 **Prerendered pages** (static HTML, fastest):
 - Blog posts, press releases (`/blog/*`, `/press/*`)
+- Sustainable eco-banks (`/sustainable-eco-banks/*`) - uses `getStaticPaths()` to prerender known banks
 - Content pages: methodology, glossary, privacy, disclaimer, materials, one-pager, green-banking-guide
+- Thank you pages (`/thanks/*`)
 - 404 page
 
-**Server-rendered pages** (on-demand):
-- Bank profiles (`/banks/*`, `/sustainable-eco-banks/*`)
-- Pages that need dynamic data or haven't implemented `getStaticPaths()`
+**Server-rendered pages** (on-demand via SSR):
+- Bank profiles (`/banks/*`) - full SSR to support all banks in the GraphQL database
+- Any page without `export const prerender = true`
+
+**Why bank profiles use full SSR**:
+Astro's prerendering with `getStaticPaths()` only serves routes returned at build time - other routes return 404. Since new banks can be added to the GraphQL database at any time, `/banks/*` uses full SSR so every bank route works without requiring a rebuild.
 
 **Branch previews**: Automatically deployed via Cloudflare Pages
 
