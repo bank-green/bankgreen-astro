@@ -32,6 +32,17 @@ export type DefaultFields = {
 }
 
 /**
+ * Check if an error is a Prismic "not found" error.
+ * These are expected when optional content doesn't exist.
+ */
+function isNotFoundError(error: unknown): boolean {
+  return (
+    error instanceof Error &&
+    (error.name === 'NotFoundError' || error.message.includes('No documents were returned'))
+  )
+}
+
+/**
  * Fetches default content from Prismic for bank pages based on rating
  * @param prismicClient - Prismic client instance
  * @param rating - Bank rating (good, bad, worst, ok, unknown)
@@ -64,7 +75,10 @@ export async function getDefaultFields(
       description4: asHTML(prismicDefaultFields?.description4) || '',
     }
   } catch (err) {
-    console.warn(`⚠️ Could not fetch defaultFields for queryKey "${queryKey}":`, err)
+    // Only log unexpected errors (not "document not found")
+    if (import.meta.env.DEV && !isNotFoundError(err)) {
+      console.warn(`Prismic: Error fetching bankpage "${queryKey}"`, err)
+    }
 
     // Fallback content when Prismic document not found
     return {

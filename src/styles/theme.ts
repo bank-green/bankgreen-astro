@@ -60,8 +60,8 @@ export const theme = createTheme({
     Anchor: {
       classNames: {
         root: cx(
-          'text-linkDefault transition-all duration-150 hover:text-linkHover active:text-linkActive',
-          'decoration-[0.5em] decoration-green-500/15 underline-offset-0 hover:underline hover:decoration-[0.15em] hover:underline-offset-1'
+          'text-linkDefault transition-all duration-100 hover:text-linkHover active:text-linkActive active:duration-10',
+          'decoration-green-500/1 underline-offset-0 hover:decoration-[0.15em] hover:decoration-green-500/15 hover:underline-offset-1'
         ),
       },
     },

@@ -3,6 +3,8 @@ import { ThanksPage } from '@components/pages'
 import BaseLayout from '@layouts/BaseLayout.astro'
 import { getByUIDSafe, thanksPagesFallback, thanksPagesMap } from '@lib/prismic'
 
+export const prerender = true
+
 export function getStaticPaths() {
   return Object.keys(thanksPagesMap).map((type) => ({
     params: { type },

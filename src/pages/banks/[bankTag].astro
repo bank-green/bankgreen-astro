@@ -5,6 +5,8 @@ import { getDefaultFields } from '@lib/banks'
 import { getByUIDSafe, prismicClient } from '@lib/prismic'
 import { fetchBrandByTag } from '@lib/queries/brands'
 
+export const prerender = true
+
 interface BankData {
   name: string
   tag: string

@@ -3,6 +3,8 @@ import { SlicePage } from '@components/pages'
 import BaseLayout from '@layouts/BaseLayout.astro'
 import { getAllByTypeSafe, getByUIDSafe } from '@lib/prismic'
 
+export const prerender = true
+
 export async function getStaticPaths() {
   const pages = await getAllByTypeSafe('accreditationpage')
   return pages.map((page) => ({ params: { slug: page.uid } }))

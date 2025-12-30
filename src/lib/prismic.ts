@@ -9,6 +9,17 @@ export const prismicClient = prismic.createClient(repositoryName, {
 })
 
 /**
+ * Check if an error is a Prismic "not found" error.
+ * These are expected when optional content doesn't exist.
+ */
+function isNotFoundError(error: unknown): boolean {
+  return (
+    error instanceof Error &&
+    (error.name === 'NotFoundError' || error.message.includes('No documents were returned'))
+  )
+}
+
+/**
  * Safely fetch a single document from Prismic.
  * Returns null if the document doesn't exist or fetch fails.
  */
@@ -19,9 +30,9 @@ export async function getSingleSafe<T extends PrismicDocument>(
   try {
     return (await prismicClient.getSingle(documentType, options)) as T
   } catch (error) {
-    // Log in development, fail silently in production
-    if (import.meta.env.DEV) {
-      console.warn(`Prismic: Could not fetch single "${documentType}"`, error)
+    // Only log unexpected errors (not "document not found")
+    if (import.meta.env.DEV && !isNotFoundError(error)) {
+      console.warn(`Prismic: Error fetching single "${documentType}"`, error)
     }
     return null
   }
@@ -39,8 +50,9 @@ export async function getByUIDSafe<T extends PrismicDocument>(
   try {
     return (await prismicClient.getByUID(documentType, uid, options)) as T
   } catch (error) {
-    if (import.meta.env.DEV) {
-      console.warn(`Prismic: Could not fetch "${documentType}" with UID "${uid}"`, error)
+    // Only log unexpected errors (not "document not found")
+    if (import.meta.env.DEV && !isNotFoundError(error)) {
+      console.warn(`Prismic: Error fetching "${documentType}" with UID "${uid}"`, error)
     }
     return null
   }
@@ -57,8 +69,9 @@ export async function getAllByTypeSafe<T extends PrismicDocument>(
   try {
     return (await prismicClient.getAllByType(documentType, options)) as T[]
   } catch (error) {
-    if (import.meta.env.DEV) {
-      console.warn(`Prismic: Could not fetch all "${documentType}"`, error)
+    // Only log unexpected errors (not "document not found")
+    if (import.meta.env.DEV && !isNotFoundError(error)) {
+      console.warn(`Prismic: Error fetching all "${documentType}"`, error)
     }
     return []
   }
