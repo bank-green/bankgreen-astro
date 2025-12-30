@@ -5,7 +5,8 @@ import { getDefaultFields } from '@lib/banks'
 import { getByUIDSafe, prismicClient } from '@lib/prismic'
 import { fetchBrandByTag } from '@lib/queries/brands'
 
-export const prerender = true
+// SSR mode - each request fetches fresh data from GraphQL
+// This ensures all banks are accessible, not just those from getStaticPaths()
 
 interface BankData {
   name: string
@@ -25,18 +26,6 @@ interface BankData {
     } | null
   } | null
   countries?: Array<{ code: string }> | null
-}
-
-export async function getStaticPaths() {
-  const { fetchAllBrands } = await import('@lib/queries/brands')
-  const brands = await fetchAllBrands()
-  const data = brands?.filter(
-    (bank: BankData) => bank.commentary?.showOnSustainableBanksPage !== false
-  )
-  const mapped = data?.map((bank: BankData) => ({
-    params: { bankTag: bank.tag },
-  }))
-  return mapped || []
 }
 
 const { bankTag } = Astro.params
