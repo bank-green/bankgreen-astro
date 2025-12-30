@@ -59,7 +59,14 @@ export function NestedSliceZone({ slices, className }: NestedSliceZoneProps) {
           className?: string
         }>
 
-        return <Component key={key} slice={slice} className={className} data-slice-type={slice.slice_type} />
+        return (
+          <Component
+            key={key}
+            slice={slice}
+            className={className}
+            data-slice-type={slice.slice_type}
+          />
+        )
       })}
     </>
   )

@@ -1,6 +1,10 @@
 import { PageContent } from '@components/PageContent'
+import { Box, List, Stack, Text, ThemeIcon, Title } from '@mantine/core'
+import { CheckCircleIcon } from '@phosphor-icons/react'
 import type { PrismicDocument, RichTextField } from '@prismicio/client'
 import * as prismic from '@prismicio/client'
+import { ContactForm } from '@/components/forms/ContactForm'
+import { CornerLogoContainer } from '../CornerLogo'
 
 interface Props {
   page: PrismicDocument | null
@@ -26,30 +30,54 @@ export function JoinPage({ page }: Props) {
     : ". Mass movements will pull us out of the climate crisis – and they'll pull your bank out, too."
 
   return (
-    <PageContent>
-      <article>
-        <header>
-          <h2>{title}</h2>
-        </header>
+    <PageContent fullWidth>
+      <CornerLogoContainer className="mx-0 mt-8 p-8 pb-16 md:mx-8 lg:mx-0 lg:p-16">
+        <Stack className="items-center justify-between gap-12 md:flex-row md:items-start">
+          <Stack className="max-w-md gap-6 text-center md:text-left lg:basis-1/2">
+            <Title order={2}>{title}</Title>
 
-        <section>
-          <p>
-            <strong>{boldText}</strong>
-            {regularText}
-          </p>
+            <Text>
+              <strong>{boldText}</strong>
+              {regularText}
+            </Text>
 
-          <ul>
-            {CHECK_LIST.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </section>
+            <List
+              classNames={{
+                root: 'space-y-1 pl-0',
+                item: 'md:text-lg',
+                itemWrapper: 'items-start',
+              }}
+              icon={
+                <ThemeIcon color="transparent" size={24} radius="xl" className="ml-0 shrink-0 pl-0">
+                  <CheckCircleIcon size={24} className="-mb-2 text-green-500" />
+                </ThemeIcon>
+              }
+            >
+              {CHECK_LIST.map((item) => (
+                <List.Item key={item}>{item}</List.Item>
+              ))}
+            </List>
 
-        <section>
-          <h3>Sign up to Bank.Green. We'll take the fight to the banks together.</h3>
-          {/* Newsletter signup form placeholder */}
-        </section>
-      </article>
+            <Title order={3} className="mt-4">
+              Sign up to Bank.Green. We'll take the fight to the banks together.
+            </Title>
+          </Stack>
+
+          <Box className="mx-auto w-full max-w-md">
+            <ContactForm
+              tag="join form"
+              successRedirect="/thanks/join"
+              labels={{ submit: 'Join the movement' }}
+              fields={{
+                firstName: true,
+                email: true,
+                isAgreeMarketing: true,
+                isAgreeTerms: true,
+              }}
+            />
+          </Box>
+        </Stack>
+      </CornerLogoContainer>
     </PageContent>
   )
 }

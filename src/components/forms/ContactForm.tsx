@@ -297,7 +297,14 @@ export function ContactForm({
         </Stack>
 
         {showCaptcha && captchaSitekey && (
-          <Turnstile siteKey={captchaSitekey} onSuccess={setCaptchaToken} />
+          <Turnstile
+            siteKey={captchaSitekey}
+            onSuccess={setCaptchaToken}
+            onError={() => {
+              // Return truthy to suppress Turnstile's default console logging
+              return true
+            }}
+          />
         )}
 
         {error && <Text className="text-sm text-textError">{error}</Text>}

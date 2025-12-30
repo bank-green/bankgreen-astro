@@ -24,6 +24,8 @@ import { AccordionSlice } from './AccordionSlice'
 import { baseSliceComponents, isValidSliceType } from './registry'
 import type { Slice, SliceType, SliceTypeMap } from './types'
 
+// Re-export registry utilities
+export { isValidSliceType } from './registry'
 // Export all types for use in other files
 export type {
   AccordionSlice as AccordionSliceType,
@@ -43,9 +45,6 @@ export type {
   TextSlice as TextSliceType,
   ThanksSlice as ThanksSliceType,
 } from './types'
-
-// Re-export registry utilities
-export { isValidSliceType } from './registry'
 
 /**
  * Type-safe component registry using mapped types.
@@ -123,7 +122,14 @@ export function SliceZone({ slices, className }: SliceZoneProps) {
           className?: string
         }>
 
-        return <Component key={key} slice={slice} className={className} data-slice-type={slice.slice_type} />
+        return (
+          <Component
+            key={key}
+            slice={slice}
+            className={className}
+            data-slice-type={slice.slice_type}
+          />
+        )
       })}
     </>
   )
