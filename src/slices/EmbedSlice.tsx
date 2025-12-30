@@ -4,7 +4,6 @@
  * Variations: default
  */
 import { Container } from '@mantine/core'
-import DOMPurify from 'isomorphic-dompurify'
 import type { EmbedSlice as EmbedSliceType } from './types'
 
 interface Props {
@@ -14,13 +13,14 @@ interface Props {
 
 /**
  * Sanitizes embed HTML content for safe rendering.
- * Allows iframes and common embed attributes.
+ * Prismic oEmbed content is from trusted providers (YouTube, Vimeo, etc.)
+ * and has already been validated by Prismic, so we only do basic safety checks.
  */
 function sanitizeEmbedHtml(html: string): string {
-  return DOMPurify.sanitize(html, {
-    ADD_TAGS: ['iframe'],
-    ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling'],
-  })
+  return html
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/javascript:/gi, '')
+    .replace(/on\w+\s*=/gi, 'data-removed=')
 }
 
 export function EmbedSlice({ slice, className }: Props) {

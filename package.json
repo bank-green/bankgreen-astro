@@ -37,7 +37,6 @@
     "fuse.js": "^7.1.0",
     "html-react-parser": "^5.2.11",
     "htmlparser2": "^10.0.0",
-    "isomorphic-dompurify": "^2.35.0",
     "lottie-react": "^2.4.1",
     "nanostores": "^1.1.0",
     "react": "^19.0.0",

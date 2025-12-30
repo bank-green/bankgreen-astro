@@ -16,7 +16,6 @@ import {
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { CaretDownIcon, CaretRightIcon } from '@phosphor-icons/react'
-import cx from 'clsx'
 import { useEffect, useState } from 'react'
 import BankLogo from './BankLogo'
 
@@ -29,7 +28,6 @@ interface EcoBankCardProps {
 
 function EcoBankCard({ bank, externalOpened, onToggle, resetTrigger }: EcoBankCardProps) {
   const [opened, { toggle }] = useDisclosure(true)
-  const [childHovered, _setChildHovered] = useState(false)
   const [userOverride, setUserOverride] = useState<boolean | null>(null)
 
   // If user has manually toggled, use their override; otherwise use external control or internal state
@@ -59,14 +57,7 @@ function EcoBankCard({ bank, externalOpened, onToggle, resetTrigger }: EcoBankCa
 
   return (
     <Anchor href={`/sustainable-eco-banks/${bank.tag}`} className="decoration-transparent!">
-      <Card
-        className={cx(
-          'group/card bg-white/90 p-0 transition-all duration-100 hover:shadow-md active:shadow-xs active:duration-10',
-          {
-            'hover:bg-white': !childHovered,
-          }
-        )}
-      >
+      <Card className="group/card bg-white/90 p-0 transition-all duration-100 hover:bg-white hover:shadow-md active:shadow-xs active:duration-10">
         <Box className="group-active/card:bg-blue-100/50">
           {/* Header: Logo + Name + Badges */}
           <Card.Section
@@ -98,9 +89,11 @@ function EcoBankCard({ bank, externalOpened, onToggle, resetTrigger }: EcoBankCa
                   )}
                   <ActionIcon
                     variant="subtle"
+                    aria-label={effectiveOpened ? 'Collapse bank details' : 'Expand bank details'}
+                    aria-expanded={effectiveOpened}
                     className="rounded-full transition-all duration-150 group-hover/header:bg-green-100 group-active/header:bg-green-200 group-has-aria-hidden/card:rotate-180"
                   >
-                    <CaretDownIcon className="" />
+                    <CaretDownIcon />
                   </ActionIcon>
                 </Group>
               </Group>

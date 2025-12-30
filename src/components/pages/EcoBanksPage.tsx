@@ -2,7 +2,6 @@ import { Box, Spoiler, Stack } from '@mantine/core'
 import type { PrismicDocument } from '@prismicio/client'
 import type { Slice } from '@slices'
 import { SliceZone } from '@slices'
-import { useState } from 'react'
 import { MoneySmokeAnimation } from '../animations'
 import { CornerLogoContainer } from '../CornerLogo'
 import EcoBankDirectory from '../forms/EcoBankDirectory'
@@ -17,9 +16,6 @@ export function EcoBanksPage({ page }: Props) {
   const slices1 = (page?.data?.slices1 || []) as Slice[]
   const introductory = (page?.data?.introductory || []) as Slice[]
   const footerBanner = (page?.data?.footerBanner || []) as Slice[]
-
-  const [_readMoreP1, _setReadMoreP11] = useState(false)
-  const [_readMoreP2, _setReadMoreP22] = useState(false)
 
   return (
     <PageContent fullWidth>

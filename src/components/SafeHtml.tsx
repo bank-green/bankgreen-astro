@@ -114,12 +114,22 @@ export function SafeHtml({ html, className = '' }: SafeHtmlProps) {
               {children}
             </Text>
           )
-        case 'a':
+        case 'a': {
+          const href = element.attribs?.href || '#'
+          const isExternal = href.startsWith('http') || href.startsWith('//')
           return (
-            <a href={element.attribs?.href || '#'} className={classes}>
+            <a
+              href={href}
+              className={classes}
+              {...(isExternal && {
+                target: '_blank',
+                rel: 'noopener noreferrer',
+              })}
+            >
               {children}
             </a>
           )
+        }
         case 'div':
           // For divs, just return the children without wrapping
           return <>{children}</>

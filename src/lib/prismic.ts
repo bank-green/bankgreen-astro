@@ -72,6 +72,7 @@ export const thanksPagesMap: Record<string, { uid: string; type: string }> = {
   thanks: { uid: 'thanks', type: 'thankspages' },
   contact: { uid: 'thanks_contact', type: 'thankspages' },
   embrace: { uid: 'thanks_embrace', type: 'thankspages' },
+  // Note: UID may be misspelled in Prismic - verify 'thanskssignup' vs 'thankssignup'
   'signup-later': { uid: 'thanskssignup', type: 'thankspages' },
   confirmed: { uid: 'confirmed', type: 'thankspages' },
   'donate-complete': { uid: 'donatecompleted', type: 'thankspages' },

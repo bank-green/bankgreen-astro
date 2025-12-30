@@ -180,7 +180,32 @@ export function buildHarvestDataFilter(
 
 /**
  * Check if filter state is dirty (differs from default)
+ * Uses direct property comparison instead of JSON serialization for efficiency.
  */
 export function isDirty(current: EcoBankFilters, defaults: EcoBankFilters): boolean {
-  return JSON.stringify(current) !== JSON.stringify(defaults)
+  const currentKeys = Object.keys(current) as (keyof EcoBankFilters)[]
+  const defaultKeys = Object.keys(defaults) as (keyof EcoBankFilters)[]
+
+  // Check if key count differs
+  if (currentKeys.length !== defaultKeys.length) return true
+
+  // Check each category
+  for (const category of currentKeys) {
+    const currentOptions = current[category]
+    const defaultOptions = defaults[category]
+
+    if (!defaultOptions) return true
+
+    const currentOptionKeys = Object.keys(currentOptions)
+    const defaultOptionKeys = Object.keys(defaultOptions)
+
+    if (currentOptionKeys.length !== defaultOptionKeys.length) return true
+
+    // Check each option value
+    for (const option of currentOptionKeys) {
+      if (currentOptions[option] !== defaultOptions[option]) return true
+    }
+  }
+
+  return false
 }
