@@ -87,19 +87,19 @@ function EcoBankDirectory() {
     <Grid gutter={32}>
       <Grid.Col span={{ base: 12, md: 3 }}>
         <Drawer opened={filtersOpen} onClose={closeFilters}>
-          <EcoBankFilters country={country} onFilterChange={setFilterState} />
+          <EcoBankFilters onFilterChange={setFilterState} headerBgClass="bg-white" />
         </Drawer>
         <Box visibleFrom="md" className="sticky top-0 z-10 md:top-8 md:p-0">
-          <EcoBankFilters country={country} onFilterChange={setFilterState} />
+          <EcoBankFilters onFilterChange={setFilterState} headerBgClass="bg-sushi-100" />
         </Box>
       </Grid.Col>
 
       <Grid.Col span={{ base: 12, md: 9 }}>
         <Stack className="gap-2">
-          <Stack className="-mx-4 -mt-4 sticky top-0 z-10 w-[calc(100%+2rem)] items-end justify-between gap-2 bg-sushi-100 px-4 py-3 md:flex-row md:items-center">
+          <Stack className="-mx-4 -mt-4 sticky top-0 z-10 w-[calc(100%+2rem)] items-start justify-between gap-2 bg-sushi-100 px-4 py-3 md:flex-row md:items-center">
             <Button
               hiddenFrom="md"
-              variant="transparent"
+              variant="default"
               size="compact-sm"
               onClick={openFilters}
               leftSection={<FunnelSimpleIcon size={14} />}

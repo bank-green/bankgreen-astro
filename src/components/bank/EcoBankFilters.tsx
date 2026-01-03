@@ -10,11 +10,11 @@ import { Accordion, Button, Checkbox, Group, Stack, Switch, Text } from '@mantin
 import { useEffect, useMemo, useState } from 'react'
 
 interface EcoBankFiltersProps {
-  country: string
   onFilterChange: (filters: EcoBankFiltersType) => void
+  headerBgClass: string
 }
 
-function EcoBankFilters({ onFilterChange }: EcoBankFiltersProps) {
+function EcoBankFilters({ onFilterChange, headerBgClass }: EcoBankFiltersProps) {
   const [filterState, setFilterState] = useState<EcoBankFiltersType>(DEFAULT_FILTER_STATE)
   const [accordionValue, setAccordionValue] = useState<string[]>([
     'customersServed',
@@ -54,9 +54,8 @@ function EcoBankFilters({ onFilterChange }: EcoBankFiltersProps) {
   }
 
   return (
-    <Stack>
-      {/* Header with Filter title + Reset */}
-      <Group className="justify-between">
+    <Stack className="max-h-screen gap-0 overflow-y-auto">
+      <Group className={`sticky top-0 z-20 justify-between pb-4 ${headerBgClass}`}>
         <Text>Filters</Text>
         <Group>
           {isFilterDirty && (
@@ -77,9 +76,6 @@ function EcoBankFilters({ onFilterChange }: EcoBankFiltersProps) {
         </Group>
       </Group>
 
-      {/* Expand All checkbox */}
-
-      {/* Mantine Accordion with default styling */}
       <Accordion multiple value={accordionValue} onChange={setAccordionValue}>
         <Stack>
           {FILTER_SECTIONS.map((section) => (
