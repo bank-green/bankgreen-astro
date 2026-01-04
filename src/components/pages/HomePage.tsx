@@ -1,6 +1,5 @@
 import { ATMAnimation, MoneySmokeAnimation } from '@components/animations'
 import BankLocationSearch from '@components/forms/BankLocationSearch'
-import { Swoosh } from '@components/Swoosh'
 import { renderRichText } from '@lib/prismicHelpers'
 import { Anchor, Box, Card, Grid, Group, Image, Stack, Text, Title } from '@mantine/core'
 
@@ -57,7 +56,7 @@ export function HomePage({ page }: Props) {
         </Grid>
 
         {/* As featured in */}
-        <Stack className="-mb-24 w-full py-6 pb-24">
+        <Stack className="swoosh swoosh-br w-full py-6 pb-24">
           <Box className="mx-auto hidden w-full max-w-6xl bg-linear-to-br px-12 lg:flex lg:rounded-3xl lg:px-0">
             <Stack className="mx-auto w-full max-w-6xl items-center justify-between px-6 md:flex md:px-0 lg:flex-row lg:items-start">
               <Stack className="lg:no-wrap mx-auto mb-8 items-center justify-between gap-4 lg:mx-0 lg:items-start">
@@ -114,8 +113,6 @@ export function HomePage({ page }: Props) {
             {/* Arrow down bounce animation */}
             <ArrowDown className="mx-auto mt-4" />
           </Stack>
-          {/* Swoosh transitions from green gradient to white */}
-          <Swoosh color="var(--color-white)" />
         </Stack>
       </Box>
 
@@ -143,10 +140,7 @@ export function HomePage({ page }: Props) {
       </Box>
 
       {/* Arctic blue section with bank illustration and lead gen form - breaks out of container */}
-      <Box data-breakout className="bg-arcticBlue">
-        {/* Swoosh transitions from white down into arctic blue */}
-        <Swoosh direction="down" color="var(--color-white)" />
-
+      <Box data-breakout className="swoosh swoosh-tl bg-arcticBlue">
         <Box data-container>
           {/* Bank illustration section */}
           <Grid className="contain z-10 items-center justify-center pt-8 pb-4 md:pb-16">

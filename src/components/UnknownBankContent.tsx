@@ -3,7 +3,6 @@ import { CheckCircleIcon } from '@phosphor-icons/react'
 import type { PrismicDocument, RichTextField } from '@prismicio/client'
 import * as prismic from '@prismicio/client'
 import ContactFormContainer from './forms/ContactFormContainer'
-import { Swoosh } from './Swoosh'
 
 const CHECK_LIST = [
   'Learn about the issues via our blog updates',
@@ -51,9 +50,8 @@ export function UnknownBankContent({ page }: Props) {
         </Grid>
       </Box>
 
-      <Box data-breakout className="bg-arcticBlue">
-        <Swoosh direction="down" color="var(--color-white)" />
-        <Stack className="my-32 gap-12">
+      <Box data-breakout className="swoosh swoosh-tl bg-arcticBlue">
+        <Stack className="mb-32 gap-12">
           <Title className="mx-auto">Join the Money Movement</Title>
           <Grid className="contain w-full" gutter={48}>
             <Grid.Col span={{ base: 12, md: 6 }}>

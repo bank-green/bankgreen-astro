@@ -199,4 +199,78 @@
     border-radius: 4px;
     background-color: var(--colors-sushi-500);
   }
+
+  .swoosh-bg {
+    background-size: 100% 100%;
+    background-position: bottom right;
+    background-image: url("/img/backgrounds/swoosh.svg");
+    background-repeat: no-repeat;
+    color: white;
+  }
+}
+
+/* Base swoosh utility - shared pseudo-element */
+@utility swoosh {
+  overflow: hidden;
+  position: relative;
+  z-index: 0;
+  --swoosh-height: clamp(100px, 15dvw, 300px);
+  --swoosh-width: 102.5%;
+  --swoosh-color: white;
+  --swoosh-padding: calc(var(--swoosh-height) * 0.8);
+
+  &::before {
+    content: "";
+    display: block;
+    width: var(--swoosh-width);
+    height: var(--swoosh-height);
+    position: absolute;
+    overflow: hidden;
+    border-radius: 0%;
+    z-index: -1;
+    top: var(--swoosh-top, auto);
+    bottom: var(--swoosh-bottom, auto);
+    left: var(--swoosh-left, auto);
+    right: var(--swoosh-right, auto);
+    background: radial-gradient(
+      ellipse var(--swoosh-width) 100% at var(--swoosh-gradient-at),
+      transparent 100%,
+      var(--swoosh-color) 100.15%
+    );
+  }
+}
+
+/* Direction utilities - only set positioning */
+@utility swoosh-bl {
+  --swoosh-bottom: 0;
+  --swoosh-right: 0;
+  --swoosh-gradient-at: top right;
+  padding-bottom: var(--swoosh-padding);
+}
+
+@utility swoosh-br {
+  --swoosh-bottom: 0;
+  --swoosh-left: 0;
+  --swoosh-gradient-at: top left;
+  padding-bottom: var(--swoosh-padding);
+}
+
+@utility swoosh-tl {
+  --swoosh-top: 0;
+  --swoosh-right: 0;
+  --swoosh-gradient-at: bottom right;
+  padding-top: var(--swoosh-padding);
+}
+
+@utility swoosh-tr {
+  --swoosh-top: 0;
+  --swoosh-left: 0;
+  --swoosh-gradient-at: bottom left;
+  padding-top: var(--swoosh-padding);
+}
+
+@utility swoosh-none {
+  &::before {
+    content: none;
+  }
 }

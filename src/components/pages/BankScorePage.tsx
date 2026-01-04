@@ -1,7 +1,6 @@
 import { FishesAnimation, PiggyAnimation, WindmillAnimation } from '@components/animations'
 import { BankCircle, LastReviewed } from '@components/bank'
 import { SafeHtml } from '@components/SafeHtml'
-import { Swoosh } from '@components/Swoosh'
 import type { DefaultFields } from '@lib/banks'
 import { Anchor, Box, Button, Grid, Group, Image, Stack, Text, Title } from '@mantine/core'
 import type { PrismicDocument } from '@prismicio/client'
@@ -77,8 +76,9 @@ export function BankScorePage({ bank, prismicDefaults, prismicPage, prismicNotLi
         <Stack
           className={cx(
             'contain items-center lg:rounded-3xl lg:shadow-lg/10',
-            'p-8 pb-32 md:min-h-128 md:pb-40 lg:mb-36 lg:pb-0',
-            'bg-linear-to-br bg-white from-white via-blue-100/25 to-blue-100'
+            'p-8 pb-24 md:min-h-128 md:pb-40 lg:mb-36 lg:pb-0',
+            'bg-linear-to-br bg-white from-white via-blue-100/25 to-blue-100',
+            'swoosh swoosh-br lg:swoosh-none'
           )}
         >
           <Grid className="mx-auto w-full" gutter={48}>
@@ -151,7 +151,6 @@ export function BankScorePage({ bank, prismicDefaults, prismicPage, prismicNotLi
             </Button>
           )}
         </Stack>
-        <Swoosh className="-mt-12 h-12 w-full p-0! lg:hidden" color="white" />
       </Stack>
 
       <Box data-breakout className="overflow-hidden bg-white">
@@ -166,11 +165,14 @@ export function BankScorePage({ bank, prismicDefaults, prismicPage, prismicNotLi
                 <SafeHtml html={description3} className="prose mt-4 text-md" />
               </Stack>
             </Group>
-            <Group className="flex-col items-center gap-4 md:flex-row md:justify-center md:gap-8">
-              <Button component="a" href="/sustainable-eco-banks" size="lg">
-                Move Your Money
-              </Button>
-            </Group>
+            <Button
+              component="a"
+              href="/sustainable-eco-banks"
+              size="lg"
+              className="mx-auto my-12 max-w-max"
+            >
+              Move Your Money
+            </Button>
           </Stack>
         )}
         {isGoodBank && (
@@ -190,11 +192,7 @@ export function BankScorePage({ bank, prismicDefaults, prismicPage, prismicNotLi
         )}
       </Box>
 
-      <Box className="bg-ocean-100" data-breakout>
-        {(isBadBank || (ctaSlices && ctaSlices.length > 0)) && (
-          <Swoosh direction="down" color="white" />
-        )}
-
+      <Box className={`bg-ocean-100 ${isBadBank && 'swoosh swoosh-tr'}`} data-breakout>
         {/* Only for bad banks */}
         {isBadBank && description4 && (
           <>

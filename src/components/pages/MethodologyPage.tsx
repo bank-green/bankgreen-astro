@@ -6,7 +6,6 @@ import type { ImageField, PrismicDocument } from '@prismicio/client'
 import type { Slice } from '@slices'
 import { SliceZone } from '@slices'
 import { useState } from 'react'
-import { Swoosh } from '../Swoosh'
 
 interface SustainableBullet {
   description: string
@@ -60,27 +59,26 @@ export function MethodologyPage({ page }: MethodologyPageProps) {
   return (
     <PageContent fullWidth>
       {/* Hero Section */}
-      <Box data-breakout>
-        <Stack className="contain mx-auto flex max-w-6xl flex-col items-center justify-center gap-10 pt-16 pb-24">
+      <Box data-breakout className="swoosh swoosh-br">
+        <Stack className="contain mx-auto max-w-3xl gap-10 pt-16">
           <Title order={1}>{hero_title || 'How We Rate Banks'}</Title>
-          <Box className="mx-auto max-w-3xl">
+          <Box className="">
             {hero_description && <Box>{renderRichText(hero_description)}</Box>}
           </Box>
           {hero_image && (
             <Image
               src={asImageSrc(hero_image as ImageField) || undefined}
               alt={(hero_image as ImageField).alt || ''}
-              className="h-full w-full max-w-4xl object-contain object-top"
+              className="h-full w-full max-w-3xl rounded-3xl bg-white object-contain object-top"
             />
           )}
         </Stack>
-        <Swoosh color="white" />
       </Box>
 
       {/* Target Section */}
       <Box data-breakout className="bg-white">
         <Stack id="target" className="contain mx-auto flex max-w-6xl flex-col gap-8 py-16">
-          <Title order={2} className="text-center">
+          <Title order={2}>
             {target_title ||
               'Our Rating Methodology Caters for Different Types of Financial Institutions'}
           </Title>
@@ -113,9 +111,8 @@ export function MethodologyPage({ page }: MethodologyPageProps) {
       </Box>
 
       {/* Factors Section with Tabs */}
-      <Box data-breakout className="bg-blue-100">
-        <Swoosh color="white" direction="down" />
-        <Stack className="contain gap-8 py-12 lg:py-32">
+      <Box data-breakout className="swoosh swoosh-tl bg-blue-100">
+        <Stack className="contain gap-8 py-12">
           <Title order={2}>{factors_title || "What Factors Affect a Bank's Rating?"}</Title>
 
           <Tabs value={activeTab} onChange={setActiveTab}>
@@ -136,12 +133,14 @@ export function MethodologyPage({ page }: MethodologyPageProps) {
             </Tabs.Panel>
           </Tabs>
         </Stack>
-        <Swoosh color="var(--color-sushi-100)" />
       </Box>
 
       {/* Sustainable Banks Section */}
-      <Box data-breakout className="max-w-screen">
-        <Stack className="contain mx-auto flex max-w-6xl flex-col items-center justify-center gap-10 py-10 lg:py-16">
+      <Box
+        data-breakout
+        className="swoosh swoosh-tr max-w-screen [--swoosh-color:var(--color-blue-100)]"
+      >
+        <Stack className="contain mx-auto flex max-w-6xl flex-col items-center justify-center gap-10 pb-8">
           <Title order={2}>{sustainable_title || 'Sustainable Banks'}</Title>
           {sustainable_description && <Box>{renderRichText(sustainable_description)}</Box>}
           {sustainable_bullets && (
@@ -177,9 +176,11 @@ export function MethodologyPage({ page }: MethodologyPageProps) {
       </Box>
 
       {/* Sources Section */}
-      <Box data-breakout className="bg-white">
-        <Swoosh color="var(--color-sushi-100)" direction="down" />
-        <Stack id="sources" className="contain gap-12 py-16">
+      <Box
+        data-breakout
+        className="swoosh swoosh-tl bg-white [--swoosh-color:var(--color-sushi-100)]"
+      >
+        <Stack id="sources" className="contain gap-12 py-8">
           <Title order={2}>{sources_title || 'Data sources we use'}</Title>
           {sources_description && <Box>{renderRichText(sources_description)}</Box>}
         </Stack>

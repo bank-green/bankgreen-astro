@@ -6,7 +6,6 @@ import type { PrismicDocument, RichTextField } from '@prismicio/client'
 import * as prismic from '@prismicio/client'
 import type { Slice } from '@slices'
 import { SliceZone } from '@slices'
-import { Swoosh } from '../Swoosh'
 import UnknownBankContent from '../UnknownBankContent'
 
 interface Props {
@@ -32,8 +31,8 @@ export function NotListedPage({ page }: Props) {
 
   return (
     <PageContent fullWidth>
-      <Box data-breakout className="">
-        <Stack className="contain z-10 mx-auto mt-16 mb-24 max-w-2xl gap-12">
+      <Box data-breakout className="swoosh swoosh-br">
+        <Stack className="contain z-10 mx-auto mt-16 max-w-2xl gap-12">
           <Stack className="items-center gap-8">
             <SmileySadIcon size={64} className="text-green-600" />
             {titleText && (
@@ -47,7 +46,6 @@ export function NotListedPage({ page }: Props) {
             </Stack>
           </Stack>
         </Stack>
-        <Swoosh color="white" />
       </Box>
 
       <UnknownBankContent page={page} />
