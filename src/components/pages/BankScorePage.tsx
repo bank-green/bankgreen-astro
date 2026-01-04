@@ -6,6 +6,7 @@ import type { DefaultFields } from '@lib/banks'
 import { Anchor, Box, Button, Grid, Group, Image, Stack, Text, Title } from '@mantine/core'
 import type { PrismicDocument } from '@prismicio/client'
 import { type Slice, SliceZone } from '@slices'
+import cx from 'clsx'
 import BankLogo from '../bank/BankLogo'
 import { PageContent } from '../PageContent'
 import UnknownBankContent from '../UnknownBankContent'
@@ -69,8 +70,17 @@ export function BankScorePage({ bank, prismicDefaults, prismicPage, prismicNotLi
   return (
     <PageContent fullWidth>
       {/* SECTION ONE - Header with bank info */}
-      <Box className="pt-8 lg:pt-16" data-breakout>
-        <Stack className="contain items-center from-white via-white to-blue-100 p-8 md:mb-24 md:min-h-128 lg:mb-36 lg:rounded-2xl lg:bg-linear-to-tr">
+      <Stack
+        className="-mt-12 relative gap-0 bg-linear-to-b from-transparent via-white/50 to-white pt-0 lg:pt-16"
+        data-breakout
+      >
+        <Stack
+          className={cx(
+            'contain items-center lg:rounded-3xl lg:shadow-lg/10',
+            'p-8 pb-32 md:min-h-128 md:pb-40 lg:mb-36 lg:pb-0',
+            'bg-linear-to-br bg-white from-white via-blue-100/25 to-blue-100'
+          )}
+        >
           <Grid className="mx-auto w-full" gutter={48}>
             <Grid.Col span={{ base: 12, md: 7 }}>
               <Stack className="mx-auto max-w-max items-start gap-6 px-4">
@@ -135,25 +145,25 @@ export function BankScorePage({ bank, prismicDefaults, prismicPage, prismicNotLi
               component="a"
               href="/sustainable-eco-banks"
               size="lg"
-              className="mx-auto max-w-fit"
+              className="mx-auto mb-12 max-w-fit"
             >
               Move Your Money
             </Button>
           )}
         </Stack>
-        <Swoosh color="white" />
-      </Box>
+        <Swoosh className="-mt-12 h-12 w-full p-0! lg:hidden" color="white" />
+      </Stack>
 
       <Box data-breakout className="overflow-hidden bg-white">
         {isBadBank && (
-          <Stack className="contain gap-0 pt-8">
+          <Stack className="contain gap-0 py-8">
             <Group className="flex-col-reverse items-center justify-center gap-8 md:flex-row md:gap-24">
               <Box className="max-h-[901px] w-full max-w-sm md:w-1/2">
                 <PiggyAnimation />
               </Box>
               <Stack className="gap-4 md:w-1/2">
-                <SafeHtml html={description2} className="prose max-w-none text-2xl" />
-                <SafeHtml html={description3} className="prose mt-4 max-w-none text-md" />
+                <SafeHtml html={description2} className="prose text-xl lg:text-2xl" />
+                <SafeHtml html={description3} className="prose mt-4 text-md" />
               </Stack>
             </Group>
             <Group className="flex-col items-center gap-4 md:flex-row md:justify-center md:gap-8">
@@ -164,7 +174,7 @@ export function BankScorePage({ bank, prismicDefaults, prismicPage, prismicNotLi
           </Stack>
         )}
         {isGoodBank && (
-          <Grid className="mx-auto mb-16 w-full max-w-6xl px-12 md:mb-12 lg:px-0" gutter={48}>
+          <Grid className="mx-auto mb-16 w-full max-w-6xl px-12 pt-8 md:mb-12 lg:px-0" gutter={48}>
             <Grid.Col span={{ base: 12, md: 7 }}>
               <Image
                 className="mx-auto mt-8 max-w-xl md:mt-0"
@@ -180,26 +190,29 @@ export function BankScorePage({ bank, prismicDefaults, prismicPage, prismicNotLi
         )}
       </Box>
 
-      {/* SECTION THREE - Only for bad banks */}
-      {isBadBank && description4 && (
-        <Box className="bg-ocean-100" data-breakout>
+      <Box className="bg-ocean-100" data-breakout>
+        {(isBadBank || (ctaSlices && ctaSlices.length > 0)) && (
           <Swoosh direction="down" color="white" />
-          <Image
-            className="mb-4 inline-block max-w-sm"
-            src="/img/illustrations/fishes.svg"
-            alt="Fish illustration"
-          />
-          <Stack className="contain items-center gap-4">
-            <Stack className="max-w-2xl text-lg">
-              <SafeHtml html={description4} className="mx-auto text-center" />
-            </Stack>
-          </Stack>
-        </Box>
-      )}
+        )}
 
-      {/* CALL TO ACTION */}
-      {isBadBank ? (
-        <Box className="bg-ocean-100" data-breakout>
+        {/* Only for bad banks */}
+        {isBadBank && description4 && (
+          <>
+            <Image
+              className="mb-4 inline-block max-w-sm"
+              src="/img/illustrations/fishes.svg"
+              alt="Fish illustration"
+            />
+            <Stack className="contain items-center gap-4">
+              <Stack className="max-w-2xl text-lg">
+                <SafeHtml html={description4} className="mx-auto text-center" />
+              </Stack>
+            </Stack>
+          </>
+        )}
+
+        {/* CALL TO ACTION */}
+        {isBadBank ? (
           <Stack className="contain items-center gap-8 py-16">
             <Title order={2} className="text-center">
               Take Action Today
@@ -212,23 +225,18 @@ export function BankScorePage({ bank, prismicDefaults, prismicPage, prismicNotLi
               Find a Sustainable Bank
             </Button>
           </Stack>
-        </Box>
-      ) : ctaSlices && ctaSlices.length > 0 ? (
-        <Box className="bg-ocean-100" data-breakout>
-          <Swoosh direction="down" color="white" />
+        ) : ctaSlices && ctaSlices.length > 0 ? (
           <Box className="contain pt-32 pb-16">
             {/* LeadGen slice, for some reason */}
             <SliceZone slices={ctaSlices} />
           </Box>
-        </Box>
-      ) : (
-        <UnknownBankContent page={prismicNotListed} />
-      )}
+        ) : (
+          <UnknownBankContent page={prismicNotListed} />
+        )}
 
-      {/* FOOTER ANIMATION */}
-      <Box data-breakout className="pointer-events-none flex items-end justify-end bg-ocean-100">
+        {/* FOOTER ANIMATION */}
         {isBadBank ? (
-          <Stack className="w-full justify-end">
+          <Stack className="-mb-px w-full justify-end">
             <FishesAnimation className="flex flex-col justify-end" />
           </Stack>
         ) : (

@@ -75,7 +75,7 @@ export function BankCircle({ rating }: BankCircleProps) {
 
   return (
     <MantineProvider theme={theme}>
-      <Box className="flex w-full px-12 md:px-0">
+      <Box className="flex w-full">
         <Box className="relative aspect-square flex-1 rounded-full bg-white shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
           {/* SVG Layer 1: Outer gradient ring */}
           <svg

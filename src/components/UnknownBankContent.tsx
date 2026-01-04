@@ -52,7 +52,6 @@ export function UnknownBankContent({ page }: Props) {
       </Box>
 
       <Box data-breakout className="bg-arcticBlue">
-        {/* Swoosh transitions from white down into arctic blue */}
         <Swoosh direction="down" color="var(--color-white)" />
         <Stack className="my-32 gap-12">
           <Title className="mx-auto">Join the Money Movement</Title>
