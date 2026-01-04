@@ -1,6 +1,9 @@
 import { Button, Checkbox, Select, Stack, Text, Textarea, TextInput } from '@mantine/core'
+import { useForm } from '@mantine/form'
 import { Turnstile } from '@marsidev/react-turnstile'
+import { zod4Resolver } from 'mantine-form-zod-resolver'
 import { useState } from 'react'
+import { z } from 'zod'
 
 export interface ContactFormProps {
   /** Tag used for ActiveCampaign segmentation */
@@ -48,13 +51,6 @@ export interface ContactFormProps {
   onSuccess?: () => void
 }
 
-interface FormWarnings {
-  email?: string
-  isAgreeTerms?: string
-  subject?: string
-  message?: string
-}
-
 const defaultFields = {
   firstName: true,
   email: true,
@@ -62,8 +58,8 @@ const defaultFields = {
   subject: false,
   message: false,
   status: false,
-  isAgreeMarketing: true,
-  isAgreeTerms: true,
+  isAgreeMarketing: false,
+  isAgreeTerms: false,
 }
 
 const STATUS_OPTIONS = ['Student', 'Employed', 'Self-employed', 'Retired', 'Unemployed']
@@ -86,6 +82,27 @@ const defaultPlaceholders = {
   message: 'Your message',
 }
 
+const buildSchema = (fields: typeof defaultFields) =>
+  z.object({
+    firstName: z.string(),
+    email: fields.email
+      ? z
+          .string()
+          .min(1, 'Your email is required.')
+          .regex(z.regexes.email, { message: 'Please enter a valid email address.' })
+      : z.string(),
+    bank: z.string(),
+    subject: fields.subject ? z.string().min(1, 'Subject is required.') : z.string(),
+    message: fields.message ? z.string().min(1, 'Message is required.') : z.string(),
+    status: z.string().nullable(),
+    isAgreeMarketing: z.boolean(),
+    isAgreeTerms: z.boolean().refine((val) => val === true, {
+      message: 'Please agree to the terms.',
+    }),
+  })
+
+type FormValues = z.infer<ReturnType<typeof buildSchema>>
+
 export function ContactForm({
   tag,
   fields: fieldsProp,
@@ -98,20 +115,26 @@ export function ContactForm({
   const labels = { ...defaultLabels, ...labelsProp }
   const placeholders = { ...defaultPlaceholders, ...placeholdersProp }
 
-  // Form state
-  const [firstName, setFirstName] = useState('')
-  const [email, setEmail] = useState('')
-  const [bank, setBank] = useState('')
-  const [subject, setSubject] = useState('')
-  const [message, setMessage] = useState('')
-  const [status, setStatus] = useState<string | null>(null)
-  const [isAgreeMarketing, setIsAgreeMarketing] = useState(false)
-  const [isAgreeTerms, setIsAgreeTerms] = useState(false)
-  const [captchaToken, setCaptchaToken] = useState<string>('')
+  const schema = buildSchema(fields)
+
+  const form = useForm<FormValues>({
+    initialValues: {
+      firstName: '',
+      email: '',
+      bank: '',
+      subject: '',
+      message: '',
+      status: null,
+      isAgreeMarketing: false,
+      isAgreeTerms: false,
+    },
+    validate: zod4Resolver(schema),
+    validateInputOnBlur: true,
+  })
 
   // UI state
+  const [captchaToken, setCaptchaToken] = useState<string>('')
   const [isLoading, setIsLoading] = useState(false)
-  const [showWarnings, setShowWarnings] = useState(false)
   const [isSent, setIsSent] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -121,45 +144,8 @@ export function ContactForm({
   const captchaSitekey = import.meta.env.PUBLIC_CLOUDFLARE_CAPTCHA_SITEKEY
   const showCaptcha = !isDev || captchaTestMode
 
-  // Compute warnings
-  const getWarnings = (): FormWarnings => {
-    if (!showWarnings) return {}
-
-    const warnings: FormWarnings = {}
-
-    if (fields.email && !email) {
-      warnings.email = 'Your email is required.'
-    } else if (fields.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      warnings.email = 'Please enter a valid email address.'
-    }
-
-    if (fields.isAgreeTerms && !isAgreeTerms) {
-      warnings.isAgreeTerms = 'You need to agree to the terms.'
-    }
-
-    if (fields.subject && !subject) {
-      warnings.subject = 'Subject is required.'
-    }
-
-    if (fields.message && !message) {
-      warnings.message = 'Message is required.'
-    }
-
-    return warnings
-  }
-
-  const warnings = getWarnings()
-  const hasWarnings = Object.keys(warnings).length > 0
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setShowWarnings(true)
+  const handleSubmit = form.onSubmit(async (values: FormValues) => {
     setError(null)
-
-    if (hasWarnings || isLoading) {
-      return
-    }
-
     setIsLoading(true)
 
     try {
@@ -167,14 +153,15 @@ export function ContactForm({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          firstName: firstName.trim(),
-          email: email.trim(),
-          bank: bank.trim(),
-          subject: subject.trim(),
-          message: message.trim(),
-          currentStatus: status,
+          firstName: values.firstName.trim(),
+          email: values.email.trim(),
+          bank: values.bank.trim(),
+          subject: values.subject.trim(),
+          message: values.message.trim(),
+          currentStatus: values.status,
           tag,
-          isAgreeMarketing,
+          isAgreeMarketing: values.isAgreeMarketing,
+          isAgreeTerms: values.isAgreeTerms,
           captchaToken,
         }),
       })
@@ -196,7 +183,7 @@ export function ContactForm({
     } finally {
       setTimeout(() => setIsLoading(false), 100)
     }
-  }
+  })
 
   // Success state
   if (isSent && !successRedirect) {
@@ -214,8 +201,7 @@ export function ContactForm({
           <TextInput
             label={labels.firstName}
             placeholder={placeholders.firstName}
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
+            {...form.getInputProps('firstName')}
           />
         )}
 
@@ -224,9 +210,7 @@ export function ContactForm({
             label={labels.email}
             type="email"
             placeholder={placeholders.email}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            error={warnings.email}
+            {...form.getInputProps('email')}
             required
           />
         )}
@@ -235,8 +219,7 @@ export function ContactForm({
           <TextInput
             label={labels.bank}
             placeholder={placeholders.bank}
-            value={bank}
-            onChange={(e) => setBank(e.target.value)}
+            {...form.getInputProps('bank')}
           />
         )}
 
@@ -244,9 +227,7 @@ export function ContactForm({
           <TextInput
             label={labels.subject}
             placeholder={placeholders.subject}
-            value={subject}
-            onChange={(e) => setSubject(e.target.value)}
-            error={warnings.subject}
+            {...form.getInputProps('subject')}
             required
           />
         )}
@@ -255,9 +236,7 @@ export function ContactForm({
           <Textarea
             label={labels.message}
             placeholder={placeholders.message}
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            error={warnings.message}
+            {...form.getInputProps('message')}
             rows={3}
             required
           />
@@ -268,30 +247,28 @@ export function ContactForm({
             label={labels.status}
             placeholder="Select an option"
             data={STATUS_OPTIONS}
-            value={status}
-            onChange={setStatus}
+            {...form.getInputProps('status')}
           />
         )}
 
         <Stack className="my-4 gap-2">
           {fields.isAgreeMarketing && (
             <Checkbox
-              checked={isAgreeMarketing}
-              onChange={(e) => setIsAgreeMarketing(e.target.checked)}
+              {...form.getInputProps('isAgreeMarketing', { type: 'checkbox' })}
               label="I wish to receive more information via email from Bank.Green."
             />
           )}
 
           {fields.isAgreeTerms && (
             <Checkbox
-              checked={isAgreeTerms}
-              onChange={(e) => setIsAgreeTerms(e.target.checked)}
-              error={warnings.isAgreeTerms}
+              {...form.getInputProps('isAgreeTerms', { type: 'checkbox' })}
               label={
                 <>
                   I have read and understood Bank.Green's <a href="/privacy">privacy policy</a>.
+                  <span className="text-red-300"> *</span>
                 </>
               }
+              required
             />
           )}
         </Stack>
@@ -309,7 +286,7 @@ export function ContactForm({
 
         {error && <Text className="text-sm text-textError">{error}</Text>}
 
-        <Button type="submit" loading={isLoading}>
+        <Button type="submit" loading={isLoading} disabled={!form.isValid()}>
           {labels.submit}
         </Button>
       </Stack>

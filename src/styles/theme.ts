@@ -93,8 +93,8 @@ export const theme = createTheme({
         root: cx({
           [`
             bg-center bg-radial bg-size-[225%_350%] hover:bg-size-[100%_150%] 
-            from-green-600/50 to-green-500 
-            bg-green-500 active:bg-green-700 hover:bg-green-600 
+            from-green-600/50 to-green-500 data-disabled:opacity-50
+            bg-green-500 active:bg-green-700 hover:bg-green-600 data-disabled:hover:bg-green-500 data-disabled:active:bg-green-500
             transition-all duration-300 hover:duration-100 active:duration-50
           `]: props.variant === 'filled',
         }),

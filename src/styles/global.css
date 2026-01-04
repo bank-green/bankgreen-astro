@@ -144,6 +144,12 @@
     @apply text-linkInverse!;
   }
 
+  .text-textInverse .mantine-TextInput-error,
+  .text-textInverse .mantine-Checkbox-error,
+  .text-textInverse .mantine-InputWrapper-required {
+    --mantine-color-error: var(--color-red-300);
+  }
+
   a.mantine-Button-root,
   a:has(.mantine-Card-root) {
     text-decoration: none;
