@@ -55,17 +55,30 @@ export function Footer() {
             </Group>
           </Group>
         </Container>
-        <Text size="sm" className="mt-8 text-center text-gray-600">
-          Bank.Green is a project of Empowerment Works Inc. 501(c)(3)
-        </Text>
-        <Group className="justify-center">
-          <Anchor href="/disclaimer" underline="hover" size="sm">
-            Disclaimer
-          </Anchor>
-          <Anchor href="/privacy" underline="hover" size="sm">
-            Privacy Policy
-          </Anchor>
-        </Group>
+        <Stack>
+          <Text size="sm" className="mt-8 text-center text-gray-600">
+            Bank.Green is a project of{' '}
+            <a
+              href="https://globaldevincubator.org/gdi-solutions/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Global Development Incubator Solution
+            </a>{' '}
+            and{' '}
+            <a href="https://financegreen.eu" target="_blank" rel="noopener noreferrer">
+              Finance.Green
+            </a>
+          </Text>
+          <Group className="justify-center">
+            <Anchor href="/disclaimer" underline="hover" size="sm">
+              Disclaimer
+            </Anchor>
+            <Anchor href="/privacy" underline="hover" size="sm">
+              Privacy Policy
+            </Anchor>
+          </Group>
+        </Stack>
       </Stack>
     </AppShell.Footer>
   )
