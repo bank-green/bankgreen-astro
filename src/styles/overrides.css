@@ -26,20 +26,23 @@
   }
 }
 
-/* Override Mantine's default active state, which is to move things down a smidge */
-.mantine-active:active {
-  transform: none;
-}
+/* Wrap in html selector for specificity */
+html[data-mantine-color-scheme] {
+  /* Override Mantine's default active state, which is to move things down a smidge */
+  .mantine-active:active {
+    transform: none;
+  }
 
-/* Override Mantine's aggressive focus-visible styles */
-.mantine-focus-auto:focus-visible {
-  outline: 1px solid var(--mantine-color-gray-3);
-}
+  /* Override Mantine's aggressive focus-visible styles */
+  .mantine-focus-auto:focus-visible {
+    @apply outline-green-500/50 rounded-xs outline outline-offset-4 outline-dotted;
+  }
 
-.mantine-Grid-root.flex-nowrap .mantine-Grid-inner {
-  height: 100%;
-  margin: 0;
-  flex-wrap: nowrap;
+  .mantine-Grid-root.flex-nowrap .mantine-Grid-inner {
+    height: 100%;
+    margin: 0;
+    flex-wrap: nowrap;
+  }
 }
 
 /* These are necessary to pass the margin along to Mantine elements that set the margin via inline styles */
