@@ -14,6 +14,11 @@ interface BankData {
   website?: string | null
   commentary?: {
     rating?: string | null
+    ratingInherited?: boolean | null
+    inheritBrandRating?: {
+      tag: string
+      name: string
+    } | null
     lastReviewed?: string | null
     headline?: string | null
     description1?: string | null
@@ -41,9 +46,18 @@ if (!bank) {
 const bankName = bank.name
 const title = `${bankName}'s Climate Score`
 
-// Determine rating (handle credit union logic from Nuxt)
-const getRating = (bank: BankData): string => {
-  const rating = bank.commentary?.rating || 'unknown'
+// If this bank inherits its rating from a parent brand, fetch the parent's rating
+let effectiveRating = bank.commentary?.rating || 'unknown'
+
+if (bank.commentary?.ratingInherited && bank.commentary?.inheritBrandRating?.tag) {
+  const parentBrand = await fetchBrandByTag(bank.commentary.inheritBrandRating.tag)
+  if (parentBrand?.commentary?.rating) {
+    effectiveRating = parentBrand.commentary.rating
+  }
+}
+
+// Handle credit union logic
+const getRating = (rating: string, bank: BankData): string => {
   const institutionType = bank.commentary?.institutionType?.name
   const isCreditUnion = institutionType === 'Credit Union'
   const isRatingUnknown = rating === 'unknown'
@@ -56,7 +70,7 @@ const getRating = (bank: BankData): string => {
   return rating
 }
 
-const rating = getRating(bank)
+const rating = getRating(effectiveRating, bank)
 const institutionType = bank.commentary?.institutionType?.name || 'Bank'
 
 // Fetch Prismic defaults based on rating
@@ -72,5 +86,5 @@ const prismicNotListed = await getByUIDSafe('textonlypages', 'notlisted')
 ---
 
 <BaseLayout title={title}>
-  <BankScorePage bank={bank} prismicDefaults={prismicDefaults} prismicPage={prismicPage} prismicNotListed={prismicNotListed} client:load />
+  <BankScorePage bank={bank} rating={rating} prismicDefaults={prismicDefaults} prismicPage={prismicPage} prismicNotListed={prismicNotListed} client:load />
 </BaseLayout>

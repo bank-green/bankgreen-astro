@@ -30,11 +30,21 @@ const prismicData = await getByUIDSafe('sfipage', bankTag as string)
 // Fetch Prismic defaults for institution credential images
 const prismicDefaults = await prismicClient.getByID('ZFpGfhEAACEAuFIf').catch(() => null)
 
+// If this bank inherits its rating from a parent brand, fetch the parent's rating
+let rating = bank.commentary?.rating || 'unknown'
+
+if (bank.commentary?.ratingInherited && bank.commentary?.inheritBrandRating?.tag) {
+  const parentBrand = await fetchBrandByTag(bank.commentary.inheritBrandRating.tag)
+  if (parentBrand?.commentary?.rating) {
+    rating = parentBrand.commentary.rating
+  }
+}
+
 const bankName = bank.name
 const title = `${bankName} Review and Service Offering`
 const description = `Learn about ${bankName}'s environmental rating, services, and sustainable banking options.`
 ---
 
 <BaseLayout title={title} description={description}>
-  <EcoBankProfilePage bank={bank} harvestData={harvestData} prismicData={prismicData} prismicDefaults={prismicDefaults} client:load />
+  <EcoBankProfilePage bank={bank} rating={rating} harvestData={harvestData} prismicData={prismicData} prismicDefaults={prismicDefaults} client:load />
 </BaseLayout>

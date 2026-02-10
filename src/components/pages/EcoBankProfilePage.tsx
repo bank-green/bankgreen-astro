@@ -56,6 +56,7 @@ interface BankData {
 
 interface Props {
   bank: BankData | null
+  rating: string
   harvestData?: HarvestData | null
   prismicData?: PrismicDocument | null
   prismicDefaults?: PrismicDocument | null
@@ -67,7 +68,7 @@ function getFirstParagraph(html: string): string {
   return match ? match[0] : html
 }
 
-export function EcoBankProfilePage({ bank, harvestData, prismicData, prismicDefaults }: Props) {
+export function EcoBankProfilePage({ bank, rating, harvestData, prismicData, prismicDefaults }: Props) {
   if (!bank) {
     return (
       <MantineProvider theme={theme}>
@@ -82,7 +83,6 @@ export function EcoBankProfilePage({ bank, harvestData, prismicData, prismicDefa
     )
   }
 
-  const rating = bank.commentary?.rating || 'unknown'
   const websiteUrl = bank.website ? new URL(bank.website).hostname : ''
   const inheritBrandRating = bank.commentary?.inheritBrandRating
   const institutionCredentials = bank.commentary?.institutionCredentials || []

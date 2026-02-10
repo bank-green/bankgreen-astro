@@ -32,12 +32,13 @@ interface BankData {
 
 interface Props {
   bank: BankData | null
+  rating: string
   prismicDefaults: DefaultFields
   prismicPage: PrismicDocument | null
   prismicNotListed: PrismicDocument | null
 }
 
-export function BankScorePage({ bank, prismicDefaults, prismicPage, prismicNotListed }: Props) {
+export function BankScorePage({ bank, rating, prismicDefaults, prismicPage, prismicNotListed }: Props) {
   if (!bank) {
     return (
       <PageContent>
@@ -50,7 +51,6 @@ export function BankScorePage({ bank, prismicDefaults, prismicPage, prismicNotLi
     )
   }
 
-  const rating = bank.commentary?.rating || 'unknown'
   const isBadBank = ['worst', 'bad', 'ok'].includes(rating)
   const isGoodBank = ['good', 'great'].includes(rating)
 
