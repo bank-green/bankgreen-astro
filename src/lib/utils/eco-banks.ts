@@ -203,7 +203,11 @@ export function isDirty(current: EcoBankFilters, defaults: EcoBankFilters): bool
 
     // Check each option value
     for (const option of currentOptionKeys) {
-      if (currentOptions[option] !== defaultOptions[option]) return true
+      if (
+        (currentOptions as Record<string, boolean>)[option] !==
+        (defaultOptions as Record<string, boolean>)[option]
+      )
+        return true
     }
   }
 

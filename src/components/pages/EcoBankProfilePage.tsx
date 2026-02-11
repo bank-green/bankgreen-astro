@@ -68,7 +68,13 @@ function getFirstParagraph(html: string): string {
   return match ? match[0] : html
 }
 
-export function EcoBankProfilePage({ bank, rating, harvestData, prismicData, prismicDefaults }: Props) {
+export function EcoBankProfilePage({
+  bank,
+  rating,
+  harvestData,
+  prismicData,
+  prismicDefaults,
+}: Props) {
   if (!bank) {
     return (
       <MantineProvider theme={theme}>

@@ -38,7 +38,13 @@ interface Props {
   prismicNotListed: PrismicDocument | null
 }
 
-export function BankScorePage({ bank, rating, prismicDefaults, prismicPage, prismicNotListed }: Props) {
+export function BankScorePage({
+  bank,
+  rating,
+  prismicDefaults,
+  prismicPage,
+  prismicNotListed,
+}: Props) {
   if (!bank) {
     return (
       <PageContent>
