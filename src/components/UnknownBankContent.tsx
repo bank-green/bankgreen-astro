@@ -1,7 +1,7 @@
-import { Box, Center, Grid, Image, List, Stack, Text, ThemeIcon, Title } from '@mantine/core'
-import { CheckCircleIcon } from '@phosphor-icons/react'
+import { Box, Center, Grid, Image, Stack, Text, Title } from '@mantine/core'
 import type { PrismicDocument, RichTextField } from '@prismicio/client'
 import * as prismic from '@prismicio/client'
+import { CTAChecklist } from './CTAChecklist'
 import ContactFormContainer from './forms/ContactFormContainer'
 
 const CHECK_LIST = [
@@ -62,27 +62,7 @@ export function UnknownBankContent({ page }: Props) {
               </Center>
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 6 }}>
-              <List
-                classNames={{
-                  root: 'space-y-1 rounded-2xl bg-white p-8',
-                  item: 'md:text-lg',
-                  itemWrapper: 'items-start',
-                }}
-                icon={
-                  <ThemeIcon
-                    color="transparent"
-                    size={24}
-                    radius="xl"
-                    className="ml-0 shrink-0 pl-0"
-                  >
-                    <CheckCircleIcon size={24} className="-mb-2 text-green-500" />
-                  </ThemeIcon>
-                }
-              >
-                {CHECK_LIST.map((item) => (
-                  <List.Item key={item}>{item}</List.Item>
-                ))}
-              </List>
+              <CTAChecklist items={CHECK_LIST} />
             </Grid.Col>
           </Grid>
           <ContactFormContainer

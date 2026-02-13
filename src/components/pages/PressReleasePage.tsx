@@ -1,8 +1,9 @@
 import { PageContent } from '@components/PageContent'
-import { Anchor, Box, Stack, Text, Title } from '@mantine/core'
+import { Anchor, Box, Group, Stack, Text } from '@mantine/core'
 import type { PrismicDocument } from '@prismicio/client'
 import type { Slice } from '@slices'
 import { SliceZone } from '@slices'
+import Article from '../Article'
 
 interface Props {
   release: PrismicDocument
@@ -17,20 +18,18 @@ export function PressReleasePage({ release }: Props) {
   const slices = (release.data.slices || []) as Slice[]
 
   return (
-    <PageContent>
-      <Stack className="rounded-2xl bg-white p-12">
-        <Title order={2} className="mb-6">
-          {title}
-        </Title>
-
-        <Stack className="gap-6">
+    <PageContent fullWidth>
+      <Article title={title}>
+        <Group className="mx-auto mb-12 w-fit items-start justify-between gap-12">
           {(author || email || phone) && (
-            <Stack className="gap-0">
-              <Text className="font-semibold">Contact:</Text>
+            <Stack className="gap-0 text-center *:text-sm">
+              <Text className="font-semibold uppercase">Contact</Text>
               {author && <Text>{author}</Text>}
               {email && (
                 <Text>
-                  <Anchor href={`mailto:${email}`}>{email}</Anchor>
+                  <Anchor href={`mailto:${email}`} className="text-sm">
+                    {email}
+                  </Anchor>
                 </Text>
               )}
               {phone && <Text>{phone}</Text>}
@@ -38,24 +37,15 @@ export function PressReleasePage({ release }: Props) {
           )}
 
           {releaseDate && (
-            <Stack className="gap-0">
-              <Title order={4} className="font-semibold">
-                For immediate release
-              </Title>
-              <Title order={5} className="mb-6">
-                {releaseDate}
-              </Title>
+            <Stack className="gap-0 text-center *:text-sm">
+              <Text className="font-semibold uppercase">For immediate release</Text>
+              <Text>{releaseDate}</Text>
             </Stack>
           )}
-        </Stack>
+        </Group>
 
         <Box className="w-full max-w-3xl">{slices && <SliceZone slices={slices} />}</Box>
-
-        <Title order={2}>About Bank.Green</Title>
-        <Text>
-          Contact: <Anchor href="mailto:hello@bank.green">hello@bank.green</Anchor>
-        </Text>
-      </Stack>
+      </Article>
     </PageContent>
   )
 }
