@@ -76,7 +76,7 @@ const defaultLabels = {
 
 const defaultPlaceholders = {
   firstName: 'Your first name',
-  email: 'You email address',
+  email: 'Your email address',
   bank: 'Your bank name',
   subject: 'Message subject',
   message: 'Your message',

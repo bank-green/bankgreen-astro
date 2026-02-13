@@ -25,7 +25,7 @@
 .mantine-Autocomplete-input {
   color: var(--color-textDefault);
   background-color: white;
-  border: 1px solid var(--color-borderDefault, currentColor);
+  border: 1px solid var(--color-linkDefault, currentColor);
 }
 
 @layer theme {

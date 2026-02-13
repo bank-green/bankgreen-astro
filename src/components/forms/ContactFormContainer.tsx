@@ -42,7 +42,7 @@ const ContactFormContainer = ({
                     radius="xl"
                     className="ml-0 shrink-0 pl-0"
                   >
-                    <CheckCircleIcon size={24} className="-mb-2 text-green-500" />
+                    <CheckCircleIcon size={24} weight="fill" className="-mb-2 text-green-500" />
                   </ThemeIcon>
                 }
               >

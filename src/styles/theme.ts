@@ -78,6 +78,14 @@ export const theme = createTheme({
         footer: 'm-auto max-w-6xl w-full bg-white pt-6',
       },
     },
+    Autocomplete: {
+      defaultProps: {
+        clearButtonProps: {
+          className: 'text-textLight',
+          style: { '--cb-size': 'var(--cb-size-sm)' } as React.CSSProperties,
+        },
+      },
+    },
     Button: Button.extend({
       defaultProps: {
         variant: 'filled',
@@ -143,8 +151,15 @@ export const theme = createTheme({
       },
     }),
     Input: {
+      defaultProps: {
+        size: 'md',
+      },
       classNames: {
-        input: 'disabled:opacity-50 disabled:bg-white',
+        input: cx(
+          'rounded-lg py-4',
+          'disabled:bg-white disabled:opacity-50',
+          'border-linkDefault hover:border-linkHover active:border-linkActive'
+        ),
       },
     },
     LoadingOverlay: {

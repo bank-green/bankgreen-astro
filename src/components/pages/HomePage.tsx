@@ -33,9 +33,9 @@ export function HomePage({ page }: Props) {
   return (
     <PageContent fullWidth>
       {/* Hero section with green gradient background - breaks out of container */}
-      <Box data-breakout className="bg-linear-to-b from-sushi-100 to-sushi-200">
+      <Box data-breakout className="bg-linear-to-b from-sushi-100 via-sushi-100 to-sushi-200">
         <Grid className="contain items-end gap-12 pt-8 pb-12 md:pt-20 lg:pb-18">
-          <Grid.Col span={{ base: 12, md: 7 }}>
+          <Grid.Col span={{ base: 12, md: 6 }}>
             <Title
               order={1}
               className={cx(
@@ -48,8 +48,8 @@ export function HomePage({ page }: Props) {
               {title}
             </Title>
           </Grid.Col>
-          <Grid.Col span={{ base: 12, md: 5 }}>
-            <Box className="mx-auto flex w-full justify-start">
+          <Grid.Col span={{ base: 12, md: 6 }}>
+            <Box className="md:-mt-4 mx-auto flex w-full justify-start">
               <BankLocationSearch onBankSelect={handleBankSelect} />
             </Box>
           </Grid.Col>
@@ -162,10 +162,10 @@ export function HomePage({ page }: Props) {
               <Stack className="mx-auto my-auto max-w-xl md:pr-4 md:pl-1 md:text-right">
                 {description3 &&
                   description3.length > 0 &&
-                  renderRichText(description3, 'text-xl md:text-2xl')}
+                  renderRichText(description3, 'text-xl md:text-3xl')}
                 {description4 &&
                   description4.length > 0 &&
-                  renderRichText(description4, 'md:text-xl')}
+                  renderRichText(description4, 'text-xl md:text-2xl')}
               </Stack>
             </Grid.Col>
           </Grid>

@@ -1,7 +1,7 @@
 import { findCountries, getCountryName } from '@lib/countries'
 import { detectUserLocation } from '@lib/geolocation'
 import { findStates, getStateName } from '@lib/states'
-import { Autocomplete, type AutocompleteProps, Group, Loader } from '@mantine/core'
+import { Autocomplete, type AutocompleteProps, Group, Loader, Text } from '@mantine/core'
 import { MapPinIcon } from '@phosphor-icons/react'
 import { useEffect, useMemo, useState } from 'react'
 
@@ -143,10 +143,10 @@ function LocationSearch({
       .replace(/./g, (char: string) => String.fromCodePoint(127397 + char.charCodeAt(0)))
 
     return (
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-        <span style={{ fontSize: '1.2em' }}>{flag}</span>
-        <span>{`${getCountryName(option.value)} (${option.value})`}</span>
-      </div>
+      <Group className="items-center gap-2">
+        <Text>{flag}</Text>
+        {`${getCountryName(option.value)} (${option.value})`}
+      </Group>
     )
   }
 
@@ -184,7 +184,10 @@ function LocationSearch({
     <Group className={className}>
       <Autocomplete
         label={label}
-        className="mx-auto max-w-sm grow basis-30 md:max-w-xl"
+        classNames={{
+          root: 'mx-auto grow basis-30 md:max-w-xl',
+          label: 'text-sm',
+        }}
         placeholder={isDetecting ? 'Detecting your location...' : placeholder}
         value={search}
         clearable
@@ -195,15 +198,16 @@ function LocationSearch({
         renderOption={renderAutocompleteOption}
         maxDropdownHeight={300}
         limit={50}
-        leftSection={isDetecting && !disabled && <Loader size="xs" />}
+        leftSection={isDetecting ? !disabled && <Loader size="xs" /> : <MapPinIcon size={16} />}
         rightSection={search ? undefined : <MapPinIcon size={16} />}
         onFocus={(e) => e.target.select()}
+        size="md"
       />
       {showStateSearch && (
         <Autocomplete
           label="State"
           clearable
-          className="mx-auto max-w-sm grow basis-10"
+          classNames={{ root: 'mx-auto max-w-sm grow basis-10', label: 'text-sm' }}
           leftSection={isDetecting && !disabled && <Loader size="xs" />}
           placeholder={isDetecting ? 'Detecting your state...' : 'Search state...'}
           value={USStateSearch}
@@ -214,6 +218,7 @@ function LocationSearch({
           maxDropdownHeight={300}
           limit={50}
           onFocus={(e) => e.target.select()}
+          size="md"
         />
       )}
     </Group>

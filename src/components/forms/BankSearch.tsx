@@ -110,7 +110,7 @@ function BankSearch({
     <Stack className="items-end gap-2">
       <Autocomplete
         label={label}
-        className={`mx-auto grow ${className}`}
+        classNames={{ root: `mx-auto max-w-xl grow ${className}`, label: 'text-sm' }}
         placeholder={placeholder}
         value={search}
         onChange={handleChange}
@@ -122,6 +122,7 @@ function BankSearch({
         leftSection={loading && !disabled ? <Loader size="xs" /> : <BankIcon />}
         rightSection={search ? undefined : null}
         onFocus={(e) => e.target.select()}
+        size="md"
       />
       <Anchor href="/not-listed" variant="transparent" size="compact-sm" className="w-auto">
         <Group className="items-center gap-1">

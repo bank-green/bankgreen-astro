@@ -55,8 +55,8 @@ function BankLocationSearch({
   }
 
   return (
-    <Stack className="relative mx-auto w-full max-w-lg gap-2 p-2">
-      <Title order={5} className="text-center text-sky-600 md:text-left">
+    <Stack className="relative mx-auto w-full max-w-xl gap-2 p-2">
+      <Title order={5} className="text-center font-normal md:text-left">
         {title}
       </Title>
       <LocationSearch
@@ -64,7 +64,7 @@ function BankLocationSearch({
         onChange={setCountry}
         onStateChange={setState}
         onInitialized={handleLocationInitialized}
-        className="gap-2"
+        className="w-full gap-2"
       />
       <BankSearch
         banks={banks}

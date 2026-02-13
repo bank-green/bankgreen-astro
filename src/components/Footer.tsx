@@ -57,18 +57,15 @@ export function Footer() {
         </Container>
         <Stack>
           <Text size="sm" className="mt-8 text-center text-gray-600">
-            Bank.Green is a project of{' '}
+            Bank.Green Bank.Green is the trading name of{' '}
             <a
-              href="https://globaldevincubator.org/gdi-solutions/"
+              href="https://www.kvk.nl/bestellen/#/94142610?origin=search"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Global Development Incubator Solution
-            </a>{' '}
-            and{' '}
-            <a href="https://financegreen.eu" target="_blank" rel="noopener noreferrer">
               Finance.Green
             </a>
+            .
           </Text>
           <Group className="justify-center">
             <Anchor href="/disclaimer" underline="hover" size="sm">
