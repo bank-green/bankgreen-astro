@@ -33,7 +33,7 @@
     "@prismicio/helpers": "^2.3.9",
     "@prismicio/richtext": "^2.1.5",
     "@typeform/embed": "^5.10.0",
-    "astro": "^5.16.0",
+    "astro": "^5.17.2",
     "clsx": "^2.1.1",
     "fuse.js": "^7.1.0",
     "html-react-parser": "^5.2.11",
