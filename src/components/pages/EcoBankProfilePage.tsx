@@ -203,12 +203,14 @@ export function EcoBankProfilePage({
           </Box>
         </Box>
 
-        {/* SWITCH SURVEY / CTA */}
+        {/* Link to bank website  */}
         <Box className="contain">
           <Group className="w-full justify-between">
-            <Button component="a" href="#lead-gen" size="lg">
-              Get more information
-            </Button>
+            {bank.website && (
+              <Button component="a" href={bank.website} size="lg" target="_blank">
+                Get more information
+              </Button>
+            )}
             <Stack className="gap-0 text-right">
               <Text>
                 Have you switched to {bank.name}? We'd love to hear about your experience!
