@@ -43,7 +43,7 @@ export function EcoBanksPage({ page }: Props) {
                 hideLabel="Read less"
                 className="[--spoiler-bg-color:white]"
               >
-                {/* Note: this is calling Array.slice, not referring to a slice object! */}
+                {/* Note: this is calling Array.slice, not referring to a Prismic slice object! */}
                 <SliceZone slices={introductory.slice(0, 1)} />
               </Spoiler>
             )}

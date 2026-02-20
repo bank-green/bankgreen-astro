@@ -54,7 +54,7 @@ function EcoBankFilters({ onFilterChange, headerBgClass }: EcoBankFiltersProps) 
   }
 
   return (
-    <Stack className="max-h-screen gap-0 overflow-y-auto">
+    <Stack className="sticky top-0 max-h-[calc(100dvh-2rem)] gap-0 overflow-y-auto">
       <Group className={`sticky top-0 z-20 justify-between pb-4 ${headerBgClass}`}>
         <Text>Filters</Text>
         <Group>
