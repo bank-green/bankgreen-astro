@@ -73,6 +73,10 @@ const getRating = (rating: string, bank: BankData): string => {
 const rating = getRating(effectiveRating, bank)
 const institutionType = bank.commentary?.institutionType?.name || 'Bank'
 
+const ratingImageUrl = `https://bank.green/anim/gauge/${rating}.gif`
+const ratingVideoUrl = `https://bank.green/anim/gauge/${rating}.mp4`
+const bankDescription = 'Find and compare the service offerings of ethical and sustainable banks.'
+
 // Fetch Prismic defaults based on rating
 const prismicDefaults = await getDefaultFields(prismicClient, rating, bankName, institutionType)
 
@@ -85,6 +89,17 @@ const prismicPage = await getByUIDSafe('bankpage', queryKey)
 const prismicNotListed = await getByUIDSafe('textonlypages', 'notlisted')
 ---
 
-<BaseLayout title={title}>
+<BaseLayout title={title} description={bankDescription} ogImage={ratingImageUrl} ogImageWidth="680" ogImageHeight="689">
+  <Fragment slot="head">
+    <meta property="og:video" content={ratingVideoUrl} />
+    <meta property="og:video:url" content={ratingVideoUrl} />
+    <meta property="og:video:secure_url" content={ratingVideoUrl} />
+    <meta property="og:video:type" content="video/mp4" />
+    <meta property="og:video:width" content="680" />
+    <meta property="og:video:height" content="689" />
+    <meta name="twitter:player" content={ratingVideoUrl} />
+    <meta name="twitter:player:width" content="680" />
+    <meta name="twitter:player:height" content="689" />
+  </Fragment>
   <BankScorePage bank={bank} rating={rating} prismicDefaults={prismicDefaults} prismicPage={prismicPage} prismicNotListed={prismicNotListed} client:load />
 </BaseLayout>

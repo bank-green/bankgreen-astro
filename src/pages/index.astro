@@ -4,9 +4,12 @@ import BaseLayout from '@layouts/BaseLayout.astro'
 import { getSingleSafe } from '@lib/prismic'
 
 const page = await getSingleSafe('homepage')
-const title = page?.data?.title || 'Find Ethical & Sustainable Banks In Your Area'
+const title =
+  page?.data?.seo_title || page?.data?.title || 'Find Ethical & Sustainable Banks In Your Area'
+const description = page?.data?.seo_description || undefined
+const ogImage = page?.data?.seo_image?.url || undefined
 ---
 
-<BaseLayout title={title}>
+<BaseLayout title={title} description={description} ogImage={ogImage}>
   <HomePage page={page} client:load />
 </BaseLayout>

@@ -18,8 +18,9 @@ if (!release) {
 }
 
 const title = release.data.title || 'Press Release'
+const description = (release.data.description as string) || undefined
 ---
 
-<BaseLayout title={title}>
+<BaseLayout title={title} description={description}>
   <PressReleasePage release={release} />
 </BaseLayout>

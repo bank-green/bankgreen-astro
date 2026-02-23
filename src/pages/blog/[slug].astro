@@ -18,8 +18,56 @@ if (!post) {
 }
 
 const title = post.data.title || 'Blog Post'
+
+// Extract description from the first paragraph of the description rich text field
+const descriptionBlocks = (post.data.description as Array<{ type: string; text: string }>) ?? []
+const description = descriptionBlocks.find((b) => b.type === 'paragraph')?.text || ''
+
+const cardImage = post.data.cardimage as
+  | { url?: string; alt?: string; dimensions?: { width: number; height: number } }
+  | undefined
+const ogImage = cardImage?.url || undefined
+const ogImageWidth = cardImage?.dimensions?.width?.toString() || '1200'
+const ogImageHeight = cardImage?.dimensions?.height?.toString() || '630'
+
+const canonicalUrl = `https://bank.green/blog/${slug}`
+
+const publishedDate = post.first_publication_date || ''
+const modifiedDate = post.last_publication_date || ''
+const author = (post.data.author as string) || ''
+
+const jsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'NewsArticle',
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': canonicalUrl,
+  },
+  headline: title,
+  image: ogImage || '',
+  datePublished: publishedDate,
+  dateModified: modifiedDate,
+})
 ---
 
-<BaseLayout title={title}>
+<BaseLayout
+  title={title}
+  description={description || undefined}
+  ogImage={ogImage}
+  ogImageWidth={ogImageWidth}
+  ogImageHeight={ogImageHeight}
+  ogType="article"
+  canonicalUrl={canonicalUrl}
+>
+  <Fragment slot="head">
+    <meta property="article:published_time" content={publishedDate} />
+    <meta property="article:modified_time" content={modifiedDate} />
+    <meta property="og:url" content={canonicalUrl} />
+    {cardImage?.alt && <meta property="og:image:alt" content={cardImage.alt} />}
+    <meta name="twitter:label1" content="Written by" />
+    <meta name="twitter:data1" content={author} />
+    <meta name="robots" content="follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large" />
+    <script type="application/ld+json" is:inline set:html={jsonLd} />
+  </Fragment>
   <BlogPostPage post={post} />
 </BaseLayout>

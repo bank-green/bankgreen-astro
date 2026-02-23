@@ -5,8 +5,31 @@ import { GdprBanner } from '../components/GdprBanner'
 import { Layout } from '../components/Layout'
 import { getSingleSafe } from '../lib/prismic'
 
-const { title, description = 'Bank.Green helps you find ethical and sustainable banks' } =
-  Astro.props
+const DEFAULT_DESCRIPTION =
+  'Bank.Green is sounding the alarm on the climate-destroying activities of banks while recommending sustainable alternatives and empowering consumer action.'
+const DEFAULT_OG_IMAGE = 'https://bank.green/img/social/social-1664-971.jpg'
+
+interface Props {
+  title: string
+  description?: string
+  ogImage?: string
+  ogImageWidth?: string
+  ogImageHeight?: string
+  ogType?: string
+  canonicalUrl?: string
+  noindex?: boolean
+}
+
+const {
+  title,
+  description = DEFAULT_DESCRIPTION,
+  ogImage = DEFAULT_OG_IMAGE,
+  ogImageWidth = '1665',
+  ogImageHeight = '971',
+  ogType = 'website',
+  canonicalUrl,
+  noindex = false,
+} = Astro.props
 
 // Fetch exit intent content from Prismic (cookies are read client-side)
 const exitIntentContent = await getSingleSafe('switchsurveyexit')
@@ -16,22 +39,81 @@ const exitIntentContent = await getSingleSafe('switchsurveyexit')
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="x-ua-compatible" content="IE=edge" />
+    <meta http-equiv="Content-Language" content="en" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content={description} />
+    <meta name="referrer" content="origin" />
     <meta name="generator" content={Astro.generator} />
+
+    <meta name="description" content={description} />
+    <meta name="application-name" content="Bank.Green" />
+    <meta name="apple-mobile-web-app-title" content={title} />
+    <meta name="theme-color" content="#12141d" />
+    <meta name="msapplication-TileColor" content="#12141d" />
+    <meta name="facebook-domain-verification" content="wf6ta1yzc1rnykp1b7jj8vov1c4amh" />
 
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content={ogImageWidth} />
+    <meta property="og:image:height" content={ogImageHeight} />
+    <meta property="og:locale" content="en" />
+    <meta property="og:site_name" content="Bank Green" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Reddit+Sans:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@BankGreen_" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
 
-    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#12141D" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Reddit+Sans:ital,wght@0,200..900;1,200..900&display=swap"
+      rel="stylesheet"
+    />
+
     <title>{title} | Bank.Green</title>
+
+    <slot name="head" />
+
+    <!-- Google Tag Manager -->
+    <script is:inline>
+      ;(function (w, d, s, l, i) {
+        w[l] = w[l] || []
+        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' })
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != 'dataLayer' ? '&l=' + l : ''
+        j.async = true
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl
+        f.parentNode.insertBefore(j, f)
+      })(window, document, 'script', 'dataLayer', 'GTM-KMGKCN3')
+    </script>
+    <!-- End Google Tag Manager -->
   </head>
   <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-KMGKCN3"
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"
+        title="Google Tag Manager"></iframe></noscript
+    >
+    <!-- End Google Tag Manager (noscript) -->
     <Layout client:load>
       <slot />
     </Layout>
