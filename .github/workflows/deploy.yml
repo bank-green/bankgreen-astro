@@ -1,0 +1,44 @@
+name: Deploy
+
+on:
+  # Deploy on pushes to main
+  push:
+    branches: [main]
+
+  # Scheduled rebuild to pick up content changes from Prismic and
+  # new/updated banks from the GraphQL database (sustainable-eco-banks pages
+  # are prerendered at build time, so they require a rebuild to reflect changes)
+  schedule:
+    - cron: '0 */6 * * *' # Every 6 hours
+
+  # Allow manual trigger from GitHub Actions UI
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Build & Deploy to Cloudflare Workers
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
+      - name: Deploy to Cloudflare Workers
+        run: pnpm wrangler deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
