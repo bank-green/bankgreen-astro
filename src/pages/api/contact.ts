@@ -21,8 +21,7 @@ const CAPTCHA_SECRET = import.meta.env.CLOUDFLARE_CAPTCHA_SECRET
 
 async function verifyCaptcha(token: string): Promise<boolean> {
   if (!CAPTCHA_SECRET) {
-    console.warn('CAPTCHA_SECRET not configured, skipping verification')
-    return true
+    throw new Error('CLOUDFLARE_CAPTCHA_SECRET is not configured')
   }
 
   const formData = new FormData()
@@ -55,7 +54,13 @@ export const POST: APIRoute = async ({ request }) => {
     const captchaTestMode = import.meta.env.CAPTCHA_TEST_MODE === 'true'
     const shouldVerifyCaptcha = !isDev || captchaTestMode
 
-    if (shouldVerifyCaptcha && body.captchaToken) {
+    if (shouldVerifyCaptcha) {
+      if (!body.captchaToken) {
+        return new Response(JSON.stringify({ error: 'Captcha token is required' }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        })
+      }
       const captchaValid = await verifyCaptcha(body.captchaToken)
       if (!captchaValid) {
         return new Response(JSON.stringify({ error: 'Captcha verification failed' }), {
