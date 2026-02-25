@@ -3,6 +3,8 @@ import { BlogIndexPage } from '@components/pages'
 import BaseLayout from '@layouts/BaseLayout.astro'
 import { getAllByTypeSafe } from '@lib/prismic'
 
+export const prerender = true
+
 const posts = await getAllByTypeSafe('blogpost', {
   orderings: [{ field: 'my.blogpost.publicationdate', direction: 'desc' }],
 })

@@ -3,6 +3,8 @@ import { JoinPage } from '@components/pages'
 import BaseLayout from '@layouts/BaseLayout.astro'
 import { getByUIDSafe } from '@lib/prismic'
 
+export const prerender = true
+
 // Join page uses textonlypages with UID "joinpage"
 const page = await getByUIDSafe('textonlypages', 'joinpage')
 ---

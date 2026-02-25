@@ -377,3 +377,82 @@ Copy `.env.example` to `.env`. Variables prefixed with `PUBLIC_` are available c
 
 **Why bank profiles use full SSR**:
 Astro's prerendering with `getStaticPaths()` only serves routes returned at build time - other routes return 404. Since new banks can be added to the GraphQL database at any time, `/banks/*` uses full SSR so every bank route works without requiring a rebuild. Hybrid prerender + SSR fallback is not supported by Astro.
+
+## SEO
+
+### BaseLayout SEO Props
+
+`BaseLayout.astro` accepts these props for per-page SEO control:
+
+```astro
+<BaseLayout
+  title="Page Title"
+  description="Page description for meta and og:description"
+  ogImage="https://bank.green/img/social/social-1664-971.jpg"
+  ogImageWidth="1665"
+  ogImageHeight="971"
+  ogType="website"
+  canonicalUrl="https://bank.green/blog/my-post"
+  noindex={false}
+>
+```
+
+- `title` — required; used for `<title>`, `og:title`, `twitter:title`, `apple-mobile-web-app-title`
+- `description` — defaults to the standard Bank.Green tagline if omitted
+- `ogImage` — defaults to `/img/social/social-1664-971.jpg`; pass a page-specific image URL to override
+- `ogType` — defaults to `"website"`; use `"article"` for blog/press posts
+- `canonicalUrl` — omit for pages without a stable URL; always set for blog posts
+- `noindex` — set to `true` to emit `noindex, nofollow` robots meta
+
+### Injecting Extra Head Tags
+
+Use the named `head` slot to add page-specific `<head>` content that BaseLayout doesn't cover (e.g. article timestamps, JSON-LD, video meta):
+
+```astro
+<BaseLayout title={title} ogType="article" canonicalUrl={url}>
+  <Fragment slot="head">
+    <meta property="article:published_time" content={publishedDate} />
+    <script type="application/ld+json" is:inline set:html={jsonLd} />
+  </Fragment>
+  <MyPage />
+</BaseLayout>
+```
+
+### Prismic SEO Fields
+
+Pages backed by Prismic should prefer `seo_title`, `seo_description`, and `seo_image` fields over display fields:
+
+```astro
+const title = page?.data?.seo_title || page?.data?.title || 'Fallback Title'
+const description = page?.data?.seo_description || undefined
+const ogImage = page?.data?.seo_image?.url || undefined
+```
+
+### Blog Posts
+
+`src/pages/blog/[slug].astro` sets the full article SEO suite automatically:
+- `og:type: article` with `article:published_time` / `article:modified_time`
+- `og:image` from the post's `cardimage` Prismic field
+- Canonical URL (`https://bank.green/blog/{slug}`)
+- Twitter card labels (Written by / Published on)
+- `robots` meta allowing rich snippets
+- JSON-LD `NewsArticle` schema
+
+### Bank Profile Pages
+
+`src/pages/banks/[bankTag].astro` sets rating-specific media metadata:
+- `og:image` → `/anim/gauge/{rating}.gif` (animated gauge)
+- `og:video` / `twitter:player` → `/anim/gauge/{rating}.mp4`
+
+## Sitemaps
+
+Two sitemaps are declared in `public/robots.txt`:
+
+| URL | Source | Content |
+|-----|--------|---------|
+| `/sitemap-index.xml` | `@astrojs/sitemap` (build-time) | All prerendered static pages |
+| `/sitemap-banks.xml` | `src/pages/sitemap-banks.xml.ts` (SSR) | All `/banks/*` pages |
+
+**Why two sitemaps?** `@astrojs/sitemap` only discovers URLs at build time by crawling pre-rendered output. `/banks/*` pages are fully SSR (no `getStaticPaths()`), so they are invisible to the build-time crawler and must be listed separately via a live endpoint.
+
+`sitemap-banks.xml.ts` queries all brand tags from the GraphQL API on each request and returns a valid XML sitemap. It is cached for 1 hour via `Cache-Control`. If the GraphQL call fails it returns an empty (but valid) sitemap rather than a 500.

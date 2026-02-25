@@ -3,6 +3,8 @@ import { PressIndexPage } from '@components/pages'
 import BaseLayout from '@layouts/BaseLayout.astro'
 import { getAllByTypeSafe, getSingleSafe } from '@lib/prismic'
 
+export const prerender = true
+
 const page = await getSingleSafe('presspage')
 const releases = await getAllByTypeSafe('presspost', {
   orderings: [{ field: 'document.first_publication_date', direction: 'desc' }],

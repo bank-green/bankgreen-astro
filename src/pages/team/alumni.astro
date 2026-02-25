@@ -3,6 +3,8 @@ import { TeamAlumniPage } from '@components/pages'
 import BaseLayout from '@layouts/BaseLayout.astro'
 import { getSingleSafe } from '@lib/prismic'
 
+export const prerender = true
+
 // Alumni uses the same teampage document, filtered for Alumni department
 const page = await getSingleSafe('teampage', {
   fetchLinks: ['accordionitem.title', 'accordionitem.slices'],

@@ -3,6 +3,8 @@ import { FaqPage } from '@components/pages/FaqPage'
 import BaseLayout from '@layouts/BaseLayout.astro'
 import { getSingleSafe } from '@lib/prismic'
 
+export const prerender = true
+
 const page = await getSingleSafe('faqpage', {
   fetchLinks: ['accordionitem.title', 'accordionitem.slices'],
 })
