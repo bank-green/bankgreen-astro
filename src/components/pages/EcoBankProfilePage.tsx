@@ -20,6 +20,7 @@ import {
   Text,
   Title,
 } from '@mantine/core'
+import { ArrowSquareOutIcon } from '@phosphor-icons/react'
 import type { PrismicDocument } from '@prismicio/client'
 import theme from '@styles/theme'
 import ContactFormContainer from '../forms/ContactFormContainer'
@@ -207,8 +208,14 @@ export function EcoBankProfilePage({
         <Box className="contain">
           <Group className="w-full justify-between">
             {bank.website && (
-              <Button component="a" href={bank.website} size="lg" target="_blank">
-                Get more information
+              <Button
+                component="a"
+                href={bank.website}
+                size="lg"
+                target="_blank"
+                rightSection={<ArrowSquareOutIcon />}
+              >
+                Visit bank website
               </Button>
             )}
             <Stack className="gap-0 text-right">

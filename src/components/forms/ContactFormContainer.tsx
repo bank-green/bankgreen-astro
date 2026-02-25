@@ -38,11 +38,15 @@ const ContactFormContainer = ({
                 icon={
                   <ThemeIcon
                     color="transparent"
-                    size={24}
+                    size={32}
                     radius="xl"
                     className="ml-0 shrink-0 pl-0"
                   >
-                    <CheckCircleIcon size={24} weight="fill" className="-mb-2 text-green-500" />
+                    <CheckCircleIcon
+                      size={32}
+                      weight="fill"
+                      className="rounded-full bg-radial from-25% from-white via-30% via-transparent to-transparent text-green-500"
+                    />
                   </ThemeIcon>
                 }
               >
