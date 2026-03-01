@@ -1,11 +1,14 @@
 /**
  * ActiveCampaign API client with mock mode support for local testing
  *
- * Environment variables:
- * - CONTACT_FORM_MODE: "mock" | "real" (default: "real")
- * - CONTACT_FORM_DEBUG: "true" to enable verbose logging
+ * All configuration is passed in via the `env` parameter from Cloudflare
+ * Worker runtime bindings (accessed via `locals.runtime.env` in API routes).
+ *
+ * Runtime env vars (set in Cloudflare dashboard or wrangler.jsonc):
  * - ACTIVE_CAMPAIGN_KEY: API key for ActiveCampaign
  * - ACTIVE_CAMPAIGN_URL: Base URL for ActiveCampaign API
+ * - CONTACT_FORM_MODE: "mock" | "real" (default: "real")
+ * - CONTACT_FORM_DEBUG: "true" to enable verbose logging
  */
 
 export interface ContactMessage {
@@ -26,6 +29,13 @@ export interface ContactMessage {
     country: string
     city: string
   }
+}
+
+export interface ActiveCampaignEnv {
+  ACTIVE_CAMPAIGN_KEY: string
+  ACTIVE_CAMPAIGN_URL: string
+  CONTACT_FORM_MODE?: string
+  CONTACT_FORM_DEBUG?: string
 }
 
 interface ActiveCampaignContact {
@@ -53,34 +63,23 @@ export interface ActiveCampaignResult {
   error?: string
 }
 
-function getEnv(key: string): string | undefined {
-  // In SSR context, check process.env first (runtime), then import.meta.env (build time)
-  if (typeof process !== 'undefined' && process.env[key]) {
-    return process.env[key]
-  }
-  return import.meta.env[key]
+function getMode(env: ActiveCampaignEnv): 'mock' | 'real' {
+  return env.CONTACT_FORM_MODE === 'mock' ? 'mock' : 'real'
 }
 
-function getMode(): 'mock' | 'real' {
-  return getEnv('CONTACT_FORM_MODE') === 'mock' ? 'mock' : 'real'
+function isDebug(env: ActiveCampaignEnv): boolean {
+  return env.CONTACT_FORM_DEBUG === 'true'
 }
 
-function isDebug(): boolean {
-  return getEnv('CONTACT_FORM_DEBUG') === 'true'
-}
+function log(
+  env: ActiveCampaignEnv,
+  level: 'info' | 'debug' | 'error',
+  message: string,
+  data?: unknown
+) {
+  if (!isDebug(env) && level !== 'error') return
 
-function getApiKey(): string | undefined {
-  return getEnv('ACTIVE_CAMPAIGN_KEY')
-}
-
-function getBaseUrl(): string | undefined {
-  return getEnv('ACTIVE_CAMPAIGN_URL')
-}
-
-function log(level: 'info' | 'debug' | 'error', message: string, data?: unknown) {
-  if (!isDebug() && level !== 'error') return
-
-  const prefix = `[ActiveCampaign:${getMode()}]`
+  const prefix = `[ActiveCampaign:${getMode(env)}]`
   const logFn = level === 'error' ? console.error : console.log
 
   if (data) {
@@ -133,43 +132,45 @@ function buildPayload(message: ContactMessage): { contact: ActiveCampaignContact
 }
 
 async function sendToActiveCampaignReal(
+  env: ActiveCampaignEnv,
   payload: { contact: ActiveCampaignContact },
   tag: string
 ): Promise<ActiveCampaignResult> {
-  const apiKey = getApiKey()
-  const baseUrl = getBaseUrl()
-
-  if (!apiKey || !baseUrl) {
-    log('error', 'ActiveCampaign API credentials not configured')
+  if (!env.ACTIVE_CAMPAIGN_KEY || !env.ACTIVE_CAMPAIGN_URL) {
+    log(env, 'error', 'ActiveCampaign API credentials not configured')
     return { success: false, mode: 'real', error: 'API credentials not configured' }
   }
 
   try {
-    log('debug', 'Sending contact to ActiveCampaign...')
+    log(env, 'debug', 'Sending contact to ActiveCampaign...')
 
-    const contactResponse = await fetch(`${baseUrl}/contact/sync`, {
+    const contactResponse = await fetch(`${env.ACTIVE_CAMPAIGN_URL}/contact/sync`, {
       method: 'POST',
       headers: {
         accept: 'application/json',
         'content-type': 'application/json',
-        'Api-Token': apiKey,
+        'Api-Token': env.ACTIVE_CAMPAIGN_KEY,
       },
       body: JSON.stringify(payload),
     })
 
     const contactData = (await contactResponse.json()) as ActiveCampaignResponse
 
-    log('debug', 'Contact sync response:', contactData)
+    log(env, 'debug', 'Contact sync response:', contactData)
 
     if (contactData?.contact?.id) {
-      log('debug', `Adding tag ${tag} (ID: ${getTagId(tag)}) to contact ${contactData.contact.id}`)
+      log(
+        env,
+        'debug',
+        `Adding tag ${tag} (ID: ${getTagId(tag)}) to contact ${contactData.contact.id}`
+      )
 
-      const tagResponse = await fetch(`${baseUrl}/contactTags`, {
+      const tagResponse = await fetch(`${env.ACTIVE_CAMPAIGN_URL}/contactTags`, {
         method: 'POST',
         headers: {
           accept: 'application/json',
           'content-type': 'application/json',
-          'Api-Token': apiKey,
+          'Api-Token': env.ACTIVE_CAMPAIGN_KEY,
         },
         body: JSON.stringify({
           contactTag: {
@@ -180,7 +181,7 @@ async function sendToActiveCampaignReal(
       })
 
       const tagData = await tagResponse.json()
-      log('debug', 'Tag response:', tagData)
+      log(env, 'debug', 'Tag response:', tagData)
 
       return {
         success: true,
@@ -190,10 +191,10 @@ async function sendToActiveCampaignReal(
       }
     }
 
-    log('error', 'Failed to create contact - no ID returned', contactData)
+    log(env, 'error', 'Failed to create contact - no ID returned', contactData)
     return { success: false, mode: 'real', error: 'Failed to create contact' }
   } catch (error) {
-    log('error', 'ActiveCampaign API error:', error)
+    log(env, 'error', 'ActiveCampaign API error:', error)
     return {
       success: false,
       mode: 'real',
@@ -202,12 +203,16 @@ async function sendToActiveCampaignReal(
   }
 }
 
-function mockSend(payload: { contact: ActiveCampaignContact }, tag: string): ActiveCampaignResult {
+function mockSend(
+  env: ActiveCampaignEnv,
+  payload: { contact: ActiveCampaignContact },
+  tag: string
+): ActiveCampaignResult {
   const mockContactId = `mock-${Date.now()}`
 
-  log('info', `[MOCK] Would create/update contact with ID: ${mockContactId}`)
-  log('info', `[MOCK] Would add tag: ${tag} (ID: ${getTagId(tag)})`)
-  log('debug', '[MOCK] Payload:', payload)
+  log(env, 'info', `[MOCK] Would create/update contact with ID: ${mockContactId}`)
+  log(env, 'info', `[MOCK] Would add tag: ${tag} (ID: ${getTagId(tag)})`)
+  log(env, 'debug', '[MOCK] Payload:', payload)
 
   return {
     success: true,
@@ -217,16 +222,19 @@ function mockSend(payload: { contact: ActiveCampaignContact }, tag: string): Act
   }
 }
 
-export async function sendContact(message: ContactMessage): Promise<ActiveCampaignResult> {
-  const mode = getMode()
+export async function sendContact(
+  env: ActiveCampaignEnv,
+  message: ContactMessage
+): Promise<ActiveCampaignResult> {
+  const mode = getMode(env)
   const payload = buildPayload(message)
 
-  log('info', `Mode: ${mode}`)
-  log('debug', 'Contact message:', message)
+  log(env, 'info', `Mode: ${mode}`)
+  log(env, 'debug', 'Contact message:', message)
 
   if (mode === 'mock') {
-    return mockSend(payload, message.tag)
+    return mockSend(env, payload, message.tag)
   }
 
-  return sendToActiveCampaignReal(payload, message.tag)
+  return sendToActiveCampaignReal(env, payload, message.tag)
 }

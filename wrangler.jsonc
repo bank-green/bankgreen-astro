@@ -7,10 +7,7 @@
     "binding": "ASSETS",
     "directory": "./dist"
   },
-  "vars": {
-    "ACTIVE_CAMPAIGN_KEY": "c6cf4fc7eb4671eeffc37f721fd4b35773e90fbed3e138d64fb649a333e2380b490da35e",
-    "ACTIVE_CAMPAIGN_URL": "https://bankgreen.api-us1.com/api/3"
-  },
+
   "observability": {
     "enabled": true
   }

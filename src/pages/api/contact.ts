@@ -92,8 +92,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
       location: { country, city },
     }
 
-    const result = await sendContact(message)
-    const isDebug = import.meta.env.CONTACT_FORM_DEBUG === 'true'
+    const result = await sendContact(env, message)
+    const isDebug = env.CONTACT_FORM_DEBUG === 'true'
 
     if (result.success) {
       // In debug mode, include additional info for testing
