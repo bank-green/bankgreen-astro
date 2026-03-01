@@ -1,4 +1,4 @@
-import { Button, Checkbox, Select, Stack, Text, Textarea, TextInput } from '@mantine/core'
+import { Box, Button, Checkbox, Select, Stack, Text, Textarea, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { Turnstile } from '@marsidev/react-turnstile'
 import { zod4Resolver } from 'mantine-form-zod-resolver'
@@ -274,14 +274,16 @@ export function ContactForm({
         </Stack>
 
         {showCaptcha && captchaSitekey && (
-          <Turnstile
-            siteKey={captchaSitekey}
-            onSuccess={setCaptchaToken}
-            onError={() => {
-              // Return truthy to suppress Turnstile's default console logging
-              return true
-            }}
-          />
+          <Box className="h-[65px]">
+            <Turnstile
+              siteKey={captchaSitekey}
+              onSuccess={setCaptchaToken}
+              onError={() => {
+                // Return truthy to suppress Turnstile's default console logging
+                return true
+              }}
+            />
+          </Box>
         )}
 
         {error && <Text className="text-sm text-textError">{error}</Text>}
