@@ -17,15 +17,13 @@ interface ContactRequestBody {
   captchaToken?: string
 }
 
-const CAPTCHA_SECRET = import.meta.env.CLOUDFLARE_CAPTCHA_SECRET
-
-async function verifyCaptcha(token: string): Promise<boolean> {
-  if (!CAPTCHA_SECRET) {
+async function verifyCaptcha(token: string, captchaSecret: string): Promise<boolean> {
+  if (!captchaSecret) {
     throw new Error('CLOUDFLARE_CAPTCHA_SECRET is not configured')
   }
 
   const formData = new FormData()
-  formData.append('secret', CAPTCHA_SECRET)
+  formData.append('secret', captchaSecret)
   formData.append('response', token)
 
   const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
@@ -37,8 +35,9 @@ async function verifyCaptcha(token: string): Promise<boolean> {
   return result.success
 }
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
   try {
+    const { env } = locals.runtime
     const body = (await request.json()) as ContactRequestBody
 
     // Validate required fields
@@ -61,7 +60,7 @@ export const POST: APIRoute = async ({ request }) => {
           headers: { 'Content-Type': 'application/json' },
         })
       }
-      const captchaValid = await verifyCaptcha(body.captchaToken)
+      const captchaValid = await verifyCaptcha(body.captchaToken, env.CLOUDFLARE_CAPTCHA_SECRET)
       if (!captchaValid) {
         return new Response(JSON.stringify({ error: 'Captcha verification failed' }), {
           status: 400,
