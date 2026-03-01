@@ -17,7 +17,17 @@ export function TeamMemberSlice({ slice, className }: Props) {
 
   const nameText = asText(name)
   const descriptionText = asText(description)
-  const href = asLink(link)
+  let href = asLink(link)
+
+  // Fix relative URLs that should be absolute (e.g., LinkedIn.com/in/...)
+  if (
+    href &&
+    !href.startsWith('http://') &&
+    !href.startsWith('https://') &&
+    !href.startsWith('/')
+  ) {
+    href = `https://${href}`
+  }
 
   return (
     <Card
@@ -42,7 +52,7 @@ export function TeamMemberSlice({ slice, className }: Props) {
           <Text size="sm">{descriptionText}</Text>
         </Stack>
         {href && (
-          <Button component="a" href={href} variant="light" fullWidth>
+          <Button component="a" href={href} variant="light" fullWidth target="_blank">
             View profile
           </Button>
         )}

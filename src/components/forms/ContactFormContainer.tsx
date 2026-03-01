@@ -6,11 +6,13 @@ interface ContactFormContainerProps extends ContactFormProps {
   showList?: boolean
   listItems?: string[]
   title?: string
+  titleOrder?: 1 | 2 | 3 | 4 | 5 | 6
   className?: string
 }
 
 const ContactFormContainer = ({
   title = 'Take action with Bank.Green',
+  titleOrder = 2,
   showList = true,
   listItems = [
     'Learn how to take action on fossil fuel finance.',
@@ -25,14 +27,14 @@ const ContactFormContainer = ({
       <Box className="contain bg-[url('/img/backgrounds/circle-quarter.svg')] bg-bottom-left bg-cover bg-primaryDark p-8 text-textInverse sm:p-12 md:p-18 lg:rounded-2xl">
         <Group className="-mt-1 items-start justify-between">
           <Stack className="mx-auto w-full max-w-md items-center pt-1 pb-8 lg:ml-0">
-            <Title order={1} className="mb-6">
+            <Title order={titleOrder} className="mb-6 text-3xl lg:text-4xl">
               {title}
             </Title>
             {showList && listItems && (
               <List
                 classNames={{
                   root: 'space-y-1 pl-0',
-                  item: 'md:text-lg',
+                  item: '-ml-1 md:text-lg',
                   itemWrapper: 'items-start',
                 }}
                 icon={

@@ -6,8 +6,10 @@ import { getSingleSafe } from '@lib/prismic'
 export const prerender = true
 
 const page = await getSingleSafe('homepage')
-const title =
+const rawTitle =
   page?.data?.seo_title || page?.data?.title || 'Find Ethical & Sustainable Banks In Your Area'
+// Remove old "- Bank.Green" suffix if present (BaseLayout adds "| Bank.Green")
+const title = rawTitle.replace(/\s*-\s*Bank\.Green\s*$/i, '')
 const description = page?.data?.seo_description || undefined
 const ogImage = page?.data?.seo_image?.url || undefined
 ---

@@ -90,31 +90,40 @@ export function BankScorePage({
           <Grid className="mx-auto w-full" gutter={48}>
             <Grid.Col span={{ base: 12, md: 7 }}>
               <Stack className="mx-auto max-w-max items-start gap-6 px-4">
-                <Group className="items-center justify-start gap-4">
-                  {websiteUrl && (
-                    <BankLogo
-                      brandDomain={websiteUrl}
-                      imgClass="rounded object-contain"
-                      size={64}
-                    />
+                <Stack className="gap-2">
+                  <Group className="items-center justify-start gap-4">
+                    {websiteUrl && (
+                      <BankLogo
+                        brandDomain={websiteUrl}
+                        imgClass="rounded object-contain"
+                        size={64}
+                      />
+                    )}
+                    <Title order={1} className="mb-0 text-balance text-2xl! md:text-3xl!">
+                      {bank.name}
+                    </Title>
+                  </Group>
+
+                  {subtitle && (
+                    <Title order={2}>
+                      <SafeHtml html={subtitle} className="text-balance font-semibold! text-xl!" />
+                    </Title>
                   )}
-                  <Title order={3} className="mb-0 text-2xl md:text-3xl">
-                    {bank.name}
-                  </Title>
-                </Group>
 
-                {subtitle && <SafeHtml html={subtitle} className="font-medium text-xl" />}
-
-                {inheritBrandRating && (
-                  <Text>
-                    This brand is rated based on{' '}
-                    <Anchor href={`/banks/${inheritBrandRating.tag}`}>
-                      {inheritBrandRating.name}
-                    </Anchor>
-                  </Text>
-                )}
+                  {inheritBrandRating && (
+                    <Text className="text-base">
+                      This brand is rated based on{' '}
+                      <Anchor href={`/banks/${inheritBrandRating.tag}`}>
+                        {inheritBrandRating.name}
+                      </Anchor>
+                    </Text>
+                  )}
+                </Stack>
                 <Stack className="gap-8">
-                  <SafeHtml html={headline} className="mb-0 font-semibold text-3xl" />
+                  <SafeHtml
+                    html={headline}
+                    className="mb-0 max-w-xl text-balance font-semibold text-3xl!"
+                  />
                   <Stack>
                     <SafeHtml className="mb-0 max-w-lg text-xl" html={description1} />
                     {bank.commentary?.fossilFreeAlliance && (
@@ -168,7 +177,7 @@ export function BankScorePage({
               </Box>
               <Stack className="gap-4 md:w-1/2">
                 <SafeHtml html={description2} className="prose text-xl lg:text-2xl" />
-                <SafeHtml html={description3} className="prose mt-4 text-md" />
+                <SafeHtml html={description3} className="prose mt-4 text-lg lg:text-xl" />
               </Stack>
             </Group>
             <Button
@@ -208,7 +217,7 @@ export function BankScorePage({
               alt="Fish illustration"
             />
             <Stack className="contain items-center gap-4">
-              <Stack className="max-w-2xl text-lg">
+              <Stack className="max-w-2xl text-lg lg:text-xl">
                 <SafeHtml html={description4} className="mx-auto text-center" />
               </Stack>
             </Stack>
