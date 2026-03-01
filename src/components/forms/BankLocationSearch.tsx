@@ -19,6 +19,7 @@ function BankLocationSearch({
   const [banks, setBanks] = useState<Bank[]>([])
   const [loading, setLoading] = useState(true)
   const [isInitialized, setIsInitialized] = useState(false)
+  const [includeCreditUnions, setIncludeCreditUnions] = useState(false)
 
   useEffect(() => {
     // Don't fetch on initial mount - wait for geo-detection or user interaction
@@ -32,7 +33,7 @@ function BankLocationSearch({
       try {
         const { fetchBrandsByCountry } = await import('@lib/queries/brands')
         const stateQuery = country === 'US' ? state : undefined
-        const brands = await fetchBrandsByCountry(country, stateQuery)
+        const brands = await fetchBrandsByCountry(country, stateQuery, includeCreditUnions)
         setBanks(brands)
       } catch (error) {
         console.error('Error loading banks:', error)
@@ -43,7 +44,7 @@ function BankLocationSearch({
     }
 
     loadBanks()
-  }, [country, state, isInitialized])
+  }, [country, state, isInitialized, includeCreditUnions])
 
   const handleLocationInitialized = () => {
     setIsInitialized(true)
@@ -74,6 +75,8 @@ function BankLocationSearch({
         country={country}
         state={state}
         className="w-full justify-start"
+        includeCreditUnions={includeCreditUnions}
+        onIncludeCreditUnionsChange={setIncludeCreditUnions}
       />
     </Stack>
   )

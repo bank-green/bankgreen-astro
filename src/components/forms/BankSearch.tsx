@@ -1,6 +1,6 @@
 import type { Bank } from '@lib/banks'
 import { findBanks } from '@lib/banks'
-import { Anchor, Autocomplete, Group, Loader, Stack } from '@mantine/core'
+import { Anchor, Autocomplete, Group, Loader, Stack, Switch } from '@mantine/core'
 import { BankIcon, CaretRightIcon } from '@phosphor-icons/react'
 import { useMemo, useState } from 'react'
 
@@ -15,6 +15,8 @@ interface BankSearchProps {
   country?: string
   state?: string
   className?: string
+  includeCreditUnions?: boolean
+  onIncludeCreditUnionsChange?: (value: boolean) => void
 }
 
 function BankSearch({
@@ -28,14 +30,19 @@ function BankSearch({
   country = '',
   state = '',
   className = '',
+  includeCreditUnions = false,
+  onIncludeCreditUnionsChange,
 }: BankSearchProps) {
   const [search, setSearch] = useState(value?.name || '')
 
   const placeholder = useMemo(() => {
-    if (loading) return 'Loading banks...'
+    if (loading) return `Loading ${includeCreditUnions ? 'banks and credit unions' : 'banks'}...`
     if (!banks.length) return country ? `No bank data found for this country` : 'No bank data found'
-    return customPlaceholder || `Search ${banks.length} banks...`
-  }, [loading, banks.length, customPlaceholder, country])
+    return (
+      customPlaceholder ||
+      `Search ${banks.length} ${includeCreditUnions ? 'banks and credit unions' : 'banks'}...`
+    )
+  }, [loading, banks.length, customPlaceholder, country, includeCreditUnions])
 
   const filteredBanks = useMemo(() => findBanks(banks, search), [banks, search])
 
@@ -124,11 +131,18 @@ function BankSearch({
         onFocus={(e) => e.target.select()}
         size="md"
       />
-      <Anchor href="/not-listed" variant="transparent" size="compact-sm" className="w-auto">
-        <Group className="items-center gap-1">
-          My bank isn't listed <CaretRightIcon />
-        </Group>
-      </Anchor>
+      <Group className="w-full justify-between">
+        <Switch
+          checked={includeCreditUnions}
+          onChange={(e) => onIncludeCreditUnionsChange?.(e.currentTarget.checked)}
+          label="Include credit unions"
+        />
+        <Anchor href="/not-listed" variant="transparent" size="compact-sm" className="w-auto">
+          <Group className="items-center gap-1">
+            My bank isn't listed <CaretRightIcon />
+          </Group>
+        </Anchor>
+      </Group>
     </Stack>
   )
 }

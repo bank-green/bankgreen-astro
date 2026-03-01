@@ -9,6 +9,9 @@ export interface Bank {
   aliases?: string | null
   countries?: Array<{ code: string }> | null
   stateLicensed?: Array<{ tag: string; name: string }> | null
+  commentary?: {
+    institutionType?: Array<{ name: string }> | null
+  } | null
 }
 
 export function findBanks(banks: Bank[], searchName: string): Bank[] {

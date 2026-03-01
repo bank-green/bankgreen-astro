@@ -99,7 +99,7 @@ export function BankScorePage({
                         size={64}
                       />
                     )}
-                    <Title order={1} className="mb-0 text-balance text-2xl! md:text-3xl!">
+                    <Title order={1} className="mb-0 text-balance text-2xl!">
                       {bank.name}
                     </Title>
                   </Group>

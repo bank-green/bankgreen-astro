@@ -52,6 +52,11 @@ export const BRANDS_BY_COUNTRY_QUERY = `
           }
           website
           aliases
+          commentary {
+            institutionType {
+              name
+            }
+          }
         }
       }
     }
@@ -116,6 +121,9 @@ interface BrandNode {
   aliases?: string | null
   countries?: Array<{ code: string }> | null
   stateLicensed?: Array<{ tag: string; name: string }> | null
+  commentary?: {
+    institutionType?: Array<{ name: string }> | null
+  } | null
 }
 
 interface BrandsResponse {
@@ -186,7 +194,11 @@ export async function fetchAllBrands(): Promise<Bank[]> {
   }
 }
 
-export async function fetchBrandsByCountry(country: string, state?: string): Promise<Bank[]> {
+export async function fetchBrandsByCountry(
+  country: string,
+  state?: string,
+  includeCreditUnions: boolean = false
+): Promise<Bank[]> {
   try {
     const variables: { country: string; state?: string } = { country }
 
@@ -203,7 +215,20 @@ export async function fetchBrandsByCountry(country: string, state?: string): Pro
       return []
     }
 
-    const brands = data.brands.edges.map((edge) => edge.node)
+    let brands = data.brands.edges.map((edge) => edge.node)
+
+    if (!includeCreditUnions) {
+      brands = brands.filter((brand) => {
+        const types = brand.commentary?.institutionType
+        if (types?.some((t) => t.name.toLowerCase() === 'credit union')) return false
+        const name = brand.name.toLowerCase()
+        // Some credit unions in the data are not correctly tagged by institution type,
+        // so also filter out anything with the words "credit union" or any word ending
+        // in "FCU", e.g. "RBFCU Online Banking"
+        if (name.includes('credit union') || /fcu(\s|$)/.test(name)) return false
+        return true
+      })
+    }
 
     return brands
   } catch (error) {
