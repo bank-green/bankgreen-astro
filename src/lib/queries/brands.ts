@@ -248,7 +248,12 @@ export async function prefetchAllBrands(): Promise<void> {
   if (brandsCache.has(ALL_BRANDS_CACHE_KEY)) return
 
   try {
-    const data = await graphqlFetch<BrandsResponse>(BRANDS_BY_COUNTRY_QUERY, {})
+    // Use the dedicated GET endpoint so Cloudflare can cache the response at the edge
+    const response = await fetch('/api/brands')
+    if (!response.ok) return
+
+    const json = await response.json()
+    const data = json as BrandsResponse
 
     if (!data?.brands?.edges) return
 
