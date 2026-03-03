@@ -17,6 +17,8 @@ import { getStateTag } from '../states'
 // Key format: "GB", "US:US-TX", "__all__"
 const brandsCache = new Map<string, Bank[]>()
 const ALL_BRANDS_CACHE_KEY = '__all__'
+// Stores the in-flight promise so concurrent calls share one request instead of racing
+let allBrandsFetchPromise: Promise<void> | null = null
 
 export const ALL_BRANDS_QUERY = `
   query AllBanksList {
@@ -203,15 +205,18 @@ export async function fetchBrandsByCountry(country: string, state?: string): Pro
   const stateTag = state ? getStateTag(state) : undefined
   const cacheKey = stateTag ? `${country}:${stateTag}` : country
 
-  // If we have the full dataset cached, filter from it instead of a network request
-  const allBrands = brandsCache.get(ALL_BRANDS_CACHE_KEY)
-  if (allBrands) {
-    return allBrands.filter((brand) => {
-      const inCountry = brand.countries?.some((c) => c.code === country)
-      if (!inCountry) return false
-      if (!stateTag) return true
-      return brand.stateLicensed?.some((s) => s.tag === stateTag) ?? false
-    })
+  // If the full dataset is already cached or in-flight, wait for it then filter
+  if (allBrandsFetchPromise) {
+    await allBrandsFetchPromise
+    const allBrands = brandsCache.get(ALL_BRANDS_CACHE_KEY)
+    if (allBrands) {
+      return allBrands.filter((brand) => {
+        const inCountry = brand.countries?.some((c) => c.code === country)
+        if (!inCountry) return false
+        if (!stateTag) return true
+        return brand.stateLicensed?.some((s) => s.tag === stateTag) ?? false
+      })
+    }
   }
 
   // Check country-specific cache
@@ -244,24 +249,26 @@ export async function fetchBrandsByCountry(country: string, state?: string): Pro
  * instead of making network requests.
  * Intended to be called in the background after the initial fetch.
  */
-export async function prefetchAllBrands(): Promise<void> {
-  if (brandsCache.has(ALL_BRANDS_CACHE_KEY)) return
+export function prefetchAllBrands(): void {
+  if (allBrandsFetchPromise) return
 
-  try {
-    // Use the dedicated GET endpoint so Cloudflare can cache the response at the edge
-    const response = await fetch('/api/brands')
-    if (!response.ok) return
+  allBrandsFetchPromise = (async () => {
+    try {
+      // Use the dedicated GET endpoint so Cloudflare can cache the response at the edge
+      const response = await fetch('/api/brands')
+      if (!response.ok) return
 
-    const json = await response.json()
-    const data = json as BrandsResponse
+      const json = await response.json()
+      const data = json as BrandsResponse
 
-    if (!data?.brands?.edges) return
+      if (!data?.brands?.edges) return
 
-    const brands = data.brands.edges.map((edge) => edge.node)
-    brandsCache.set(ALL_BRANDS_CACHE_KEY, brands)
-  } catch {
-    // Silently ignore — this is a background optimization only
-  }
+      const brands = data.brands.edges.map((edge) => edge.node)
+      brandsCache.set(ALL_BRANDS_CACHE_KEY, brands)
+    } catch {
+      // Silently ignore — this is a background optimization only
+    }
+  })()
 }
 
 export async function fetchBrandByTag(tag: string): Promise<BrandByTagNode | null> {
