@@ -13,6 +13,11 @@ import type { Bank } from '../banks'
 import { graphqlFetch } from '../graphql'
 import { getStateTag } from '../states'
 
+// Module-level cache — persists for the browser session, shared across all instances.
+// Key format: "GB", "US:US-TX", "__all__"
+const brandsCache = new Map<string, Bank[]>()
+const ALL_BRANDS_CACHE_KEY = '__all__'
+
 export const ALL_BRANDS_QUERY = `
   query AllBanksList {
     brands {
@@ -195,14 +200,27 @@ export async function fetchAllBrands(): Promise<Bank[]> {
 }
 
 export async function fetchBrandsByCountry(country: string, state?: string): Promise<Bank[]> {
+  const stateTag = state ? getStateTag(state) : undefined
+  const cacheKey = stateTag ? `${country}:${stateTag}` : country
+
+  // If we have the full dataset cached, filter from it instead of a network request
+  const allBrands = brandsCache.get(ALL_BRANDS_CACHE_KEY)
+  if (allBrands) {
+    return allBrands.filter((brand) => {
+      const inCountry = brand.countries?.some((c) => c.code === country)
+      if (!inCountry) return false
+      if (!stateTag) return true
+      return brand.stateLicensed?.some((s) => s.tag === stateTag) ?? false
+    })
+  }
+
+  // Check country-specific cache
+  const cached = brandsCache.get(cacheKey)
+  if (cached) return cached
+
   try {
     const variables: { country: string; state?: string } = { country }
-
-    // Add state filter if provided (for US state filtering)
-    // Convert state code (e.g., "CA") to state tag (e.g., "US-CA")
-    if (state) {
-      variables.state = getStateTag(state)
-    }
+    if (stateTag) variables.state = stateTag
 
     const data = await graphqlFetch<BrandsResponse>(BRANDS_BY_COUNTRY_QUERY, variables)
 
@@ -211,10 +229,33 @@ export async function fetchBrandsByCountry(country: string, state?: string): Pro
       return []
     }
 
-    return data.brands.edges.map((edge) => edge.node)
+    const brands = data.brands.edges.map((edge) => edge.node)
+    brandsCache.set(cacheKey, brands)
+    return brands
   } catch (error) {
     console.error('Error fetching brands:', error)
     return []
+  }
+}
+
+/**
+ * Fetches all brands globally and stores in the module-level cache.
+ * Subsequent fetchBrandsByCountry calls will filter from this cache
+ * instead of making network requests.
+ * Intended to be called in the background after the initial fetch.
+ */
+export async function prefetchAllBrands(): Promise<void> {
+  if (brandsCache.has(ALL_BRANDS_CACHE_KEY)) return
+
+  try {
+    const data = await graphqlFetch<BrandsResponse>(BRANDS_BY_COUNTRY_QUERY, {})
+
+    if (!data?.brands?.edges) return
+
+    const brands = data.brands.edges.map((edge) => edge.node)
+    brandsCache.set(ALL_BRANDS_CACHE_KEY, brands)
+  } catch {
+    // Silently ignore — this is a background optimization only
   }
 }
 

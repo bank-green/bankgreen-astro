@@ -51,10 +51,13 @@ function BankLocationSearch({
       setLoading(true)
 
       try {
-        const { fetchBrandsByCountry } = await import('@lib/queries/brands')
+        const { fetchBrandsByCountry, prefetchAllBrands } = await import('@lib/queries/brands')
         const stateQuery = country === 'US' ? state : undefined
         const brands = await fetchBrandsByCountry(country, stateQuery)
         setAllBanks(brands)
+        // Background prefetch — populates the module-level cache so all
+        // subsequent country changes are served from memory, not the network
+        prefetchAllBrands()
       } catch (error) {
         console.error('Error loading banks:', error)
         setAllBanks([])
@@ -72,6 +75,11 @@ function BankLocationSearch({
     [allBanks, includeCreditUnions]
   )
 
+  const handleCountryChange = (newCountry: string) => {
+    if (newCountry !== 'US') setState('')
+    setCountry(newCountry)
+  }
+
   const handleLocationInitialized = () => {
     setIsInitialized(true)
   }
@@ -88,7 +96,7 @@ function BankLocationSearch({
       </Title>
       <LocationSearch
         value={country}
-        onChange={setCountry}
+        onChange={handleCountryChange}
         onStateChange={setState}
         onInitialized={handleLocationInitialized}
         className="w-full gap-2"
