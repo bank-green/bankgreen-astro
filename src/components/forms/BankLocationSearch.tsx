@@ -1,4 +1,5 @@
 import type { Bank } from '@lib/banks'
+import { fetchBrandsByCountry, prefetchAllBrands } from '@lib/queries/brands'
 import { Stack, Title } from '@mantine/core'
 import { useEffect, useMemo, useState } from 'react'
 import BankSearch from './BankSearch'
@@ -51,7 +52,6 @@ function BankLocationSearch({
       setLoading(true)
 
       try {
-        const { fetchBrandsByCountry, prefetchAllBrands } = await import('@lib/queries/brands')
         const stateQuery = country === 'US' ? state : undefined
         const brands = await fetchBrandsByCountry(country, stateQuery)
         setAllBanks(brands)
