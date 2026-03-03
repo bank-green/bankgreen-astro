@@ -259,7 +259,7 @@ export function prefetchAllBrands(): void {
       if (!response.ok) return
 
       const json = await response.json()
-      const data = json as BrandsResponse
+      const data = (json?.data ?? json) as BrandsResponse
 
       if (!data?.brands?.edges) return
 
