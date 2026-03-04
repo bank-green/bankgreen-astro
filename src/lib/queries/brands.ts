@@ -35,6 +35,7 @@ export const ALL_BRANDS_QUERY = `
             name
           }
           commentary {
+            displayOnWebsite
             showOnSustainableBanksPage
           }
         }
@@ -60,6 +61,7 @@ export const BRANDS_BY_COUNTRY_QUERY = `
           website
           aliases
           commentary {
+            displayOnWebsite
             institutionType {
               name
             }
@@ -129,6 +131,7 @@ interface BrandNode {
   countries?: Array<{ code: string }> | null
   stateLicensed?: Array<{ tag: string; name: string }> | null
   commentary?: {
+    displayOnWebsite?: boolean | null
     institutionType?: Array<{ name: string }> | null
   } | null
 }
@@ -234,13 +237,35 @@ export async function fetchBrandsByCountry(country: string, state?: string): Pro
       return []
     }
 
-    const brands = data.brands.edges.map((edge) => edge.node)
+    const brands = data.brands.edges
+      .map((edge) => edge.node)
+      .filter((brand) => brand.commentary?.displayOnWebsite !== false)
     brandsCache.set(cacheKey, brands)
     return brands
   } catch (error) {
     console.error('Error fetching brands:', error)
     return []
   }
+}
+
+/**
+ * Returns all brands, using the module-level cache if available,
+ * otherwise fetching from the /api/brands edge-cached endpoint.
+ */
+export async function fetchAllBrandsWithCache(): Promise<Bank[]> {
+  const cached = brandsCache.get(ALL_BRANDS_CACHE_KEY)
+  if (cached) return cached
+
+  if (allBrandsFetchPromise) {
+    await allBrandsFetchPromise
+    return brandsCache.get(ALL_BRANDS_CACHE_KEY) ?? []
+  }
+
+  // Trigger the fetch and wait for it; prefetchAllBrands() sets allBrandsFetchPromise synchronously
+  prefetchAllBrands()
+  const fetchPromise: Promise<unknown> | null = allBrandsFetchPromise
+  if (fetchPromise) await fetchPromise
+  return brandsCache.get(ALL_BRANDS_CACHE_KEY) ?? []
 }
 
 /**
@@ -263,7 +288,9 @@ export function prefetchAllBrands(): void {
 
       if (!data?.brands?.edges) return
 
-      const brands = data.brands.edges.map((edge) => edge.node)
+      const brands = data.brands.edges
+        .map((edge) => edge.node)
+        .filter((brand) => brand.commentary?.displayOnWebsite !== false)
       brandsCache.set(ALL_BRANDS_CACHE_KEY, brands)
     } catch {
       // Silently ignore — this is a background optimization only

@@ -21,6 +21,7 @@ const ALL_BRANDS_QUERY = `
           website
           aliases
           commentary {
+            displayOnWebsite
             institutionType {
               name
             }

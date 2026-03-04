@@ -105,9 +105,11 @@ export function BankScorePage({
                   </Group>
 
                   {subtitle && (
-                    <Title order={2}>
-                      <SafeHtml html={subtitle} className="text-balance font-semibold! text-xl!" />
-                    </Title>
+                    <SafeHtml
+                      html={subtitle}
+                      htmlTag="h3"
+                      className="text-balance font-semibold! text-xl!"
+                    />
                   )}
 
                   {inheritBrandRating && (
@@ -122,8 +124,10 @@ export function BankScorePage({
                 <Stack className="gap-8">
                   <SafeHtml
                     html={headline}
-                    className="mb-0 max-w-xl text-balance font-semibold text-3xl!"
+                    htmlTag="h2"
+                    className="mb-0 max-w-xl text-balance text-3xl!"
                   />
+
                   <Stack>
                     <SafeHtml className="mb-0 max-w-lg text-xl" html={description1} />
                     {bank.commentary?.fossilFreeAlliance && (
@@ -227,7 +231,7 @@ export function BankScorePage({
         {/* CALL TO ACTION */}
         {isBadBank ? (
           <Stack className="contain items-center gap-8 py-16">
-            <Title order={2} className="text-center">
+            <Title order={3} className="text-center">
               Take Action Today
             </Title>
             <Text className="max-w-3xl text-center text-lg md:text-xl">
@@ -263,7 +267,7 @@ export function BankScorePage({
       <Box className="bg-sky-800" data-breakout>
         <Group className="contain w-full flex-wrap items-center py-4 text-gray-100 md:flex-nowrap md:py-8">
           <Stack className="w-full items-center p-6 md:p-8">
-            <Title order={2} className="mb-4 w-full text-center text-gray-100">
+            <Title order={3} className="mb-4 w-full text-center text-gray-100">
               How do we derive our results?
             </Title>
             <Button component="a" href="/methodology" className="max-w-fit" size="lg">

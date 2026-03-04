@@ -5,6 +5,7 @@ import { parseDocument } from 'htmlparser2'
 
 interface SafeHtmlProps {
   html: string | null | undefined
+  htmlTag?: string
   className?: string
 }
 
@@ -16,7 +17,7 @@ interface SafeHtmlProps {
  * - <span> → <Text span>
  * - Preserves class names but strips kerning/leading overrides
  */
-export function SafeHtml({ html, className = '' }: SafeHtmlProps) {
+export function SafeHtml({ html, htmlTag, className = '' }: SafeHtmlProps) {
   if (!html) {
     return null
   }
@@ -44,7 +45,7 @@ export function SafeHtml({ html, className = '' }: SafeHtmlProps) {
       }
 
       const element = domNode as Element
-      const tagName = element.name
+      const tagName = htmlTag ?? element.name
 
       // Get and sanitize class names
       const elementClasses = element.attribs?.class || ''

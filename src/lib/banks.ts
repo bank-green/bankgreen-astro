@@ -10,6 +10,7 @@ export interface Bank {
   countries?: Array<{ code: string }> | null
   stateLicensed?: Array<{ tag: string; name: string }> | null
   commentary?: {
+    displayOnWebsite?: boolean | null
     institutionType?: Array<{ name: string }> | null
   } | null
 }

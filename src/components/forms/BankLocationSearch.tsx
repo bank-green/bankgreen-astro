@@ -1,5 +1,5 @@
 import type { Bank } from '@lib/banks'
-import { fetchBrandsByCountry, prefetchAllBrands } from '@lib/queries/brands'
+import { fetchAllBrandsWithCache, fetchBrandsByCountry, prefetchAllBrands } from '@lib/queries/brands'
 import { Stack, Title } from '@mantine/core'
 import { useEffect, useMemo, useState } from 'react'
 import BankSearch from './BankSearch'
@@ -42,22 +42,22 @@ function BankLocationSearch({
       return
     }
 
-    if (!country) {
-      setAllBanks([])
-      setLoading(false)
-      return
-    }
-
     async function loadBanks() {
       setLoading(true)
 
       try {
-        const stateQuery = country === 'US' ? state : undefined
-        const brands = await fetchBrandsByCountry(country, stateQuery)
-        setAllBanks(brands)
-        // Background prefetch — populates the module-level cache so all
-        // subsequent country changes are served from memory, not the network
-        prefetchAllBrands()
+        if (!country) {
+          // No country selected — load all brands so users can search globally
+          const brands = await fetchAllBrandsWithCache()
+          setAllBanks(brands)
+        } else {
+          const stateQuery = country === 'US' ? state : undefined
+          const brands = await fetchBrandsByCountry(country, stateQuery)
+          setAllBanks(brands)
+          // Background prefetch — populates the module-level cache so all
+          // subsequent country changes are served from memory, not the network
+          prefetchAllBrands()
+        }
       } catch (error) {
         console.error('Error loading banks:', error)
         setAllBanks([])
