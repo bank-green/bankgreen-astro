@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css'
 import { ExitIntentDialog } from '../components/ExitIntentDialog'
-import { GdprBanner } from '../components/GdprBanner'
+// import { GdprBanner } from '../components/GdprBanner'
 import { Layout } from '../components/Layout'
 import { getSingleSafe } from '../lib/prismic'
 
@@ -117,7 +117,7 @@ const exitIntentContent = await getSingleSafe('switchsurveyexit')
     <Layout client:load>
       <slot />
     </Layout>
-    <GdprBanner client:load />
+    <!-- <GdprBanner client:load /> -->
     <ExitIntentDialog client:idle content={exitIntentContent} />
   </body>
 </html>
