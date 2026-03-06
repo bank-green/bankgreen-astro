@@ -10,5 +10,10 @@
 
   "observability": {
     "enabled": true
-  }
+  },
+
+  // Custom domain — matches the route configured in the Cloudflare dashboard
+  "routes": [
+    { "pattern": "bank.green", "custom_domain": true }
+  ]
 }
