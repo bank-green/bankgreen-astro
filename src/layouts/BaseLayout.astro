@@ -102,6 +102,17 @@ const exitIntentContent = await getSingleSafe('switchsurveyexit')
       })(window, document, 'script', 'dataLayer', 'GTM-KMGKCN3')
     </script>
     <!-- End Google Tag Manager -->
+
+    <!-- Strip _gl linker parameter from URL to keep URLs clean -->
+    <script is:inline>
+      ;(function () {
+        var u = new URL(window.location.href)
+        if (u.searchParams.has('_gl')) {
+          u.searchParams.delete('_gl')
+          window.history.replaceState(null, '', u.pathname + u.search + u.hash)
+        }
+      })()
+    </script>
   </head>
   <body>
     <!-- Google Tag Manager (noscript) -->
