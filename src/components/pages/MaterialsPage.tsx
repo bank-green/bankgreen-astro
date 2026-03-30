@@ -23,7 +23,7 @@ export function MaterialsPage({ page }: MaterialsPageProps) {
 
   return (
     <PageContent>
-      <Stack className="contain mt-16 text-center">
+      <Stack className="contain mt-10 sm:mt-16 text-center">
         <Title order={1}>{title || 'Thank you for your interest in our work.'}</Title>
 
         {description && (
@@ -32,7 +32,7 @@ export function MaterialsPage({ page }: MaterialsPageProps) {
           </Box>
         )}
 
-        <Group className="mx-auto flex-nowrap">
+        <Group className="mx-auto flex-wrap sm:flex-nowrap">
           {url_1 && (
             <Button
               component="a"
