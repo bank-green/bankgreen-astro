@@ -27,7 +27,7 @@ export function ThanksPage({ page, fallback, pageType }: Props) {
   const text2 = page?.data?.text2 as RichTextField | undefined
   const hasTextFields = text1 || text2
 
-  const showExplore = pageType !== 'donate-cancelled' && pageType !== 'updates-no'
+  const showExplore = pageType !== 'donate-cancelled' && pageType !== 'updates_no'
 
   return (
     <PageContent>
