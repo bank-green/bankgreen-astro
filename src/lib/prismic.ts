@@ -124,11 +124,11 @@ export const thanksPagesFallback: Record<string, { title: string; description?: 
   'donate-cancelled': {
     title: 'Your donation was cancelled.',
   },
-  'updates-yes': {
+  'updates_yes': {
     title: 'Thank you for your continuing support.',
     description: "We're happy you'd like to stay in touch!",
   },
-  'updates-no': {
+  'updates_no': {
     title: 'Your response has been recorded.',
     description: "We're sorry to see you go, but you'll no longer receive updates from us!",
   },
