@@ -5,7 +5,7 @@
  */
 
 import { atom } from 'nanostores'
-import { getCookie } from './gdpr-store'
+import { getCookie, setCookie } from './cookies'
 
 export const EXIT_INTENT_COOKIE = 'bg.seenExitIntent' as const
 
@@ -19,21 +19,6 @@ export function initExitIntentStore(): void {
   const hasSeenDialog = getCookie(EXIT_INTENT_COOKIE) === 'true'
   hasSeenDialogStore.set(hasSeenDialog)
   showDialogStore.set(false)
-}
-
-/**
- * Client-side cookie utility
- * Same implementation as GDPR store for consistency
- */
-export function setCookie(name: string, value: string, days: number = 365): void {
-  if (typeof document === 'undefined') return
-
-  const date = new Date()
-  date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000)
-  const expires = `expires=${date.toUTCString()}`
-
-  // biome-ignore lint/suspicious/noDocumentCookie: Exit intent tracking requires client-side cookie management
-  document.cookie = `${name}=${value};${expires};path=/;SameSite=Lax;Secure`
 }
 
 /**
