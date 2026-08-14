@@ -1,6 +1,5 @@
 ---
 import '../styles/global.css'
-import { ExitIntentDialog } from '../components/ExitIntentDialog'
 // import { GdprBanner } from '../components/GdprBanner'
 import { Layout } from '../components/Layout'
 import { getSingleSafe } from '../lib/prismic'
@@ -31,8 +30,6 @@ const {
   noindex = false,
 } = Astro.props
 
-// Fetch exit intent content from Prismic (cookies are read client-side)
-const exitIntentContent = await getSingleSafe('switchsurveyexit')
 ---
 
 <!doctype html>
@@ -129,6 +126,5 @@ const exitIntentContent = await getSingleSafe('switchsurveyexit')
       <slot />
     </Layout>
     <!-- <GdprBanner client:load /> -->
-    <ExitIntentDialog client:idle content={exitIntentContent} />
   </body>
 </html>
