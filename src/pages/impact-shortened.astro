@@ -1,0 +1,15 @@
+---
+import { ImpactShortenedPage } from '@components/pages'
+import BaseLayout from '@layouts/BaseLayout.astro'
+import { getByUIDSafe, getSingleSafe } from '@lib/prismic'
+import { extractContent } from '@lib/utils/switch-survey'
+
+export const prerender = true
+
+const page = await getByUIDSafe('textonlypages', 'impactpage')
+const switchSurveyContent = extractContent(await getSingleSafe('switchsurvey'))
+---
+
+<BaseLayout title="Share Your Impact" noindex={true}>
+  <ImpactShortenedPage page={page} surveyContent={switchSurveyContent} client:load />
+</BaseLayout>
