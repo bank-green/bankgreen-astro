@@ -56,8 +56,7 @@ export const GET: APIRoute = async () => {
       JSON.stringify({
         errors: [
           {
-            message:
-              error instanceof Error ? error.message : 'Failed to fetch brands',
+            message: error instanceof Error ? error.message : 'Failed to fetch brands',
           },
         ],
       }),

@@ -23,7 +23,7 @@ export function MaterialsPage({ page }: MaterialsPageProps) {
 
   return (
     <PageContent>
-      <Stack className="contain mt-10 sm:mt-16 text-center">
+      <Stack className="contain mt-10 text-center sm:mt-16">
         <Title order={1}>{title || 'Thank you for your interest in our work.'}</Title>
 
         {description && (

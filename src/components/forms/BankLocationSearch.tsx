@@ -1,5 +1,9 @@
 import type { Bank } from '@lib/banks'
-import { fetchAllBrandsWithCache, fetchBrandsByCountry, prefetchAllBrands } from '@lib/queries/brands'
+import {
+  fetchAllBrandsWithCache,
+  fetchBrandsByCountry,
+  prefetchAllBrands,
+} from '@lib/queries/brands'
 import { Stack, Title } from '@mantine/core'
 import { useEffect, useMemo, useState } from 'react'
 import BankSearch from './BankSearch'
