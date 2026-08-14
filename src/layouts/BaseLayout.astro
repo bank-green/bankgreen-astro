@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css'
+import { extractContent } from '@lib/utils/switch-survey'
+import { SwitchSurveyDialog } from '../components/forms/switch-survey'
 // import { GdprBanner } from '../components/GdprBanner'
 import { Layout } from '../components/Layout'
 import { getSingleSafe } from '../lib/prismic'
@@ -30,6 +32,10 @@ const {
   noindex = false,
 } = Astro.props
 
+const SURVEY_PAGES = ['/impact', '/impact-extended', '/impact-shortened']
+const switchSurveyContent = SURVEY_PAGES.includes(Astro.url.pathname)
+  ? null
+  : extractContent(await getSingleSafe('switchsurvey'))
 ---
 
 <!doctype html>
@@ -126,5 +132,6 @@ const {
       <slot />
     </Layout>
     <!-- <GdprBanner client:load /> -->
+    {switchSurveyContent && <SwitchSurveyDialog content={switchSurveyContent} client:idle />}
   </body>
 </html>
