@@ -1,8 +1,8 @@
 import type { Bank } from '@lib/banks'
-import { findBanks } from '@lib/banks'
-import { Anchor, Autocomplete, Group, Loader, Stack, Switch } from '@mantine/core'
-import { BankIcon, CaretRightIcon } from '@phosphor-icons/react'
-import { useMemo, useState } from 'react'
+import { Anchor, Group, Stack, Switch } from '@mantine/core'
+import { CaretRightIcon } from '@phosphor-icons/react'
+import { useCallback, useMemo } from 'react'
+import BankAutocomplete from './BankAutocomplete'
 
 interface BankSearchProps {
   banks: Bank[]
@@ -33,103 +33,67 @@ function BankSearch({
   includeCreditUnions = false,
   onIncludeCreditUnionsChange,
 }: BankSearchProps) {
-  const [search, setSearch] = useState(value?.name || '')
-
   const placeholder = useMemo(() => {
     if (loading) return `Loading ${includeCreditUnions ? 'banks and credit unions' : 'banks'}...`
-    if (!banks.length) return country ? `No bank data found for this country` : 'No bank data found'
+    if (!banks.length) return country ? 'No bank data found for this country' : 'No bank data found'
     return (
       customPlaceholder ||
       `Search ${banks.length} ${includeCreditUnions ? 'banks and credit unions' : 'banks'}...`
     )
   }, [loading, banks.length, customPlaceholder, country, includeCreditUnions])
 
-  const filteredBanks = useMemo(() => findBanks(banks, search), [banks, search])
+  const formatLabel = useCallback(
+    (bank: Bank) => {
+      const formatStateLabel = (s: { tag: string; name: string } | undefined) =>
+        s?.tag ? `${s.tag.slice(3)}` || '' : s?.name || ''
 
-  const autocompleteData = useMemo(() => {
-    const formatStateLabel = (state: { tag: string; name: string } | undefined) =>
-      state?.tag ? `${state?.tag?.slice(3)}` || '' : state?.name || ''
-
-    return filteredBanks.map((bank) => {
       const bankCountry = bank?.countries
         ? bank.countries.length === 1
-          ? bank.countries[0]?.code || '' // Only one country
+          ? bank.countries[0]?.code || ''
           : bank.countries.length > 3
-            ? `${bank.countries.length} countries` // Show number of countries if more than 3
-            : bank.countries?.map((c) => c.code).join(', ') // Show all countries if less than 3
+            ? `${bank.countries.length} countries`
+            : bank.countries.map((c) => c.code).join(', ')
         : ''
 
       const bankState = bank?.countries
         ? bank.countries.length === 1
           ? bank?.stateLicensed
             ? bank.stateLicensed.length === 1
-              ? formatStateLabel(bank.stateLicensed?.[0]) // Only one state
-              : country === '' // Global search
-                ? bank?.stateLicensed.length > 3
-                  ? `${bank.stateLicensed.length} states` // Show number of states if more than 3
-                  : bank.stateLicensed.map(formatStateLabel).join(', ') // Show all states if less than 3
-                : '' // No state in country search
+              ? formatStateLabel(bank.stateLicensed?.[0])
+              : country === ''
+                ? bank.stateLicensed.length > 3
+                  ? `${bank.stateLicensed.length} states`
+                  : bank.stateLicensed.map(formatStateLabel).join(', ')
+                : ''
             : ''
           : ''
         : ''
 
-      const label =
-        country === '' // Global search, show country and state
+      return country === ''
+        ? bankState
+          ? `${bank.name} (${bankState}, ${bankCountry})`
+          : `${bank.name} (${bankCountry})`
+        : state === ''
           ? bankState
-            ? `${bank.name} (${bankState}, ${bankCountry})`
-            : `${bank.name} (${bankCountry})`
-          : state === '' // Country search with no state, show state if it exists
-            ? bankState
-              ? `${bank.name} (${bankState})`
-              : bank.name
-            : bank.name // Country and state search, only show bank name
-
-      return {
-        value: bank.tag,
-        label: label,
-        bank,
-      }
-    })
-  }, [filteredBanks, country, state])
-
-  const handleChange = (val: string) => {
-    setSearch(val)
-
-    // Check if value matches exactly
-    const matchedBank = autocompleteData.find(
-      (item) => item.label.toLowerCase() === val.toLowerCase()
-    )
-
-    if (!matchedBank) {
-      onChange?.(null)
-    }
-  }
-
-  const handleOptionSubmit = (val: string) => {
-    const selectedBank = autocompleteData.find((item) => item.value === val)
-    if (selectedBank) {
-      setSearch(selectedBank.label)
-      onChange?.(selectedBank.bank)
-    }
-  }
+            ? `${bank.name} (${bankState})`
+            : bank.name
+          : bank.name
+    },
+    [country, state]
+  )
 
   return (
     <Stack className="items-end gap-2">
-      <Autocomplete
+      <BankAutocomplete
+        banks={banks}
+        value={value}
+        onChange={onChange}
         label={label}
-        classNames={{ root: `mx-auto max-w-xl grow ${className}`, label: 'text-sm' }}
         placeholder={placeholder}
-        value={search}
-        onChange={handleChange}
-        onOptionSubmit={handleOptionSubmit}
-        data={autocompleteData}
-        disabled={disabled || loading || !banks.length}
-        maxDropdownHeight={300}
-        limit={50}
-        leftSection={loading && !disabled ? <Loader size="xs" /> : <BankIcon />}
-        rightSection={search ? undefined : null}
-        onFocus={(e) => e.target.select()}
-        size="md"
+        loading={loading}
+        disabled={disabled}
+        className={className}
+        formatLabel={formatLabel}
       />
       <Group className="w-full justify-between">
         <Switch

@@ -84,11 +84,11 @@ The app uses Astro's **hybrid rendering** approach with React islands for intera
 1. **Root Layout**: `BaseLayout.astro` renders `<Layout client:load>` with header/footer
 2. **Static Content Pages**: Use no `client:*` directive - rendered as pure HTML (blog posts, methodology, glossary)
 3. **Interactive Pages**: Use `client:load` when they need client-side state (forms, accordions)
-4. **Standalone Islands**: `GdprBanner` and `ExitIntentDialog` have their own MantineProvider and manage state via nanostores
+4. **Standalone Islands**: `GdprBanner` and `SwitchSurveyDialog` have their own MantineProvider and manage state via nanostores
 
 **Client Directives** (use sparingly):
 - `client:load` - Hydrate immediately (for interactive pages, header/footer)
-- `client:idle` - Hydrate when browser is idle (for non-critical components like exit intent dialogs)
+- `client:idle` - Hydrate when browser is idle (for non-critical components like the switch survey dialog)
 - `client:visible` - Hydrate when component enters viewport
 - No directive - Renders as static HTML with zero JavaScript
 

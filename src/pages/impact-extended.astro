@@ -1,0 +1,13 @@
+---
+import { ImpactExtendedPage } from '@components/pages'
+import BaseLayout from '@layouts/BaseLayout.astro'
+import { getByUIDSafe } from '@lib/prismic'
+
+export const prerender = true
+
+const page = await getByUIDSafe('textonlypages', 'impactpage')
+---
+
+<BaseLayout title="Share Your Impact" noindex={true}>
+  <ImpactExtendedPage page={page} client:load />
+</BaseLayout>

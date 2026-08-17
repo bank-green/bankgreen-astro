@@ -1,13 +1,13 @@
 ---
-import { ThanksPage } from "@components/pages";
-import BaseLayout from "@layouts/BaseLayout.astro";
-import { getByUIDSafe, thanksPagesFallback } from "@lib/prismic";
+import { ThanksPage } from '@components/pages'
+import BaseLayout from '@layouts/BaseLayout.astro'
+import { getByUIDSafe, thanksPagesFallback } from '@lib/prismic'
 
-export const prerender = true;
+export const prerender = true
 
-const pageType = "updates_yes";
-const fallback = thanksPagesFallback[pageType];
-const page = await getByUIDSafe("thankspages", pageType);
+const pageType = 'updates_yes'
+const fallback = thanksPagesFallback[pageType]
+const page = await getByUIDSafe('thankspages', pageType)
 ---
 
 <BaseLayout title={fallback.title}>

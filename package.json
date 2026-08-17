@@ -26,7 +26,7 @@
     "@mantine/core": "^8.3.0",
     "@mantine/form": "^8.3.10",
     "@mantine/hooks": "^8.3.0",
-    "@marsidev/react-turnstile": "^1.4.0",
+    "@marsidev/react-turnstile": "^1.5.3",
     "@nanostores/react": "^1.0.0",
     "@phosphor-icons/react": "^2.1.10",
     "@prismicio/client": "^7.21.0",

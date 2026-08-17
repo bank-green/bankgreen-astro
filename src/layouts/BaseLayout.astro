@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css'
-import { ExitIntentDialog } from '../components/ExitIntentDialog'
+import { extractContent } from '@lib/utils/switch-survey'
+import { SwitchSurveyDialog } from '../components/forms/switch-survey'
 // import { GdprBanner } from '../components/GdprBanner'
 import { Layout } from '../components/Layout'
 import { getSingleSafe } from '../lib/prismic'
@@ -31,8 +32,10 @@ const {
   noindex = false,
 } = Astro.props
 
-// Fetch exit intent content from Prismic (cookies are read client-side)
-const exitIntentContent = await getSingleSafe('switchsurveyexit')
+const SURVEY_PAGES = ['/impact', '/impact-extended', '/impact-shortened']
+const switchSurveyContent = SURVEY_PAGES.includes(Astro.url.pathname)
+  ? null
+  : extractContent(await getSingleSafe('switchsurvey'))
 ---
 
 <!doctype html>
@@ -129,6 +132,6 @@ const exitIntentContent = await getSingleSafe('switchsurveyexit')
       <slot />
     </Layout>
     <!-- <GdprBanner client:load /> -->
-    <ExitIntentDialog client:idle content={exitIntentContent} />
+    {switchSurveyContent && <SwitchSurveyDialog content={switchSurveyContent} client:idle />}
   </body>
 </html>

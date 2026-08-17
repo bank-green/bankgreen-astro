@@ -40,7 +40,7 @@ Pages are Astro components (`.astro`) with React islands for interactivity. The 
 
 **Client Directives**:
 - `client:load` - Hydrate immediately (for interactive pages, header/footer)
-- `client:idle` - Hydrate when browser is idle (for non-critical components like exit intent dialogs)
+- `client:idle` - Hydrate when browser is idle (for non-critical components like the switch survey dialog)
 - `client:visible` - Hydrate when component enters viewport
 - No directive - Renders as static HTML with zero JavaScript
 
@@ -48,7 +48,7 @@ Pages are Astro components (`.astro`) with React islands for interactivity. The 
 - The root `<Layout>` component in `BaseLayout.astro` uses `client:load` and provides header/footer
 - **Static content pages**: Use no `client:*` directive - rendered as pure HTML (e.g., blog posts, methodology, glossary)
 - **Interactive pages**: Use `client:load` when they need client-side state (e.g., forms, accordions)
-- **Standalone islands**: `GdprBanner` and `ExitIntentDialog` have their own MantineProvider and manage state via nanostores
+- **Standalone islands**: `GdprBanner` and `SwitchSurveyDialog` have their own MantineProvider and manage state via nanostores
 
 **When to use `client:load`**:
 - Pages with forms, accordions, or user interaction

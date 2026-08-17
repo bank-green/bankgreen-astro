@@ -100,7 +100,7 @@ export const theme = createTheme({
       classNames: (_theme, props) => ({
         root: cx({
           [`
-            bg-center bg-radial bg-size-[225%_350%] hover:bg-size-[100%_150%] 
+            bg-center bg-radial bg-size-[225%_350%] hover:bg-size-[100%_150%]
             from-green-600/50 to-green-500 data-disabled:opacity-50
             bg-green-500 active:bg-green-700 hover:bg-green-600 data-disabled:hover:bg-green-500 data-disabled:active:bg-green-500
             transition-all duration-300 hover:duration-100 active:duration-50
@@ -150,6 +150,20 @@ export const theme = createTheme({
         root: 'px-0',
       },
     }),
+    Dialog: {
+      defaultProps: {
+        radius: 'lg',
+        p: 0,
+      },
+      classNames: {
+        root: 'bg-bgInverse border border-white/10 text-sm text-textInverse shadow-2xl overflow-hidden',
+      },
+    },
+    InputWrapper: {
+      classNames: {
+        required: 'text-red-300',
+      },
+    },
     Input: {
       defaultProps: {
         size: 'md',
