@@ -48,12 +48,13 @@ export function useSwitchSurveyState({
     if (isOpen) setStep('question')
   }, [isOpen])
 
-  const handleClose = () => markSurveySeen()
+  const { loadBanks } = switched
 
-  const handleChoice = (next: Step) => {
-    if (next === 'switched') switched.loadBanks()
-    setStep(next)
-  }
+  useEffect(() => {
+    if (isOpen) loadBanks()
+  }, [isOpen, loadBanks])
+
+  const handleClose = () => markSurveySeen()
 
   const handleSubmitPlanning = planningForm.onSubmit(async (values) => {
     onResetCaptcha?.()
@@ -78,7 +79,7 @@ export function useSwitchSurveyState({
     isOpen,
     isReturning,
     step,
-    setStep: handleChoice,
+    setStep,
     submitError: isPlanning ? planningError : switched.submitError,
     isSubmitting: isPlanning ? planningSubmitting : switched.isSubmitting,
     banks: switched.banks,
