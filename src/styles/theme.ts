@@ -85,6 +85,9 @@ export const theme = createTheme({
           style: { '--cb-size': 'var(--cb-size-sm)' } as React.CSSProperties,
         },
       },
+      classNames: {
+        dropdown: 'text-textDefault',
+      },
     },
     Button: Button.extend({
       defaultProps: {
@@ -179,6 +182,11 @@ export const theme = createTheme({
     LoadingOverlay: {
       classNames: {
         overlay: 'bg-sushi-100/50 backdrop-blur-[2px]',
+      },
+    },
+    Select: {
+      classNames: {
+        dropdown: 'text-textDefault',
       },
     },
     Spoiler: {
