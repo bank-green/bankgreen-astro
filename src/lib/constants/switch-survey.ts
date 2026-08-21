@@ -23,3 +23,12 @@ export const COUNTRY_TO_CURRENCY: Record<string, string> = {
   IE: 'EUR',
   GR: 'EUR',
 }
+
+export const CURRENCY_TO_COUNTRIES: Record<string, string[]> = Object.entries(
+  COUNTRY_TO_CURRENCY
+).reduce<Record<string, string[]>>((acc, [country, currency]) => {
+  const countries = acc[currency] ?? []
+  countries.push(country)
+  acc[currency] = countries
+  return acc
+}, {})

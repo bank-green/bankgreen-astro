@@ -88,6 +88,7 @@ export function useSwitchSurveyState({
     planningForm,
     handleClose,
     handleSubmitSwitched: switched.handleSubmit,
+    handleCurrencyChange: switched.handleCurrencyChange,
     handleSubmitPlanning,
     extendedHref: switched.extendedHref,
   }

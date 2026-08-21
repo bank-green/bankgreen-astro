@@ -204,6 +204,10 @@ export async function fetchAllBrands(): Promise<Bank[]> {
   }
 }
 
+export function getCachedAllBrands(): Bank[] | null {
+  return brandsCache.get(ALL_BRANDS_CACHE_KEY) ?? null
+}
+
 export async function fetchBrandsByCountry(country: string, state?: string): Promise<Bank[]> {
   const stateTag = state ? getStateTag(state) : undefined
   const cacheKey = stateTag ? `${country}:${stateTag}` : country
