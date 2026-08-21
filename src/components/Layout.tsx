@@ -5,6 +5,7 @@ import '@mantine/core/styles/global.css'
 import type { ReactNode } from 'react'
 import { useStableHeadroom } from '@/lib/useStableHeadroom'
 import { theme } from '../styles/theme'
+import { AnnouncementBanner } from './AnnouncementBanner'
 import { Footer } from './Footer'
 import { Header } from './Header'
 
@@ -30,6 +31,7 @@ export function Layout({ children }: Props) {
           header: pinned ? '' : 'shadow-xl/25',
         }}
       >
+        <AnnouncementBanner isHeaderCollapsed={!pinned} />
         <Header />
         <AppShell.Main>{children}</AppShell.Main>
         <Footer />
