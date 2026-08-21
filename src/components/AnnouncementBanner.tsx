@@ -36,11 +36,11 @@ export function AnnouncementBanner({ isHeaderCollapsed }: Props) {
       aria-hidden={!isVisible || isHeaderCollapsed}
       aria-live="polite"
       className={cx(
-        'fixed top-13 right-0 left-0 z-99 mx-auto grid w-full max-w-6xl grid-cols-[2.75rem_minmax(0,1fr)_2.75rem] items-center rounded-b-xl bg-sushi-500 pt-3 pb-1 text-center font-medium text-sm text-white transition-[translate,box-shadow] duration-200 ease-out motion-reduce:transition-none sm:text-base',
+        'fixed top-11 right-0 left-0 z-99 mx-auto grid w-full max-w-6xl transform-gpu grid-cols-[2.75rem_minmax(0,1fr)_2.75rem] items-center bg-sushi-500 pt-3 pb-1 text-center font-medium text-sm text-white transition-[translate] duration-200 ease-out will-change-transform motion-reduce:transition-none sm:text-base lg:top-13 lg:rounded-b-xl',
         isHeaderCollapsed
-          ? '-translate-y-[calc(100%+3.25rem)] pointer-events-none shadow-none'
+          ? '-translate-y-[calc(100%+2.75rem)] lg:-translate-y-[calc(100%+3.25rem)] pointer-events-none shadow-none'
           : isVisible
-            ? 'translate-y-0 shadow-xl/20'
+            ? 'translate-y-0 lg:shadow-xl/20'
             : '-translate-y-full pointer-events-none shadow-none'
       )}
     >
