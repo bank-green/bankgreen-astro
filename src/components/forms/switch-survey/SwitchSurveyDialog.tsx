@@ -41,6 +41,7 @@ export function SwitchSurveyDialog({ content }: { content: SwitchSurveyContent }
     planningForm,
     handleClose,
     handleSubmitSwitched,
+    handleCurrencyChange,
     handleSubmitPlanning,
     extendedHref,
   } = useSwitchSurveyState({ captchaToken: captcha.token, onResetCaptcha: captcha.reset })
@@ -74,6 +75,7 @@ export function SwitchSurveyDialog({ content }: { content: SwitchSurveyContent }
           isSubmitting={isSubmitting}
           banks={banks}
           banksLoading={banksLoading}
+          onCurrencyChange={handleCurrencyChange}
           content={content}
           captchaWidget={captcha.widget}
           captchaPending={captcha.pending}

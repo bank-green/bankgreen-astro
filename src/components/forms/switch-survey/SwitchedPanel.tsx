@@ -14,6 +14,7 @@ export function SwitchedPanel({
   isSubmitting,
   banks,
   banksLoading,
+  onCurrencyChange,
   content,
   captchaWidget,
   captchaPending,
@@ -24,6 +25,7 @@ export function SwitchedPanel({
   isSubmitting: boolean
   banks: Bank[]
   banksLoading: boolean
+  onCurrencyChange: (currency: string | null) => void
   content: SwitchSurveyContent
   captchaWidget?: React.ReactNode
   captchaPending?: boolean
@@ -32,6 +34,7 @@ export function SwitchedPanel({
     <form onSubmit={onSubmit} noValidate>
       <Stack className="gap-3 p-4">
         <BankAutocomplete
+          key={`bankLeft-${form.values.currency}`}
           banks={banks}
           value={form.values.bankLeft}
           onChange={(bank) => form.setFieldValue('bankLeft', bank)}
@@ -42,6 +45,7 @@ export function SwitchedPanel({
           required
         />
         <BankAutocomplete
+          key={`bankTo-${form.values.currency}`}
           banks={banks}
           value={form.values.bankTo}
           onChange={(bank) => form.setFieldValue('bankTo', bank)}
@@ -60,6 +64,7 @@ export function SwitchedPanel({
               data={CURRENCIES}
               classNames={{ root: 'w-28' }}
               {...form.getInputProps('currency')}
+              onChange={onCurrencyChange}
             />
             <TextInput
               placeholder={content.switchedPlaceholderAmount}
