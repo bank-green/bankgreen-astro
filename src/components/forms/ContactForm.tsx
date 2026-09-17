@@ -1,21 +1,14 @@
+import { type ContactFormTag, characterCount, MAX_FIELD_LENGTH } from '@lib/mailerlite'
 import { Box, Button, Checkbox, Select, Stack, Text, Textarea, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
-import { Turnstile } from '@marsidev/react-turnstile'
+import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile'
 import { zod4Resolver } from 'mantine-form-zod-resolver'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { z } from 'zod'
 
 export interface ContactFormProps {
-  /** Tag used for ActiveCampaign segmentation */
-  tag:
-    | 'contact page form'
-    | 'FAQ bottom'
-    | 'green bank'
-    | 'green directory'
-    | 'index bottom'
-    | 'join form'
-    | 'not listed bottom'
-    | 'partners bottom'
+  /** Form tag, stored in MailerLite's `signup_source` field */
+  tag: ContactFormTag
   /** Fields to show in the form */
   fields?: {
     firstName?: boolean
@@ -82,18 +75,29 @@ const defaultPlaceholders = {
   message: 'Your message',
 }
 
+const overLengthError = (value: string) => {
+  const count = characterCount(value)
+  return count > MAX_FIELD_LENGTH ? `Too long: ${count} / ${MAX_FIELD_LENGTH}` : undefined
+}
+
+const withinLimit = (value: string) => characterCount(value) <= MAX_FIELD_LENGTH
+
 const buildSchema = (fields: typeof defaultFields) =>
   z.object({
-    firstName: z.string(),
+    firstName: z.string().refine(withinLimit),
     email: fields.email
       ? z
           .string()
           .min(1, 'Your email is required.')
           .regex(z.regexes.email, { message: 'Please enter a valid email address.' })
       : z.string(),
-    bank: z.string(),
-    subject: fields.subject ? z.string().min(1, 'Subject is required.') : z.string(),
-    message: fields.message ? z.string().min(1, 'Message is required.') : z.string(),
+    bank: z.string().refine(withinLimit),
+    subject: (fields.subject ? z.string().min(1, 'Subject is required.') : z.string()).refine(
+      withinLimit
+    ),
+    message: (fields.message ? z.string().min(1, 'Message is required.') : z.string()).refine(
+      withinLimit
+    ),
     status: z.string().nullable(),
     isAgreeMarketing: z.boolean(),
     isAgreeTerms: z.boolean().refine((val) => val === true, {
@@ -134,6 +138,7 @@ export function ContactForm({
 
   // UI state
   const [captchaToken, setCaptchaToken] = useState<string>('')
+  const turnstileRef = useRef<TurnstileInstance>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [isSent, setIsSent] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -143,6 +148,7 @@ export function ContactForm({
   const captchaTestMode = import.meta.env.PUBLIC_CAPTCHA_TEST_MODE === 'true'
   const captchaSitekey = import.meta.env.PUBLIC_CLOUDFLARE_CAPTCHA_SITEKEY
   const showCaptcha = !isDev || captchaTestMode
+  const captchaPending = showCaptcha && Boolean(captchaSitekey) && !captchaToken
 
   const handleSubmit = form.onSubmit(async (values: FormValues) => {
     setError(null)
@@ -180,6 +186,8 @@ export function ContactForm({
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred')
+      setCaptchaToken('')
+      turnstileRef.current?.reset()
     } finally {
       setTimeout(() => setIsLoading(false), 100)
     }
@@ -202,6 +210,7 @@ export function ContactForm({
             label={labels.firstName}
             placeholder={placeholders.firstName}
             {...form.getInputProps('firstName')}
+            error={overLengthError(form.values.firstName) ?? form.errors.firstName}
           />
         )}
 
@@ -220,6 +229,7 @@ export function ContactForm({
             label={labels.bank}
             placeholder={placeholders.bank}
             {...form.getInputProps('bank')}
+            error={overLengthError(form.values.bank) ?? form.errors.bank}
           />
         )}
 
@@ -228,6 +238,7 @@ export function ContactForm({
             label={labels.subject}
             placeholder={placeholders.subject}
             {...form.getInputProps('subject')}
+            error={overLengthError(form.values.subject) ?? form.errors.subject}
             required
           />
         )}
@@ -237,6 +248,7 @@ export function ContactForm({
             label={labels.message}
             placeholder={placeholders.message}
             {...form.getInputProps('message')}
+            error={overLengthError(form.values.message) ?? form.errors.message}
             rows={3}
             required
           />
@@ -276,8 +288,10 @@ export function ContactForm({
         {showCaptcha && captchaSitekey && (
           <Box className="h-[65px]">
             <Turnstile
+              ref={turnstileRef}
               siteKey={captchaSitekey}
               onSuccess={setCaptchaToken}
+              onExpire={() => setCaptchaToken('')}
               onError={() => {
                 // Return truthy to suppress Turnstile's default console logging
                 return true
@@ -288,7 +302,7 @@ export function ContactForm({
 
         {error && <Text className="text-sm text-textError">{error}</Text>}
 
-        <Button type="submit" loading={isLoading} disabled={!form.isValid()}>
+        <Button type="submit" loading={isLoading} disabled={!form.isValid() || captchaPending}>
           {labels.submit}
         </Button>
       </Stack>
