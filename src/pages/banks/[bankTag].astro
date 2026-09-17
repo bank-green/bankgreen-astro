@@ -24,11 +24,10 @@ interface BankData {
     description1?: string | null
     description2?: string | null
     description3?: string | null
+    ourTake?: string | null
     fossilFreeAlliance?: boolean | null
     showOnSustainableBanksPage?: boolean
-    institutionType?: {
-      name: string
-    } | null
+    institutionType?: Array<{ name: string }> | null
   } | null
   countries?: Array<{ code: string }> | null
 }
@@ -58,8 +57,8 @@ if (bank.commentary?.ratingInherited && bank.commentary?.inheritBrandRating?.tag
 
 // Handle credit union logic
 const getRating = (rating: string, bank: BankData): string => {
-  const institutionType = bank.commentary?.institutionType?.name
-  const isCreditUnion = institutionType === 'Credit Union'
+  const institutionTypes = bank.commentary?.institutionType || []
+  const isCreditUnion = institutionTypes.some((type) => type.name === 'Credit Union')
   const isRatingUnknown = rating === 'unknown'
 
   // Credit unions with unknown rating default to 'good'
@@ -71,20 +70,37 @@ const getRating = (rating: string, bank: BankData): string => {
 }
 
 const rating = getRating(effectiveRating, bank)
-const institutionType = bank.commentary?.institutionType?.name || 'Bank'
+
+// Derive a single institution type string (Credit Union takes priority if present)
+const institutionTypeNames = bank.commentary?.institutionType?.map((t) => t.name) || []
+const isCreditUnion = institutionTypeNames.includes('Credit Union')
+const institutionType = isCreditUnion ? 'Credit Union' : institutionTypeNames[0] || 'Bank'
 
 const ratingImageUrl = `https://bank.green/anim/gauge/${rating}.gif`
 const ratingVideoUrl = `https://bank.green/anim/gauge/${rating}.mp4`
 const bankDescription = 'Find and compare the service offerings of ethical and sustainable banks.'
 
-// Fetch Prismic defaults based on rating
-const prismicDefaults = await getDefaultFields(prismicClient, rating, bankName, institutionType)
+// Check if manual description fields are empty
+const hasNoManualDescriptions =
+  !bank.commentary?.description1 &&
+  !bank.commentary?.description2 &&
+  !bank.commentary?.description3 &&
+  !bank.commentary?.ourTake
+
+// Credit unions with no manual descriptions and rating unknown/good use the "unknown" default text
+const effectiveDefaultRating =
+  isCreditUnion && hasNoManualDescriptions && (rating === 'unknown' || rating === 'good')
+    ? 'unknown'
+    : rating
+
+// Fetch Prismic defaults based on effective rating
+const prismicDefaults = await getDefaultFields(prismicClient, effectiveDefaultRating, bankName, institutionType)
 
 // Fetch Prismic page for SliceZone
 const queryKey =
-  rating === 'unknown'
+  effectiveDefaultRating === 'unknown'
     ? `unknownbank-${institutionType.toLowerCase().replace(/\s/g, '')}`
-    : `${rating}bank`
+    : `${effectiveDefaultRating}bank`
 const prismicPage = await getByUIDSafe('bankpage', queryKey)
 const prismicNotListed = await getByUIDSafe('textonlypages', 'notlisted')
 ---
