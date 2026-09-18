@@ -152,6 +152,11 @@ export function buildPayload(message: ContactMessage): MailerLitePayload {
     optional.leadgen_bank = message.bank
   }
 
+  const country = message.location.country.trim().toUpperCase()
+  if (/^[A-Z]{2}$/.test(country) && country !== 'XX' && country !== 'T1') {
+    optional.country = country
+  }
+
   const fields: Record<string, string> = {}
   for (const [key, value] of Object.entries(optional)) {
     if (value) fields[key] = value
@@ -202,7 +207,7 @@ async function postSubscriber(
     body: JSON.stringify(payload),
   })
 
-  let data: MailerLiteResponse | null = null
+  let data: MailerLiteResponse | null
   try {
     data = (await response.json()) as MailerLiteResponse
   } catch {
