@@ -6,6 +6,7 @@ type Runtime = import('@astrojs/cloudflare').Runtime<{
   MAILERLITE_URL: string
   CONTACT_FORM_MODE?: string
   CONTACT_FORM_DEBUG?: string
+  EMAIL?: import('@lib/notify').SendEmail
 }>
 
 declare namespace App {

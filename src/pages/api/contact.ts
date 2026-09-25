@@ -5,6 +5,7 @@ import {
   MAX_FIELD_LENGTH,
   sendContact,
 } from '@lib/mailerlite'
+import { notifyTeam } from '@lib/notify'
 import type { APIRoute } from 'astro'
 
 export const prerender = false
@@ -136,6 +137,10 @@ export const POST: APIRoute = async ({ request, locals }) => {
     const isDebug = env.CONTACT_FORM_DEBUG === 'true'
 
     if (result.success) {
+      if (message.tag === 'contact page form') {
+        await notifyTeam(env, message)
+      }
+
       // In debug mode, include additional info for testing
       const responseData = isDebug
         ? {

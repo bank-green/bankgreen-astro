@@ -8,6 +8,9 @@
     "directory": "./dist"
   },
 
+  // Contact page enquiries email the team inbox. See src/lib/notify.ts
+  "send_email": [{ "name": "EMAIL", "destination_address": "hello@bank.green", "remote": true }],
+
   "observability": {
     "enabled": true
   },
