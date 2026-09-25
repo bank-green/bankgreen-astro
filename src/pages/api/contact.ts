@@ -6,6 +6,7 @@ import {
   sendContact,
 } from '@lib/mailerlite'
 import { notifyTeam } from '@lib/notify'
+import { notifySlack } from '@lib/slack'
 import type { APIRoute } from 'astro'
 
 export const prerender = false
@@ -139,6 +140,13 @@ export const POST: APIRoute = async ({ request, locals }) => {
     if (result.success) {
       if (message.tag === 'contact page form') {
         await notifyTeam(env, message)
+
+        // A Slack failure must not fail the submission: MailerLite already has the contact
+        try {
+          await notifySlack(env, message)
+        } catch (error) {
+          console.error('Slack notification error:', error)
+        }
       }
 
       // In debug mode, include additional info for testing
