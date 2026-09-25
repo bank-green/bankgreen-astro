@@ -9,7 +9,7 @@
   },
 
   // Contact page enquiries email the team inbox. See src/lib/notify.ts
-  "send_email": [{ "name": "EMAIL", "destination_address": "hello@bank.green", "remote": true }],
+  "send_email": [{ "name": "EMAIL", "destination_address": "hello@bank.green" }],
 
   "observability": {
     "enabled": true
