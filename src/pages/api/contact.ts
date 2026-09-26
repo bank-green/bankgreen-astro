@@ -1,23 +1,44 @@
-import { type ContactMessage, sendContact } from '@lib/activecampaign'
+import {
+  type ContactMessage,
+  findOverLengthFields,
+  isContactFormTag,
+  MAX_FIELD_LENGTH,
+  sendContact,
+} from '@lib/mailerlite'
+import { notifyTeam } from '@lib/notify'
+import { notifySlack } from '@lib/slack'
 import type { APIRoute } from 'astro'
 
 export const prerender = false
 
+// One deadline for every outgoing call, Slack included. A normal submission takes about 1.3 seconds
+const SUBMIT_TIMEOUT_MS = 5000
+
+const GENERIC_ERROR = 'Sorry, we could not submit the form. Please try again later.'
+const INVALID_EMAIL_ERROR = 'Please enter a valid email address.'
+const REFUSED_ENQUIRY_ERROR = 'Please rephrase your message and try again.'
+
 interface ContactRequestBody {
   firstName?: string
-  lastName?: string
   email: string
   message?: string
   subject?: string
   tag?: string
   bank?: string
-  bankDisplayName?: string
   isAgreeMarketing?: boolean
   currentStatus?: string
   captchaToken?: string
 }
 
-async function verifyCaptcha(token: string, captchaSecret: string): Promise<boolean> {
+function text(value: unknown): string {
+  return typeof value === 'string' ? value.trim() : ''
+}
+
+async function verifyCaptcha(
+  token: string,
+  captchaSecret: string,
+  signal: AbortSignal
+): Promise<boolean> {
   if (!captchaSecret) {
     throw new Error('CLOUDFLARE_CAPTCHA_SECRET is not configured')
   }
@@ -29,6 +50,7 @@ async function verifyCaptcha(token: string, captchaSecret: string): Promise<bool
   const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
     method: 'POST',
     body: formData,
+    signal,
   })
 
   const result = (await response.json()) as { success: boolean }
@@ -37,11 +59,13 @@ async function verifyCaptcha(token: string, captchaSecret: string): Promise<bool
 
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
-    const { env } = locals.runtime
+    const { env, ctx } = locals.runtime
+    const deadline = AbortSignal.timeout(SUBMIT_TIMEOUT_MS)
     const body = (await request.json()) as ContactRequestBody
 
     // Validate required fields
-    if (!body.email) {
+    const email = text(body.email)
+    if (!email) {
       return new Response(JSON.stringify({ error: 'Email is required' }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' },
@@ -60,13 +84,25 @@ export const POST: APIRoute = async ({ request, locals }) => {
           headers: { 'Content-Type': 'application/json' },
         })
       }
-      const captchaValid = await verifyCaptcha(body.captchaToken, env.CLOUDFLARE_CAPTCHA_SECRET)
+      const captchaValid = await verifyCaptcha(
+        body.captchaToken,
+        env.CLOUDFLARE_CAPTCHA_SECRET,
+        deadline
+      )
       if (!captchaValid) {
         return new Response(JSON.stringify({ error: 'Captcha verification failed' }), {
           status: 400,
           headers: { 'Content-Type': 'application/json' },
         })
       }
+    }
+
+    if (!isContactFormTag(body.tag)) {
+      console.error('Contact form submitted with an unknown tag:', JSON.stringify(body.tag))
+      return new Response(JSON.stringify({ error: GENERIC_ERROR }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      })
     }
 
     // Extract Cloudflare headers for geolocation
@@ -77,28 +113,65 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
     const message: ContactMessage = {
       app_env: isDev ? 'development' : 'production',
-      first_name: body.firstName || '',
-      last_name: body.lastName || '',
-      email: body.email,
+      first_name: text(body.firstName),
+      email,
       created_at: Date.now(),
-      message: body.message || '',
-      subject: body.subject || '',
-      tag: body.tag || 'form tag not defined',
-      bank: body.bank || '',
-      bank_display_name: body.bankDisplayName || '',
-      is_agree_marketing: body.isAgreeMarketing,
-      current_status: body.currentStatus || '',
+      message: text(body.message),
+      subject: text(body.subject),
+      tag: body.tag,
+      bank: text(body.bank),
+      is_agree_marketing: body.isAgreeMarketing === true,
+      current_status: text(body.currentStatus),
       ip,
       location: { country, city },
     }
 
-    const result = await sendContact(env, message)
+    const overLength = findOverLengthFields({
+      name: message.first_name,
+      email: message.email,
+      subject: message.subject,
+      message: message.message,
+      bank: message.bank,
+      current_status: message.current_status,
+    })
+    if (overLength.length > 0) {
+      console.error(`Contact form fields over ${MAX_FIELD_LENGTH} characters:`, overLength)
+      return new Response(
+        JSON.stringify({
+          error: `Please keep each field to ${MAX_FIELD_LENGTH} characters or fewer.`,
+        }),
+        {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+    }
+
+    const result = await sendContact(env, message, deadline)
     const isDebug = env.CONTACT_FORM_DEBUG === 'true'
 
     if (result.success) {
+      if (message.tag === 'contact page form') {
+        // Slack runs alongside the email and can finish after the response. A Slack failure
+        // must not fail the submission: MailerLite already has the contact
+        ctx.waitUntil(
+          notifySlack(env, message, deadline).catch((error) => {
+            console.error('Slack notification error:', error)
+          })
+        )
+
+        await notifyTeam(env, message, deadline)
+      }
+
       // In debug mode, include additional info for testing
       const responseData = isDebug
-        ? { success: true, mode: result.mode, contactId: result.contactId, payload: result.payload }
+        ? {
+            success: true,
+            mode: result.mode,
+            subscriberId: result.subscriberId,
+            droppedFields: result.droppedFields,
+            payload: result.payload,
+          }
         : { success: true }
 
       return new Response(JSON.stringify(responseData), {
@@ -107,23 +180,29 @@ export const POST: APIRoute = async ({ request, locals }) => {
       })
     }
 
-    return new Response(
-      JSON.stringify({ error: result.error || 'Failed to submit contact form' }),
-      {
-        status: 500,
+    if (result.error === 'invalid_email') {
+      return new Response(JSON.stringify({ error: INVALID_EMAIL_ERROR }), {
+        status: 400,
         headers: { 'Content-Type': 'application/json' },
-      }
-    )
+      })
+    }
+
+    if (result.error === 'refused_enquiry') {
+      return new Response(JSON.stringify({ error: REFUSED_ENQUIRY_ERROR }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      })
+    }
+
+    return new Response(JSON.stringify({ error: GENERIC_ERROR }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    })
   } catch (error) {
     console.error('Contact form error:', error)
-    return new Response(
-      JSON.stringify({
-        error: error instanceof Error ? error.message : 'Internal server error',
-      }),
-      {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      }
-    )
+    return new Response(JSON.stringify({ error: GENERIC_ERROR }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    })
   }
 }

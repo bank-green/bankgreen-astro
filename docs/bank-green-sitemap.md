@@ -723,12 +723,13 @@ The application provides three server-side API endpoints (all use `prerender: fa
    - `cf-connecting-ip` - User's IP address
    - `cf-ipcountry` - Country code
    - `cf-ipcity` - City name
-4. Sends data to ActiveCampaign CRM
-5. Returns `{ success: true }` or error response
+4. Checks the form tag against the 8 known tags and each text field against MailerLite's 1,024-character limit
+5. Upserts the subscriber in MailerLite (`src/lib/mailerlite.ts`). If MailerLite refuses the subject or message, nothing is saved and the visitor is asked to rephrase. If it refuses another field, the request is sent once more without that field
+6. Returns `{ success: true }` or error response
 
 **Error Responses**:
-- `400` - Missing email or captcha verification failed
-- `500` - Server error during submission
+- `400` - Missing email, captcha verification failed, unknown form tag, a field over 1,024 characters, an email MailerLite refuses, or a subject or message MailerLite refuses
+- `500` - Submission failed (generic message; details are in the Worker log)
 
 ---
 
@@ -854,7 +855,7 @@ The site uses **hybrid rendering** with two approaches:
 ### Forms & Integrations
 - **Contact forms**: Submit to `/api/contact` with Cloudflare Turnstile captcha
 - **Geolocation**: `/api/geolocation` detects user location using Cloudflare headers
-- **CRM**: ActiveCampaign for email marketing and contact management
+- **CRM**: MailerLite for email marketing and contact management
 - **GraphQL Proxy**: `/api/graphql` proxies queries to Django backend
 
 ---

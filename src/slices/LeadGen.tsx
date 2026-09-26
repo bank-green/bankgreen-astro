@@ -94,6 +94,7 @@ export function LeadGen({ slice, className }: Props) {
       tag="green bank"
       fields={fields}
       labels={labels}
+      placeholders={{ bank: 'Bank name' }}
       className={className}
     />
   )
