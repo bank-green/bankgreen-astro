@@ -48,7 +48,11 @@ export function buildSlackMessage(message: ContactMessage) {
   }
 }
 
-export async function notifySlack(env: SlackEnv, message: ContactMessage): Promise<void> {
+export async function notifySlack(
+  env: SlackEnv,
+  message: ContactMessage,
+  signal?: AbortSignal
+): Promise<void> {
   const payload = buildSlackMessage(message)
 
   if (env.CONTACT_FORM_MODE === 'mock') {
@@ -64,6 +68,7 @@ export async function notifySlack(env: SlackEnv, message: ContactMessage): Promi
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
+    signal,
   })
 
   if (!response.ok) {

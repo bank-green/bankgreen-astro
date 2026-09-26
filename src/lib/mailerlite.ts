@@ -195,7 +195,8 @@ function withoutFields(payload: MailerLitePayload, keys: string[]): MailerLitePa
 
 async function postSubscriber(
   env: MailerLiteEnv,
-  payload: MailerLitePayload
+  payload: MailerLitePayload,
+  signal?: AbortSignal
 ): Promise<{ status: number; data: MailerLiteResponse | null; retryAfter: string | null }> {
   const response = await fetch(`${env.MAILERLITE_URL.replace(/\/+$/, '')}/subscribers`, {
     method: 'POST',
@@ -205,6 +206,7 @@ async function postSubscriber(
       Authorization: `Bearer ${env.MAILERLITE_API_KEY}`,
     },
     body: JSON.stringify(payload),
+    signal,
   })
 
   let data: MailerLiteResponse | null
@@ -242,7 +244,8 @@ function logFailure(
 async function sendToMailerLiteReal(
   env: MailerLiteEnv,
   payload: MailerLitePayload,
-  tag: string
+  tag: string,
+  signal?: AbortSignal
 ): Promise<MailerLiteResult> {
   if (!env.MAILERLITE_API_KEY || !env.MAILERLITE_URL) {
     log(env, 'error', 'MailerLite API credentials not configured')
@@ -252,7 +255,7 @@ async function sendToMailerLiteReal(
   try {
     log(env, 'debug', 'Sending subscriber to MailerLite...')
 
-    const first = await postSubscriber(env, payload)
+    const first = await postSubscriber(env, payload, signal)
     log(env, 'debug', `Subscriber response (HTTP ${first.status}):`, first.data)
 
     if (isSuccess(first.status)) {
@@ -278,7 +281,7 @@ async function sendToMailerLiteReal(
     })
 
     const retryPayload = withoutFields(payload, rejected)
-    const retry = await postSubscriber(env, retryPayload)
+    const retry = await postSubscriber(env, retryPayload, signal)
     log(env, 'debug', `Retry response (HTTP ${retry.status}):`, retry.data)
 
     if (isSuccess(retry.status)) {
@@ -324,7 +327,8 @@ function mockSend(env: MailerLiteEnv, payload: MailerLitePayload, tag: string): 
 
 export async function sendContact(
   env: MailerLiteEnv,
-  message: ContactMessage
+  message: ContactMessage,
+  signal?: AbortSignal
 ): Promise<MailerLiteResult> {
   const mode = getMode(env)
   const payload = buildPayload(message)
@@ -336,5 +340,5 @@ export async function sendContact(
     return mockSend(env, payload, message.tag)
   }
 
-  return sendToMailerLiteReal(env, payload, message.tag)
+  return sendToMailerLiteReal(env, payload, message.tag, signal)
 }

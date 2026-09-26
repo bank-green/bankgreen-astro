@@ -11,6 +11,9 @@ import type { APIRoute } from 'astro'
 
 export const prerender = false
 
+// One deadline for every outgoing call, Slack included. A normal submission takes about 1.3 seconds
+const SUBMIT_TIMEOUT_MS = 5000
+
 const GENERIC_ERROR = 'Sorry, we could not submit the form. Please try again later.'
 const INVALID_EMAIL_ERROR = 'Please enter a valid email address.'
 const REFUSED_ENQUIRY_ERROR = 'Please rephrase your message and try again.'
@@ -31,7 +34,11 @@ function text(value: unknown): string {
   return typeof value === 'string' ? value.trim() : ''
 }
 
-async function verifyCaptcha(token: string, captchaSecret: string): Promise<boolean> {
+async function verifyCaptcha(
+  token: string,
+  captchaSecret: string,
+  signal: AbortSignal
+): Promise<boolean> {
   if (!captchaSecret) {
     throw new Error('CLOUDFLARE_CAPTCHA_SECRET is not configured')
   }
@@ -43,6 +50,7 @@ async function verifyCaptcha(token: string, captchaSecret: string): Promise<bool
   const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
     method: 'POST',
     body: formData,
+    signal,
   })
 
   const result = (await response.json()) as { success: boolean }
@@ -51,7 +59,8 @@ async function verifyCaptcha(token: string, captchaSecret: string): Promise<bool
 
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
-    const { env } = locals.runtime
+    const { env, ctx } = locals.runtime
+    const deadline = AbortSignal.timeout(SUBMIT_TIMEOUT_MS)
     const body = (await request.json()) as ContactRequestBody
 
     // Validate required fields
@@ -75,7 +84,11 @@ export const POST: APIRoute = async ({ request, locals }) => {
           headers: { 'Content-Type': 'application/json' },
         })
       }
-      const captchaValid = await verifyCaptcha(body.captchaToken, env.CLOUDFLARE_CAPTCHA_SECRET)
+      const captchaValid = await verifyCaptcha(
+        body.captchaToken,
+        env.CLOUDFLARE_CAPTCHA_SECRET,
+        deadline
+      )
       if (!captchaValid) {
         return new Response(JSON.stringify({ error: 'Captcha verification failed' }), {
           status: 400,
@@ -134,19 +147,20 @@ export const POST: APIRoute = async ({ request, locals }) => {
       )
     }
 
-    const result = await sendContact(env, message)
+    const result = await sendContact(env, message, deadline)
     const isDebug = env.CONTACT_FORM_DEBUG === 'true'
 
     if (result.success) {
       if (message.tag === 'contact page form') {
-        await notifyTeam(env, message)
+        // Slack runs alongside the email and can finish after the response. A Slack failure
+        // must not fail the submission: MailerLite already has the contact
+        ctx.waitUntil(
+          notifySlack(env, message, deadline).catch((error) => {
+            console.error('Slack notification error:', error)
+          })
+        )
 
-        // A Slack failure must not fail the submission: MailerLite already has the contact
-        try {
-          await notifySlack(env, message)
-        } catch (error) {
-          console.error('Slack notification error:', error)
-        }
+        await notifyTeam(env, message, deadline)
       }
 
       // In debug mode, include additional info for testing

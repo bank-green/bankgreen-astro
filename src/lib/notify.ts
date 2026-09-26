@@ -64,7 +64,19 @@ export function buildNotification(message: ContactMessage) {
   return { to: TEAM_ADDRESS, from: SENDER, replyTo, subject, text }
 }
 
-export async function notifyTeam(env: NotifyEnv, message: ContactMessage): Promise<void> {
+// Rejects when the signal aborts. send() takes no signal, so the email can still arrive later
+function whenAborted(signal: AbortSignal): Promise<never> {
+  return new Promise((_, reject) => {
+    if (signal.aborted) reject(signal.reason)
+    signal.addEventListener('abort', () => reject(signal.reason), { once: true })
+  })
+}
+
+export async function notifyTeam(
+  env: NotifyEnv,
+  message: ContactMessage,
+  signal?: AbortSignal
+): Promise<void> {
   const email = buildNotification(message)
 
   if (env.CONTACT_FORM_MODE === 'mock') {
@@ -76,5 +88,6 @@ export async function notifyTeam(env: NotifyEnv, message: ContactMessage): Promi
     throw new Error('EMAIL send_email binding is not configured')
   }
 
-  await env.EMAIL.send(email)
+  const sending = env.EMAIL.send(email)
+  await (signal ? Promise.race([sending, whenAborted(signal)]) : sending)
 }
