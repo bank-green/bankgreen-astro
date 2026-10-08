@@ -103,7 +103,7 @@ export function SwitchSurveyDialog({ content }: { content: SwitchSurveyContent }
         opened={isOpen}
         onClose={handleClose}
         position={isMobile ? { bottom: 0, left: 0 } : { bottom: 24, right: 24 }}
-        size={isMobile ? undefined : 360}
+        size={isMobile ? undefined : '23rem'}
         radius={isMobile ? 0 : 'md'}
         withCloseButton={false}
       >
