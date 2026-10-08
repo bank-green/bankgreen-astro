@@ -92,7 +92,7 @@ function BankSearch({
         placeholder={placeholder}
         loading={loading}
         disabled={disabled}
-        className={className}
+        className={`${className} max-w-xl`}
         formatLabel={formatLabel}
       />
       <Group className="w-full justify-between">

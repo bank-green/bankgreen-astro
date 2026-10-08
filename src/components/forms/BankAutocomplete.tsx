@@ -74,7 +74,7 @@ function BankAutocomplete({
   return (
     <Autocomplete
       label={label}
-      classNames={{ root: `max-w-xl grow ${className}`, label: 'text-sm' }}
+      classNames={{ root: `grow ${className}`, label: 'text-sm' }}
       placeholder={resolvedPlaceholder}
       value={search}
       onChange={handleChange}
