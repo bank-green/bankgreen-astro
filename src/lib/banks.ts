@@ -20,7 +20,20 @@ export function findBanks(banks: Bank[], searchName: string): Bank[] {
     return banks
   }
 
-  const fuse = new Fuse(banks, { threshold: 0.3, keys: ['name', 'aliases'] })
+  const fuse = new Fuse(banks, {
+    threshold: 0.3,
+    keys: [
+      'name',
+      {
+        name: 'aliases',
+        getFn: (bank) =>
+          (bank.aliases ?? '')
+            .split(',')
+            .map((alias) => alias.trim())
+            .filter(Boolean),
+      },
+    ],
+  })
   const result = fuse.search(searchName)
   return result.map((x) => x.item)
 }
