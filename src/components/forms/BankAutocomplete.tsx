@@ -84,6 +84,7 @@ function BankAutocomplete({
       withAsterisk={required}
       maxDropdownHeight={300}
       limit={50}
+      filter={({ options, limit }) => options.slice(0, limit)}
       comboboxProps={{ withinPortal: false }}
       leftSection={loading && !disabled ? <Loader size="xs" /> : <BankIcon />}
       rightSection={search ? undefined : null}
