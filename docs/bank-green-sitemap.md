@@ -47,7 +47,7 @@
 4. **Newsletter Signup Form**
    - Headline: "Start to Bank Green Today"
    - Three value propositions with checkmarks
-   - Form fields: First name, Email, Status dropdown
+   - Form fields: First name, Email
    - Checkbox: Email opt-in
    - Checkbox: Privacy policy acceptance
    - Submit button
@@ -248,7 +248,7 @@
 5. **Lead Generation Form**
    - "Curious about switching to a green bank?"
    - Three value propositions
-   - Form: Bank interest, First name, Email, Status dropdown
+   - Form: Bank interest, First name, Email
    - Privacy consent checkboxes
 
 ---

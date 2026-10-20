@@ -47,7 +47,6 @@ export interface ContactMessage {
   tag: ContactFormTag
   bank: string
   is_agree_marketing?: boolean
-  current_status: string
   ip: string
   location: {
     country: string
@@ -140,7 +139,6 @@ export function groupsFor(tag: ContactFormTag, isAgreeMarketing?: boolean): stri
 export function buildPayload(message: ContactMessage): MailerLitePayload {
   const optional: Record<string, string> = {
     name: message.first_name,
-    current_status: message.current_status,
     subject: message.subject,
     message: message.message,
   }

@@ -260,7 +260,6 @@ export function EcoBankProfilePage({
             bank: false,
             subject: false,
             message: false,
-            status: true,
             isAgreeMarketing: true,
             isAgreeTerms: true,
           }}

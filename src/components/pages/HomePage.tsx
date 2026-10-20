@@ -183,7 +183,6 @@ export function HomePage({ page }: Props) {
             bank: false,
             subject: false,
             message: false,
-            status: true,
             isAgreeMarketing: true,
             isAgreeTerms: true,
           }}
