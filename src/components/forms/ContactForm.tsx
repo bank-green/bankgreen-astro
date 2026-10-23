@@ -1,5 +1,5 @@
 import { type ContactFormTag, characterCount, MAX_FIELD_LENGTH } from '@lib/mailerlite'
-import { Box, Button, Checkbox, Select, Stack, Text, Textarea, TextInput } from '@mantine/core'
+import { Box, Button, Checkbox, Stack, Text, Textarea, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile'
 import { zod4Resolver } from 'mantine-form-zod-resolver'
@@ -16,7 +16,6 @@ export interface ContactFormProps {
     bank?: boolean
     subject?: boolean
     message?: boolean
-    status?: boolean
     isAgreeMarketing?: boolean
     isAgreeTerms?: boolean
   }
@@ -27,7 +26,6 @@ export interface ContactFormProps {
     bank?: string
     subject?: string
     message?: string
-    status?: string
     submit?: string
   }
   /** Custom placeholders for fields */
@@ -50,12 +48,9 @@ const defaultFields = {
   bank: false,
   subject: false,
   message: false,
-  status: false,
   isAgreeMarketing: false,
   isAgreeTerms: false,
 }
-
-const STATUS_OPTIONS = ['Student', 'Employed', 'Self-employed', 'Retired', 'Unemployed']
 
 const defaultLabels = {
   firstName: 'First name',
@@ -63,7 +58,6 @@ const defaultLabels = {
   bank: 'Bank name',
   subject: 'Subject',
   message: 'Message',
-  status: 'Which option best describes your current status?',
   submit: 'Submit',
 }
 
@@ -98,7 +92,6 @@ const buildSchema = (fields: typeof defaultFields) =>
     message: (fields.message ? z.string().min(1, 'Message is required.') : z.string()).refine(
       withinLimit
     ),
-    status: z.string().nullable(),
     isAgreeMarketing: z.boolean(),
     isAgreeTerms: z.boolean().refine((val) => val === true, {
       message: 'Please agree to the terms.',
@@ -128,7 +121,6 @@ export function ContactForm({
       bank: '',
       subject: '',
       message: '',
-      status: null,
       isAgreeMarketing: false,
       isAgreeTerms: false,
     },
@@ -164,7 +156,6 @@ export function ContactForm({
           bank: values.bank.trim(),
           subject: values.subject.trim(),
           message: values.message.trim(),
-          currentStatus: values.status,
           tag,
           isAgreeMarketing: values.isAgreeMarketing,
           isAgreeTerms: values.isAgreeTerms,
@@ -251,15 +242,6 @@ export function ContactForm({
             error={overLengthError(form.values.message) ?? form.errors.message}
             rows={3}
             required
-          />
-        )}
-
-        {fields.status && (
-          <Select
-            label={labels.status}
-            placeholder="Select an option"
-            data={STATUS_OPTIONS}
-            {...form.getInputProps('status')}
           />
         )}
 

@@ -36,7 +36,6 @@ export function FaqPage({ page }: Props) {
             bank: false,
             subject: false,
             message: false,
-            status: false,
             isAgreeMarketing: true,
             isAgreeTerms: true,
           }}

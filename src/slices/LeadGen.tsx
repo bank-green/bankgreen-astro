@@ -6,27 +6,24 @@
  * Features:
  * - Full form validation and submission to /api/contact
  * - Turnstile CAPTCHA integration
- * - Customizable field visibility (bank, status)
+ * - Customizable field visibility (bank)
  * - Custom labels from Prismic
  * - Bullet point list from Prismic items
  * - Success redirect not configured (defaults to inline thank you message)
  *
  * LIMITATIONS:
- * - Status field options are hardcoded in ContactForm (cannot use custom options from Prismic)
  * - Uses two-column layout with dark background (matches HomePage/FaqPage style)
- * - Ignores items[].dropdown_status_option field (ContactForm has fixed status options)
+ * - Ignores the status dropdown fields (show_status_field, form_status_label,
+ *   items[].dropdown_status_option). The form no longer has a status dropdown
  *
  * Prismic fields:
  * - primary.title: Main heading (RichTextField)
  * - primary.show_bank_field: Toggle bank field visibility (default: true)
- * - primary.show_status_field: Toggle status dropdown visibility (default: true)
  * - primary.form_bank_label: Custom label for bank field
  * - primary.form_name_label: Custom label for first name field
  * - primary.form_email_label: Custom label for email field
- * - primary.form_status_label: Custom label for status field
  * - primary.button_label: Custom submit button text
  * - items[].bullet_text: Bullet points for value proposition list
- * - items[].dropdown_status_option: IGNORED (ContactForm uses hardcoded options)
  */
 import ContactFormContainer from '@components/forms/ContactFormContainer'
 import { asText } from '@lib/prismicHelpers'
@@ -72,7 +69,6 @@ export function LeadGen({ slice, className }: Props) {
     bank: primary.show_bank_field ?? true,
     subject: false,
     message: false,
-    status: primary.show_status_field ?? true,
     isAgreeMarketing: true,
     isAgreeTerms: true,
   }
@@ -82,7 +78,6 @@ export function LeadGen({ slice, className }: Props) {
     firstName: primary.form_name_label || 'First name',
     email: primary.form_email_label || 'Email address',
     bank: primary.form_bank_label || 'I am interested in',
-    status: primary.form_status_label || 'Which option best describes your current status?',
     submit: primary.button_label || 'Complete Sign Up',
   }
 

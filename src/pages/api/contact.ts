@@ -26,7 +26,6 @@ interface ContactRequestBody {
   tag?: string
   bank?: string
   isAgreeMarketing?: boolean
-  currentStatus?: string
   captchaToken?: string
 }
 
@@ -121,7 +120,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
       tag: body.tag,
       bank: text(body.bank),
       is_agree_marketing: body.isAgreeMarketing === true,
-      current_status: text(body.currentStatus),
       ip,
       location: { country, city },
     }
@@ -132,7 +130,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
       subject: message.subject,
       message: message.message,
       bank: message.bank,
-      current_status: message.current_status,
     })
     if (overLength.length > 0) {
       console.error(`Contact form fields over ${MAX_FIELD_LENGTH} characters:`, overLength)
