@@ -170,7 +170,7 @@ interface Commentary {
   description2?: string | null
   description3?: string | null
   subtitle?: string | null
-  institutionType?: InstitutionType | null
+  institutionType?: InstitutionType[] | null
   institutionCredentials?: InstitutionCredential[] | null
 }
 

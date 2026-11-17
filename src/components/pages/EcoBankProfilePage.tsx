@@ -44,9 +44,7 @@ interface BankData {
       tag: string
       name: string
     } | null
-    institutionType?: {
-      name: string
-    } | null
+    institutionType?: Array<{ name: string }> | null
     institutionCredentials?: Array<{
       name: string
       prismicApiId: string
